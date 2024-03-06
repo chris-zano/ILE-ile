@@ -1,4 +1,4 @@
-exports.validateRequest = (requestObject) => {
+function validateRequest(requestObject) {
     return new Promise((resolve, reject) => {
         const authKey = requestObject.headers['user-auth-key'];
 
@@ -16,3 +16,5 @@ exports.validateRequest = (requestObject) => {
         }
     })
 }
+
+module.exports = {validateRequest};
