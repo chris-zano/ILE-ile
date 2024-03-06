@@ -1,0 +1,33 @@
+{
+  "name": "integrated_learning_environment",
+  "version": "1.0.0",
+  "description": "An Integrated Learning environment for an enhanced and interactive educational experience",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "web",
+    "text_editor",
+    "webRTC",
+    "socket",
+    "e-learning",
+    "streaming",
+    "ide"
+  ],
+  "author": "Christian Solomon",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.2",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.9",
+    "express": "^4.18.3",
+    "multer": "^1.4.5-lts.1",
+    "nodemon": "^3.1.0",
+    "pm2": "^5.3.1",
+    "socket-io": "^1.0.0"
+  }
+}
