@@ -10,6 +10,7 @@ const VIEW_ENGINE_PATH = path.join(__dirname, 'views');
 
 //express.js config
 dotenv.config();
+
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/public', express.static(STATIC_FILES_PATH));
@@ -18,9 +19,11 @@ app.set('view engine', 'ejs');
 
 //system imports
 const adminStaticRoutes = require('./routes/admin/admin.static');
+const adminFileRoutes = require('./routes/admin/admin.files');
 
 //system config
 app.use(adminStaticRoutes);
+app.use(adminFileRoutes);
 
 const PORT = process.env.PORT || 5050;
 
