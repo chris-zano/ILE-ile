@@ -5,7 +5,11 @@ exports.renderDashboard = (req, res) => {
     validateRequest(req)
         .then(auth => {
             if (auth.status == 'verified-user') {
-                res.render('admin/dashboard');
+                res.render('admin/dashboard', {
+                    adminId: null,
+                    name: null,
+                    'a-r': '---'
+                });
             }
             else {
                 res.end({
@@ -37,8 +41,13 @@ exports.authLoginRequest = (req, res) => {
     }
     
     const { username, password } = req.body;
-
     //models.authUserWithUsernameAndPassword
 
-    res.status(200).json('Processed');
+    if (username == 'username' && password == 'password') {
+        res.status(200).render('admin/dashboard', {
+            adminId: '001',
+            name: 'Christian Foreigner',
+            'a-r': 'rwx'
+        })
+    }
 }

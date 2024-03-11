@@ -7,10 +7,14 @@
 </head>
 <body>
     <div>
-        this is the admin dashboard page
-        <button>
-            <a href="/admin/login">Login Page</a>
-        </button>
+        <% if (!adminId) { %>
+            unauthorised access!! redirecting you to the login page automatically.
+            if you are not redirected automatically, click the button below
+            <br>
+            <button>
+                <a href="/admin/login">Login Page</a>
+            </button>
+        <% } %>
     </div>
 </body>
 </html>
