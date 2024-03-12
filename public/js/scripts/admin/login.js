@@ -2,9 +2,11 @@ if (document.readyState == 'loading') document.addEventListener("DOMContentLoade
 else main();
 
 function main() {
-    document.getElementById('login-form').addEventListener("submit", (e)=> {
+    document.getElementById('login-form').addEventListener("submit", (e) => {
         e.preventDefault();
 
+        console.log(document.getElementById('adminId').value);
+        console.log(document.getElementById('password').value);
         const options = {
             adminId: document.getElementById('adminId').value,
             password: document.getElementById('password').value
@@ -16,16 +18,16 @@ function main() {
         }
 
         initiatePostRequest(
-            'http://localhost:5050/auth/admin/login-with-username-and-password',
+            '/auth/admin/loginwithusernameandpassword',
             headers,
             options
         )
-        .then(response => {
-            console.log(response);
-        })
-        .catch(error => {
-            console.log(error);
-        })
+            .then(response => {
+                console.log(response);
+            })
+            .catch(error => {
+                console.log(error);
+            })
         console.log("hello ILE");
     })
 }

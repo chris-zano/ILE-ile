@@ -10,7 +10,7 @@ router.get('/admin/login', adminStaticController.renderAdminLogin);
 
 
 //post requests
-router.post('/auth/admin/login-with-username-and-password', adminStaticController.authLoginRequest);
+router.post('/auth/admin/loginwithusernameandpassword', adminStaticController.authLoginRequest);
 
 
 //export the router instance

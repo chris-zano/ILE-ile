@@ -29,6 +29,22 @@ exports.renderAdminLogin = (req, res) => {
     res.render('admin/login');
 }
 
+exports.createNewAdmin = (req, res) => {
+    if (!req.headers['ur-u-a'] || req.headers['ur-u-a'] != 'y') {
+        res.status(403).json({
+            message: 'Unauthorized Access'
+        });
+        return;
+    }
+
+    const { adminId, firstName, lastName, role, department, password } = req.body;
+
+    const admin = new Admins({ adminId, firstName, lastName, role, password, department });
+
+    admin.save();
+
+}
+
 //authenticate login request
 exports.authLoginRequest = (req, res) => {
     //TODO: log request
@@ -45,18 +61,13 @@ exports.authLoginRequest = (req, res) => {
 
     Admins.find({ adminId: adminId, password: password })
         .then(doc => {
-            if (!doc) {
-                res.status(403).json({
-                    message: 'Unauthorized Access'
-                });
-                return;
+            console.log(doc);
+            if (doc.length === 0) {
+                res.status(403).json('failed')
             }
 
-            console.log(doc);
-            res.status(200).render('admin/dashboard', {
-                adminId: adminId,
-                name: `${doc.firstName} ${doc.lastName}`,
-                'a-r': 'rwx'
-            })
+            else {
+                res.status(200).json({ user: doc[0], message: 'success' });
+            }
         });
 }

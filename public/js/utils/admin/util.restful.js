@@ -14,4 +14,4 @@ async function initiatePostRequest(url_endpoint, headers, options) {
     }
 }
 
-console.log("Util is loaded ")
+console.log("Util is loaded ");
