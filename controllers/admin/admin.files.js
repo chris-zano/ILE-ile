@@ -32,15 +32,11 @@ function getScriptFilePath(attribute, authLevel, filename) {
 
 exports.loadScript = (req, res) => {
     if (req.params.filename == 'login') {
-        //do not authenticate the request
-        //log req.ip
         const { auth, filename } = req.params;
-        
         const filePath = getScriptFilePath('scripts', auth, filename);
 
         console.log(filePath);
         if (filePath != 'not found') {
-            console.log(filePath);
             res.type('text/javascript');
             fs.createReadStream(filePath).pipe(res);
         }
@@ -57,9 +53,7 @@ exports.loadUtilityScript = (req, res) => {
 
     const filePath = getScriptFilePath('utils', auth, filename);
 
-    console.log(filePath);
         if (filePath != 'not found') {
-            console.log(filePath);
             res.type('text/javascript');
             fs.createReadStream(filePath).pipe(res);
         }

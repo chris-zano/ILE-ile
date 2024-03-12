@@ -1,5 +1,5 @@
 const { validateRequest } = require('../../utils/admin/admin.auth');
-
+const Admins = require('../../models/admin/admin.models');
 //render the administrator's dashboard ( Home )
 exports.renderDashboard = (req, res) => {
     validateRequest(req)
@@ -33,21 +33,30 @@ exports.renderAdminLogin = (req, res) => {
 exports.authLoginRequest = (req, res) => {
     //TODO: log request
 
-    if (!req.headers['ur-u-a'] || req.headers['ur-u-a']!='y') {
+    if (!req.headers['ur-u-a'] || req.headers['ur-u-a'] != 'y') {
         res.status(403).json({
             message: 'Unauthorized Access'
         });
         return;
     }
-    
-    const { username, password } = req.body;
+
+    const { adminId, password } = req.body;
     //models.authUserWithUsernameAndPassword
 
-    if (username == 'username' && password == 'password') {
-        res.status(200).render('admin/dashboard', {
-            adminId: '001',
-            name: 'Christian Foreigner',
-            'a-r': 'rwx'
-        })
-    }
+    Admins.find({ adminId: adminId, password: password })
+        .then(doc => {
+            if (!doc) {
+                res.status(403).json({
+                    message: 'Unauthorized Access'
+                });
+                return;
+            }
+
+            console.log(doc);
+            res.status(200).render('admin/dashboard', {
+                adminId: adminId,
+                name: `${doc.firstName} ${doc.lastName}`,
+                'a-r': 'rwx'
+            })
+        });
 }

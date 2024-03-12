@@ -6,7 +6,7 @@ function main() {
         e.preventDefault();
 
         const options = {
-            username: document.getElementById('username').value,
+            adminId: document.getElementById('adminId').value,
             password: document.getElementById('password').value
         }
 
