@@ -1,19 +1,25 @@
-function validateRequest(requestObject) {
-    return new Promise((resolve, reject) => {
-        const authKey = requestObject.headers['user-auth-key'];
+const Admins = require('../../models/admin/admin.models');
 
-        if (authKey == 'valid-auth-key') {
+function validateRequest(requestObject) {
+    
+    return new Promise((resolve, reject) => {
+        const authKey = requestObject.headers['u-a-k'];
+
+        Admins.findOne({adminId: authKey})
+        .then((doc) => {
             resolve({
                 status: 'verified-user',
-                authToken: 'valid-auth-token'
+                authToken: 'valid-auth-token',
+                data: doc
             });
-        }
-        else {
-            resolve({
+        })
+        .catch((error) => {
+            reject({
+                error: error,
                 status: 'verified-user',
                 authToken: 'invalid-auth-token'
             });
-        }
+        })
     })
 }
 

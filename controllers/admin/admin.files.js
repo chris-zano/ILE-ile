@@ -2,7 +2,21 @@ const path = require('path');
 const fs = require('fs');
 
 function setFilePath(mimeType, attribute, authFolder, filename) {
-    const resolvedpath = path.join(__dirname, '..', '..', 'public', `${mimeType}`, `${attribute}`, `${authFolder}`, `${filename}.js`);
+    var resolvedpath;
+
+    switch (mimeType) {
+        case 'js':
+            resolvedpath = path.join(__dirname, '..', '..', 'public', `${mimeType}`, `${attribute}`, `${authFolder}`, `${filename}.js`);
+            break;
+        case 'css':
+            resolvedpath = path.join(__dirname, '..', '..', 'public', `${mimeType}`, `${attribute}`, `${authFolder}`, `${filename}.css`);
+            break;
+        default:
+            resolvedpath = 'not found';
+            break;
+    }
+
+
     if (fs.existsSync(resolvedpath)) {
         return resolvedpath;
     }
@@ -30,21 +44,22 @@ function getScriptFilePath(attribute, authLevel, filename) {
     return filePath;
 }
 
-exports.loadScript = (req, res) => {
-    if (req.params.filename == 'login') {
-        const { auth, filename } = req.params;
-        const filePath = getScriptFilePath('scripts', auth, filename);
+function getStyleSheetFilePath(auth, attribute, filename) {
+    // let filepath;
+}
 
-        console.log(filePath);
-        if (filePath != 'not found') {
-            res.type('text/javascript');
-            fs.createReadStream(filePath).pipe(res);
-        }
-        else {
-            console.log('file not found');
-            res.status(400);
-            res.end();
-        }
+exports.loadScript = (req, res) => {
+    const { auth, filename } = req.params;
+    const filePath = getScriptFilePath('scripts', auth, filename);
+
+    if (filePath != 'not found') {
+        res.type('text/javascript');
+        fs.createReadStream(filePath).pipe(res);
+    }
+    else {
+        console.log('file not found');
+        res.status(400);
+        res.end();
     }
 }
 
@@ -53,13 +68,19 @@ exports.loadUtilityScript = (req, res) => {
 
     const filePath = getScriptFilePath('utils', auth, filename);
 
-        if (filePath != 'not found') {
-            res.type('text/javascript');
-            fs.createReadStream(filePath).pipe(res);
-        }
-        else {
-            console.log('file not found');
-            res.status(400);
-            res.end();
-        }
+    if (filePath != 'not found') {
+        res.type('text/javascript');
+        fs.createReadStream(filePath).pipe(res);
+    }
+    else {
+        console.log('file not found');
+        res.status(400);
+        res.end();
+    }
+}
+
+exports.getStyleSheet = (req, res) => {
+    const { auth, attribute, filename } = req.params;
+
+    const filePath = getStyleSheetFilePath(auth, attribute, filename);
 }

@@ -8,71 +8,78 @@
 </head>
 
 <body>
-    <div class="login-form-container">
-        <form id="login-form">
-            <fieldset>
-                <label for="adminId">adminId: </label>
-                <input type="text" name="adminId" id="adminId" placeholder="Enter adminId" required>
-            </fieldset>
-
-            <fieldset>
-                <label for="password">Password: </label>
-                <input type="password" name="password" id="password" required>
-            </fieldset>
-
-            <div class="submit-btn-wrapper">
-                <input type="submit" value="Login">
-            </div>
-        </form>
-        <script src="/script/utils/admin/util.restful"></script>
-        <script src="/script/scripts/admin/login"></script>
-    </div>
-    <br>
-    <div class="create-admin-form-container">
-        <form id="createAdmin-form">
-
-            <fieldset>
-                <label for="adminId">Admin ID:</label>
-                <input type="text" name="adminId" id="adminId" required>
-            </fieldset>
-
-            <fieldset>
-                <label for="firstName">First name: </label>
-                <input type="text" name="firstName" id="firstName" required>
-            </fieldset>
-
-            <fieldset>
-                <label for="lastName">Last name: </label>
-                <input type="text" name="lastName" id="lastName" required>
-            </fieldset>
-
-            <fieldset>
-                <label for="department">Department: </label>
-                <input type="text" name="department" id="department" required>
-            </fieldset>
-
-            <fieldset>
-                <label for="password">Default Password: </label>
-                <input type="password" name="password" id="password" required>
-            </fieldset>
-
-            <fieldset>
-                <label for="role">Admnistrator Role:</label>
-                <select name="role" id="role">
-                    <option value="none">Select a Role</option>
-                    <option value="archon">General Admnistrator</option>
-                    <option value="shepherd">Departmental Admnistrator</option>
-                    <option value="forge">IT Admnistrator</option>
-                </select>
-            </fieldset>
-
-            <div class="submit-btn-wrapper">
-                <input type="submit" value="Create">
-            </div>
+    <% if (page === 'login') { %>
+        <div class="login-form-container">
+            <form id="login-form">
+                <fieldset>
+                    <label for="adminId">adminId: </label>
+                    <input type="text" name="adminId" id="adminId" placeholder="Enter adminId" required>
+                </fieldset>
+    
+                <fieldset>
+                    <label for="password">Password: </label>
+                    <input type="password" name="password" id="password" required>
+                </fieldset>
+    
+                <div class="submit-btn-wrapper">
+                    <input type="submit" value="Login">
+                </div>
+            </form>
             <script src="/script/utils/admin/util.restful"></script>
-            <script src="/script/scripts/admin/create-admin"></script>
-        </form>
-    </div>
+            <script src="/script/scripts/admin/login"></script>
+        </div>
+    <% } else if (page === 'create-admin') { %>
+            <div class="create-admin-form-container">
+                <form id="createAdmin-form">
+                    
+                    <fieldset>
+                    <label for="adminId">Admin ID:</label>
+                    <input type="text" name="adminId" id="adminId" required>
+                </fieldset>
+    
+                <fieldset>
+                    <label for="firstName">First name: </label>
+                    <input type="text" name="firstName" id="firstName" required>
+                </fieldset>
+    
+                <fieldset>
+                    <label for="lastName">Last name: </label>
+                    <input type="text" name="lastName" id="lastName" required>
+                </fieldset>
+    
+                <fieldset>
+                    <label for="department">Department: </label>
+                    <input type="text" name="department" id="department" required>
+                </fieldset>
+    
+                <fieldset>
+                    <label for="password">Default Password: </label>
+                    <input type="password" name="password" id="password" required>
+                </fieldset>
+    
+                <fieldset>
+                    <label for="role">Admnistrator Role:</label>
+                    <select name="role" id="role">
+                        <option value="none">Select a Role</option>
+                        <option value="archon">General Admnistrator</option>
+                        <option value="shepherd">Departmental Admnistrator</option>
+                        <option value="forge">IT Admnistrator</option>
+                    </select>
+                </fieldset>
+    
+                <div class="submit-btn-wrapper">
+                    <input type="submit" value="Create">
+                </div>
+                <script src="/script/utils/admin/util.restful"></script>
+                <script src="/script/scripts/admin/createAdmin"></script>
+            </form>
+        </div>
+    <% } else { %>
+        <div class="unknown-page">
+            unknown-page
+        </div>
+    <% } %>
+     
 </body>
 
 </html>

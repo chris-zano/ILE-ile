@@ -19,7 +19,7 @@ app.set('views', VIEW_ENGINE_PATH);
 app.set('view engine', 'ejs');
 
 //system imports
-const adminStaticRoutes = require('./routes/admin/admin.static');
+const adminStaticRoutes = require('./routes/admin/admin.routes');
 const adminFileRoutes = require('./routes/admin/admin.files');
 
 //system config

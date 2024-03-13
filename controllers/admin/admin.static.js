@@ -1,24 +1,36 @@
 const { validateRequest } = require('../../utils/admin/admin.auth');
 const Admins = require('../../models/admin/admin.models');
+
 //render the administrator's dashboard ( Home )
 exports.renderDashboard = (req, res) => {
+    //validate the request
     validateRequest(req)
         .then(auth => {
-            if (auth.status == 'verified-user') {
-                res.render('admin/dashboard', {
-                    adminId: null,
-                    name: null,
-                    'a-r': '---'
-                });
+            if (req.query.redirect === 't') {
+                res.status(200).json({message: 'success', url: '/admin/dashboard', authToken: authToken});
+            }
+            else if (req.query.authToken) {
+
             }
             else {
-                res.end({
-                    error: 'An error occured'
+                res.render('admin/dashboard', {
+                    adminId: adminId,
+                    adminObject: auth.data,
+                    role : auth.data.role
                 });
             }
         })
         .catch(error => {
-            res.end('Failed');
+            if (req.query.redirect === 't') {
+                res.status(403).json({message: 'Unauthorised'});
+            }
+            else {
+                res.render('admin/dashboard', {
+                    adminId: null,
+                    adminObject:null,
+                    role: '-----'
+                });
+            }
         })
 }
 
@@ -26,7 +38,22 @@ exports.renderDashboard = (req, res) => {
 exports.renderAdminLogin = (req, res) => {
     //TODO: log the request
 
-    res.render('admin/login');
+    if (req.params.action === 'login') {
+        res.render('admin/login', {
+            page: 'login',
+            css: ['login-1', 'login-2', 'login-3']
+        });
+    }
+    else if (req.params.action === 'create') {
+        res.render('admin/login', {
+            page: 'create-admin',
+            css: ['login-1', 'login-2', 'login-3']
+        });
+    }
+    else {
+        res.status(404).render('global/error', { status: '404' });
+    }
+
 }
 
 exports.createNewAdmin = (req, res) => {
@@ -42,6 +69,10 @@ exports.createNewAdmin = (req, res) => {
     const admin = new Admins({ adminId, firstName, lastName, role, password, department });
 
     admin.save();
+
+    console.log(admin);
+
+    res.status(200).json({message: 'success'});
 
 }
 

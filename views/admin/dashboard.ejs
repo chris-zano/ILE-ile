@@ -12,8 +12,24 @@
             if you are not redirected automatically, click the button below
             <br>
             <button>
-                <a href="/admin/login">Login Page</a>
+                <a href="/admin/logins/login">Login Page</a>
             </button>
+            <button>
+                <a href="/admin/logins/create">Create new admin</a>
+            </button>
+            <div>
+                <%= adminId %>
+                <%= adminObject %>
+                <%= role%>
+            </div>
+        <% } else {%>
+            <div>Welcome <%= adminObject.firstName %></div>
+            <div>
+                <p>Admin ID: <%= adminId %></p>
+                <p>Name: <%= adminObject.firstName %> <%= adminObject.lastName %></p>
+                <p>Department: <%= adminObject.department %></p>
+                <p>Role: <%= adminObject.role%></p>
+            </div>
         <% } %>
     </div>
 </body>
