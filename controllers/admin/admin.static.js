@@ -4,34 +4,25 @@ const Admins = require('../../models/admin/admin.models');
 //render the administrator's dashboard ( Home )
 exports.renderDashboard = (req, res) => {
     //validate the request
-    validateRequest(req)
-        .then(auth => {
-            if (req.query.redirect === 't') {
-                res.status(200).json({message: 'success', url: '/admin/dashboard', authToken: authToken});
-            }
-            else if (req.query.authToken) {
+    const { id, adminId } = req.query;
 
-            }
-            else {
-                res.render('admin/dashboard', {
-                    adminId: adminId,
-                    adminObject: auth.data,
-                    role : auth.data.role
-                });
-            }
+    Admins.findOne({_id: id, adminId: adminId})
+    .then((doc) => {
+        res.render('admin/dashboard', {
+            adminId: doc.adminId,
+            _id: doc._id,
+            adminObject: doc,
+            role: doc.role
         })
-        .catch(error => {
-            if (req.query.redirect === 't') {
-                res.status(403).json({message: 'Unauthorised'});
-            }
-            else {
-                res.render('admin/dashboard', {
-                    adminId: null,
-                    adminObject:null,
-                    role: '-----'
-                });
-            }
-        })
+    })
+    .catch((error) => {
+        res.render('admin/dashboard', {
+            adminId: null,
+            _id: null,
+            adminObject: null,
+            role: null
+        });
+    });
 }
 
 //render the administrator's login page
@@ -72,7 +63,7 @@ exports.createNewAdmin = (req, res) => {
 
     console.log(admin);
 
-    res.status(200).json({message: 'success'});
+    res.status(200).json({ message: 'success' });
 
 }
 
@@ -90,15 +81,13 @@ exports.authLoginRequest = (req, res) => {
     const { adminId, password } = req.body;
     //models.authUserWithUsernameAndPassword
 
-    Admins.find({ adminId: adminId, password: password })
+    Admins.findOne({ adminId: adminId, password: password })
         .then(doc => {
-            console.log(doc);
             if (doc.length === 0) {
                 res.status(403).json('failed')
             }
-
             else {
-                res.status(200).json({ user: doc[0], message: 'success' });
+                res.status(200).json({ _id: doc._id, adminId: doc.adminId, message: 'success' });
             }
         });
 }

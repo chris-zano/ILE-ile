@@ -23,26 +23,17 @@ function main() {
             options
         )
             .then(response => {
-                console.log(response);
-
                 if (response.status === 200 && response.data.message === 'success') {
-                    const url = new URL(window.location.href);
+                    const {_id, adminId} = response.data;
 
-                    redirectToDashboard(url.pathname, response.data.user.adminId)
-                    .then((res)=>{
-                        if (res.status === 200 && res.data.message === 'success') {
-                            window.location.href = res.data.url;
-                        }
-                        else {
-                            alert('Invalid username or passwword!!!');
-                        }
-                    })
-                    .catch((error) => console.log(error));
+                    window.location.href = `/admin/dashboards?id=${_id}&&adminId=${adminId}`;
+                }
+                else {
+                    window.alert('Invalid Id or Password');
                 }
             })
             .catch(error => {
                 console.log(error);
             });
-        console.log("hello ILE");
     })
 }

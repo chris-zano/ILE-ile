@@ -22,33 +22,6 @@ async function initiatePostRequest(url_endpoint, headers, options) {
     }
 }
 
-/**
- * redirect from the current page to the dashboard
- * @param {String} currentPageUrl current pages url
- * @param {String} adminId admnistrator's unique ID
- * @returns {ObjectConstructor}
- */
-async function redirectToDashboard(currentPageUrl, adminId) {
-    console.log(currentPageUrl.trim(), adminId.trim());
-
-    const headers = {
-        'Content-Type': 'application/json',
-        'u-a-k': adminId.trim(),
-        'r-a-o': currentPageUrl.trim()
-    };
-    console.log(headers);
-
-    const req = await fetch(`/admin/dashboard?redirect=t&&adminId=${adminId.trim()}`, {method: "GET", headers: headers});
-    const res = await req.json();
-
-    const status = req.status;
-    return {
-        status,
-        data: res
-    };
-
-}
-
 function getId(id) {
     return document.getElementById(id);
 }

@@ -14,22 +14,35 @@
             <button>
                 <a href="/admin/logins/login">Login Page</a>
             </button>
-            <button>
-                <a href="/admin/logins/create">Create new admin</a>
-            </button>
             <div>
                 <%= adminId %>
                 <%= adminObject %>
                 <%= role%>
             </div>
-        <% } else {%>
-            <div>Welcome <%= adminObject.firstName %></div>
-            <div>
-                <p>Admin ID: <%= adminId %></p>
-                <p>Name: <%= adminObject.firstName %> <%= adminObject.lastName %></p>
-                <p>Department: <%= adminObject.department %></p>
-                <p>Role: <%= adminObject.role%></p>
-            </div>
+        <% } else { %>
+            <section class="adminProfileCard">
+                <div>Welcome <%= adminObject.firstName %></div>
+                <div>
+                    <p>Admin ID: <%= adminId %></p>
+                    <p>Name: <%= adminObject.firstName %> <%= adminObject.lastName %></p>
+                    <p>Department: <%= adminObject.department %></p>
+                    <p>Role: <%= adminObject.role%></p>
+                </div>
+            </section>
+            
+            <% if ( role === 'archon' ) { %>
+                <%- include('layouts/archon') %>
+            <% } else if ( role === 'shepherd' ) { %>
+                <%- include('layouts/shepherd') %>
+            <% } else if ( role === 'forge' ) { %>
+                <%- include('layouts/forge') %>
+            <% } else { %>
+                <script>
+                    window.alert('Unrecognized user access. Redirecting back to login');
+                    window.location.href = '/admin/logins/login';
+                </script>
+            <% } %>
+
         <% } %>
     </div>
 </body>

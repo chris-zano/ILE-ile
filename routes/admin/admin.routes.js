@@ -5,7 +5,7 @@ const router = express.Router();
 const adminStaticController = require('../../controllers/admin/admin.static');
 
 //get requests
-router.get('/admin/dashboard', adminStaticController.renderDashboard);
+router.get('/admin/dashboards', adminStaticController.renderDashboard);
 router.get('/admin/logins/:action', adminStaticController.renderAdminLogin);
 
 

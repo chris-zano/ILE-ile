@@ -4,7 +4,7 @@ function validateRequest(requestObject) {
     
     return new Promise((resolve, reject) => {
         const authKey = requestObject.headers['u-a-k'];
-
+        
         Admins.findOne({adminId: authKey})
         .then((doc) => {
             resolve({
@@ -14,6 +14,7 @@ function validateRequest(requestObject) {
             });
         })
         .catch((error) => {
+            console.log(error);
             reject({
                 error: error,
                 status: 'verified-user',
