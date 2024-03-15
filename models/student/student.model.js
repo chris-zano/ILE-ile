@@ -28,21 +28,22 @@ const studentSchema = new Schema({
         type: String,
         required: true
     },
-    currentLevel: {
+    year: {
+        type: String,
+        required: true
+    },
+    level: {
         type: Number,
         required: true
     },
     courses: {
         type: Array,
-        required: true
     },
     files: {
-        type: Array,
-        required: true
+        type: Array
     },
     repos: {
-        type: Array,
-        required: true
+        type: Array
     }
 });
 

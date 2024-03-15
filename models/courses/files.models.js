@@ -3,15 +3,12 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 
-/**
- * fileName
- * fileUrl
- * owner - the (studentId / lecturerId )
- * courseId
- * created-at:
- */
-const materialSchema = new Schema({
+const fileSchema = new Schema({
     filename: {
+        type: String,
+        required: true
+    },
+    originalname: {
         type: String,
         required: true
     },
@@ -20,10 +17,6 @@ const materialSchema = new Schema({
         required: true
     },
     owner: {
-        type: String,
-        required: true
-    },
-    courseId: {
         type: ObjectId,
         required: true
     },
@@ -33,4 +26,4 @@ const materialSchema = new Schema({
     }
 });
 
-module.exports =  mongoose.model('Materials', materialSchema);
+module.exports =  mongoose.model('Files', fileSchema);

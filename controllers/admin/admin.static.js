@@ -9,21 +9,21 @@ exports.renderDashboard = (req, res) => {
     Admins.findOne({ _id: id, adminId: adminId })
         .then((doc) => {
             if (doc.role === 'archon') {
-                Admins.find({_id: {$ne: id}, adminId: {$ne: adminId}})
-                .then((docs) => {
-                    res.render('admin/dashboard', {
-                        adminId: doc.adminId,
-                        _id: doc._id,
-                        adminObject: doc,
-                        role: doc.role,
-                        admins: docs
-                    });
-                }).catch((err) => {
-                    console.log("It happended here: ", err);
-                })
+                Admins.find({ _id: { $ne: id }, adminId: { $ne: adminId } })
+                    .then((docs) => {
+                        res.render('admin/dashboard', {
+                            adminId: doc.adminId,
+                            _id: doc._id,
+                            adminObject: doc,
+                            role: doc.role,
+                            admins: docs
+                        });
+                    }).catch((err) => {
+                        console.log("It happended here: ", err);
+                    })
             }
             else {
-                if(doc.role === 'shepherd') {
+                if (doc.role === 'shepherd') {
                     // implement the feature to fetch all courses
                     res.render('admin/dashboard', {
                         adminId: doc.adminId,
@@ -126,5 +126,23 @@ exports.authLoginRequest = (req, res) => {
             else {
                 res.status(200).json({ _id: doc._id, adminId: doc.adminId, message: 'success' });
             }
+        });
+}
+
+exports.renderUserImportPage = (req, res) => {
+    const { id, adminId, role } = req.query;
+    const { victim } = req.params;
+
+    Admins.findOne({ _id: id, adminId: adminId, role: role })
+        .then((doc) => {
+            if (doc.adminId === adminId) {
+                res.render('admin/import', { victim: victim, id, adminId, role });
+            }
+            else {
+                res.render('global/error');
+            }
+        }).catch((error) => {
+            console.log(error);
+            res.render('global/error');
         });
 }
