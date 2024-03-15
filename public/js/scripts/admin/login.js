@@ -5,8 +5,6 @@ function main() {
     document.getElementById('login-form').addEventListener("submit", (e) => {
         e.preventDefault();
 
-        console.log(document.getElementById('adminId').value);
-        console.log(document.getElementById('password').value);
         const options = {
             adminId: document.getElementById('adminId').value,
             password: document.getElementById('password').value

@@ -24,7 +24,11 @@ function main() {
             headers,
             options
         ).then((response) => {
-            console.log(response);
+            const url = new URL(window.location.href);
+            const id = url.searchParams.get('id');
+            const adminId = url.searchParams.get('adminId');
+
+            window.location.href = `/admin/dashboards?id=${id}&&adminId=${adminId}`;
         }).catch((error) => {
             console.log(error);
         });

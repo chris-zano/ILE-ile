@@ -1,15 +1,28 @@
-/**
- * TODO:
- * 
- * create the lecturer class
- * 
- * constructor(lecturerID, firstName, lastName, department, defaultPassword)
- * static changeLecturerPassword(currentPassword, newPassword)
- * static getLecturerObject(lecturerID)
- * static getLecturerAttribute(lecturerID, key, value)
- * static getAssignedCourses(lecturerID)
- * static assignCourse(lecturerID, courseID)
- * static unassignCourse(lecturerID, courseID)
- * static suspendLecturerData(lecturerID)
- * static deleteLecturerData(lecturerID)
- */
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
+
+const lecturerSchema = new Schema({
+    lecturerId: {
+        type: String,
+        required: true
+    },
+    firstName: {
+        type: String,
+        required: true
+    },
+    lastName: {
+        type: String,
+        required: true
+    },
+    department: {
+        type: Object,
+        required: true        
+    },
+    assignedCourses: {
+        type: Array,
+        required: true
+    }
+});
+
+module.exports = mongoose.model('Lecturers', lecturerSchema);

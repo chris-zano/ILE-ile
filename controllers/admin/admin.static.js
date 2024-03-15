@@ -6,23 +6,54 @@ exports.renderDashboard = (req, res) => {
     //validate the request
     const { id, adminId } = req.query;
 
-    Admins.findOne({_id: id, adminId: adminId})
-    .then((doc) => {
-        res.render('admin/dashboard', {
-            adminId: doc.adminId,
-            _id: doc._id,
-            adminObject: doc,
-            role: doc.role
+    Admins.findOne({ _id: id, adminId: adminId })
+        .then((doc) => {
+            if (doc.role === 'archon') {
+                Admins.find({_id: {$ne: id}, adminId: {$ne: adminId}})
+                .then((docs) => {
+                    res.render('admin/dashboard', {
+                        adminId: doc.adminId,
+                        _id: doc._id,
+                        adminObject: doc,
+                        role: doc.role,
+                        admins: docs
+                    });
+                }).catch((err) => {
+                    console.log("It happended here: ", err);
+                })
+            }
+            else {
+                if(doc.role === 'shepherd') {
+                    // implement the feature to fetch all courses
+                    res.render('admin/dashboard', {
+                        adminId: doc.adminId,
+                        _id: doc._id,
+                        adminObject: doc,
+                        role: doc.role,
+                        courses: []
+                    });
+                }
+                else if (doc.role === 'forge') {
+                    res.render('admin/dashboard', {
+                        adminId: doc.adminId,
+                        _id: doc._id,
+                        adminObject: doc,
+                        role: doc.role
+                    });
+                }
+                else {
+                    res.status(404).render('global/error', { status: '404' });
+                }
+            }
         })
-    })
-    .catch((error) => {
-        res.render('admin/dashboard', {
-            adminId: null,
-            _id: null,
-            adminObject: null,
-            role: null
+        .catch((error) => {
+            res.render('admin/dashboard', {
+                adminId: null,
+                _id: null,
+                adminObject: null,
+                role: null
+            });
         });
-    });
 }
 
 //render the administrator's login page
@@ -36,10 +67,17 @@ exports.renderAdminLogin = (req, res) => {
         });
     }
     else if (req.params.action === 'create') {
-        res.render('admin/login', {
-            page: 'create-admin',
-            css: ['login-1', 'login-2', 'login-3']
-        });
+        const { id, adminId, role } = req.query;
+        Admins.findOne({ _id: id, adminId: adminId, role: role })
+            .then((doc) => {
+                res.render('admin/login', {
+                    page: 'create-admin',
+                    css: ['login-1', 'login-2', 'login-3']
+                });
+            }).catch((error) => {
+                console.log(error);
+                res.end("Error on this request '/admin/logins/create");
+            })
     }
     else {
         res.status(404).render('global/error', { status: '404' });
@@ -61,7 +99,6 @@ exports.createNewAdmin = (req, res) => {
 
     admin.save();
 
-    console.log(admin);
 
     res.status(200).json({ message: 'success' });
 

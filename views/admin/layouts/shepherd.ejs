@@ -17,6 +17,42 @@
             </div>
         </div>
 
+        <div class="courses-list">
+            <ul style="list-style: lower-roman;">
+                <% if (courses.length === 0) { %>
+                    <li>
+                        <p>No courses available for your department</p>
+                        <button>
+                            <a href="/admin/courses/create?id=<%= _id %>&&adminId=<%= adminId %>&&role=<%= role %>">Create new
+                                course</a>
+                        </button>
+                    </li>
+                    
+                <% } else { %>
+                    <% for( let course of courses ) { %>
+                        <li>
+                            <div class="course-details">
+                                <p class="course-code"><%= course.courseCode %></p>
+                                <p class="course-title"><%= course.title %></p>
+                                <p class="lecturer"><%= course.lecturer %></p>
+                                <p class="course-year"><%= course.year %></p>
+                                <p class="course-level"><% course.level %></p>
+                            </div>
+                            <div class="actions">
+                                <button>
+                                    <a href="/admin/courses/manage?id=<%= _id %>&&adminId=<%= adminId %>&&role=<%= role %>&&victim=<%= course._id %>">Manage
+                                        Courses</a>
+                                </button>
+                                <button>
+                                    <a href="/admin/courses/manage?id=<%= _id %>&&adminId=<%= adminId %>&&role=<%= role %>&&victim=<%= course._id %>">Manage
+                                        Courses</a>
+                                </button>
+                            </div>
+                        </li>
+                    <% } %>
+                <% } %>
+            </ul>
+        </div>
 
     </div>
 

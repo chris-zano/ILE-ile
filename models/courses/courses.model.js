@@ -1,15 +1,58 @@
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
 /**
- * TODO:
- * 
- * create course class
- * 
- * constructor(courseTitle, courseCode, departmentID)
- * static assignLecturer(lecturerID, courseID)
- * static getCourseObject(courseID)
- * static addCourseMaterial(courseID, fileID)
- * static saveRecordedLecture(courseID, recordingID)
- * static deleteCourse(courseID)
- * static createNewSubmissionsFolder(courseID, title, description, filetype[docx, pdf, ppt, xlsx, zip, rar])
- * static getSubmissionsFromFolder(courseID, submissionID)
- * 
+ * courseCode
+ * title
+ * year
+ * level
+ * lecturer
+ * students
+ * resources
+ * assignments
+ * recordings
+ * submissions
  */
+
+const courseSchema = new Schema({
+    courseCode: {
+        type: String,
+        required: true
+    },
+    title: {
+        type: String,
+        required: true
+    },
+    year: {
+        type: Number,
+        required: true
+    },
+    level: {
+        type: Number,
+        required: true
+    },
+    lecturer: {
+        type: String,
+        required: true
+    },
+    students: {
+        type: Array
+    },
+    resources: {
+        type: Array
+    },
+    assignments: {
+        type: Array
+    },
+    recordings: {
+        type: Array
+    },
+    submissions: {
+        type: Array
+    },
+    schedule: {
+        type: Object
+    }
+});
+
+module.exports = mongoose.model('Courses', courseSchema);
