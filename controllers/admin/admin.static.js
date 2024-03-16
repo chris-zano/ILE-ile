@@ -8,42 +8,48 @@ exports.renderDashboard = (req, res) => {
 
     Admins.findOne({ _id: id, adminId: adminId })
         .then((doc) => {
-            if (doc.role === 'archon') {
-                Admins.find({ _id: { $ne: id }, adminId: { $ne: adminId } })
-                    .then((docs) => {
+            if (doc !== null) {
+                if (doc.role === 'archon') {
+                    Admins.find({ _id: { $ne: id }, adminId: { $ne: adminId } })
+                        .then((docs) => {
+                            res.render('admin/dashboard', {
+                                adminId: doc.adminId,
+                                _id: doc._id,
+                                adminObject: doc,
+                                role: doc.role,
+                                admins: docs
+                            });
+                        }).catch((err) => {
+                            console.log("It happended here: ", err);
+                        })
+                }
+                else {
+                    if (doc.role === 'shepherd') {
+                        // implement the feature to fetch all courses
                         res.render('admin/dashboard', {
                             adminId: doc.adminId,
                             _id: doc._id,
                             adminObject: doc,
                             role: doc.role,
-                            admins: docs
+                            courses: []
                         });
-                    }).catch((err) => {
-                        console.log("It happended here: ", err);
-                    })
+                    }
+                    else if (doc.role === 'forge') {
+                        res.render('admin/dashboard', {
+                            adminId: doc.adminId,
+                            _id: doc._id,
+                            adminObject: doc,
+                            role: doc.role
+                        });
+                    }
+                    else {
+                        res.status(404).render('global/error', { status: '404' });
+                    }
+                }
             }
+
             else {
-                if (doc.role === 'shepherd') {
-                    // implement the feature to fetch all courses
-                    res.render('admin/dashboard', {
-                        adminId: doc.adminId,
-                        _id: doc._id,
-                        adminObject: doc,
-                        role: doc.role,
-                        courses: []
-                    });
-                }
-                else if (doc.role === 'forge') {
-                    res.render('admin/dashboard', {
-                        adminId: doc.adminId,
-                        _id: doc._id,
-                        adminObject: doc,
-                        role: doc.role
-                    });
-                }
-                else {
-                    res.status(404).render('global/error', { status: '404' });
-                }
+                res.status(404).render('global/error', { status: '404' });
             }
         })
         .catch((error) => {
@@ -120,11 +126,17 @@ exports.authLoginRequest = (req, res) => {
 
     Admins.findOne({ adminId: adminId, password: password })
         .then(doc => {
-            if (doc.length === 0) {
-                res.status(403).json('failed')
+            console.log(doc);
+            if (doc !== null) {
+                if (doc.length === 0) {
+                    res.status(403).json('failed')
+                }
+                else {
+                    res.status(200).json({ _id: doc._id, adminId: doc.adminId, message: 'success' });
+                }
             }
             else {
-                res.status(200).json({ _id: doc._id, adminId: doc.adminId, message: 'success' });
+                res.status(404).render('global/error', { status: '404' });
             }
         });
 }
@@ -135,11 +147,17 @@ exports.renderUserImportPage = (req, res) => {
 
     Admins.findOne({ _id: id, adminId: adminId, role: role })
         .then((doc) => {
-            if (doc.adminId === adminId) {
-                res.render('admin/import', { victim: victim, id, adminId, role });
+            if (doc !== null) {
+                if (doc.adminId === adminId) {
+                    res.render('admin/import', { victim: victim, id, adminId, role });
+                }
+                else {
+                    res.render('global/error');
+                }
             }
+
             else {
-                res.render('global/error');
+                res.status(404).render('global/error', { status: '404' });
             }
         }).catch((error) => {
             console.log(error);
