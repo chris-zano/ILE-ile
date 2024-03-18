@@ -1,0 +1,139 @@
+<div class="create-course-form">
+    <form
+        action="/admin/courses/update?id=<%= admin._id %>&&adminId=<%= admin.adminId %>&&role=<%= admin.role %>&&department=<%= admin.department %>"
+        method="post">
+        <h2>Update this course</h2>
+        <input type="hidden" name="id" value="<%= course._id %>">
+        <input type="hidden" name="v" value="<%= course.__v %>">
+        <div class="form_wrapper">
+            <label for="courseCode">Course Code</label>
+            <select name="courseCode" id="courseCode" required>
+                <option value="<%= course.courseCode %>">
+                    <%= course.courseCode %>
+                </option>
+                <option value="ENEE 211">ENEE 211</option>
+                <option value="CS 135">CS 135</option>
+                <option value="BUGM 203">BUGM 203</option>
+                <option value="SOC 121">SOC 121</option>
+                <option value="CS 235">CS 235</option>
+                <option value="ENGE 151">ENGE 151</option>
+                <option value="ECON 101">ECON 101</option>
+                <option value="BFA 101">BFA 101</option>
+            </select>
+        </div>
+
+        <div class="form_wrapper">
+            <label for="title">Title</label>
+            <input type="text" name="title" id="title" value="<%= course.title %>" required>
+        </div>
+
+        <div class="form_wrapper">
+            <label for="year">Year</label>
+            <input type="text" name="year" id="year" value="<%= course.year %>" required>
+        </div>
+
+        <div class="form_wrapper">
+            <label for="level">Level</label>
+            <input type="text" name="level" id="level" value="<%= course.level %>" required>
+        </div>
+
+        <div class="form_wrapper">
+            <label for="semester">Semester</label>
+            <select name="semester" id="semester">
+                <option value="<%= course.semester %>">
+                    <%= course.semester %>
+                </option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+            </select>
+        </div>
+
+        <div class="form_wrapper">
+            <label for="department">Department</label>
+            <select name="department" id="department">
+                <option value="<%= course.department %>">
+                    <%= course.department %>
+                </option>
+                <option value="Computer Engineering">Computer Engineering</option>
+                <option value="Telecommunications Engineering">Telecommunications Engineering</option>
+                <option value="Computer Science">Computer Science</option>
+                <option value="Business Administration">Business Administration</option>
+            </select>
+        </div>
+
+        <div class="form_wrapper">
+            <label for="lecturer">lecturer</label>
+            <select name="lecturer" id="lecturer">
+                <option value="<%= course.lecturer %>">
+                    <%= course.lecturer %>
+                </option>
+                <option value="LT001">Dr. Samuel Danso</option>
+                <option value="LT002">Dr. Kisembe</option>
+                <option value="LT003">Dr. Ruhiya</option>
+                <option value="LT004">Dr. Freeman</option>
+                <option value="LT005">Dr. Afoakwa</option>
+                <option value="LT006">Dr. Aggor</option>
+                <option value="LT007">Dr. Kyere Frimpong</option>
+                <option value="LT008">Dr. Badzongoly</option>
+            </select>
+        </div>
+
+        <div class="form_wrapper">
+            <input type="submit" value="Update">
+        </div>
+    </form>
+</div>
+
+<div class="add-one-student">
+    <div id="output"></div>
+    <h2>Add a student to this course</h2>
+    <div class="form_wrapper">
+        <label for="studentId">Student ID</label>
+        <input type="tel" name="studentId" id="studentId" required>
+    </div>
+    <div>
+        <button type="button" id="addBtn">Add</button>
+    </div>
+    <script src="/script/utils/admin/util.restful"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('addBtn').addEventListener('click', (e) => {
+                const options = { studentId: document.getElementById('studentId').value };
+                const headers = { 'Ur-u-a': 'y', 'Content-Type': 'application/json' };
+
+                const url = new URL(window.location.href);
+                const id = url.searchParams.get('id');
+                const adminId = url.searchParams.get('adminId');
+
+                initiatePostRequest(`/admin/courses/add_student/?id=${id}&&adminId=${adminId}`, headers, options)
+                    .then(response => {
+                        if (response.status === 400 && response.data.message === 'no such user') {
+                            getId('output').textContent = 'No such user was found';
+                        }
+                        else if (response.status === 200 && response.data.message === 'user added to course'){
+                            getId('output').textContent = 'User added to course';
+                        }
+                        else {
+                            getId('output').textContent = 'An unexpected error occurred';
+                        }
+                    }).catch(error => {
+                        console.log(error);
+                    })
+            })
+        })
+    </script>
+</div>
+
+<div class="add-one-student">
+    <div id="output"></div>
+    <h2>Add multiple students to this course</h2>
+    <form action="/admin/imports/course/students?id=<%= admin._id %>&&adminId=<%= admin.adminId %>&&role=<%= admin.role %>" method="post" enctype="multipart/form-data">
+        <div class="form_wrapper">
+            <label for="file">Import a JSON file</label>
+            <input type="file" name="file" id="file" required>
+        </div>
+        <div>
+            <input type="submit" value="Import">
+        </div>
+    </form>
+</div>

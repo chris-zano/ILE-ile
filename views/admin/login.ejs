@@ -49,7 +49,12 @@
     
                 <fieldset>
                     <label for="department">Department: </label>
-                    <input type="text" name="department" id="department" required>
+                    <select name="department" id="department">
+                        <option value="none">Select a department</option>
+                        <option value="Computer Engineering">Computer Engineering</option>
+                        <option value="Telecommunications Engineering">Telecommunications Engineering</option>
+                        <option value="Computer Science">Computer Science</option>
+                    </select>
                 </fieldset>
     
                 <fieldset>
@@ -73,7 +78,7 @@
                 <script src="/script/utils/admin/util.restful"></script>
                 <script src="/script/scripts/admin/createAdmin"></script>
             </form>
-        </div>
+            </div>
     <% } else { %>
         <div class="unknown-page">
             unknown-page

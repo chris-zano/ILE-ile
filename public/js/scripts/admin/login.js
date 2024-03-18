@@ -22,7 +22,13 @@ function main() {
         )
             .then(response => {
                 if (response.status === 200 && response.data.message === 'success') {
-                    const {_id, adminId} = response.data;
+                    const {_id, adminId, role} = response.data;
+                    localStorage.setItem('login-state', JSON.stringify({
+                        isLoggedIn: true,
+                        _id: _id,
+                        adminId: adminId,
+                        role: role
+                    }));
 
                     window.location.href = `/admin/dashboards?id=${_id}&&adminId=${adminId}`;
                 }

@@ -17,21 +17,28 @@
 
         <div class="list-of-admins">
             <ul style="list-style: lower-roman;">
-                <% for( let admin of admins) { %>
-                    <div class="details">
-                        <li class="admin-item">
-                            <p class="admin-id" style="display: none;"> <%= admin._id %></p>
-                            <p class="name">Name: <%= admin.firstName %> <%= admin.lastName %></p>
-                            <p class="adminId">AdminID: <%= admin.adminId %></p>
-                            <p class="department">Department: <%= admin.department %></p>
-                            <p class="role">Role: <%= admin.role %></p>
-                        </li>
-                    </div>
-                    <div class="actions">
-                        <button>
-                            <a href="/admin/logins/manage?id=<%= _id %>&&adminId=<%= adminId %>&&role=<%= role %>&&victim=<%= admin._id %>">Manage</a>
-                        </button>
-                    </div>
+                <% if (admins.length === 0) { %>
+                 <div>No admins to manage - Create an admin</div>
+                 <button>
+                    <a href="/admin/logins/create?id=<%= _id %>&&adminId=<%= adminId %>&&role=<%= role %>">Create new admin</a>
+                </button>
+                <% } else {%>
+                    <% for( let admin of admins) { %>
+                        <div class="details">
+                            <li class="admin-item">
+                                <p class="admin-id" style="display: none;"> <%= admin._id %></p>
+                                <p class="name">Name: <%= admin.firstName %> <%= admin.lastName %></p>
+                                <p class="adminId">AdminID: <%= admin.adminId %></p>
+                                <p class="department">Department: <%= admin.department %></p>
+                                <p class="role">Role: <%= admin.role %></p>
+                            </li>
+                        </div>
+                        <div class="actions">
+                            <button>
+                                <a href="/admin/logins/manage?id=<%= _id %>&&adminId=<%= adminId %>&&role=<%= role %>&&victim=<%= admin._id %>">Manage</a>
+                            </button>
+                        </div>
+                    <% } %>
                 <% } %>
             </ul>
         </div>

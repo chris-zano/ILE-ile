@@ -36,6 +36,10 @@ const studentSchema = new Schema({
         type: Number,
         required: true
     },
+    department: {
+        type: String,
+        required: true
+    },
     courses: {
         type: Array,
     },

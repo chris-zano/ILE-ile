@@ -24,11 +24,19 @@ const courseSchema = new Schema({
         required: true
     },
     year: {
-        type: Number,
+        type: String,
         required: true
     },
     level: {
         type: Number,
+        required: true
+    },
+    semester: {
+        type: Number,
+        required: true
+    },
+    department: {
+        type: String,
         required: true
     },
     lecturer: {

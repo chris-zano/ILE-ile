@@ -72,5 +72,15 @@ exports.importStudentsData = (req, res) => {
     catch (error) {
         console.log("failed to readfile: ", error);
     }
+}
 
+exports.manageUser = (id, adminId, role, victimId, res) => {
+    Admins.findById(victimId)
+        .then(doc => {
+            if (doc != null) {
+                res.render('admin/manage-users', { user: doc, id, adminId, role });
+            }
+        }).catch(error => {
+            console.log('from here: ', error);
+        });
 }

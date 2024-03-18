@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Courses</title>
+</head>
+<body>
+    <% if (action === 'create') { %>
+        <%- include('courses_layouts/create') %>
+    <% } else if ( action === 'manage' ) { %>
+        <%- include('courses_layouts/manage') %>
+    <% } %>
+</body>
+</html>

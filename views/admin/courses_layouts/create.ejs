@@ -1,0 +1,71 @@
+<div class="create-course-form">
+    <form action="/admin/courses/create?id=<%= admin._id %>&&adminId=<%= admin.adminId %>&&role=<%= admin.role %>&&department=<%= admin.department %>" method="post">
+        <div class="form_wrapper">
+            <label for="courseCode">Course Code</label>
+            <select name="courseCode" id="courseCode" required>
+                <option value="none">Select a course code</option>
+                <option value="ENEE 211">ENEE 211</option>
+                <option value="CS 135">CS 135</option>
+                <option value="BUGM 203">BUGM 203</option>
+                <option value="SOC 121">SOC 121</option>
+                <option value="CS 235">CS 235</option>
+                <option value="ENGE 151">ENGE 151</option>
+                <option value="ECON 101">ECON 101</option>
+                <option value="BFA 101">BFA 101</option>
+            </select>
+        </div>
+
+        <div class="form_wrapper">
+            <label for="title">Title</label>
+            <input type="text" name="title" id="title" required>
+        </div>
+        
+        <div class="form_wrapper">
+            <label for="year">Year</label>
+            <input type="text" name="year" id="year" required>
+        </div>
+
+        <div class="form_wrapper">
+            <label for="level">Level</label>
+            <input type="text" name="level" id="level" required>
+        </div>
+        
+        <div class="form_wrapper">
+            <label for="semester">Semester</label>
+            <select name="semester" id="semester">
+                <option value="1">1</option>
+                <option value="2">2</option>
+            </select>
+        </div>
+
+        <div class="form_wrapper">
+            <label for="department">Department</label>
+            <select name="department" id="department">
+                <option value="none">Select a department</option>
+                <option value="Computer Engineering">Computer Engineering</option>
+                <option value="Telecommunications Engineering">Telecommunications Engineering</option>
+                <option value="Computer Science">Computer Science</option>
+                <option value="Business Administration">Business Administration</option>
+            </select>
+        </div>
+
+        <div class="form_wrapper">
+            <label for="lecturer">lecturer</label>
+            <select name="lecturer" id="lecturer">
+                <option value="none">Assign a lecturer</option>
+                <option value="LT001">Dr. Samuel Danso</option>
+                <option value="LT002">Dr. Kisembe</option>
+                <option value="LT003">Dr. Ruhiya</option>
+                <option value="LT004">Dr. Freeman</option>
+                <option value="LT005">Dr. Afoakwa</option>
+                <option value="LT006">Dr. Aggor</option>
+                <option value="LT007">Dr. Kyere Frimpong</option>
+                <option value="LT008">Dr. Badzongoly</option>
+            </select>
+        </div>
+
+        <div class="form_wrapper">
+            <input type="submit" value="Create">
+        </div>
+    </form>
+</div>
