@@ -19,8 +19,8 @@ router.get('/admin/logins/:action', adminStaticController.renderAdminLogin);
 router.get('/admin/users/import/:victim', adminStaticController.renderUserImportPage);
 
 //courses
-router.get('/admin/courses/:action', adminCoursesController.manageCourses);
-router.post('/admin/courses/:action', adminCoursesController.createNewCourse);
+router.get('/admin/courses/:action', adminCoursesController.manageCoursesViews);
+router.post('/admin/courses/:action', adminCoursesController.manageCourses);
 router.post('/admin/imports/course/students',studentsDataUpload.single('file'), adminCoursesController.importStudentToCourse);
 
 //post requests

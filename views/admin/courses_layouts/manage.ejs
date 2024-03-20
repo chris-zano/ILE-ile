@@ -88,8 +88,9 @@
     <div id="output"></div>
     <h2>Add a student to this course</h2>
     <div class="form_wrapper">
+        <input type="hidden" value="<%= course.courseCode %>" id="this_courseCode">
         <label for="studentId">Student ID</label>
-        <input type="tel" name="studentId" id="studentId" required>
+        <input type="text" name="studentId" id="studentId" required>
     </div>
     <div>
         <button type="button" id="addBtn">Add</button>
@@ -98,7 +99,10 @@
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('addBtn').addEventListener('click', (e) => {
-                const options = { studentId: document.getElementById('studentId').value };
+                const options = { 
+                    studentId: document.getElementById('studentId').value,
+                    courseCode: document.getElementById('this_courseCode').value
+                 };
                 const headers = { 'Ur-u-a': 'y', 'Content-Type': 'application/json' };
 
                 const url = new URL(window.location.href);
@@ -128,6 +132,7 @@
     <div id="output"></div>
     <h2>Add multiple students to this course</h2>
     <form action="/admin/imports/course/students?id=<%= admin._id %>&&adminId=<%= admin.adminId %>&&role=<%= admin.role %>" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="courseCode" value="<%= course.courseCode %>">
         <div class="form_wrapper">
             <label for="file">Import a JSON file</label>
             <input type="file" name="file" id="file" required>
