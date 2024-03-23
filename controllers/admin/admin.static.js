@@ -29,7 +29,6 @@ exports.renderDashboard = (req, res) => {
                         // implement the feature to fetch all courses
                         Courses.find({department: doc.department})
                         .then((docs) => {
-                            console.log(docs);
                             res.render('admin/dashboard', {
                                 adminId: doc.adminId,
                                 _id: doc._id,
@@ -85,6 +84,7 @@ exports.renderAdminLogin = (req, res) => {
     else {
         const { id, adminId, role } = req.query;
         const { action } = req.params;
+
         Admins.findOne({ _id: id, adminId: adminId, role: role })
             .then((doc) => {
                 if (doc === null) {
@@ -206,7 +206,6 @@ exports.authLoginRequest = (req, res) => {
 
     Admins.findOne({ adminId: adminId, password: password })
         .then(doc => {
-            console.log(doc);
             if (doc !== null) {
                 if (doc.length === 0) {
                     res.status(403).json('failed')

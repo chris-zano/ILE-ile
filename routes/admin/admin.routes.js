@@ -17,6 +17,7 @@ const studentsDataUpload = multer({
 router.get('/admin/dashboards', adminStaticController.renderDashboard);
 router.get('/admin/logins/:action', adminStaticController.renderAdminLogin);
 router.get('/admin/users/import/:victim', adminStaticController.renderUserImportPage);
+router.get('/admin/get/:userType/:offset', adminUsersController.getUserDataByOffset);
 
 //courses
 router.get('/admin/courses/:action', adminCoursesController.manageCoursesViews);

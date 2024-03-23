@@ -8,6 +8,31 @@ const Courses = require('../../models/courses/courses.model');
 const Files = require('../../models/courses/files.models');
 
 
+const getStudentsDataByOffset = (offset, key, value) => {
+    let cursor = 0;
+    let query = key != 'null' || value != 'null' ? {[key]: value} : {};
+    console.log(query);
+    return Students.find(query)
+    .skip(offset)
+    .limit(256)
+    .exec()
+    .then((docs) => {
+        console.log(docs);
+        return('Hello');
+    })
+    .catch((error) => {
+        return  {
+            status: 500,
+            message: 'An error occured while fetching',
+            docs: []
+        }
+    })
+}
+
+const getLecturersDataByOffset = (offset) => {
+    console.log('lecturers by offset => ', offset)
+}
+
 //handlers
 exports.createStudent = (req, res) => {
     const { id, adminId, role } = req.query;
@@ -33,24 +58,11 @@ exports.createStudent = (req, res) => {
 exports.importStudentsData = (req, res) => {
     const { id, adminId, role } = req.query;
     const { originalname, filename } = req.file;
-    const filePath = path.join(__dirname, '..', '..', 'models/student', filename);
+    const filePath = path.join(__dirname, '..', '..', 'models/student/studentsDataImports', filename);
 
-
-    const newFile = new Files({
-        filename,
-        originalname,
-        fileUrl: filePath,
-        owner: id,
-        'created-at': new Date().getDate()
-    });
-
-    newFile.save();
-
-    res.status(102);
 
     try {
         const studentsArray = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-
         studentsArray.forEach((student) => {
             const newStudent = new Students({
                 studentId: student.studentId,
@@ -59,6 +71,7 @@ exports.importStudentsData = (req, res) => {
                 program: student.program,
                 year: student.year,
                 level: student.level,
+                department: student.department,
                 courses: student.courses,
                 files: student.files,
                 repos: student.repos
@@ -66,8 +79,15 @@ exports.importStudentsData = (req, res) => {
             newStudent.save();
         });
 
-        res.status(200);
-        res.send('here');
+        const newFile = new Files({
+            filename,
+            originalname,
+            fileUrl: filePath,
+            owner: id,
+            'created-at': new Date().getDate()
+        });
+        newFile.save();
+        res.status(200).redirect(`/admin/dashboards?id=${id}&&adminId=${adminId}`)
     }
     catch (error) {
         console.log("failed to readfile: ", error);
@@ -75,12 +95,40 @@ exports.importStudentsData = (req, res) => {
 }
 
 exports.manageUser = (id, adminId, role, victimId, res) => {
-    Admins.findById(victimId)
-        .then(doc => {
-            if (doc != null) {
-                res.render('admin/manage-users', { user: doc, id, adminId, role });
-            }
-        }).catch(error => {
-            console.log('from here: ', error);
-        });
+    if (victimId != null || victimId != undefined) {
+
+        Admins.findById(victimId)
+            .then(doc => {
+                if (doc != null) {
+                    res.render('admin/manage-users', { user: doc, id, adminId, role });
+                }
+            }).catch(error => {
+                console.log('from here: ', error);
+            });
+    }
+    else {
+        res.render('global/error');
+    }
 }
+
+exports.getUserDataByOffset = (req, res) => {
+    const { userType, offset } = req.params;
+    const userActionMethods = {
+        students: getStudentsDataByOffset,
+        lecturers: getLecturersDataByOffset 
+    };
+
+    const userDataMethod = userActionMethods[userType];
+    if (userDataMethod) {
+        userDataMethod(offset, req.query.key?  req.query.key : 'null', req.query.value?  req.query.value : 'null')
+        .then((r) => {
+            console.log(r);
+        }).catch((e) => {
+            console.log(e);
+        })
+    }
+    else {
+        res.status(400).json({ message: 'Invalid userType' });
+    }
+}
+

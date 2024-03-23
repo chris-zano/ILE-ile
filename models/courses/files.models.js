@@ -12,7 +12,7 @@ const fileSchema = new Schema({
         type: String,
         required: true
     },
-    fileurl: {
+    fileUrl: {
         type: String,
         required: true
     },
