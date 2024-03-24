@@ -23,9 +23,28 @@
 
         <div class="section-users section-body">
             <div class="section-body-header">
-                <div class="students" id="students-list" data-offset="0">
-                    <script src="/script/scripts/admin/forge"></script>
+                <br>
+                <button type="button" id="nextPage">Next</button>
+                <button type="button" id="resetBtn">Reset</button>
+                <div class="students" data-offset="0">
+                    <table>
+                        <thead>
+                            <th class="table-head" id="studentId">StudentId</th>
+                            <th class="table-head" id="firstname">Firstname</th>
+                            <th class="table-head" id="lastname">Lastname</th>
+                            <th class="table-head" id="level">Level</th>
+                            <th class="table-head" id="program">Program</th>
+                            <th class="table-head" id="department">Department</th>
+                            <th class="table-head" id="courses">Courses</th>
+                            <th class="table-head" id="repos">Repositories</th>
+                            <th class="table-head" id="files">Submissions</th>
+                        </thead>
+                        <tbody id="students-list">
+                            
+                        </tbody>
+                    </table>
                 </div>
+                <script src="/script/scripts/admin/forge"></script>
             </div>
         </div>
 

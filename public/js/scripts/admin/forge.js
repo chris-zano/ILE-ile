@@ -1,4 +1,4 @@
-if (document.readyState == 'loading')document.addEventListener('DOMContentLoaded', main())
+if (document.readyState == 'loading') document.addEventListener('DOMContentLoaded', main())
 else main();
 
 async function getStudentsByOffset(offset) {
@@ -10,6 +10,22 @@ async function getStudentsByOffset(offset) {
         status: status,
         data: res
     }
+}
+
+const createTableRow = (studentObject, parentElement) => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+        <td>${studentObject.studentId}</td>
+        <td>${studentObject.firstName}</td>
+        <td>${studentObject.lastName}</td>
+        <td>${studentObject.level}</td>
+        <td>${studentObject.program}</td>
+        <td>${studentObject.department}</td>
+        <td><button type="button" class="courses-button" data-label-Student-id="${studentObject._id}">View Courses</button></td>
+        <td><button type="button" class="repos-button" data-label-Student-id="${studentObject._id}">View Repos</button></td>
+        <td><button type="button" class="files-button" data-label-Student-id="${studentObject._id}">View Files</button></td>
+    `;
+    document.getElementById(parentElement).append(tr);
 }
 
 function main() {
@@ -24,15 +40,25 @@ function main() {
         console.log('Offset is: ', offset);
     }
 
-    getStudentsByOffset(offset)
-    .then((data) => {
-        console.log(data);
-        localStorage.setItem('students-offset', JSON.stringify(data.data.cursor));
-    }).catch((error) => {
-        console.log('Error on line 23(forge.js): ', error);
-    })
-    // const offset = studentsListContainer.getAttribute('data-offset');
+    document.getElementById('nextPage').addEventListener('click', (e) => {
+        getStudentsByOffset(offset)
+            .then((data) => {
+                const studentsArr = [...data.data.data];
+                studentsArr.forEach((student) => {
+                    createTableRow(student, 'students-list')
+                })
+                localStorage.setItem('students-offset', JSON.stringify(data.data.cursor));
+            }).catch((error) => {
+                console.log('Error on line 23(forge.js): ', error);
+            });
+    });
 
+    document.getElementById('resetBtn').addEventListener('click', () => {
+        localStorage.setItem('students-offset', JSON.stringify(0));
+        window.location.reload();
+    })
+
+    // const offset = studentsListContainer.getAttribute('data-offset');
 
 }
 
