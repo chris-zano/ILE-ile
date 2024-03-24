@@ -106,7 +106,7 @@ exports.renderAdminLogin = (req, res) => {
                                 });
                                 break;
                             case 'verify':
-                                this.renderDashboard(req, res);
+                                renderDashboard(req, res);
                                 break;
                             case 'manage':
                                 adminUsersController.manageUser(id, adminId, role, req.query.victim, res);
@@ -151,7 +151,7 @@ exports.updateAdminInformation = (req, res) => {
 
     const { v, id, adminId, firstName, lastName, role, department, password } = req.body;
     Admins.findByIdAndUpdate(id)
-        .then(oldData => {
+        .then((oldData) => {
             if (oldData.__v === Number(v)) {
                 oldData.adminId = adminId;
                 oldData.firstName = firstName;
@@ -167,7 +167,7 @@ exports.updateAdminInformation = (req, res) => {
                 res.status(400).json('inconsistent data')
             }
 
-        }).catch(error => {
+        }).catch((error) => {
             console.log('happened here: ', error);
         });
 }
@@ -183,9 +183,9 @@ exports.deleteAdmin = (req, res) => {
     const { v, id, adminId, firstName, lastName, role, department, password } = req.body;
     console.log(id);
     Admins.findOneAndDelete({_id: id, adminId: adminId, __v: v})
-    .then(doc => {
+    .then((doc) => {
         res.status(200).json('okay');
-    }).catch(error => {
+    }).catch((error) => {
         console.log('happened here 2: ', error);
     })
 }
@@ -205,7 +205,7 @@ exports.authLoginRequest = (req, res) => {
     //models.authUserWithUsernameAndPassword
 
     Admins.findOne({ adminId: adminId, password: password })
-        .then(doc => {
+        .then((doc) => {
             if (doc !== null) {
                 if (doc.length === 0) {
                     res.status(403).json('failed')
@@ -217,7 +217,11 @@ exports.authLoginRequest = (req, res) => {
             else {
                 res.status(404).render('global/error', { status: '404' });
             }
-        });
+        })
+        .catch((error) => {
+            console.log(error);
+            res.status(200).render('global/error', {status: 404});
+        })
 }
 
 exports.renderUserImportPage = (req, res) => {

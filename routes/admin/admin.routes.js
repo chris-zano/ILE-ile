@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 
+// eslint-disable-next-line new-cap
 const router = express.Router();
 const adminStaticController = require('../../controllers/admin/admin.static');
 const adminUsersController = require('../../controllers/admin/admin.users');

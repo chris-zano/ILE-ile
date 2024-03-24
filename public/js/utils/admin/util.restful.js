@@ -1,4 +1,3 @@
-
 /**
  * 
  * @param {String} url_endpoint of the format { '/api/end_point' }
