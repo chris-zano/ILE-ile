@@ -10,21 +10,31 @@ const Files = require('../../models/courses/files.models');
 
 const getStudentsDataByOffset = (offset, key, value) => {
     let cursor = 0;
+    let end = false;
     let query = key != 'null' || value != 'null' ? {[key]: value} : {};
-    console.log(query);
     return Students.find(query)
     .skip(offset)
     .limit(256)
     .exec()
     .then((docs) => {
-        console.log(docs);
-        return('Hello');
+        if (docs.length < 256) {
+            end = true;
+        }
+        return  {
+            status: 200,
+            message: 'success',
+            docs: docs,
+            cursor: Number(offset) + 256,
+            end: end
+        }
     })
     .catch((error) => {
         return  {
             status: 500,
             message: 'An error occured while fetching',
-            docs: []
+            docs: [],
+            cursor: 0,
+            end: end
         }
     })
 }
@@ -122,9 +132,10 @@ exports.getUserDataByOffset = (req, res) => {
     if (userDataMethod) {
         userDataMethod(offset, req.query.key?  req.query.key : 'null', req.query.value?  req.query.value : 'null')
         .then((r) => {
-            console.log(r);
+            res.status(r.status).json({data: r.docs, cursor: r.cursor, end: r.end});
         }).catch((e) => {
             console.log(e);
+            res.status(e.status).json({data: e.docs, cursor: e.cursor, end: e.end});
         })
     }
     else {

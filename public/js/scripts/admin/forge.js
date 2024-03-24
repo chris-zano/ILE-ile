@@ -15,14 +15,24 @@ async function getStudentsByOffset(offset) {
 function main() {
     //TODO: find a new place to store the offset
     const studentsListContainer = document.getElementById('students-list');
-    const offset = studentsListContainer.getAttribute('data-offset');
+    let offset = localStorage.getItem('students-offset');
+    if (offset != null || offset != undefined) {
+        console.log(offset);
+    }
+    else {
+        offset = 0;
+        console.log('Offset is: ', offset);
+    }
 
-    getStudentsByOffset(offset.trim())
+    getStudentsByOffset(offset)
     .then((data) => {
         console.log(data);
+        localStorage.setItem('students-offset', JSON.stringify(data.data.cursor));
     }).catch((error) => {
         console.log('Error on line 23(forge.js): ', error);
     })
+    // const offset = studentsListContainer.getAttribute('data-offset');
+
 
 }
 
