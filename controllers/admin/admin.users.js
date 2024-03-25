@@ -11,32 +11,33 @@ const Files = require('../../models/courses/files.models');
 const getStudentsDataByOffset = (offset, key, value) => {
     let cursor = 0;
     let end = false;
-    let query = key != 'null' || value != 'null' ? {[key]: value} : {};
+    let query = key != 'null' || value != 'null' ? { [key]: value } : {};
     return Students.find(query)
-    .skip(offset)
-    .limit(256)
-    .exec()
-    .then((docs) => {
-        if (docs.length < 256) {
-            end = true;
+        .skip(offset)
+        .limit(256)
+        .exec()
+        .then((docs) => {
+            if (docs.length < 256) {
+                end = true;
+            }
+            return {
+                status: 200,
+                message: 'success',
+                docs: docs,
+                cursor: Number(offset) + 256,
+                end: end
+            }
+        })
+        .catch((error) => {
+            return {
+                status: 500,
+                message: 'An error occured while fetching',
+                docs: [],
+                cursor: 0,
+                end: end
+            }
         }
-        return  {
-            status: 200,
-            message: 'success',
-            docs: docs,
-            cursor: Number(offset) + 256,
-            end: end
-        }
-    })
-    .catch((error) => {
-        return  {
-            status: 500,
-            message: 'An error occured while fetching',
-            docs: [],
-            cursor: 0,
-            end: end
-        }
-    })
+        )
 }
 
 const getLecturersDataByOffset = (offset) => {
@@ -125,21 +126,48 @@ exports.getUserDataByOffset = (req, res) => {
     const { userType, offset } = req.params;
     const userActionMethods = {
         students: getStudentsDataByOffset,
-        lecturers: getLecturersDataByOffset 
+        lecturers: getLecturersDataByOffset
     };
 
     const userDataMethod = userActionMethods[userType];
     if (userDataMethod) {
-        userDataMethod(offset, req.query.key?  req.query.key : 'null', req.query.value?  req.query.value : 'null')
-        .then((r) => {
-            res.status(r.status).json({data: r.docs, cursor: r.cursor, end: r.end});
-        }).catch((e) => {
-            console.log(e);
-            res.status(e.status).json({data: e.docs, cursor: e.cursor, end: e.end});
-        })
+        userDataMethod(offset, req.query.key ? req.query.key : 'null', req.query.value ? req.query.value : 'null')
+            .then((r) => {
+                res.status(r.status).json({ data: r.docs, cursor: r.cursor, end: r.end });
+            }).catch((e) => {
+                console.log(e);
+                res.status(e.status).json({ data: e.docs, cursor: e.cursor, end: e.end });
+            })
     }
     else {
         res.status(400).json({ message: 'Invalid userType' });
     }
 }
 
+exports.getStudentData = (req, res) => {
+    const { action } = req.params;
+    const { studentId } = req.query;
+
+    Students.findOne({ _id: studentId })
+        .then((doc) => {
+            if (doc == null) {
+                return res.status(404).json({ message: 'no such user found', doc: null });
+            }
+
+            const actionsMap = {
+                courses: 'courses',
+                repos: 'repos',
+                files: 'files'
+            };
+
+            const field = actionsMap[action];
+
+            if (field) {
+                return res.status(200).json({ message: 'success', doc: doc[field] });
+            }
+
+            return res.status(403).json({ message: 'action not recognised', doc: null });
+        }).catch((error) => {
+            res.status(500).json({ message: 'Internal server error', error});
+        })
+}

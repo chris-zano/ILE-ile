@@ -1,0 +1,69 @@
+@font-face {
+    font-family: 'noto regular';
+    src: url('/fonts/NotoRegular');
+}
+
+:root {
+    /* colors */
+    --default-white: #ffffff;
+    --eye-dark: #1b191b;
+    --dark-grey: rgba(180, 179, 179, 0.889);
+    
+
+    /* fonts */
+    --default-font-face: 'noto regular';
+    --default-font-color: var(--eye-dark);
+    --font-small: 11px;
+    --font-standard: 14px;
+    --font-medium: 18px;
+    --font-large: 26px;
+    --font-extra: 48px;
+
+    /* margins and padding */
+    --margin-all-pix: 10px 20px;
+    --margin-all-em: 0.6rem 1rem;
+    --padding-all-pix: 10px 20px;
+    --padding-all-em: 0.6rem 1rem;
+
+    /* borders and border-radius */
+    --boder-default: 1px solid var(var(--eye-dark));
+    --border-radius: 0.7rem;
+    --boder-radius-circle: 50%;
+    
+    /* box shadows */
+    --box-shadow-wide: 0px 3px 30px var(--dark-grey);
+    --box-shadow-thin: 0px 3px 3px var(--dark-grey);
+    --box-shadow-extra-thin: 0px 3px 3px rgba(223, 221, 221, 0.834);
+
+    /* background colours (light) */
+    --background-light: rgb(241, 237, 237);
+    --background-body: #fffbfb;
+
+
+}
+
+ul,
+ol,
+li {
+    list-style: none;
+}
+
+* {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    outline: none !important;
+    font-family: var(--default-font-face);
+    color: var(--default-font-color);
+}
+body {
+    background-color: var(--default-white);
+}

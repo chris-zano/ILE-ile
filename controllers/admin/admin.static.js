@@ -4,55 +4,20 @@ const Courses = require('../../models/courses/courses.model');
 
 //render the administrator's dashboard ( Home )
 exports.renderDashboard = (req, res) => {
-    //validate the request
     const { id, adminId } = req.query;
 
     Admins.findOne({ _id: id, adminId: adminId })
         .then((doc) => {
+            console.log({ _id: id, adminId: adminId });
             if (doc !== null) {
-                if (doc.role === 'archon') {
-                    Admins.find({ _id: { $ne: id }, adminId: { $ne: adminId } })
-                        .then((docs) => {
-                            res.render('admin/dashboard', {
-                                adminId: doc.adminId,
-                                _id: doc._id,
-                                adminObject: doc,
-                                role: doc.role,
-                                admins: docs,
-                            });
-                        }).catch((err) => {
-                            console.log("It happended here: ", err);
-                        })
-                }
-                else {
-                    if (doc.role === 'shepherd') {
-                        // implement the feature to fetch all courses
-                        Courses.find({department: doc.department})
-                        .then((docs) => {
-                            res.render('admin/dashboard', {
-                                adminId: doc.adminId,
-                                _id: doc._id,
-                                adminObject: doc,
-                                role: doc.role,
-                                courses: docs
-                            });
-                        }).catch((error) => console.log('error on line 40: ', error));
-                    }
-                    else if (doc.role === 'forge') {
-                        res.render('admin/dashboard', {
-                            adminId: doc.adminId,
-                            _id: doc._id,
-                            adminObject: doc,
-                            role: doc.role
-                        });
-                    }
-                    else {
-                        res.status(404).render('global/error', { status: '404' });
-                    }
-                }
-            }
-            else {
-                res.render('admin/dashboard', {
+                renderDashboardByRole(res, doc);
+            } else {
+                res.render('index', {
+                    pageTitle: 'Admin Dashboard',
+                    stylesheets: ['/css/admin/dashboard', '/css/admin/users', '/css/admin/courses', '/css/admin/reports', '/css/admin/settings', '/css/admin/import', '/css/admin/main'],
+                    utilityScripts: ['/script/utils/admin/util.restful'],
+                    headerUrl: 'global/header-admin',
+                    bodyUrl: 'admin/main',
                     adminId: null,
                     _id: null,
                     adminObject: null,
@@ -62,14 +27,57 @@ exports.renderDashboard = (req, res) => {
             }
         })
         .catch((error) => {
-            res.render('admin/dashboard', {
-                adminId: null,
-                _id: null,
-                adminObject: null,
-                role: null
-            });
+            renderErrorPage(res);
         });
+};
+
+function renderDashboardByRole(res, doc) {
+    const dashboardData = {
+        pageTitle: 'Admin Dashboard',
+        stylesheets: ['/css/admin/dashboard', '/css/admin/users', '/css/admin/courses', '/css/admin/reports', '/css/admin/settings', '/css/admin/import', '/css/admin/main'],
+        utilityScripts: ['/script/utils/admin/util.restful'],
+        headerUrl: 'global/header-admin',
+        bodyUrl: 'admin/main',
+        adminId: doc.adminId,
+        _id: doc._id,
+        adminObject: doc,
+        role: doc.role
+    };
+
+    switch (doc.role) {
+        case 'archon':
+            Admins.find({ _id: { $ne: doc._id }, adminId: { $ne: doc.adminId } })
+                .then((docs) => {
+                    res.render('index', { ...dashboardData, admins: docs });
+                })
+                .catch((err) => {
+                    console.error("Error fetching courses:", err);
+                    renderErrorPage(res);
+                });
+            break;
+        case 'shepherd':
+            Courses.find({ department: doc.department })
+                .then((docs) => {
+                    res.render('index', { ...dashboardData, courses: docs });
+                })
+                .catch((err) => {
+                    console.error("Error fetching courses:", err);
+                    renderErrorPage(res);
+                });
+            break;
+        case 'forge':
+            res.render('index', dashboardData);
+            break;
+        default:
+            renderErrorPage(res, 404);
+            break;
+    }
 }
+
+function renderErrorPage(res, status = '500') {
+    res.status(status).render('global/error', { status });
+}
+
 
 //render the administrator's login page
 exports.renderAdminLogin = (req, res) => {
@@ -106,7 +114,7 @@ exports.renderAdminLogin = (req, res) => {
                                 });
                                 break;
                             case 'verify':
-                                renderDashboard(req, res);
+                                this.renderDashboard(req, res);
                                 break;
                             case 'manage':
                                 adminUsersController.manageUser(id, adminId, role, req.query.victim, res);
@@ -182,12 +190,12 @@ exports.deleteAdmin = (req, res) => {
 
     const { v, id, adminId, firstName, lastName, role, department, password } = req.body;
     console.log(id);
-    Admins.findOneAndDelete({_id: id, adminId: adminId, __v: v})
-    .then((doc) => {
-        res.status(200).json('okay');
-    }).catch((error) => {
-        console.log('happened here 2: ', error);
-    })
+    Admins.findOneAndDelete({ _id: id, adminId: adminId, __v: v })
+        .then((doc) => {
+            res.status(200).json('okay');
+        }).catch((error) => {
+            console.log('happened here 2: ', error);
+        })
 }
 
 //authenticate login request
@@ -220,7 +228,7 @@ exports.authLoginRequest = (req, res) => {
         })
         .catch((error) => {
             console.log(error);
-            res.status(200).render('global/error', {status: 404});
+            res.status(200).render('global/error', { status: 404 });
         })
 }
 

@@ -1,0 +1,65 @@
+<div>
+    <% if (!adminId) { %>
+        <% if (attempted_login === true) { %>
+            <script>
+                window.location.href = '/admin/logins/login';
+            </script>
+        <% } else {%>
+            <div id="auth-message">
+                unauthorised access!! redirecting you to the login page automatically.
+                if you are not redirected automatically, click the button below
+            </div>
+            <br>
+            <button>
+                <a href="/admin/logins/login">Login Page</a>
+            </button>
+            <div>
+                <%= adminId %>
+                <%= adminObject %>
+                <%= role%>
+            </div>
+            <script>
+                const login_state = localStorage.getItem('login-state');
+                
+                if (!login_state) {
+                    localStorage.setItem('login-state', JSON.stringify({
+                        isLoggedIn: false,
+                        _id: null,
+                        adminId: null
+                    }));
+                }
+                else {
+                    document.getElementById('auth-message').textContent = "Attempting to sign you in..."
+                    if (JSON.parse(login_state).isLoggedIn === true) {
+                        const { _id, adminId, role } = JSON.parse(login_state);
+                        window.location.href = `/admin/logins/verify?id=${_id}&&adminId=${adminId}&&role=${role}`;
+                    }
+                }
+            </script>
+        <% } %>
+    <% } else { %>
+        <section class="adminProfileCard">
+            <div>Welcome <%= adminObject.firstName %></div>
+            <div>
+                <p>Admin ID: <%= adminId %></p>
+                <p>Name: <%= adminObject.firstName %> <%= adminObject.lastName %></p>
+                <p>Department: <%= adminObject.department %></p>
+                <p>Role: <%= adminObject.role%></p>
+            </div>
+        </section>
+        
+        <% if ( role === 'archon' ) { %>
+            <%- include('layouts/archon') %>
+        <% } else if ( role === 'shepherd' ) { %>
+            <%- include('layouts/shepherd') %>
+        <% } else if ( role === 'forge' ) { %>
+            <%- include('layouts/forge') %>
+        <% } else { %>
+            <script>
+                window.alert('Unrecognized user access. Redirecting back to login');
+                window.location.href = '/admin/logins/login';
+            </script>
+        <% } %>
+
+    <% } %>
+</div>

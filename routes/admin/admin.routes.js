@@ -19,11 +19,13 @@ router.get('/admin/dashboards', adminStaticController.renderDashboard);
 router.get('/admin/logins/:action', adminStaticController.renderAdminLogin);
 router.get('/admin/users/import/:victim', adminStaticController.renderUserImportPage);
 router.get('/admin/get/:userType/:offset', adminUsersController.getUserDataByOffset);
+router.get('/admin/students/get/:action', adminUsersController.getStudentData)
 
 //courses
 router.get('/admin/courses/:action', adminCoursesController.manageCoursesViews);
 router.post('/admin/courses/:action', adminCoursesController.manageCourses);
 router.post('/admin/imports/course/students',studentsDataUpload.single('file'), adminCoursesController.importStudentToCourse);
+
 
 //post requests
 router.post('/auth/admins/loginwithusernameandpassword', adminStaticController.authLoginRequest);

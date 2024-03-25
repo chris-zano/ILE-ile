@@ -6,10 +6,10 @@ function setFilePath(mimeType, attribute, authFolder, filename) {
 
     switch (mimeType) {
         case 'js':
-            resolvedpath = path.join(__dirname, '..', '..', 'public', `${mimeType}`, `${attribute}`, `${authFolder}`, `${filename}.js`);
+            resolvedpath = path.join(__dirname, '..', '..', 'public', 'js', `${attribute}`, `${authFolder}`, `${filename}.js`);
             break;
         case 'css':
-            resolvedpath = path.join(__dirname, '..', '..', 'public', `${mimeType}`, `${attribute}`, `${authFolder}`, `${filename}.css`);
+            resolvedpath = path.join(__dirname, '..', '..', 'public', 'css', `${authFolder}`, `${filename}.css`);
             break;
         default:
             resolvedpath = 'not found';
@@ -44,10 +44,6 @@ function getScriptFilePath(attribute, authLevel, filename) {
     return filePath;
 }
 
-function getStyleSheetFilePath(auth, attribute, filename) {
-    // let filepath;
-}
-
 exports.loadScript = (req, res) => {
     const { auth, filename } = req.params;
     const filePath = getScriptFilePath('scripts', auth, filename);
@@ -80,7 +76,34 @@ exports.loadUtilityScript = (req, res) => {
 }
 
 exports.getStyleSheet = (req, res) => {
-    const { auth, attribute, filename } = req.params;
+    const { auth, filename } = req.params;
+    const filePath = setFilePath('css', null, auth, filename);
 
-    const filePath = getStyleSheetFilePath(auth, attribute, filename);
+    if (filePath != 'not found') {
+        res.type('css');
+        fs.createReadStream(filePath).pipe(res);
+    }
+    else {
+        console.log('file not found');
+        res.status(404);
+        res.end();
+    }
+}
+
+exports.getImage = (req, res) => {
+    const filePath = path.join(__dirname, '..', '..', 'public', 'assets', 'images', 'logo.png');
+    res.type('png');
+    fs.createReadStream(filePath).pipe(res);
+}
+
+exports.getFavicon = (req, res) => {
+    const filePath = path.join(__dirname, '..', '..', 'public', 'assets', 'favicon', 'favicon.png');
+    res.type('image/x-icon');
+    fs.createReadStream(filePath).pipe(res);
+}
+
+exports.getFonts = (req, res) => {
+    const filePath = path.join(__dirname, '..', '..', 'public', 'assets', 'fonts', `${req.params.filename}.ttf`);
+    res.type('font/ttf');
+    fs.createReadStream(filePath).pipe(res);
 }

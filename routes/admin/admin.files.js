@@ -9,7 +9,11 @@ router.get('/script/scripts/:auth/:filename', adminFileHandler.loadScript);
 router.get('/script/utils/:auth/:filename', adminFileHandler.loadUtilityScript);
 
 //get stylesheets
-router.get('/styles/css/:auth/:attribute/:filename', adminFileHandler.getStyleSheet)
+router.get('/css/:auth/:filename', adminFileHandler.getStyleSheet);
+
+router.get('/images/:filename', adminFileHandler.getImage);
+router.get('/favicon', adminFileHandler.getFavicon);
+router.get('/fonts/:filename', adminFileHandler.getFonts);
 
 
 //export the router instance
