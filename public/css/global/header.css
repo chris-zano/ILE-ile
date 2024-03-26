@@ -1,0 +1,30 @@
+header.header-admin {
+    width: 100vw;
+    overflow-x: hidden;
+
+    grid-area: header;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: var(--padding-all-em);
+}
+
+div.logo {
+    display: grid;
+    place-items: center;
+    max-width: 45px;
+    min-width: 25px;
+}
+
+div.logo>a {
+    text-decoration: none;
+    color: inherit;
+}
+
+div.logo>a>img {
+    max-width: 100%;
+    min-width: 25px;
+}
+

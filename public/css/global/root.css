@@ -8,7 +8,7 @@
     --default-white: #ffffff;
     --eye-dark: #1b191b;
     --dark-grey: rgba(180, 179, 179, 0.889);
-    
+
 
     /* fonts */
     --default-font-face: 'noto regular';
@@ -20,6 +20,9 @@
     --font-extra: 48px;
 
     /* margins and padding */
+    --margin-small: 10px;
+    --margin-medium: 17px;
+    --margin-large: 4.5rem;
     --margin-all-pix: 10px 20px;
     --margin-all-em: 0.6rem 1rem;
     --padding-all-pix: 10px 20px;
@@ -29,7 +32,7 @@
     --boder-default: 1px solid var(var(--eye-dark));
     --border-radius: 0.7rem;
     --boder-radius-circle: 50%;
-    
+
     /* box shadows */
     --box-shadow-wide: 0px 3px 30px var(--dark-grey);
     --box-shadow-thin: 0px 3px 3px var(--dark-grey);
@@ -64,6 +67,23 @@ li {
     font-family: var(--default-font-face);
     color: var(--default-font-color);
 }
+
 body {
     background-color: var(--default-white);
+}
+
+
+@media (min-width: 768px) {
+    body {
+        display: grid;
+        grid-template-areas:
+            "header header header"
+            "sidenav main main";
+        grid-template-columns: auto 1fr;
+        /* First column auto-sized for sidenav, second column takes up remaining space */
+        grid-template-rows: auto 1fr;
+        /* First row auto-sized for header, second row takes up remaining space */
+        height: 100vh;
+        /* Set height of body to fill the viewport */
+    }
 }

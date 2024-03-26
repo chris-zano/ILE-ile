@@ -1,0 +1,7 @@
+nav.sidenav {
+    grid-area: sidenav;
+}
+main.wrapper-main {
+
+    grid-area: main;
+}

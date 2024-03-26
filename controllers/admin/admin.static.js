@@ -8,7 +8,6 @@ exports.renderDashboard = (req, res) => {
 
     Admins.findOne({ _id: id, adminId: adminId })
         .then((doc) => {
-            console.log({ _id: id, adminId: adminId });
             if (doc !== null) {
                 renderDashboardByRole(res, doc);
             } else {
