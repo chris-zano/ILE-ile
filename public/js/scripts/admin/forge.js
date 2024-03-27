@@ -6,7 +6,9 @@ function listen(element, event, callback) {
 }
 
 async function getStudentsByOffset(offset) {
-    const req = await fetch(`/admin/get/students/${offset}?key=department&&value=BSc. Computer Engineering`);
+    console.log('offset at request: ',offset);
+    const moffset = localStorage.getItem('students-offset');
+    const req = await fetch(`/admin/get/students/${moffset}?key=department&&value=BSc. Computer Engineering`);
     const res = await req.json();
     const status = req.status;
 
@@ -17,9 +19,11 @@ async function getStudentsByOffset(offset) {
 }
 
 const createTableRow = (studentObject, parentElement) => {
+    let count = Number(localStorage.getItem('count'));
     const tr = document.createElement('tr');
     tr.style.cursor = 'pointer';
     tr.innerHTML = `
+        <td>${count}</td>
         <td>${studentObject.studentId}</td>
         <td>${studentObject.firstName}</td>
         <td>${studentObject.lastName}</td>
@@ -30,7 +34,12 @@ const createTableRow = (studentObject, parentElement) => {
         <td><button type="button" class="actionButton" data-label-type="repos" data-label-Student-id="${studentObject._id}" style="cursor: pointer;">View Repos</button></td>
         <td><button type="button" class="actionButton" data-label-type="files" data-label-Student-id="${studentObject._id}" style="cursor: pointer;">View Files</button></td>
     `;
+
+    count += 1;
+    localStorage.setItem('count', JSON.stringify(count));
+
     document.getElementById(parentElement).append(tr);
+
 
     tr.addEventListener('click', (e) => {
         if (e.target.tagName != 'BUTTON') {
@@ -44,16 +53,39 @@ const createTableRow = (studentObject, parentElement) => {
 }
 
 function main() {
+    let count = localStorage.getItem('count');
     let offset = localStorage.getItem('students-offset');
+
+    // If 'count' doesn't exist or is null/undefined, set it to 1
+    if (count === null || count === undefined) {
+        localStorage.setItem('count', JSON.stringify(1));
+    } else {
+        // If 'offset' exists and is not null/undefined
+        if (offset !== null && offset !== undefined) {
+            // If 'offset' is 0, set 'count' to 1, else set 'count' to 'offset'
+            if (parseInt(offset) === 0) {
+                localStorage.setItem('count', JSON.stringify(1));
+            } else {
+                localStorage.setItem('count', JSON.stringify(offset));
+            }
+        } else {
+            // If 'offset' doesn't exist, set 'count' to 1
+            localStorage.setItem('count', JSON.stringify(1));
+        }
+    }
+
     if (offset != null || offset != undefined) {
-        console.log(offset);
     }
     else {
         offset = 0;
-        console.log('Offset is: ', offset);
     }
 
     document.getElementById('nextPage').addEventListener('click', (e) => {
+        const tdlist = document.getElementById('students-list');
+
+        // Remove all child elements (rows) from the table
+        tdlist.innerHTML = "";
+
         getStudentsByOffset(offset)
             .then((data) => {
                 const studentsArr = [...data.data.data];
@@ -65,8 +97,8 @@ function main() {
                 const actionButtons = document.getElementsByClassName('actionButton');
                 [...actionButtons].forEach((actionButton) => listen(actionButton, 'click', showView));
 
-
                 localStorage.setItem('students-offset', JSON.stringify(data.data.cursor));
+                console.log('Offset updated:', data.data.cursor);
             }).catch((error) => {
                 console.log('Error on line 23(forge.js): ', error);
             });
@@ -81,25 +113,32 @@ function main() {
 }
 
 const modalWrite = (message) => {
+    const overlay = document.createElement('div');
+    overlay.classList.add('overlay')
     const modalContent = document.createElement('div');
-    modalContent.classList.add('modal-content');
+    modalContent.classList.add('popup');
+
     modalContent.style.display = 'block';
+    modalContent.innerHTML = `
+        <div id="close">&#10060;</div>
+    `;
+
+    const closeBtn = modalContent.querySelector('#close');
+    closeBtn.classList.add('close');
+    closeBtn.addEventListener('click', () => {
+        modalContent.style.display = 'none';
+        document.getElementById('wrapper-main').classList.remove('blur');
+        document.getElementById('wrapper-main').style.pointerEvents = 'inherit';
+    })
 
     const paragraph = document.createElement('p');
     paragraph.textContent = message;
 
     modalContent.appendChild(paragraph);
+    document.getElementById('wrapper-main').classList.add('blur');
+    document.getElementById('wrapper-main').style.pointerEvents = 'none';
 
     document.body.appendChild(modalContent);
-
-    document.body.addEventListener('click', (e) => {
-
-        if (!modalContent.contains(e.target)) {
-            if (modalContent.style.display != 'none') {
-                modalContent.style.display = 'none';
-            }
-        }
-    });
 
     return console.log(message);
 };

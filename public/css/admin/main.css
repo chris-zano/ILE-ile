@@ -1,7 +1,19 @@
-nav.sidenav {
-    grid-area: sidenav;
+@media (min-width: 768px) {
+    main.wrapper-main {
+        grid-area: main;
+        margin-right: 60px;
+        border-radius: 1rem;
+        height: 90vh;
+        overflow-y: scroll;
+    }
 }
-main.wrapper-main {
 
-    grid-area: main;
+/* table styling -- applies to all */ 
+@media (min-width: 768px) {
+    table, th, td {
+        padding: 1rem;
+    }
+    main.wrapper-main table {
+        background-color: red;
+    }
 }

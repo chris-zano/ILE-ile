@@ -17,6 +17,7 @@ const getStudentsDataByOffset = (offset, key, value) => {
         .limit(256)
         .exec()
         .then((docs) => {
+            console.log(docs.length);
             if (docs.length < 256) {
                 end = true;
             }
@@ -124,6 +125,7 @@ exports.manageUser = (id, adminId, role, victimId, res) => {
 
 exports.getUserDataByOffset = (req, res) => {
     const { userType, offset } = req.params;
+    console.log(offset)
     const userActionMethods = {
         students: getStudentsDataByOffset,
         lecturers: getLecturersDataByOffset

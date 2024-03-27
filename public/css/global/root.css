@@ -8,6 +8,9 @@
     --default-white: #ffffff;
     --eye-dark: #1b191b;
     --dark-grey: rgba(180, 179, 179, 0.889);
+    --blue: #9ab3f5;
+    --purple: #9a1663;
+    --shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
 
 
     /* fonts */
@@ -29,7 +32,7 @@
     --padding-all-em: 0.6rem 1rem;
 
     /* borders and border-radius */
-    --boder-default: 1px solid var(var(--eye-dark));
+    --boder-default: 1px solid var(--dark-grey);
     --border-radius: 0.7rem;
     --boder-radius-circle: 50%;
 
@@ -41,7 +44,11 @@
     /* background colours (light) */
     --background-light: rgb(241, 237, 237);
     --background-body: #fffbfb;
+    --color-theme-1-light: #1c2735;
 
+    /* input-fields */
+    --input-field-height: 45px;
+    --input-field-width: 120px;
 
 }
 
@@ -80,10 +87,49 @@ body {
             "header header header"
             "sidenav main main";
         grid-template-columns: auto 1fr;
-        /* First column auto-sized for sidenav, second column takes up remaining space */
         grid-template-rows: auto 1fr;
-        /* First row auto-sized for header, second row takes up remaining space */
-        height: 100vh;
-        /* Set height of body to fill the viewport */
+        column-gap: 0.4rem;
+        row-gap: .2rem;
+        /* height: 100vh; */
+        margin: 1px;
     }
+}
+
+*.hidden {
+    display: none;
+}
+
+*.blur {
+    filter: blur(5px);
+}
+
+.popup{
+    position: fixed;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 600px;
+    padding: 50px;
+    box-shadow: 0 5px 30px rgba(0,0,0,.30);
+    background: #fff;
+    opacity: 1;
+    transition: 0.3s;
+    border-radius: 15px;
+}
+
+.close {
+    /* background-color: #1b191b; */
+    position: absolute;
+    top: 5px;
+    right: 15px;
+    cursor: pointer;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    pointer-events: none;
 }

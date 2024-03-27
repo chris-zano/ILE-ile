@@ -1,30 +1,167 @@
-header.header-admin {
-    width: 100vw;
-    overflow-x: hidden;
+@media (min-width: 768px) {
+    header.header-admin {
+        /* width: 99vw; */
+        border-radius: .5rem;
+        margin: 1px 0;
+        grid-area: header;
+        height: 70px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: var(--color-theme-1-light);
+        /* background-color: var(--background-body); */
+        padding: var(--padding-all-em);
+        box-shadow: var(--box-shadow-thin);
+    }
 
-    grid-area: header;
+    header.header-admin>div.logo {
+        display: grid;
+        place-items: center;
+        width: 50px;
+        height: 50px;
+        border: 1px solid #eee;
+        border-radius: 50px;
+    }
 
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    header.header-admin>div.logo>a {
+        text-decoration: none;
+        color: inherit;
+    }
 
-    padding: var(--padding-all-em);
+    header.header-admin>div.logo>a>img {
+        max-width: 100%;
+        min-width: 25px;
+    }
+
+    header.header-admin .search-bar {
+        display: flex;
+        align-items: center;
+        min-width: 280px;
+        height: 45px;
+        border: var(--boder-default);
+        border-radius: 50px;
+        background-color: var(--default-white);
+    }
+
+    header.header-admin .dropdown {
+        position: relative;
+        width: 150px;
+        height: 45px;
+        text-align: center;
+        font-size: small;
+        color: aliceblue;
+        border-radius: 50px;
+        background-color: var(--purple);
+        border: 1px solid var(--default-white);
+        cursor: pointer;
+        margin-right: 10px;
+    }
+
+    header.header-admin option {
+        color: white;
+    }
+
+    header.header-admin .search-box {
+        display: flex;
+        align-items: center;
+        padding-right: 1rem;
+        width: 100%;
+        color: var(--purple);
+    }
+
+    header.header-admin .search-box input {
+        /* padding: 1rem; */
+        width: 100%;
+        font-size: var(--font-standard);
+        font-weight: 500;
+        color: var(--purple);
+        border: 0;
+        outline: 0;
+    }
+
+    header.header-admin .search-box i {
+        font-size: 1.3rem;
+        cursor: pointer;
+    }
+
+    header.header-admin .search-box input::placeholder {
+        font-size: var(--font-standard);
+        font-weight: 500;
+        color: var(--purple);
+    }
+
+    header.header-admin button#searchBtn {
+        background-color: none;
+        background: none;
+        border: none;
+        outline: 0;
+    }
+
+    header.header-admin>div.profile {
+        position: relative;
+        display: flex;
+        min-width: 300px;
+        /* padding: 0 1rem; */
+    }
+    
+    header.header-admin>div.profile>nav {
+        display: flex;
+    }
+
+    header.header-admin>div.profile>nav>ul {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    header.header-admin>div.profile>nav>ul>li {
+        margin-left: 10px;
+        cursor: pointer;
+    }
+    
+    header.header-admin>div.profile>nav>ul>li>a {
+        color: #eee;
+    }
+
+    header.header-admin>div.profile>nav>ul>li>a:hover {
+        text-decoration: underline;
+        color: indianred;
+    }
+
+    header.header-admin section.header_nav_profile {
+        z-index: 9999;
+        position: absolute;
+        background-color: var(--background-light);
+        box-shadow: var(--box-shadow-thin);
+        border-radius: 10px;
+        padding: 1rem 0;
+        right: 9px;
+        top: 57px;
+        width: 140px;
+        height: fit-content;
+    }
+    
+    header.header-admin section.header_nav_profile>div.call_to_action {
+        height: 30px;
+        border-radius: 8px;
+        display: grid;
+        place-items: center;
+        margin-top: 3px;
+        cursor: pointer;
+    }
+
+    header.header-admin section.header_nav_profile>div.call_to_action:hover {
+        background-color: var(--dark-grey);
+    }
+
+    div.username#current-user-name {
+        background-color: rgb(62, 62, 250);
+        height: 45px;
+        width: 120px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50px;
+        color: #fff;
+        text-transform: lowercase;
+    }
 }
-
-div.logo {
-    display: grid;
-    place-items: center;
-    max-width: 45px;
-    min-width: 25px;
-}
-
-div.logo>a {
-    text-decoration: none;
-    color: inherit;
-}
-
-div.logo>a>img {
-    max-width: 100%;
-    min-width: 25px;
-}
-
