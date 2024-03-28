@@ -8,16 +8,25 @@ const Courses = require('../../models/courses/courses.model');
 const Files = require('../../models/courses/files.models');
 
 
+const dashboardData = {
+    pageTitle: 'Admin Dashboard',
+    stylesheets: ['/css/admin/dashboard', '/css/admin/users', '/css/admin/courses', '/css/admin/reports', '/css/admin/settings', '/css/admin/import', '/css/admin/main'],
+    utilityScripts: ['/script/utils/admin/util.restful'],
+    headerUrl: 'global/header-admin',
+    bodyUrl: 'admin/main'
+};
+
 const getStudentsDataByOffset = (offset, key, value) => {
     let cursor = 0;
     let end = false;
     let query = key != 'null' || value != 'null' ? { [key]: value } : {};
+
     return Students.find(query)
         .skip(offset)
         .limit(256)
         .exec()
         .then((docs) => {
-            console.log(docs.length);
+            // console.log(docs.length);
             if (docs.length < 256) {
                 end = true;
             }
@@ -111,8 +120,13 @@ exports.manageUser = (id, adminId, role, victimId, res) => {
 
         Admins.findById(victimId)
             .then(doc => {
+                const copyDash = { ...dashboardData }
+                copyDash.adminId = doc.adminId;
+                copyDash._id = doc._id;
+                copyDash.adminObject = doc
+                copyDash.role = doc.role;
                 if (doc != null) {
-                    res.render('admin/manage-users', { user: doc, id, adminId, role });
+                    res.render('admin/manage-users', { user: doc, id, adminId, role, ...copyDash });
                 }
             }).catch(error => {
                 console.log('from here: ', error);
@@ -125,7 +139,7 @@ exports.manageUser = (id, adminId, role, victimId, res) => {
 
 exports.getUserDataByOffset = (req, res) => {
     const { userType, offset } = req.params;
-    console.log(offset)
+    // console.log(offset)
     const userActionMethods = {
         students: getStudentsDataByOffset,
         lecturers: getLecturersDataByOffset
@@ -170,6 +184,6 @@ exports.getStudentData = (req, res) => {
 
             return res.status(403).json({ message: 'action not recognised', doc: null });
         }).catch((error) => {
-            res.status(500).json({ message: 'Internal server error', error});
+            res.status(500).json({ message: 'Internal server error', error });
         })
 }

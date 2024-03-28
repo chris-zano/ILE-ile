@@ -2,6 +2,14 @@ const Admins = require('../../models/admin/admin.models');
 const adminUsersController = require('./admin.users');
 const Courses = require('../../models/courses/courses.model');
 
+const dashboardData = {
+    pageTitle: 'Admin Dashboard',
+    stylesheets: ['/css/admin/dashboard', '/css/admin/users', '/css/admin/courses', '/css/admin/reports', '/css/admin/settings', '/css/admin/import', '/css/admin/main'],
+    utilityScripts: ['/script/utils/admin/util.restful'],
+    headerUrl: 'global/header-admin',
+    bodyUrl: 'admin/main'
+};
+
 //render the administrator's dashboard ( Home )
 exports.renderDashboard = (req, res) => {
     const { id, adminId } = req.query;
@@ -31,23 +39,17 @@ exports.renderDashboard = (req, res) => {
 };
 
 function renderDashboardByRole(res, doc) {
-    const dashboardData = {
-        pageTitle: 'Admin Dashboard',
-        stylesheets: ['/css/admin/dashboard', '/css/admin/users', '/css/admin/courses', '/css/admin/reports', '/css/admin/settings', '/css/admin/import', '/css/admin/main'],
-        utilityScripts: ['/script/utils/admin/util.restful'],
-        headerUrl: 'global/header-admin',
-        bodyUrl: 'admin/main',
-        adminId: doc.adminId,
-        _id: doc._id,
-        adminObject: doc,
-        role: doc.role
-    };
+    const copyDash = {...dashboardData}
+    copyDash.adminId =  doc.adminId;
+    copyDash._id= doc._id;
+    copyDash.adminObject =  doc
+    copyDash.role = doc.role
 
     switch (doc.role) {
         case 'archon':
             Admins.find({ _id: { $ne: doc._id }, adminId: { $ne: doc.adminId } })
                 .then((docs) => {
-                    res.render('index', { ...dashboardData, admins: docs });
+                    res.render('index', { ...copyDash, admins: docs });
                 })
                 .catch((err) => {
                     console.error("Error fetching courses:", err);
@@ -57,7 +59,7 @@ function renderDashboardByRole(res, doc) {
         case 'shepherd':
             Courses.find({ department: doc.department })
                 .then((docs) => {
-                    res.render('index', { ...dashboardData, courses: docs });
+                    res.render('index', { ...copyDash, courses: docs });
                 })
                 .catch((err) => {
                     console.error("Error fetching courses:", err);
@@ -65,7 +67,7 @@ function renderDashboardByRole(res, doc) {
                 });
             break;
         case 'forge':
-            res.render('index', dashboardData);
+            res.render('index', copyDash);
             break;
         default:
             renderErrorPage(res, 404);
@@ -85,7 +87,7 @@ exports.renderAdminLogin = (req, res) => {
     if (req.params.action === 'login') {
         res.render('admin/login', {
             page: 'login',
-            css: ['login-1', 'login-2', 'login-3']
+            ...dashboardData
         });
     }
     else {
@@ -94,6 +96,11 @@ exports.renderAdminLogin = (req, res) => {
 
         Admins.findOne({ _id: id, adminId: adminId, role: role })
             .then((doc) => {
+                const copyDash = {...dashboardData}
+                copyDash.adminId =  doc.adminId;
+                copyDash._id= doc._id;
+                copyDash.adminObject =  doc
+                copyDash.role = doc.role
                 if (doc === null) {
                     res.render('admin/dashboard', {
                         adminId: null,
@@ -109,7 +116,7 @@ exports.renderAdminLogin = (req, res) => {
                             case 'create':
                                 res.render('admin/login', {
                                     page: 'create-admin',
-                                    css: ['login-1', 'login-2', 'login-3']
+                                    ...copyDash
                                 });
                                 break;
                             case 'verify':
