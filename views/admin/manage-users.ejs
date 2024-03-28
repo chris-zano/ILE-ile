@@ -1,58 +1,84 @@
-<div class="create-admin-form-container">
-    <form id="createAdmin-form">
-        <input type="hidden" name="id" id="id" value="<%= user._id %>">
-        <input type="hidden" name="v" id="v" value="<%= user.__v %>">
-        <fieldset>
-            <label for="adminId">Admin ID:</label>
-            <input type="text" name="adminId" id="adminId" value="<%= user.adminId %>" required>
-        </fieldset>
-
-        <fieldset>
-            <label for="firstName">First name: </label>
-            <input type="text" name="firstName" id="firstName" value="<%= user.firstName %>" required>
-        </fieldset>
-
-        <fieldset>
-            <label for="lastName">Last name: </label>
-            <input type="text" name="lastName" id="lastName" value="<%= user.lastName %>" required>
-        </fieldset>
-
-        <fieldset>
-            <label for="department">Department: </label>
-            <select name="department" id="department">
-                <option value="<%= user.department %>">
-                    <%= user.department %>
-                </option>
-                <option value="Computer Engineering">Computer Engineering</option>
-                <option value="Telecommunications Engineering">Telecommunications Engineering</option>
-                <option value="Computer Science">Computer Science</option>
-            </select>
-        </fieldset>
-
-        <fieldset>
-            <label for="password">Default Password: </label>
-            <input type="password" name="password" id="password" value="<%= user.password %>" required>
-        </fieldset>
-
-        <fieldset>
-            <label for="role">Admnistrator Role:</label>
-            <select name="role" id="role">
-                <option value="<%= user.role %>">
-                    <%= user.role %>
-                </option>
-                <option value="archon">General Admnistrator</option>
-                <option value="shepherd">Departmental Admnistrator</option>
-                <option value="forge">IT Admnistrator</option>
-            </select>
-        </fieldset>
-
-        <div class="submit-btn-wrapper">
-            <input type="submit" value="Update">
-        </div>
-        <div class="submit-btn-wrapper">
-            <button type="button" id="delete_btn">Delete</button>
-        </div>
-        <script src="/script/utils/admin/util.restful"></script>
-        <script src="/script/scripts/admin/manageAdmin"></script>
-    </form>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="shortcut icon" href="/favicon" type="image/x-icon">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" />
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+        <link rel="stylesheet" href="/css/global/root">
+        <link rel="stylesheet" href="/css/global/header">
+        <link rel="stylesheet" href="/css/global/sidenav">
+        <% for( let styleUrl of stylesheets) { %>
+            <link rel="stylesheet" href="<%= styleUrl %>">
+            <% } %>
+                <% for( let scriptUrl of utilityScripts) { %>
+                    <script src="<%= scriptUrl %>"></script>
+                    <% } %>
+    
+                        <title>
+                            <%= pageTitle %>
+                        </title>
+    </head>
+<body>
+    <%- include('../'+headerUrl) %>
+    <div class="create-admin-form-container">
+        <form id="createAdmin-form">
+            <input type="hidden" name="id" id="id" value="<%= user._id %>">
+            <input type="hidden" name="v" id="v" value="<%= user.__v %>">
+            <fieldset>
+                <label for="adminId">Admin ID:</label>
+                <input type="text" name="adminId" id="adminId" value="<%= user.adminId %>" required>
+            </fieldset>
+    
+            <fieldset>
+                <label for="firstName">First name: </label>
+                <input type="text" name="firstName" id="firstName" value="<%= user.firstName %>" required>
+            </fieldset>
+    
+            <fieldset>
+                <label for="lastName">Last name: </label>
+                <input type="text" name="lastName" id="lastName" value="<%= user.lastName %>" required>
+            </fieldset>
+    
+            <fieldset>
+                <label for="department">Department: </label>
+                <select name="department" id="department">
+                    <option value="<%= user.department %>">
+                        <%= user.department %>
+                    </option>
+                    <option value="Computer Engineering">Computer Engineering</option>
+                    <option value="Telecommunications Engineering">Telecommunications Engineering</option>
+                    <option value="Computer Science">Computer Science</option>
+                </select>
+            </fieldset>
+    
+            <fieldset>
+                <label for="password">Default Password: </label>
+                <input type="password" name="password" id="password" value="<%= user.password %>" required>
+            </fieldset>
+    
+            <fieldset>
+                <label for="role">Admnistrator Role:</label>
+                <select name="role" id="role">
+                    <option value="<%= user.role %>">
+                        <%= user.role %>
+                    </option>
+                    <option value="archon">General Admnistrator</option>
+                    <option value="shepherd">Departmental Admnistrator</option>
+                    <option value="forge">IT Admnistrator</option>
+                </select>
+            </fieldset>
+    
+            <div class="submit-btn-wrapper">
+                <input type="submit" value="Update">
+            </div>
+            <div class="submit-btn-wrapper">
+                <button type="button" id="delete_btn">Delete</button>
+            </div>
+            <script src="/script/utils/admin/util.restful"></script>
+            <script src="/script/scripts/admin/manageAdmin"></script>
+        </form>
+    </div>
+</body>
+</html>

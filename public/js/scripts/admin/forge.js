@@ -6,7 +6,7 @@ function listen(element, event, callback) {
 }
 
 async function getStudentsByOffset(offset) {
-    console.log('offset at request: ',offset);
+    console.log('offset at request: ', offset);
     const moffset = localStorage.getItem('students-offset');
     const req = await fetch(`/admin/get/students/${moffset}?key=department&&value=BSc. Computer Engineering`);
     const res = await req.json();
@@ -30,9 +30,9 @@ const createTableRow = (studentObject, parentElement) => {
         <td>${studentObject.level}</td>
         <td>${studentObject.program}</td>
         <td>${studentObject.department}</td>
-        <td><button type="button" class="actionButton" data-label-type="courses" data-label-Student-id="${studentObject._id}" style="cursor: pointer;">View Courses</button></td>
-        <td><button type="button" class="actionButton" data-label-type="repos" data-label-Student-id="${studentObject._id}" style="cursor: pointer;">View Repos</button></td>
-        <td><button type="button" class="actionButton" data-label-type="files" data-label-Student-id="${studentObject._id}" style="cursor: pointer;">View Files</button></td>
+        <td><button type="button" class="actionButton" data-label-type="courses" data-label-Student-id="${studentObject._id}" style="cursor: pointer;">Courses</button></td>
+        <td><button type="button" class="actionButton" data-label-type="repos" data-label-Student-id="${studentObject._id}" style="cursor: pointer;">Repos</button></td>
+        <td><button type="button" class="actionButton" data-label-type="files" data-label-Student-id="${studentObject._id}" style="cursor: pointer;">Files</button></td>
     `;
 
     count += 1;
@@ -80,9 +80,29 @@ function main() {
         offset = 0;
     }
 
-    document.getElementById('nextPage').addEventListener('click', (e) => {
-        const tdlist = document.getElementById('students-list');
+    const tdlist = document.getElementById('students-list');
 
+    // Remove all child elements (rows) from the table
+    tdlist.innerHTML = "";
+
+    getStudentsByOffset(offset)
+        .then((data) => {
+            const studentsArr = [...data.data.data];
+
+            studentsArr.forEach((student) => {
+                createTableRow(student, 'students-list')
+            });
+
+            const actionButtons = document.getElementsByClassName('actionButton');
+            [...actionButtons].forEach((actionButton) => listen(actionButton, 'click', showView));
+
+            localStorage.setItem('students-offset', JSON.stringify(data.data.cursor));
+            console.log('Offset updated:', data.data.cursor);
+        }).catch((error) => {
+            console.log('Error on line 23(forge.js): ', error);
+        });
+
+    document.getElementById('nextPage').addEventListener('click', (e) => {
         // Remove all child elements (rows) from the table
         tdlist.innerHTML = "";
 

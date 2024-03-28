@@ -36,6 +36,10 @@ const studentSchema = new Schema({
         type: Number,
         required: true
     },
+    password: {
+        type: String,
+        default: 'pa55@gctu'
+    },
     department: {
         type: String,
         required: true

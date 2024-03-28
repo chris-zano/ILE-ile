@@ -20,18 +20,21 @@
     </style>
 
     <div class="container">
-        <!-- header for the section -->    
+        <!-- header for the section -->
         <div class="section-header">
             <div class="section-header-main">Header goes here</div>
             <div class="section-header-nav">
                 <button>
-                    <a href="/admin/users/createOne?id=<%= _id %>&&adminId=<%= adminId %>&&role=<%= role %>">Create new User</a>
+                    <a href="/admin/users/createOne?id=<%= _id %>&&adminId=<%= adminId %>&&role=<%= role %>">Create new
+                        User</a>
                 </button>
                 <button>
-                    <a href="/admin/users/import/students?id=<%= _id %>&&adminId=<%= adminId %>&&role=<%= role %>">Import Users</a>
+                    <a href="/admin/users/import/students?id=<%= _id %>&&adminId=<%= adminId %>&&role=<%= role %>">Import
+                        Users</a>
                 </button>
                 <button>
-                    <a href="/admin/users/manage?id=<%= _id %>&&adminId=<%= adminId %>&&role=<%= role %>">Manage Users</a>
+                    <a href="/admin/users/manage?id=<%= _id %>&&adminId=<%= adminId %>&&role=<%= role %>">Manage
+                        Users</a>
                 </button>
             </div>
         </div>
@@ -42,17 +45,19 @@
         <div class="section-users section-body">
             <div class="section-body-header">
                 <br>
-                <button type="button" id="nextPage">Next</button>
-                <button type="button" id="resetBtn">Reset</button>
+                <div class="table-buttons-nav">
+                    <button type="button" id="nextPage">Next</button>
+                    <button type="button" id="resetBtn">Reset</button>
+                </div>
                 <div class="students" data-offset="0">
                     <table>
                         <thead>
-                            <th class="table-head" id="count"></th>
+                            <th class="table-head" id="count">No</th>
                             <th class="table-head" id="tstudentId">StudentId</th>
                             <th class="table-head" id="tfirstname">Firstname</th>
                             <th class="table-head" id="tlastname">Lastname</th>
                             <th class="table-head" id="tlevel">
-                                <select name="level" id="studentLevel">
+                                <select name="level" id="studentLevel" class="dropdown">
                                     <option value="none">Level</option>
                                     <option value="100">100</option>
                                     <option value="200">200</option>
@@ -63,28 +68,20 @@
                                 </select>
                             </th>
                             <th class="table-head" id="tprogram">
-                                <select name="program" id="program">
+                                <select name="program" id="program" class="dropdown">
                                     <option value="none">Program</option>
                                     <option value="BSc. Computer Engineering">BSc. Computer Engineering</option>
                                     <option value="BSc. Telecom Engineering">BSc. Telecom Engineering</option>
                                     <option value="Dip. Electrical Engineering">Dip. Electrical Engineering</option>
                                 </select>
                             </th>
-                            <th class="table-head" id="tdepartment">
-                                <select name="department" id="department">
-                                    <option value="none">Department</option>
-                                    <option value="Computer Engineering">Computer Engineering</option>
-                                    <option value="Telecom Engineering">Telecom Engineering</option>
-                                    <option value="Electrical Engineering">Electrical Engineering</option>
-                                    <option value="City and Guilds">City and Guilds</option>
-                                </select>
-                            </th>
+                            <th class="table-head" id="department">Department</th>
                             <th class="table-head" id="tcourses">Courses</th>
                             <th class="table-head" id="trepos">Repositories</th>
                             <th class="table-head" id="tfiles">Submissions</th>
                         </thead>
                         <tbody id="students-list">
-                            
+
                         </tbody>
                     </table>
                 </div>

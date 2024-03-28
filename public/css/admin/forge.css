@@ -2,4 +2,22 @@
     main.wrapper-main table {
         background-color: red;
     }
+
+    table select.dropdown {
+        position: relative;
+        width: 150px;
+        height: 45px;
+        text-align: center;
+        font-size: small;
+        color: aliceblue;
+        border-radius: 50px;
+        background-color: var(--purple);
+        border: 1px solid var(--default-white);
+        cursor: pointer;
+        margin-right: 10px;
+    }
+
+    table select option {
+        color: white;
+    }
 }

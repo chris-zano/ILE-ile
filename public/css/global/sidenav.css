@@ -11,12 +11,12 @@ nav.sidebar {
 
 .sidebar {
     position: absolute;
-    top: 76px;
-    left: 3px;
-    bottom: 3px;
+    top: 0;
+    left: 0;
+    bottom: 0;
     width: 80px;
-    border-radius: 1rem;
-    background-color: var(--color-theme-1-light);
+    /* border-radius: 1rem; */
+    /* background-color: var(--color-theme-1-light); */
     margin-right: 0.4rem;
     padding: 0.4rem 0.8rem;
     transition: all 0.5s ease;
@@ -33,7 +33,7 @@ nav.sidebar {
 
 .sidebar #btn {
     position: absolute;
-    color: #fff;
+    /* color: #fff; */
     top: .4rem;
     left: 50%;
     font-size: 1.2rem;
@@ -72,7 +72,7 @@ nav.sidebar {
 }
 
 .user p {
-    color: #fff;
+    /* color: #fff; */
     opacity: 1;
     margin-left: 1rem;
 }
@@ -99,7 +99,7 @@ nav.sidebar {
 }
 
 .sidebar ul li a {
-    color: #fff;
+    /* color: #fff; */
     display: flex;
     align-items: center;
     text-decoration: none;
@@ -115,7 +115,7 @@ nav.sidebar {
 }
 
 .sidebar ul li a i {
-    color: #fff;
+    /* color: #fff; */
     min-width: 50px;
     text-align: center;
     height: 50px;
@@ -124,7 +124,7 @@ nav.sidebar {
 }
 
 .sidebar .nav-item  {
-    color: #fff;
+    /* color: #fff; */
     opacity: 0;
 }
 
@@ -138,15 +138,16 @@ nav.sidebar {
     top: 50%;
     transform: translate(-50%, -50%);
     box-shadow: 0 0.5rem 0.8rem rgba(0, 0, 0, 0.2);
+    background-color: #eee;
     border-radius: .6rem;
     padding: .4rem 1.2rem;
     line-height: 1.8rem;
-    z-index: 20;
-    opacity: 0;
+    z-index: 999;
+    visibility: hidden;
 }
 
 .sidebar ul li:hover .tooltip {
-    opacity: 1;
+    visibility: visible;
 }
 
 .sidebar.sidebar.active ul li .tooltip {
@@ -162,6 +163,11 @@ nav.sidebar {
     transition: all 0.5s ease;
     width: calc(100% - 80px);
     padding: 1rem;
+}
+
+header.header-admin {
+    transition: all 0.5s ease;
+    width: calc(100% - 80px);
 }
 
 .role {

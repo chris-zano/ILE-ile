@@ -8,7 +8,8 @@
     --default-white: #ffffff;
     --eye-dark: #1b191b;
     --dark-grey: rgba(180, 179, 179, 0.889);
-    --blue: #9ab3f5;
+    --blue: #1551f7;
+    --blue-dark: #092061;
     --purple: #9a1663;
     --shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
 
@@ -33,22 +34,24 @@
 
     /* borders and border-radius */
     --boder-default: 1px solid var(--dark-grey);
-    --border-radius: 0.7rem;
+    --border-radius: 7rem;
     --boder-radius-circle: 50%;
 
     /* box shadows */
     --box-shadow-wide: 0px 3px 30px var(--dark-grey);
     --box-shadow-thin: 0px 3px 3px var(--dark-grey);
+    --box-shadow-thin-dark: 0px 3px 3px #111;
     --box-shadow-extra-thin: 0px 3px 3px rgba(223, 221, 221, 0.834);
 
     /* background colours (light) */
     --background-light: rgb(241, 237, 237);
     --background-body: #fffbfb;
-    --color-theme-1-light: #1c2735;
+    --color-theme-1-light: var(--blue-dark);
+    --color-theme-2-light: #584e01dd;
 
     /* input-fields */
-    --input-field-height: 45px;
-    --input-field-width: 120px;
+    --button-height: 45px;
+    --button-width: 120px;
 
 }
 
@@ -91,7 +94,16 @@ body {
         column-gap: 0.4rem;
         row-gap: .2rem;
         /* height: 100vh; */
-        margin: 1px;
+        /* margin: 1px; */
+    }
+
+    button {
+        width: 120px;
+        height: 45px;
+        border-radius: 0.7rem;
+        border: 1px solid transparent;
+        box-shadow: var(--box-shadow-thin);
+        /* background-color: ; */   
     }
 }
 

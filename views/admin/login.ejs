@@ -4,7 +4,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <% if (page == 'login') { %>
+        <title>Login</title>
+    <% } else if (page == 'create-admin') { %>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" />
+        <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+        <link rel="stylesheet" href="/css/global/root">
+        <link rel="stylesheet" href="/css/global/header">
+        <link rel="stylesheet" href="/css/global/sidenav">
+        <% for( let styleUrl of stylesheets) { %>
+            <link rel="stylesheet" href="<%= styleUrl %>">
+        <% } %>
+        <% for( let scriptUrl of utilityScripts) { %>
+            <script src="<%= scriptUrl %>"></script>
+        <% } %>
+        <title>
+            <%= pageTitle %>
+        </title>
+    <% } %>
 </head>
 
 <body>
@@ -29,56 +46,59 @@
             <script src="/script/scripts/admin/login"></script>
         </div>
     <% } else if (page === 'create-admin') { %>
-            <div class="create-admin-form-container">
-                <form id="createAdmin-form">
-                    
-                    <fieldset>
-                    <label for="adminId">Admin ID:</label>
-                    <input type="text" name="adminId" id="adminId" required>
-                </fieldset>
-    
+        <!-- include header -->
+        <%- include('../'+headerUrl) %>
+
+        <div class="create-admin-form-container">
+            <form id="createAdmin-form">
+                
                 <fieldset>
-                    <label for="firstName">First name: </label>
-                    <input type="text" name="firstName" id="firstName" required>
-                </fieldset>
-    
-                <fieldset>
-                    <label for="lastName">Last name: </label>
-                    <input type="text" name="lastName" id="lastName" required>
-                </fieldset>
-    
-                <fieldset>
-                    <label for="department">Department: </label>
-                    <select name="department" id="department">
-                        <option value="none">Select a department</option>
-                        <option value="Computer Engineering">Computer Engineering</option>
-                        <option value="Telecommunications Engineering">Telecommunications Engineering</option>
-                        <option value="Computer Science">Computer Science</option>
-                    </select>
-                </fieldset>
-    
-                <fieldset>
-                    <label for="password">Default Password: </label>
-                    <input type="password" name="password" id="password" required>
-                </fieldset>
-    
-                <fieldset>
-                    <label for="role">Admnistrator Role:</label>
-                    <select name="role" id="role">
-                        <option value="none">Select a Role</option>
-                        <option value="archon">General Admnistrator</option>
-                        <option value="shepherd">Departmental Admnistrator</option>
-                        <option value="forge">IT Admnistrator</option>
-                    </select>
-                </fieldset>
-    
-                <div class="submit-btn-wrapper">
-                    <input type="submit" value="Create">
-                </div>
-                <script src="/script/utils/admin/util.restful"></script>
-                <script src="/script/scripts/admin/createAdmin"></script>
-            </form>
+                <label for="adminId">Admin ID:</label>
+                <input type="text" name="adminId" id="adminId" required>
+            </fieldset>
+
+            <fieldset>
+                <label for="firstName">First name: </label>
+                <input type="text" name="firstName" id="firstName" required>
+            </fieldset>
+
+            <fieldset>
+                <label for="lastName">Last name: </label>
+                <input type="text" name="lastName" id="lastName" required>
+            </fieldset>
+
+            <fieldset>
+                <label for="department">Department: </label>
+                <select name="department" id="department">
+                    <option value="none">Select a department</option>
+                    <option value="Computer Engineering">Computer Engineering</option>
+                    <option value="Telecommunications Engineering">Telecommunications Engineering</option>
+                    <option value="Computer Science">Computer Science</option>
+                </select>
+            </fieldset>
+
+            <fieldset>
+                <label for="password">Default Password: </label>
+                <input type="password" name="password" id="password" required>
+            </fieldset>
+
+            <fieldset>
+                <label for="role">Admnistrator Role:</label>
+                <select name="role" id="role">
+                    <option value="none">Select a Role</option>
+                    <option value="archon">General Admnistrator</option>
+                    <option value="shepherd">Departmental Admnistrator</option>
+                    <option value="forge">IT Admnistrator</option>
+                </select>
+            </fieldset>
+
+            <div class="submit-btn-wrapper">
+                <input type="submit" value="Create">
             </div>
+            <script src="/script/utils/admin/util.restful"></script>
+            <script src="/script/scripts/admin/createAdmin"></script>
+        </form>
+        </div>
     <% } else { %>
         <div class="unknown-page">
             unknown-page
