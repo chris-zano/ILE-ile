@@ -25,7 +25,7 @@ const lecturerSchema = new Schema({
     },
     assignedCourses: {
         type: Array,
-        required: true
+        default: []
     }
 });
 

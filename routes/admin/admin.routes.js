@@ -12,8 +12,8 @@ const adminCoursesController = require('../../controllers/admin/admin.courses');
 
 const multer = require('multer');
 
-const studentsDataUpload = multer({
-    dest: path.join(__dirname, '..', '..', 'models/student/studentsDataImports')
+const userJSONUpload = multer({
+    dest: path.join(__dirname, '..', '..', 'models/imports')
 });
 
 //get requests
@@ -25,11 +25,11 @@ router.get('/admin/students/get/:action', adminUsersController.getStudentData);
 
 //forge requests go here
 // router.get('/forge/dashboard')
-
+// router.get('/forge/lecturers/:prop/:action/:_id', forge.forgeLecturerRoutes);
 //courses
 router.get('/admin/courses/:action', adminCoursesController.manageCoursesViews);
 router.post('/admin/courses/:action', adminCoursesController.manageCourses);
-router.post('/admin/imports/course/students',studentsDataUpload.single('file'), adminCoursesController.importStudentToCourse);
+router.post('/admin/imports/course/students',userJSONUpload.single('file'), adminCoursesController.importStudentToCourse);
 
 
 //post requests
@@ -40,7 +40,7 @@ router.post('/admins/delete_admin',adminStaticController.deleteAdmin);
 
 //users post
 router.post('/admin/users/createOne', adminUsersController.createStudent);
-router.post('/admin/users/createMany', studentsDataUpload.single('file'), adminUsersController.importStudentsData);
+router.post('/admin/users/createMany', userJSONUpload.single('file'), adminUsersController.importStudentsData);
 
 
 //export the router instance

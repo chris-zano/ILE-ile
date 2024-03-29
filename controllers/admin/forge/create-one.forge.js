@@ -17,4 +17,4 @@ const createOneUser = (req, res) => {
     return 'operation was successful';
 }
 
-export default createOneUser;
+module.exports =  createOneUser;

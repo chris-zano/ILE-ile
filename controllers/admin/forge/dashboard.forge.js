@@ -24,4 +24,4 @@ const getDashboardData = (req, res) => {
     return {...dashboardObjectdata};
 }
 
-export default getDashboardData;
+module.exports = getDashboardData;

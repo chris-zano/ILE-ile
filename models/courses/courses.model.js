@@ -35,31 +35,37 @@ const courseSchema = new Schema({
         type: Number,
         required: true
     },
-    department: {
+    faculty: {
         type: String,
         required: true
     },
     lecturer: {
         type: String,
-        required: true
+        default: ""
     },
     students: {
-        type: Array
+        type: Array,
+        default: []
     },
     resources: {
-        type: Array
+        type: Array,
+        default: []
     },
     assignments: {
-        type: Array
+        type: Array,
+        default: []
     },
     recordings: {
-        type: Array
+        type: Array,
+        default: []
     },
     submissions: {
-        type: Array
+        type: Array,
+        default: []
     },
     schedule: {
-        type: Object
+        type: Object,
+        default: {}
     }
 });
 

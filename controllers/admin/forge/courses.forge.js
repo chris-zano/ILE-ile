@@ -20,4 +20,4 @@ const courseActions = (req, res) => {
     }
 }
 
-export default courseActions;
+module.exports = courseActions;

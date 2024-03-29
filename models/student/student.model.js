@@ -28,30 +28,29 @@ const studentSchema = new Schema({
         type: String,
         required: true
     },
-    year: {
-        type: String,
-        required: true
-    },
     level: {
         type: Number,
+        required: true
+    },
+    faculty: {
+        type: String,
         required: true
     },
     password: {
         type: String,
         default: 'pa55@gctu'
     },
-    faculty: {
-        type: String,
-        required: true
-    },
     courses: {
         type: Array,
+        default: []
     },
     files: {
-        type: Array
+        type: Array,
+        default: []
     },
     repos: {
-        type: Array
+        type: Array,
+        default: []
     }
 });
 
