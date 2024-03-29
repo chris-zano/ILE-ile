@@ -40,7 +40,7 @@ const studentSchema = new Schema({
         type: String,
         default: 'pa55@gctu'
     },
-    department: {
+    faculty: {
         type: String,
         required: true
     },

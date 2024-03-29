@@ -1,10 +1,44 @@
 nav.sidebar {
     grid-area: sidenav;
     width: 80px;
+    background-color: var(--background-body);
+    display: grid;
+    grid-template-areas:
+        "logo"
+        "user"
+        "nav"
+        "nav"
+        "exit"
+        ;
+    grid-template-columns: auto;
+    grid-template-rows: 10% 25% 55% 10%;
+}
+
+/* .user {
+    display: flex;
+    align-items: center;
+    margin: 1rem 0;
+} */
+
+.user p {
+    color: #fff;
+    /* opacity: 1; */
+    margin-left: 1rem;
+}
+
+section.adminProfileCard div{
+    display: flex;
+    flex-flow: row;
+}
+
+section.adminProfileCard div.img-div {
+    display: grid;
+    margin-left: 10px;
 }
 
 .user-img {
-    width:50px;
+    width: 50px;
+    height: 50px;
     border-radius: 100%;
     border: 1px solid #eee;
 }
@@ -19,10 +53,10 @@ nav.sidebar {
     /* background-color: var(--color-theme-1-light); */
     margin-right: 0.4rem;
     padding: 0.4rem 0.8rem;
-    transition: all 0.5s ease;
+    transition: all 0.5s ease-in-out;
 }
 
-.sidebar.active ~ .main-content {
+.sidebar.active~.main-content {
     left: 250px;
     width: calc(100% - 250px);
 }
@@ -33,7 +67,7 @@ nav.sidebar {
 
 .sidebar #btn {
     position: absolute;
-    /* color: #fff; */
+    color: #fff;
     top: .4rem;
     left: 50%;
     font-size: 1.2rem;
@@ -49,33 +83,25 @@ nav.sidebar {
 .sidebar .top .logo {
     color: #fff;
     display: flex;
-    height: 50px;
+    height: 10px;
     width: 100%;
     align-items: center;
     pointer-events: none;
     opacity: 0;
 }
 
-.sidebar.sidebar.active .top .logo {
+.sidebar.active .top .logo {
     opacity: 1;
 }
 
 .top .logo i {
-    font-size: 2rem;
+    cursor: pointer;
+    font-size: 10px;
     margin-right: 5px;
+    text-align: center;
 }
 
-.user {
-    display: flex;
-    align-items: center;
-    margin: 1rem 0;
-}
 
-.user p {
-    /* color: #fff; */
-    opacity: 1;
-    margin-left: 1rem;
-}
 
 .bold {
     font-weight: 600;
@@ -89,42 +115,44 @@ nav.sidebar {
     opacity: 1;
 }
 
-.sidebar ul li {
+.sidebar li {
     position: relative;
     list-style-type: none;
     height: 50px;
     width: 90%;
     margin: 0.8rem auto;
     line-height: 50px;
+    padding: 0 0.5rem;
 }
 
-.sidebar ul li a {
-    /* color: #fff; */
+.sidebar li a {
+    color: #fff;
     display: flex;
     align-items: center;
     text-decoration: none;
     border-radius: 0.8rem;
 }
 
-.sidebar ul li a:hover {
-    background-color: #fff;
+.sidebar i img {
+    width: 30px;
+    height: 30px;
 }
 
-.sidebar ul li a:hover .nav-item, .sidebar ul li a:hover i {
-    color: var(--color-theme-1-light);
+.sidebar li a:hover .nav-item,
+.sidebar li a:hover i {
+    scale: 1.1;
 }
 
-.sidebar ul li a i {
-    /* color: #fff; */
-    min-width: 50px;
-    text-align: center;
-    height: 50px;
-    border-radius: 12px;
-    line-height: 50px;
+.sidebar li a i {
+    width: 50px;
+    height: fit-content;
+    display: flex;
+    justify-content: center;
+    padding-right: 1rem;
 }
 
-.sidebar .nav-item  {
-    /* color: #fff; */
+.sidebar .nav-item {
+    color: #fff;
     opacity: 0;
 }
 
@@ -132,7 +160,7 @@ nav.sidebar {
     opacity: 1;
 }
 
-.sidebar ul li .tooltip {
+.sidebar li .tooltip {
     position: absolute;
     left: 125px;
     top: 50%;
@@ -144,30 +172,24 @@ nav.sidebar {
     line-height: 1.8rem;
     z-index: 999;
     visibility: hidden;
+    color: var(--background-body);
 }
 
-.sidebar ul li:hover .tooltip {
+.sidebar li:hover .tooltip {
     visibility: visible;
 }
 
-.sidebar.sidebar.active ul li .tooltip {
+.sidebar.sidebar.active li .tooltip {
     display: none;
 }
 
 .main-content {
     position: relative;
-    background-color: #eee;
-    /* min-height: 100vh; */
     top: 0;
     left: 80px;
     transition: all 0.5s ease;
     width: calc(100% - 80px);
     padding: 1rem;
-}
-
-header.header-admin {
-    transition: all 0.5s ease;
-    width: calc(100% - 80px);
 }
 
 .role {

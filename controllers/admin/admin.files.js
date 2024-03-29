@@ -91,7 +91,7 @@ exports.getStyleSheet = (req, res) => {
 }
 
 exports.getImage = (req, res) => {
-    const filePath = path.join(__dirname, '..', '..', 'public', 'assets', 'images', 'logo.png');
+    const filePath = path.join(__dirname, '..', '..', 'public', 'assets', 'images', `${req.params.filename}.png`);
     res.type('png');
     fs.createReadStream(filePath).pipe(res);
 }

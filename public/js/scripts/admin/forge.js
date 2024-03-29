@@ -1,135 +1,5 @@
-if (document.readyState == 'loading') document.addEventListener('DOMContentLoaded', main())
-else main();
-
 function listen(element, event, callback) {
     return element.addEventListener(event, callback);
-}
-
-async function getStudentsByOffset(offset) {
-    console.log('offset at request: ', offset);
-    const moffset = localStorage.getItem('students-offset');
-    const req = await fetch(`/admin/get/students/${moffset}?key=department&&value=BSc. Computer Engineering`);
-    const res = await req.json();
-    const status = req.status;
-
-    return {
-        status: status,
-        data: res
-    }
-}
-
-const createTableRow = (studentObject, parentElement) => {
-    let count = Number(localStorage.getItem('count'));
-    const tr = document.createElement('tr');
-    tr.style.cursor = 'pointer';
-    tr.innerHTML = `
-        <td>${count}</td>
-        <td>${studentObject.studentId}</td>
-        <td>${studentObject.firstName}</td>
-        <td>${studentObject.lastName}</td>
-        <td>${studentObject.level}</td>
-        <td>${studentObject.program}</td>
-        <td>${studentObject.department}</td>
-        <td><button type="button" class="actionButton" data-label-type="courses" data-label-Student-id="${studentObject._id}" style="cursor: pointer;">Courses</button></td>
-        <td><button type="button" class="actionButton" data-label-type="repos" data-label-Student-id="${studentObject._id}" style="cursor: pointer;">Repos</button></td>
-        <td><button type="button" class="actionButton" data-label-type="files" data-label-Student-id="${studentObject._id}" style="cursor: pointer;">Files</button></td>
-    `;
-
-    count += 1;
-    localStorage.setItem('count', JSON.stringify(count));
-
-    document.getElementById(parentElement).append(tr);
-
-
-    tr.addEventListener('click', (e) => {
-        if (e.target.tagName != 'BUTTON') {
-            const studentId = e.currentTarget.querySelector('[data-label-Student-id]').getAttribute('data-label-Student-id');
-            console.log('Student ID:', studentId);
-            const anchor = document.createElement('a');
-            anchor.href = `/students/view_profile/${studentId}`
-            anchor.click();
-        }
-    })
-}
-
-function main() {
-    let count = localStorage.getItem('count');
-    let offset = localStorage.getItem('students-offset');
-
-    // If 'count' doesn't exist or is null/undefined, set it to 1
-    if (count === null || count === undefined) {
-        localStorage.setItem('count', JSON.stringify(1));
-    } else {
-        // If 'offset' exists and is not null/undefined
-        if (offset !== null && offset !== undefined) {
-            // If 'offset' is 0, set 'count' to 1, else set 'count' to 'offset'
-            if (parseInt(offset) === 0) {
-                localStorage.setItem('count', JSON.stringify(1));
-            } else {
-                localStorage.setItem('count', JSON.stringify(offset));
-            }
-        } else {
-            // If 'offset' doesn't exist, set 'count' to 1
-            localStorage.setItem('count', JSON.stringify(1));
-        }
-    }
-
-    if (offset != null || offset != undefined) {
-    }
-    else {
-        offset = 0;
-    }
-
-    const tdlist = document.getElementById('students-list');
-
-    // Remove all child elements (rows) from the table
-    tdlist.innerHTML = "";
-
-    getStudentsByOffset(offset)
-        .then((data) => {
-            const studentsArr = [...data.data.data];
-
-            studentsArr.forEach((student) => {
-                createTableRow(student, 'students-list')
-            });
-
-            const actionButtons = document.getElementsByClassName('actionButton');
-            [...actionButtons].forEach((actionButton) => listen(actionButton, 'click', showView));
-
-            localStorage.setItem('students-offset', JSON.stringify(data.data.cursor));
-            console.log('Offset updated:', data.data.cursor);
-        }).catch((error) => {
-            console.log('Error on line 23(forge.js): ', error);
-        });
-
-    document.getElementById('nextPage').addEventListener('click', (e) => {
-        // Remove all child elements (rows) from the table
-        tdlist.innerHTML = "";
-
-        getStudentsByOffset(offset)
-            .then((data) => {
-                const studentsArr = [...data.data.data];
-
-                studentsArr.forEach((student) => {
-                    createTableRow(student, 'students-list')
-                });
-
-                const actionButtons = document.getElementsByClassName('actionButton');
-                [...actionButtons].forEach((actionButton) => listen(actionButton, 'click', showView));
-
-                localStorage.setItem('students-offset', JSON.stringify(data.data.cursor));
-                console.log('Offset updated:', data.data.cursor);
-            }).catch((error) => {
-                console.log('Error on line 23(forge.js): ', error);
-            });
-    });
-
-    document.getElementById('resetBtn').addEventListener('click', () => {
-        localStorage.setItem('students-offset', JSON.stringify(0));
-        window.location.reload();
-    })
-
-
 }
 
 const modalWrite = (message) => {
@@ -160,7 +30,7 @@ const modalWrite = (message) => {
 
     document.body.appendChild(modalContent);
 
-    return console.log(message);
+    return;
 };
 
 const modalRender = (object) => {
@@ -204,3 +74,148 @@ async function showView(e) {
     }
     return;
 }
+
+const getStudentsByOffset = async (key, value) => {
+    const moffset = localStorage.getItem('students-offset') || 0;
+    const req = await fetch(`/admin/get/students/${moffset}?key=${encodeURIComponent(key)}&value=${encodeURIComponent(value)}`);
+    console.log(`/admin/get/students/${moffset}?key=${encodeURIComponent(key)}&value=${encodeURIComponent(value)}`);
+    const res = await req.json();
+    const status = req.status;
+
+    return {
+        status: status,
+        data: res
+    }
+}
+
+const createTableRow = (studentObject, parentElement) => {
+    let count = Number(localStorage.getItem('count'));
+    const tr = document.createElement('tr');
+    tr.style.cursor = 'pointer';
+    tr.innerHTML = `
+        <td>${count}</td>
+        <td>${studentObject.studentId}</td>
+        <td>${studentObject.firstName}</td>
+        <td>${studentObject.lastName}</td>
+        <td>${studentObject.level}</td>
+        <td>${studentObject.program}</td>
+        <td>${studentObject.department}</td>
+        <td><button type="button" class="actionButton" data-label-type="courses" data-label-Student-id="${studentObject._id}" style="cursor: pointer; background-color: var(--blue-light); color: var(--default-white);">Courses</button></td>
+        <td><button type="button" class="actionButton" data-label-type="repos" data-label-Student-id="${studentObject._id}" style="cursor: pointer; background-color: var(--blue); color: var(--default-white);">Repos</button></td>
+        <td><button type="button" class="actionButton" data-label-type="files" data-label-Student-id="${studentObject._id}" style="cursor: pointer; background-color: var(--blue-dark); color: var(--default-white);">Files</button></td>
+    `;
+
+    count += 1;
+    localStorage.setItem('count', JSON.stringify(count));
+
+    document.getElementById(parentElement).append(tr);
+
+
+    tr.addEventListener('click', (e) => {
+        if (e.target.tagName != 'BUTTON') {
+            const studentId = e.currentTarget.querySelector('[data-label-Student-id]').getAttribute('data-label-Student-id');
+            // console.log('Student ID:', studentId);
+            const anchor = document.createElement('a');
+            anchor.href = `/students/view_profile/${studentId}`
+            anchor.click();
+        }
+    })
+}
+
+const callFetchForStudents = (key, value) => {
+    getStudentsByOffset(key, value)
+        .then((data) => {
+            const studentsArr = [...data.data.data];
+
+            studentsArr.forEach((student) => {
+                createTableRow(student, 'students-list')
+            });
+
+            const actionButtons = document.getElementsByClassName('actionButton');
+            [...actionButtons].forEach((actionButton) => listen(actionButton, 'click', showView));
+
+            localStorage.setItem('students-offset', JSON.stringify(data.data.cursor));
+            // console.log('Offset updated:', data.data.cursor);
+        }).catch((error) => {
+            console.log('Error on line 23(forge.js): ', error);
+        });
+}
+
+const main = () => {
+    const query = {
+        key: 'null',
+        value: 'null'
+    }
+
+    const tdlist = document.getElementById('students-list');
+    tdlist.innerHTML = "";
+
+    function ensureCount(initialValue = 1) {
+        let count = localStorage.getItem('count');
+        if (count === null || count === undefined) {
+            count = initialValue;
+        } else {
+            count = Number(count);
+        }
+        localStorage.setItem('count', JSON.stringify(count));
+        return count;
+    }
+
+    let offset = Number(localStorage.getItem('students-offset') || 0);
+    let count = ensureCount(); // Call without initialValue argument
+
+    function resetCountAndOffset() {
+        localStorage.setItem('count', JSON.stringify(1)); // Reset count to 1 explicitly
+        localStorage.setItem('students-offset', JSON.stringify(0));
+
+        count = 1;
+        offset = 0;
+
+        tdlist.innerHTML = "";
+    }
+
+    const selectors = [{ id: 'studentLevel', key: 'level' }, { id: 'program', key: 'program' }, { id: 'department', key: 'department' }];
+
+    callFetchForStudents(query.key, query.value);
+
+    document.getElementById('nextPage').addEventListener('click', (e) => {
+        tdlist.innerHTML = "";
+        callFetchForStudents(query.key, query.value);
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', () => {
+        resetCountAndOffset();
+        selectors.forEach((selector) => {
+            document.getElementById(selector.id).value = 'none'
+        });
+        query.key = null;
+        query.value = null;
+        callFetchForStudents(query.key, query.value);
+    });
+
+
+    selectors.forEach((selector) => {
+        document.getElementById(selector.id).addEventListener('change', (e) => {
+            resetCountAndOffset();
+            if (e.target.value == 'none') {
+                query.key = null;
+                query.value = null;
+            }
+            else {
+                query.key = selector.key;
+                query.value = e.target.value.trim();
+            }
+            callFetchForStudents(query.key, query.value);
+        });
+    });
+
+
+
+
+}
+
+
+
+
+if (document.readyState == 'loading') document.addEventListener('DOMContentLoaded', main())
+else main();

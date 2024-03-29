@@ -16,8 +16,7 @@ const dashboardData = {
     bodyUrl: 'admin/main'
 };
 
-const getStudentsDataByOffset = (offset, key, value) => {
-    let cursor = 0;
+const getStudentsDataByOffset = async (offset, key, value) => {
     let end = false;
     let query = key != 'null' || value != 'null' ? { [key]: value } : {};
 
@@ -26,7 +25,6 @@ const getStudentsDataByOffset = (offset, key, value) => {
         .limit(256)
         .exec()
         .then((docs) => {
-            // console.log(docs.length);
             if (docs.length < 256) {
                 end = true;
             }
@@ -93,6 +91,7 @@ exports.importStudentsData = (req, res) => {
                 year: student.year,
                 level: student.level,
                 department: student.department,
+                faculty: student.faculty,
                 courses: student.courses,
                 files: student.files,
                 repos: student.repos
@@ -139,7 +138,6 @@ exports.manageUser = (id, adminId, role, victimId, res) => {
 
 exports.getUserDataByOffset = (req, res) => {
     const { userType, offset } = req.params;
-    // console.log(offset)
     const userActionMethods = {
         students: getStudentsDataByOffset,
         lecturers: getLecturersDataByOffset

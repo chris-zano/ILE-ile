@@ -22,7 +22,7 @@ const adminSchema = new Schema({
         type: String,
         required: true
     },
-    department: {
+    faculty: {
         type: String,
         required: true
     }

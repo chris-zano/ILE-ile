@@ -1,5 +1,6 @@
 @media (min-width: 768px) {
     header.header-admin {
+        background-color: var(--background-body);
         margin-left: 80px;
         border-bottom-right-radius: .5rem;
         grid-area: header;
@@ -53,7 +54,7 @@
         margin-right: 10px;
     }
 
-    header.header-admin select > option {
+    header.header-admin select>option {
         display: unset;
         display: flex;
         min-height: unset;
@@ -118,9 +119,17 @@
         cursor: pointer;
     }
 
+    header.header-admin>div.profile>nav>ul>li>a {
+        /* color: ; */
+        margin: 0 .5rem;
+        padding: 1rem 2rem;
+        border-radius: var(--border-radius);
+    }
+
     header.header-admin>div.profile>nav>ul>li>a:hover {
-        text-decoration: underline;
-        color: indianred;
+        color: var(--purple);
+        background-color: var(--default-white);
+        box-shadow: var(--box-shadow-thin);
     }
 
     header.header-admin section.header_nav_profile {
@@ -148,7 +157,7 @@
         background-color: var(--blue);
         color: var(--default-white);
     }
-    
+
     header.header-admin section.header_nav_profile>div.call_to_action:last-child:hover {
         background-color: var(--purple);
         color: var(--default-white);

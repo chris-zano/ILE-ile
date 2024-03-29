@@ -7,8 +7,10 @@
     /* colors */
     --default-white: #ffffff;
     --eye-dark: #1b191b;
-    --dark-grey: rgba(180, 179, 179, 0.889);
+    --eye-dark-light: #f6edf6;
+    --dark-grey: rgba(31, 28, 28, 0.889);
     --blue: #1551f7;
+    --blue-light: #496bc8;
     --blue-dark: #092061;
     --purple: #9a1663;
     --shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
@@ -16,7 +18,7 @@
 
     /* fonts */
     --default-font-face: 'noto regular';
-    --default-font-color: var(--eye-dark);
+    --default-font-color: var(--eye-dark-light);
     --font-small: 11px;
     --font-standard: 14px;
     --font-medium: 18px;
@@ -45,13 +47,14 @@
 
     /* background colours (light) */
     --background-light: rgb(241, 237, 237);
-    --background-body: #fffbfb;
+    --background-body: #282828;
+    --background-main: #130e09;
     --color-theme-1-light: var(--blue-dark);
     --color-theme-2-light: #584e01dd;
 
     /* input-fields */
     --button-height: 45px;
-    --button-width: 120px;
+    --button-width: 100px;
 
 }
 
@@ -78,8 +81,14 @@ li {
     color: var(--default-font-color);
 }
 
+*::-webkit-scrollbar {
+    background-color: green;
+    width: 3px;
+    height: 3px;
+}
+
 body {
-    background-color: var(--default-white);
+    background-color: var(--background-body);
 }
 
 
@@ -91,10 +100,6 @@ body {
             "sidenav main main";
         grid-template-columns: auto 1fr;
         grid-template-rows: auto 1fr;
-        column-gap: 0.4rem;
-        row-gap: .2rem;
-        /* height: 100vh; */
-        /* margin: 1px; */
     }
 
     button {
@@ -123,10 +128,15 @@ body {
     width: 600px;
     padding: 50px;
     box-shadow: 0 5px 30px rgba(0,0,0,.30);
+    color: var(--eye-dark);
     background: #fff;
     opacity: 1;
     transition: 0.3s;
     border-radius: 15px;
+}
+
+.popup > * {
+    color: var(--eye-dark);
 }
 
 .close {

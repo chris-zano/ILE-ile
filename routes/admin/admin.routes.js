@@ -7,6 +7,8 @@ const adminStaticController = require('../../controllers/admin/admin.static');
 const adminUsersController = require('../../controllers/admin/admin.users');
 const adminCoursesController = require('../../controllers/admin/admin.courses');
 
+// const forge = require('../../controllers/admin/forge/*.js');
+
 
 const multer = require('multer');
 
@@ -19,7 +21,10 @@ router.get('/admin/dashboards', adminStaticController.renderDashboard);
 router.get('/admin/logins/:action', adminStaticController.renderAdminLogin);
 router.get('/admin/users/import/:victim', adminStaticController.renderUserImportPage);
 router.get('/admin/get/:userType/:offset', adminUsersController.getUserDataByOffset);
-router.get('/admin/students/get/:action', adminUsersController.getStudentData)
+router.get('/admin/students/get/:action', adminUsersController.getStudentData);
+
+//forge requests go here
+// router.get('/forge/dashboard')
 
 //courses
 router.get('/admin/courses/:action', adminCoursesController.manageCoursesViews);

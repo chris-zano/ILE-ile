@@ -59,7 +59,7 @@ function renderDashboardByRole(res, doc) {
         case 'shepherd':
             Courses.find({ department: doc.department })
                 .then((docs) => {
-                    res.render('index', { ...copyDash, courses: docs });
+                    res.render('index', { ...copyDash, courses: docs, faculty: doc.faculty });
                 })
                 .catch((err) => {
                     console.error("Error fetching courses:", err);
@@ -67,7 +67,8 @@ function renderDashboardByRole(res, doc) {
                 });
             break;
         case 'forge':
-            res.render('index', copyDash);
+            copyDash.stylesheets.push('/css/admin/forge');
+            res.render('index', {...copyDash, faculty: doc.faculty, render: 'default'});
             break;
         default:
             renderErrorPage(res, 404);

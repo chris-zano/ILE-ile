@@ -15,9 +15,13 @@ const lecturerSchema = new Schema({
         type: String,
         required: true
     },
-    department: {
+    faculty: {
         type: Object,
         required: true        
+    },
+    password: {
+        type: String,
+        default: 'lect&1@gctu.edu'
     },
     assignedCourses: {
         type: Array,
