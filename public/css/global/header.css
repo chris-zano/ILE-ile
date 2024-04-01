@@ -141,6 +141,7 @@
         top: 57px;
         width: fit-content;
         height: fit-content;
+        border-radius: 3px;
     }
 
     header.header-admin section.header_nav_profile>div.call_to_action {
@@ -148,9 +149,9 @@
         height: var(--button-height);
         display: grid;
         place-items: center;
-        margin-top: 3px;
         cursor: pointer;
         border-radius: 3px;
+        color:black;
     }
 
     header.header-admin section.header_nav_profile>div.call_to_action:first-child:hover {

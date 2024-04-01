@@ -1,19 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-/**
- * courseCode
- * title
- * year
- * level
- * lecturer
- * students
- * resources
- * assignments
- * recordings
- * submissions
- */
-
 const courseSchema = new Schema({
     courseCode: {
         type: String,
