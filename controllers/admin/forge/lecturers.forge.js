@@ -1,3 +1,4 @@
+const Admins = require('../../../models/admin/admin.models');
 const Lecturers = require('../../../models/lecturer/lecturer.model');
 const Courses = require('../../../models/courses/courses.model');
 const { Mongoose, MongooseError } = require('mongoose');
@@ -15,6 +16,10 @@ const logError = (error) => {
     }
     else if (error instanceof SyntaxError) {
         const eMes = new SyntaxError("Error retrieving lecturer");
+        console.error(eMes.stack);
+    }
+    else if (error instanceof TypeError) {
+        const eMes = new TypeError("Error validating instance");
         console.error(eMes.stack);
     }
     else {
@@ -59,6 +64,22 @@ const isValidCourseCode = async (courseCode) => {
         });
     });
 
+}
+
+const validateHeaderInfo = async (headerInfo) => {
+    if (!validateQuery(headerInfo)) {
+        logError(TypeError);
+    }
+
+    const doc = await Admins.find({ _id: headerInfo['admin-uid'], adminId: headerInfo['admin-id'], role: headerInfo['admin-role'] });
+
+    if (doc == null) {
+        // TODO: log request
+        console.log("No such Admin");
+        return false;
+    }
+
+    return true;
 }
 
 const getCourses = async (coursesArray = []) => {
@@ -131,12 +152,8 @@ const findOne = async (id = '') => {
 
 }
 
-const findMany = async (query, offset = 0) => {
-    if (!validateQuery(query)) {
-        //TODO: Handle when query is invalid
-        console.log('Invalid query');
-        return false;
-    }
+const findMany = async (key = null, value = null, offset = 0) => {
+    const query = key != null || value != null ? { [key]: value } : {};
 
     try {
         const docs = await Lecturers.find(query)
@@ -274,7 +291,7 @@ const forgeLecturerRoutes = (req, res) => {
      *      admin-role: role
      * }
      * 
-     * ?key=queryKey&value=queryValue
+     * ?key=queryKey&value=queryValue (defaults [key=x, value=a])
      * 
      * req.params on (prop = views & action = render) {id, adminId, role}
      * 
@@ -294,8 +311,9 @@ const forgeLecturerRoutes = (req, res) => {
         role: req.headers['admin-role']
     }
 
-    validateHeaderInfo(headerInfo);
-    // TODO: validate requests
+    if (!validateHeaderInfo(headerInfo)) {
+        res.status(403).render('global/error', { error: 'Access denied' });
+    }
 
     if (prop === "users") {
         const { faculty, v } = req.body;
@@ -315,18 +333,18 @@ const forgeLecturerRoutes = (req, res) => {
                 }).catch((error) => {
                     res.status(error.state).json(error);
                 });
-            }
-            else {
-                console.log("Invalid action: ", action);
-                res.status(400).json({
-                    message: "Bad Request"
-                });
+        }
+        else {
+            console.log("Invalid action: ", action);
+            res.status(400).json({
+                message: "Bad Request"
+            });
         }
 
     } else if (prop === "courses") {
-         if (action === "update") {
+        if (action === "update") {
             const { courseCode, v } = req.body;
-    
+
             updateAssignedCourses(_id, "add", courseCode, v)
                 .then((r) => {
                     res.status(200).json(r);
@@ -344,10 +362,13 @@ const forgeLecturerRoutes = (req, res) => {
     else if (prop === 'views') {
         if (action === "render") {
             const offset = req.params._id;
-            findMany({[key]: value}, offset > 0? offset: 0)
-            .then((docs) => {
-                console.log(docs);
-            })
+            console.log(key, value, offset)
+            if (key == 'x' && value == 'a') {
+                findMany(null, null, offset >= 0 ? offset : 0)
+                    .then((docs) => {
+                        console.log(docs);
+                    })
+            }
         }
     }
     res.end("here");
