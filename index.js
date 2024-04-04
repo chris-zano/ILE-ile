@@ -22,12 +22,12 @@ app.set('view engine', 'ejs');
 const adminStaticRoutes = require('./routes/admin/admin.routes');
 const adminFileRoutes = require('./routes/admin/admin.files');
 
-const forgeRoutes = require('./routes/admin/forge/forge.routes');
+// const forgeRoutes = require('./routes/admin/forge/forge.routes');
 
 //system config
 app.use(adminStaticRoutes);
 app.use(adminFileRoutes);
-app.use(forgeRoutes);
+// app.use(forgeRoutes);
 
 mongoose.connect('mongodb://localhost:27017/ileSchool');
 

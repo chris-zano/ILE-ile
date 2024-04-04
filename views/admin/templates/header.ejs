@@ -1,0 +1,45 @@
+<header class="header-admin .main-content">
+    <div class="logo">
+        <a href="/admins/render/dashboards/<%= admin.id %>">
+            <img src="/images/logo" alt="app_logo" width="50px">
+        </a>
+    </div>
+    <form action="/global-search" class="search-bar">
+        <div>
+            <select class="dropdown" name="search-content" id="search-content">
+                <option class="dropdown-list-item dropdown-text" value="none">categories</option>
+                <option class="dropdown-list-item" value="courses">Courses</option>
+                <option class="dropdown-list-item" value="materials">Materials</option>
+                <option class="dropdown-list-item" value="videos">Videos</option>
+            </select>
+        </div>
+        <div class="search-box">
+            <input type="text" id="search-input" placeholder="Search anything..." required />
+            <button type="submit" id="searchBtn" style="box-shadow: none;">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+        </div>
+    </form>
+    <div class="profile">
+        <nav class="header-nav">
+            <ul>
+                <li><a href="#">Dashboard</a></li>
+                <li><a href="#">Settings</a></li>
+                <li>
+                    <div class="username" id="current-user-name"><%= admin.firstname %> &caron;</div>
+                </li>
+            </ul>
+            <section class="header_nav_profile hidden" id="header_nav_profile">
+                <div class="call_to_action">Profile</div>
+                <div class="call_to_action">Logout</div>
+            </section>
+            <script>
+                document.getElementById('current-user-name').addEventListener('click', () => {
+                    const profilePopUp = document.getElementById('header_nav_profile');
+
+                    profilePopUp.classList.toggle('hidden');
+                });
+            </script>
+        </nav>
+    </div>
+</header>

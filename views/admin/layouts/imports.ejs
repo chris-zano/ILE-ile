@@ -1,0 +1,12 @@
+<div class="imports-container">
+    <form action="/admins/imports/<%= userType %>/<%= admin.id %>" method="post" id="first_years" class="uploads_form" enctype="multipart/form-data">
+        <h2>Import a <%= userType %> JSON file</h2>
+        <div>
+            <label for="file">Upload a json document</label>
+            <input type="file" name="file" id="first_years" required>
+        </div>
+        <div>
+            <input type="submit" value="Upload">
+        </div>
+    </form>
+</div>

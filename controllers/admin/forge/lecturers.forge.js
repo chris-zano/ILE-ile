@@ -1,126 +1,5 @@
-const Admins = require('../../../models/admin/admin.models');
+const forge = require('./forge.utils');
 const Lecturers = require('../../../models/lecturer/lecturer.model');
-const Courses = require('../../../models/courses/courses.model');
-const { Mongoose, MongooseError } = require('mongoose');
-const lecturersProperties = ['faculty', 'courseCode', '_id'];
-
-
-const logError = (error) => {
-    if (error instanceof MongooseError) {
-        const eMes = new MongooseError("Mongoose encountered an error");
-        console.error(eMes.stack);
-    }
-    else if (error instanceof ReferenceError) {
-        const eMes = new ReferenceError("Error retrieving lecturer")
-        console.error(eMes.stack);
-    }
-    else if (error instanceof SyntaxError) {
-        const eMes = new SyntaxError("Error retrieving lecturer");
-        console.error(eMes.stack);
-    }
-    else if (error instanceof TypeError) {
-        const eMes = new TypeError("Error validating instance");
-        console.error(eMes.stack);
-    }
-    else {
-        console.log("An error occured: ", error);
-    }
-    return 0;
-}
-
-const validateQuery = (query = {}) => {
-    if (Object.keys(query).length === 0) {
-        //TODO: Handle when empty
-        console.error("Invalid Object: [empty]");
-        return false;
-    }
-
-    console.log("valid object");
-    return true;
-}
-
-const isValidCourseCode = async (courseCode) => {
-    return new Promise((resolve, reject) => {
-        Courses.findOne({ courseCode: courseCode })
-            .then((course) => {
-                if (course == null) reject({
-                    message: "No match for course with course-code: " + courseCode,
-                    doc: {},
-                    state: false
-                });
-
-                resolve({
-                    message: "course-code matches",
-                    doc: { faculty: course.faculty },
-                    state: true
-                });
-            })
-    }).catch((error) => {
-        console.log(error);
-        reject({
-            message: "failed to validiate course: " + courseCode,
-            doc: {},
-            state: false
-        });
-    });
-
-}
-
-const validateHeaderInfo = async (headerInfo) => {
-    if (!validateQuery(headerInfo)) {
-        logError(TypeError);
-    }
-
-    const doc = await Admins.find({ _id: headerInfo['admin-uid'], adminId: headerInfo['admin-id'], role: headerInfo['admin-role'] });
-
-    if (doc == null) {
-        // TODO: log request
-        console.log("No such Admin");
-        return false;
-    }
-
-    return true;
-}
-
-const getCourses = async (coursesArray = []) => {
-    const courses = [];
-    const courseObj = {
-        title: '',
-        courseCode: '',
-        faculty: '',
-        level: '',
-        semester: '',
-        year: '',
-        students: '',
-        resources: '',
-        recordings: '',
-        schedule: ''
-    }
-    if (coursesArray.length != 0) {
-        let i = 0;
-        for (i; i < coursesArray.length; ++i) {
-            const course = await Courses.findOne({ courseCode: coursesArray[i] });
-            if (course != null) {
-                courseObj.title = course.title;
-                courseObj.courseCode = course.courseCode;
-                courseObj.faculty = course.faculty;
-                courseObj.level = course.level;
-                courseObj.semester = course.semester;
-                courseObj.year = course.year;
-                courseObj.students = course.students.length;
-                courseObj.resources = course.resources.length;
-                courseObj.recordings = course.recordings.length;
-                courseObj.schedule = course.schedule;
-
-                courses.push(courseObj)
-            }
-        }
-        if (i == coursesArray.length) {
-            return courses
-        }
-    }
-}
-
 
 const findOne = async (id = '') => {
 
@@ -131,7 +10,7 @@ const findOne = async (id = '') => {
             return "No such user: " + id;
         }
 
-        const courses = await getCourses(tut.assignedCourses);
+        const courses = await forge.getCourses(tut.assignedCourses);
         return {
             name: `${tut.firstName} ${tut.lastName}`,
             faculty: `${tut.faculty}`,
@@ -140,7 +19,7 @@ const findOne = async (id = '') => {
         }
     }
     catch (error) {
-        logError(error);
+        forge.logError(error);
 
         return {
             name: null,
@@ -152,35 +31,8 @@ const findOne = async (id = '') => {
 
 }
 
-const findMany = async (key = null, value = null, offset = 0) => {
-    const query = key != null || value != null ? { [key]: value } : {};
-
-    try {
-        const docs = await Lecturers.find(query)
-            .skip(offset)
-            .limit(100)
-            .exec();
-
-        const isEndOfData = docs.length < 100;
-
-        return {
-            docs,
-            cursor: isEndOfData ? 'End' : offset + docs.length
-        };
-    }
-    catch (error) {
-        //TODO: Handle error
-        console.error("Error fetching lecturers.findMany: ", error);
-        return {
-            docs: [],
-            status: 500,
-            cursor: offset
-        }
-    }
-}
-
 const updateOne = async (query = {}, updateParams = {}) => {
-    if (!validateQuery(query) || !validateQuery(updateParams)) {
+    if (!forge.validateQuery(query) || !forge.validateQuery(updateParams)) {
         //TODO: Handle if invalid
         return {
             message: `Error [Invalid Query]: ${query} & ${updateParams}`,
@@ -215,6 +67,7 @@ const updateOne = async (query = {}, updateParams = {}) => {
 
             }).catch((error) => {
                 console.error("Error while updating lecturer document: ");
+                forge.logError(error)
                 reject({
                     message: "Internal Server Error",
                     doc: {},
@@ -226,7 +79,7 @@ const updateOne = async (query = {}, updateParams = {}) => {
 }
 
 const updateAssignedCourses = async (_id, action = 'add', courseCode = '', v = 0) => {
-    if (!isValidCourseCode(courseCode)) return false;
+    const validCourse = await forge.isValidCourseCode(courseCode);
 
     return new Promise((resolve, reject) => {
         Lecturers.findOneAndUpdate({ _id: _id })
@@ -248,7 +101,17 @@ const updateAssignedCourses = async (_id, action = 'add', courseCode = '', v = 0
                     const courses = doc.assignedCourses;
                     //TODO: check if course exists first
                     if (action == 'add') {
-                        courses.push(courseCode);
+                        console.log(courses.indexOf(courseCode));
+                        if (courses.indexOf(courseCode) == 0) {
+                            reject({
+                                message: "course already assiged",
+                                doc: {},
+                                state: false
+                            })
+                        }
+                        else {
+                            courses.push(courseCode);
+                        }
                     }
                     else if (action == 'delete') {
                         courses.splice(courses.indexOf(courseCode), 1);
@@ -272,6 +135,7 @@ const updateAssignedCourses = async (_id, action = 'add', courseCode = '', v = 0
 
             }).catch((error) => {
                 console.log("Error while updating assigned courses: ");
+                forge.logError(error);
                 reject({
                     message: "Error while updating assigned courses:  " + _id + " " + courseCode,
                     doc: {},
@@ -311,9 +175,9 @@ const forgeLecturerRoutes = (req, res) => {
         role: req.headers['admin-role']
     }
 
-    if (!validateHeaderInfo(headerInfo)) {
-        res.status(403).render('global/error', { error: 'Access denied' });
-    }
+    // if (!validateHeaderInfo(headerInfo)) {
+    //     res.status(403).render('global/error', { error: 'Access denied' });
+    // }
 
     if (prop === "users") {
         const { faculty, v } = req.body;
@@ -363,15 +227,15 @@ const forgeLecturerRoutes = (req, res) => {
         if (action === "render") {
             const offset = req.params._id;
             console.log(key, value, offset)
-            if (key == 'x' && value == 'a') {
-                findMany(null, null, offset >= 0 ? offset : 0)
-                    .then((docs) => {
-                        console.log(docs);
-                    })
-            }
+            forge.findMany(key == 'null' ? null : key, value == 'null' ? null : value, offset >= 0 ? offset : 0, Lecturers)
+                .then((docs) => {
+                    forge.render(res, 'lecturers', headerInfo, ['/css/admin/forge.lecturers']);
+                }).catch((error) => {
+                    logError(error);
+                    res.status(500).json({ message: "" })
+                });
         }
     }
-    res.end("here");
 }
 
 module.exports = forgeLecturerRoutes;

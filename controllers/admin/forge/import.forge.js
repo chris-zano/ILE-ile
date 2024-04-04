@@ -86,8 +86,25 @@ const lModel = (l) => {
     }
 }
 
+/**
+ * request pack
+ * /forge/imports/:action(imports, render)/:userType(student, tutor)
+ * 
+ * headers {
+ *      'admin-uid': id,
+ *      'admin-id': adminId,
+ *      'admin-role': role
+ * }
+ * 
+ */
 const handleUserImport = (req, res) => {
-    const { userType, id, adminId, role } = req.query;
+    const { action, userType} = req.params;
+    const headerInfo = {
+        id: req.headers['admin-uid'],
+        adminId: req.headers['admin-id'],
+        role: req.headers['admin-role']
+    }
+
     if(!validateAdmin(id, adminId, role)) return;
 
     const { originalname, filename } = req.file;

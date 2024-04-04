@@ -1,5 +1,4 @@
 const express = require('express');
-const path = require('path');
 
 // eslint-disable-next-line new-cap
 const router = express.Router();
@@ -7,11 +6,10 @@ const adminStaticController = require('../../controllers/admin/admin.static');
 const adminUsersController = require('../../controllers/admin/admin.users');
 const adminCoursesController = require('../../controllers/admin/admin.courses');
 
-// const forge = require('../../controllers/admin/forge/*.js');
+const adminRender = require('../../controllers/admin/admin.render');
 
-
+const path = require('path');
 const multer = require('multer');
-
 const userJSONUpload = multer({
     dest: path.join(__dirname, '..', '..', 'models/imports')
 });
@@ -42,6 +40,8 @@ router.post('/admins/delete_admin',adminStaticController.deleteAdmin);
 router.post('/admin/users/createOne', adminUsersController.createStudent);
 router.post('/admin/users/createMany', userJSONUpload.single('file'), adminUsersController.importStudentsData);
 
+
+router.get('/admin/render/imports/:userType/:id', adminRender.renderImports);
 
 //export the router instance
 module.exports = router;
