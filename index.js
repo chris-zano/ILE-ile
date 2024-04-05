@@ -19,7 +19,8 @@ app.set('views', VIEW_ENGINE_PATH);
 app.set('view engine', 'ejs');
 
 //system imports
-const adminRoutes = require('./routes/admin/admins.routes');
+const adminsRoutes = require('./routes/admin/admins.routes');
+const adminRoutes = require('./routes/admin/admin.routes');
 const adminFileRoutes = require('./routes/admin/admin.files');
 const adminRenderRoutes = require('./routes/admin/render.routes');
 
@@ -27,6 +28,7 @@ const adminRenderRoutes = require('./routes/admin/render.routes');
 
 //system config
 app.use(adminRoutes);
+app.use(adminsRoutes);
 app.use(adminFileRoutes);
 app.use(adminRenderRoutes);
 // app.use(forgeRoutes);

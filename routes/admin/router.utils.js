@@ -1,11 +1,12 @@
 const Admins = require('../../models/admin/admin.models');
 
 exports.verifyAdmin = (req, res, next) => {
-    Admins.findById(id)
+    Admins.findById(req.params.id)
         .then((admin) => {
             if (admin == null) {
                 utils.logError(new ReferenceError());
                 res.render('global/error', { message: "Unauthorised access", status: 403 });
+                return
             }
             else {
                 req.adminData = {
@@ -27,8 +28,24 @@ exports.verifyAdmin = (req, res, next) => {
 }
 
 exports.authenticateLoginSequence = (req, res, next) => {
-    const {username, password} = req.body;
+    const { username, password } = req.body;
+    const user = String(username)
 
-    console.log(username)
+    const adminRegexp = /^AD-\d{3}[A-Za-z0-9]*$/;
+    const tutorRegexp = /^TU-\d{3}[A-Za-z0-9]*$/;
+    const studentRegexp = /^\d{9}$/;
+
+
+    if (adminRegexp.test(user)) req.usernameformat = "admin";
+    else if (tutorRegexp.test(user)) req.usernameformat = "tutor";
+    else if (studentRegexp.test(user)) req.usernameformat = "student";
+    else req.usernameformat = "none";
+
+
+    if (req.usernameformat == "none") {
+        res.status(403).json({ message: "Unauthorised login" })
+        return;
+    }
+
     next();
 }

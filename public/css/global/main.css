@@ -3,8 +3,10 @@
         grid-area: main;
         border-radius: 1rem;
         height: 90vh;
+        width: 90vw;
         overflow-y: scroll;
         margin-right: 10px;
         background-color: var(--background-main);
+        background-color: red;
     }
 }

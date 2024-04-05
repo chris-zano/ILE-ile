@@ -10,11 +10,12 @@
     <link rel="stylesheet" href="/css/global/root">
     <link rel="stylesheet" href="/css/global/header">
     <link rel="stylesheet" href="/css/global/sidenav">
+    <link rel="stylesheet" href="/css/global/main">
     <% for( let styleUrl of stylesheets) { %>
         <link rel="stylesheet" href="<%= styleUrl %>">
     <% } %>
     <title>
-        <%= pageTitle %>
+        ITLE(Admin): <%= pageTitle %>
     </title>
 </head>
 
@@ -43,8 +44,8 @@
                         <img src="/images/darkSide" alt="me" class="user-img">
                         <div class="img-div">
                             <p class="bold">
-                                <%= admin.firstName %>
-                                    <%= admin.lastName %>
+                                <%= admin.firstname %>
+                                    <%= admin.lastname %>
                             </p>
                             <p class="role">
                                 <%= admin.faculty%>
@@ -120,6 +121,10 @@
     <main class="wrapper-main main-content" id="wrapper-main">
         <%- include(pageUrl) %>
     </main>
+
+    <% for( let scriptUrl of scripts) { %>
+        <script src="<%= scriptUrl %>"></script>
+    <% } %>
 </body>
 
 </html>

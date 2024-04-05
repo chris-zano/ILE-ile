@@ -1,4 +1,4 @@
-@media (min-width: 768px) {
+@media (min-width: 810px) {
     header.header-admin {
         background-color: var(--background-body);
         margin-left: 80px;
@@ -14,9 +14,10 @@
     header.header-admin>div.logo {
         display: grid;
         place-items: center;
-        width: 50px;
-        height: 50px;
         border: 1px solid #eee;
+        margin-right: 1rem;
+        width: fit-content;
+        height: fit-content;
         border-radius: var(--border-radius);
     }
 
@@ -26,14 +27,13 @@
     }
 
     header.header-admin>div.logo>a>img {
-        max-width: 100%;
-        min-width: 25px;
+        width: 50px;
     }
 
     header.header-admin .search-bar {
         display: flex;
         align-items: center;
-        min-width: 200px;
+        min-width: 120px;
         height: 45px;
         border: var(--boder-default);
         border-radius: var(--border-radius);
@@ -83,6 +83,7 @@
     header.header-admin .search-box i {
         font-size: 1.3rem;
         cursor: pointer;
+        color: var(--eye-dark);
     }
 
     header.header-admin .search-box input::placeholder {
@@ -101,7 +102,7 @@
     header.header-admin>div.profile {
         position: relative;
         display: flex;
-        min-width: 300px;
+        /* min-width: 300px; */
     }
 
     header.header-admin>div.profile>nav {

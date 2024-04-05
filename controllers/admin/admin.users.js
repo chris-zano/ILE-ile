@@ -48,8 +48,36 @@ const getStudentsDataByOffset = async (offset, key, value) => {
         )
 }
 
-const getLecturersDataByOffset = (offset) => {
-    console.log('lecturers by offset => ', offset)
+const getLecturersDataByOffset = (offset, key, value) => {
+    let end = false;
+    let query = key != 'null' || value != 'null' ? { [key]: value } : {};
+
+    return Lecturers.find(query)
+        .skip(offset)
+        .limit(256)
+        .exec()
+        .then((docs) => {
+            if (docs.length < 256) {
+                end = true;
+            }
+            return {
+                status: 200,
+                message: 'success',
+                docs: docs,
+                cursor: Number(offset) + 256,
+                end: end
+            }
+        })
+        .catch((error) => {
+            return {
+                status: 500,
+                message: 'An error occured while fetching',
+                docs: [],
+                cursor: 0,
+                end: end
+            }
+        }
+        )
 }
 
 //handlers

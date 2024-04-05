@@ -15,22 +15,27 @@ function main() {
             'Content-Type': 'application/json'
         }
 
+        console.log(options)
+
         initiatePostRequest(
             '/auth/users/login',
             headers,
             options
         )
             .then(response => {
+                console.log(response)
                 if (response.status === 200 && response.data.message === 'success') {
-                    const {_id, adminId, role} = response.data;
-                    localStorage.setItem('login-state', JSON.stringify({
-                        isLoggedIn: true,
-                        _id: _id,
-                        adminId: adminId,
-                        role: role
-                    }));
+                    const userData = {
+                        user: response.data.userType,
+                        data: response.data.user,
+                        auth: "verified"
+                    }
 
-                    window.location.href = `/admin/dashboards?id=${_id}&&adminId=${adminId}`;
+                    window.sessionStorage.setItem("auth-user", JSON.stringify(userData));
+
+                    console.log(`/${response.data.userType}s/render/dashboards/${response.data.user.id}`)
+                    window.location.href = `/${response.data.userType}s/render/dashboards/${response.data.user.id}`;
+
                 }
                 else {
                     window.alert('Invalid Id or Password');

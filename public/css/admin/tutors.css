@@ -1,12 +1,12 @@
 button#nextPage {
     background-color: var(--blue);
-    color: white;
+    color: inherit;
     transition: all 0.3s ease-in-out;
 }
 
 button#resetBtn {
     background-color: var(--blue-dark);
-    color: white;
+    color: inherit;
     transition: all 0.3s ease-in-out;
 }
 
@@ -14,7 +14,7 @@ button#nextPage:hover,
 button#resetBtn:hover,
 td button.actionButton:hover {
     background-color: white;
-    color: inherit;
+    color: var(--eye-dark);
 }
 
 
@@ -29,12 +29,18 @@ div.section-header-nav>a:hover {
     background-color: var(--default-white);
 }
 
+section.main-section {
+    width: 100%;
+    height: 100%;
+    padding-inline: 10px;
+    margin-inline: auto;
+}
+
 @media (min-width: 768px) {
-    section.forge-main {
-        min-width: fit-content;
-        height: 100%;
+    section.students {
         display: grid;
         grid-template-rows: 100px 1fr;
+        background-color: green;
     }
 
     div.section-header {
@@ -97,6 +103,10 @@ div.section-header-nav>a:hover {
         white-space: nowrap;
         overflow-x: hidden;
         text-overflow: ellipsis;
+    }
+    select option {
+        color: var(--eye-dark);
+        font-family: inherit;
     }
 
     tbody tr:nth-child(even) {

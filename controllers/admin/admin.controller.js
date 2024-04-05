@@ -4,7 +4,7 @@ const Students = require('../../models/student/student.model');
 
 const { logSession, logError } = require('./admin.utils');
 
-const tutorLogin = (username, password, ip) => {
+const tutorLogin = (username, password, ip, res) => {
     Tutors.findOne({ lecturerId: username, password: password })
         .then((tutor) => {
             if (!tutor) {
@@ -13,13 +13,14 @@ const tutorLogin = (username, password, ip) => {
             } else {
                 logSession(username, ip, "success");
                 res.status(200).json({
-                    message: "success", user: {
-                        id: tutor.lecturerId,
+                    message: "success",userType:"tutor", user: {
+                        id: tutor._id,
+                        lecturerId: tutor.lecturerId,
                         firstname: tutor.firstName,
                         lastname: tutor.lastName,
                         faculty: tutor.faculty,
                         courses: tutor.assignedCourses,
-
+                        v: tutor.__v
                     }
                 });
             }
@@ -31,7 +32,7 @@ const tutorLogin = (username, password, ip) => {
         });
 }
 
-const adminLogin = (username, password, ip) => {
+const adminLogin = (username, password, ip, res) => {
     Admins.findOne({ adminId: username, password: password })
         .then((admin) => {
             if (!admin) {
@@ -41,11 +42,13 @@ const adminLogin = (username, password, ip) => {
             else {
                 logSession(username, ip, "success");
                 res.status(200).json({
-                    message: "success", user: {
-                        id: admin.adminId,
+                    message: "success",userType: "admin", user: {
+                        id: admin._id,
+                        adminId: admin.adminId,
                         firstname: admin.firstName,
                         lastname: admin.lastName,
                         faculty: admin.faculty,
+                        v: admin.__v
                     }
                 });
             }
@@ -55,7 +58,7 @@ const adminLogin = (username, password, ip) => {
             res.status(500).render('global/error', { error: "Internal Server Error", status: 500 });
         });
 }
-const studentLogin = (username, password, ip) => {
+const studentLogin = (username, password, ip, res) => {
     Students.findOne({ studentId: username, password: password })
         .then((student) => {
             if (!student) {
@@ -64,8 +67,9 @@ const studentLogin = (username, password, ip) => {
             } else {
                 logSession(username, ip, "success");
                 res.status(200).json({
-                    message: "success", user: {
-                        id: student.studentId,
+                    message: "success",userType: "student", user: {
+                        id: student._id,
+                        studentId: student.studentId,
                         firstname: student.firstName,
                         lastname: student.lastName,
                         faculty: student.faculty,
@@ -73,7 +77,8 @@ const studentLogin = (username, password, ip) => {
                         level: student.level,
                         courses: student.courses,
                         files: student.files,
-                        repos: student.repos
+                        repos: student.repos,
+                        v: student.__v
                     }
                 }); 
             }
@@ -83,6 +88,7 @@ const studentLogin = (username, password, ip) => {
             res.status(500).render('global/error', { error: "Internal Server Error", status: 500 });
         });
 }
+
 
 exports.loginUser = (req, res) => {
     const { usernameformat } = req;
@@ -96,7 +102,7 @@ exports.loginUser = (req, res) => {
     const formatMatchMetod = userFormats[usernameformat];
 
     if (formatMatchMetod) {
-        formatMatchMetod(username, password);
+        formatMatchMetod(username, password, req.ip, res);
     }
     else {
         //handle if unrecogneised username format

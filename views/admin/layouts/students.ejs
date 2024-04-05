@@ -1,4 +1,17 @@
-<section class="students" id="students-section">
+<section class="main-section students">
+    <div class="section-header">
+        <div class="table-buttons-nav">
+            <button type="button" id="nextPage">Next</button>
+            <button type="button" id="resetBtn">Reset</button>
+        </div>
+
+        <div class="section-header-nav">
+            <a href="/admins/render/imports/students/<%= admin.id %>">Import Students</a>
+        </div>
+    </div>
+
+    <!-- list of available users -->
+
     <div class="section-users section-body">
         <div class="section-body-header">
             <br>
@@ -45,7 +58,6 @@
                     </tbody>
                 </table>
             </div>
-            <script src="/script/scripts/admin/forge"></script>
         </div>
     </div>
 </section>
