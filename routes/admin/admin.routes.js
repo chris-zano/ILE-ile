@@ -19,6 +19,7 @@ const adminUsersController = require('../../controllers/admin/admin.users');
 // //get requests
 router.get('/admin/get/:userType/:offset', adminUsersController.getUserDataByOffset);
 router.get('/admin/students/get/:action', adminUsersController.getStudentData);
+router.get('/admin/lecturers/get/:action', adminUsersController.getLecturersData);
 
 
 

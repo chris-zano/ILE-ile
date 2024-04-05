@@ -59,6 +59,8 @@ async function showView(e) {
     const res = await req.json();
     const status = req.status;
 
+    console.log(res)
+
     if (status == 403 || status == 500) {
         console.log('An error occured.\nPlease Try again');
         return;
@@ -68,7 +70,7 @@ async function showView(e) {
         return modalWrite('No data available for this student');
     }
 
-    for (let item of res.docs) {
+    for (let item of res.doc) {
         console.log(item);
     }
     return;

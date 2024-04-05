@@ -213,3 +213,30 @@ exports.getStudentData = (req, res) => {
             res.status(500).json({ message: 'Internal server error', error });
         })
 }
+
+exports.getLecturersData = (req, res) => {
+    const { action } = req.params;
+    const { id } = req.query;
+
+    Lecturers.findOne({ _id: id })
+        .then((doc) => {
+            if (doc == null) {
+                return res.status(404).json({ message: 'no such user found', doc: null });
+            }
+
+            const actionsMap = {
+                courses: 'assignedCourses',
+            };
+
+            const field = actionsMap[action];
+            console.log(field)
+
+            if (field) {
+                return res.status(200).json({ message: 'success', doc: doc[field] });
+            }
+
+            return res.status(403).json({ message: 'action not recognised', doc: null });
+        }).catch((error) => {
+            res.status(500).json({ message: 'Internal server error', error });
+        })
+}
