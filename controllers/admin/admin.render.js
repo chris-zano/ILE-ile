@@ -39,36 +39,15 @@ const utils = require('./admin.utils');
 
 exports.renderImports = async (req, res) => {
     const { userType, id } = req.params;
+    const {adminData} = req;
 
-    Admins.findById(id)
-        .then((admin) => {
-            if (admin == null) {
-                utils.logError(new ReferenceError());
-                res.render('global/error', { message: "Unauthorised access", status: 403 });
-            }
-            else {
-                const adminData = {
-                    id: admin._id,
-                    firstname: admin.firstName,
-                    lastname: admin.lastName,
-                    faculty: admin.faculty
-                }
-                res.render('admin/admin-main', {
-                    admin: adminData,
-                    pageTitle: "Imports",
-                    stylesheets: [],
-                    pageUrl: 'layouts/imports',
-                    userType: userType
-                });
-            }
-        }).catch((error) => {
-            utils.logError(error);
-            return {
-                message: "An error occured",
-                admin: {},
-                status: 500
-            }
-        });
+    res.render('admin/admin-main', {
+        admin: adminData,
+        pageTitle: "Imports",
+        stylesheets: [],
+        pageUrl: 'layouts/imports',
+        userType: userType
+    });
 
     return;
 }

@@ -60,3 +60,17 @@ exports.validateAuthId = async (id) => {
             }
         });
 }
+
+exports.logSession = (username, ip, status="") => {
+    try {
+        const logFilePath = path.join(__dirname, '..', '..','logs', 'session.log');
+        const timestamp = new Date().toISOString();
+        const sessionLog = `${status.toUpperCase()}//:: ${timestamp}: Username: ${username}, IP: ${ip}\n`;
+        
+        fs.appendFileSync(logFilePath, sessionLog);
+        
+        console.log('Session logged successfully.'); 
+    } catch (error) {
+        console.error('Error logging session:', error);
+    }
+}

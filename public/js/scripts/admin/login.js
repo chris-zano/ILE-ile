@@ -6,7 +6,7 @@ function main() {
         e.preventDefault();
 
         const options = {
-            adminId: document.getElementById('adminId').value,
+            username: document.getElementById('username').value,
             password: document.getElementById('password').value
         }
 
@@ -16,7 +16,7 @@ function main() {
         }
 
         initiatePostRequest(
-            '/auth/admins/loginwithusernameandpassword',
+            '/auth/users/login',
             headers,
             options
         )
