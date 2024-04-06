@@ -1,4 +1,5 @@
 const Admins = require('../../models/admin/admin.models');
+const utils = require('../../controllers/admin/admin.utils');
 
 exports.verifyAdmin = (req, res, next) => {
     Admins.findById(req.params.id)
@@ -18,6 +19,7 @@ exports.verifyAdmin = (req, res, next) => {
                 next();
             }
         }).catch((error) => {
+            
             utils.logError(error);
             return {
                 message: "An error occured",

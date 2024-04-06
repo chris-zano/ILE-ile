@@ -15,7 +15,11 @@ router.get('/', (req, res) => {
 router.get('/login', (req, res) => {
     console.log("New SignIn attempt: ", req.ip);
     res.render('login');
-})
+});
+
+// router.get('/global/error', (req, res) => {
+//     res.render('global/error', {error: "An Error occured", status: 404});
+// })
 
 
 //get admin interfaces

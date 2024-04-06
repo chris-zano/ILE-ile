@@ -1,11 +1,15 @@
 //node.js imports
 const express = require('express');
+const http = require('http');
 const path = require('path');
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const setupWebSocketServer = require('./utils/global/websocket.util');
 
 const app = express();
+const server = http.createServer(app); 
+
 const STATIC_FILES_PATH = path.join(__dirname, 'public');
 const VIEW_ENGINE_PATH = path.join(__dirname, 'views');
 
@@ -33,9 +37,11 @@ app.use(adminFileRoutes);
 app.use(adminRenderRoutes);
 // app.use(forgeRoutes);
 
-mongoose.connect('mongodb://localhost:27017/ileSchool');
+mongoose.connect(process.env.DATABASE_URL);
 
+const io = setupWebSocketServer(server);
 const PORT = process.env.PORT || 5050;
-app.listen(PORT, () => {
-    console.log('Listening on port: ', PORT);
+
+server.listen(PORT, () => {
+  console.log('Listening on port:', PORT);
 });

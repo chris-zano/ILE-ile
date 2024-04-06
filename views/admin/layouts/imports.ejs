@@ -1,61 +1,70 @@
-<div class="imports-container">
-    <form action="/admins/imports/<%= userType %>/<%= admin.id %>" method="post" id="first_years" class="uploads_form" enctype="multipart/form-data">
-        <h2>Import a <%= userType %> JSON file</h2>
-        <div class="input-container">
-            <label for="file" class="input-label">Upload a JSON document</label>
-            <input type="file" name="file" id="file" class="file-input" required>
-        </div>
-        <div class="button-container">
-            <button type="submit" class="upload-button">Upload</button>
-        </div>
-    </form>
-</div>
-
-<div class="create-one">
-    <div class="form-container">
-        <form action="/submit" method="post" class="student-form">
-            <h2>Create a new <%= userType.slice(0, -1) %></h2>
-            <div class="input-field">
-                <label for="studentId">Student ID</label>
-                <input type="text" id="studentId" name="studentId" required>
+<section class="imports-section">
+    
+    <div class="imports-container">
+        <form action="/admins/imports/<%= userType %>/<%= admin.id %>" method="post" id="first_years"
+            class="uploads_form" enctype="multipart/form-data">
+            <h2>Import a <%= userType %> JSON file</h2>
+            <div class="input-container">
+                <label for="file" class="input-label">Upload a JSON document</label>
+                <input type="file" name="file" id="file" class="file-input" required>
             </div>
-            <div class="input-field">
-                <label for="firstName">First Name</label>
-                <input type="text" id="firstName" name="firstName" required>
+            <div class="button-container">
+                <button type="submit" class="upload-button">Upload</button>
             </div>
-            <div class="input-field">
-                <label for="lastName">Last Name</label>
-                <input type="text" id="lastName" name="lastName" required>
-            </div>
-            <div class="input-field">
-                <label for="program">Program</label>
-                <select name="program" id="program">
-                    <option value="BSc. Computer Engineering">BSc. Computer Engineering</option>
-                    <option value="BSc. Telecom Engineering">BSc. Telecom Engineering</option>
-                    <option value="BSc. Computer Science">BSc. Computer Science</option>
-                    <option value="Bsc. Information Technology">Bsc. Information Technology</option>
-                </select>
-            </div>
-            <div class="input-field">
-                <label for="level">Level</label>
-                <select name="level" id="level">
-                    <option value="100">100</option>
-                    <option value="200">200</option>
-                    <option value="300">300</option>
-                    <option value="400">400</option>
-                    <option value="Top-Up">Top-Up</option>
-                </select>
-            </div>
-            <div class="input-field">
-                <label for="faculty">Faculty</label>
-                <select name="faculty" id="faculty">
-                    <option value="Engineering">Engineering</option>
-                    <option value="FoCIS">FoCIS</option>
-                    <option value="Business">Business</option>
-                </select>
-            </div>
-            <button type="submit" class="submit-button">Submit</button>
         </form>
     </div>
-    
-</div>
+
+    <div class="create-one">
+        <div class="form-container">
+            <form action="/admins/create/<%= userType %>/<%= admin.id %>" method="post" class="student-form">
+                <h2>Create a new <%= userType.slice(0, -1) %>
+                </h2>
+                <div class="input-field">
+                    <label for="studentId">Student ID</label>
+                    <input type="text" id="studentId" name="studentId" required>
+                </div>
+                <div class="input-field">
+                    <label for="firstName">First Name</label>
+                    <input type="text" id="firstName" name="firstName" required>
+                </div>
+                <div class="input-field">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" id="lastName" name="lastName" required>
+                </div>
+                <div class="input-field">
+                    <label for="year">Year</label>
+                    <input type="text" id="year" name="year" required>
+                </div>
+                <div class="input-field">
+                    <label for="program">Program</label>
+                    <select name="program" id="program">
+                        <option value="BSc. Computer Engineering">BSc. Computer Engineering</option>
+                        <option value="BSc. Telecom Engineering">BSc. Telecom Engineering</option>
+                        <option value="BSc. Computer Science">BSc. Computer Science</option>
+                        <option value="Bsc. Information Technology">Bsc. Information Technology</option>
+                    </select>
+                </div>
+                <div class="input-field">
+                    <label for="level">Level</label>
+                    <select name="level" id="level">
+                        <option value="100">100</option>
+                        <option value="200">200</option>
+                        <option value="300">300</option>
+                        <option value="400">400</option>
+                        <option value="Top-Up">Top-Up</option>
+                    </select>
+                </div>
+                <div class="input-field">
+                    <label for="faculty">Faculty</label>
+                    <select name="faculty" id="faculty">
+                        <option value="Engineering">Engineering</option>
+                        <option value="FoCIS">FoCIS</option>
+                        <option value="Business">Business</option>
+                    </select>
+                </div>
+                <button type="submit" class="submit-button">Submit</button>
+            </form>
+        </div>
+
+    </div>
+</section>

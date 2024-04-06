@@ -1,22 +1,28 @@
 button#nextPage {
-    background-color: var(--accent);
-    color: var(--eye-dark);
+    background-color: var(--blue);
+    color: var(--white);
     transition: all 0.3s ease-in-out;
+    border: 1px solid transparent;
+}
+
+button#nextPage:hover {
+    border: 1px solid var(--primary);
+    background-color: var(--white);
+    color: var(--text);
 }
 
 button#resetBtn {
-    background-color: var(--blue-dark);
-    color: inherit;
+    border: 1px solid var(--red);
+    background-color: var(--white);
+    color: var(--text);
     transition: all 0.3s ease-in-out;
 }
 
-button#nextPage:hover,
-button#resetBtn:hover,
-td button.actionButton:hover {
-    background-color: white;
-    color: var(--eye-dark);
+button#resetBtn:hover {
+    border: 1px solid transparent;
+    background-color: var(--red);
+    color: var(--white);
 }
-
 
 div.section-header-nav>a {
     margin: 0 .5rem;
@@ -25,15 +31,14 @@ div.section-header-nav>a {
 }
 
 div.section-header-nav>a:hover {
-    color: var(--purple);
-    background-color: var(--default-white);
+    color: var(--white);
+    background-color: var(--accent);
 }
 
 section.main-section {
-    width: 100%;
+    min-width: fit-content;
     height: 100%;
     padding-inline: 10px;
-    margin-inline: auto;
 }
 
 @media (min-width: 768px) {
@@ -50,7 +55,7 @@ section.main-section {
 
     table {
         width: 100%;
-        background-color: var(--background-body);
+        background-color: var(--background);
         border-radius: 1rem;
     }
 
@@ -67,10 +72,11 @@ section.main-section {
     }
 
     thead th {
-        background-color: var(--blue);
-        color: var(--default-white);
+        background-color: var(--primary);
+        color: var(--white);
         text-transform: capitalize;
         cursor: pointer;
+        font-weight: 400;
     }
 
     button#resetBtn,
@@ -89,8 +95,7 @@ section.main-section {
     }
 
     select {
-        background-color: none;
-        background: none;
+        background-color: var(--primary);
         border: none;
         outline: none;
         cursor: pointer;
@@ -103,13 +108,14 @@ section.main-section {
         overflow-x: hidden;
         text-overflow: ellipsis;
     }
+
     select option {
-        color: var(--eye-dark);
-        font-family: inherit;
+        color: var(--white);
+        font-family: var(--default-font-face);
     }
 
     tbody tr:nth-child(even) {
-        background-color: #00000029;
+        background-color: var(--background-main);
     }
 
     tbody tr {
@@ -118,18 +124,25 @@ section.main-section {
     }
 
     tbody tr:hover {
-        background-color: rgba(205, 200, 200, 0.626) !important;
+        background-color: #f3f3f2;
     }
 
+    /*
+    tbody tr:hover> td {
+        color: var(--white);
+    } */
+
     button.actionButton {
-        background-color: var(--text);
-        color: var(--eye-dark);
+        /* background-color: var(--text); */
+        /* color: var(--eye-dark); */
         cursor: pointer;
         box-shadow: none;
     }
 
     button.actionButton.btn-courses:hover {
-        background-color: var(--primary);
+        background-color: var(--white);
+        border: 1px solid var(--purple);
+        color: var(--text);
     }
 
 }

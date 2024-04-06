@@ -1,7 +1,7 @@
 nav.sidebar {
     grid-area: sidenav;
     width: 80px;
-    background-color: var(--background-body);
+    background-color: var(--background);
     display: grid;
     grid-template-areas:
         "logo"
@@ -14,16 +14,10 @@ nav.sidebar {
     grid-template-rows: 10% 25% 55% 10%;
 }
 
-/* .user {
-    display: flex;
-    align-items: center;
-    margin: 1rem 0;
-} */
-
 .user p {
-    color: #fff;
-    /* opacity: 1; */
+    color: var(--text);
     margin-left: 1rem;
+    font-weight: 400;
 }
 
 section.adminProfileCard div{
@@ -40,7 +34,6 @@ section.adminProfileCard div.img-div {
     width: 50px;
     height: 50px;
     border-radius: 100%;
-    border: 1px solid #eee;
 }
 
 .sidebar {
@@ -49,8 +42,6 @@ section.adminProfileCard div.img-div {
     left: 0;
     bottom: 0;
     width: 80px;
-    /* border-radius: 1rem; */
-    /* background-color: var(--color-theme-1-light); */
     margin-right: 0.4rem;
     padding: 0.4rem 0.8rem;
     transition: all 0.5s ease-in-out;
@@ -123,10 +114,12 @@ section.adminProfileCard div.img-div {
     margin: 0.8rem auto;
     line-height: 50px;
     padding: 0 0.5rem;
+    border-radius: var(--border-radius);
+    padding: auto;
 }
 
 .sidebar li a {
-    color: #fff;
+    color: var(--text);
     display: flex;
     align-items: center;
     text-decoration: none;
@@ -143,6 +136,7 @@ section.adminProfileCard div.img-div {
     scale: 1.1;
 }
 
+
 .sidebar li a i {
     width: 50px;
     height: fit-content;
@@ -152,7 +146,7 @@ section.adminProfileCard div.img-div {
 }
 
 .sidebar .nav-item {
-    color: #fff;
+    color: var(--text);
     opacity: 0;
 }
 
@@ -193,7 +187,7 @@ section.adminProfileCard div.img-div {
 }
 
 .role {
-    background-color: #f740bd6e;
+    background-color: var(--secondary);
     width: fit-content;
     padding: 0.1rem 0.6rem;
     border-radius: 7rem;

@@ -1,6 +1,6 @@
 @media (min-width: 810px) {
     header.header-admin {
-        background-color: var(--background-body);
+        background-color: var(--background);
         margin-left: 80px;
         border-bottom-right-radius: .5rem;
         grid-area: header;
@@ -14,7 +14,6 @@
     header.header-admin>div.logo {
         display: grid;
         place-items: center;
-        border: 1px solid #eee;
         margin-right: 1rem;
         width: fit-content;
         height: fit-content;
@@ -37,10 +36,12 @@
         height: 45px;
         border: var(--boder-default);
         border-radius: var(--border-radius);
-        background-color: var(--default-white);
+        background-color: var(--background);
     }
 
     header.header-admin .dropdown {
+        border: none;
+        outline: none;
         position: relative;
         width: var(--button-width);
         height: var(--button-height);
@@ -48,8 +49,7 @@
         font-size: small;
         color: aliceblue;
         border-radius: var(--border-radius);
-        background-color: var(--purple);
-        border: 1px solid var(--default-white);
+        background-color: var(--accent);
         cursor: pointer;
         margin-right: 10px;
     }
@@ -67,15 +67,17 @@
         align-items: center;
         padding-right: 1rem;
         width: 100%;
-        color: var(--purple);
+        color: var(--text);
+        border: 1px solid var(--accent);
+        border-radius: var(--border-radius);
+        padding: 0 5px;
     }
 
     header.header-admin .search-box input {
-        /* padding: 1rem; */
         width: 100%;
         font-size: var(--font-standard);
         font-weight: 500;
-        color: var(--purple);
+        color: var(--text);
         border: 0;
         outline: 0;
     }
@@ -83,13 +85,13 @@
     header.header-admin .search-box i {
         font-size: 1.3rem;
         cursor: pointer;
-        color: var(--eye-dark);
+        color: var(--text);
     }
 
     header.header-admin .search-box input::placeholder {
         font-size: var(--font-standard);
         font-weight: 500;
-        color: var(--purple);
+        color: var(--accent);
     }
 
     header.header-admin button#searchBtn {
@@ -102,7 +104,6 @@
     header.header-admin>div.profile {
         position: relative;
         display: flex;
-        /* min-width: 300px; */
     }
 
     header.header-admin>div.profile>nav {
@@ -128,15 +129,15 @@
     }
 
     header.header-admin>div.profile>nav>ul>li>a:hover {
-        color: var(--purple);
-        background-color: var(--default-white);
+        color: var(--white);
+        background-color: var(--accent);
         box-shadow: var(--box-shadow-thin);
     }
 
     header.header-admin section.header_nav_profile {
         z-index: 9999;
         position: absolute;
-        background-color: var(--background-light);
+        background-color: var(--white);
         box-shadow: var(--box-shadow-thin);
         right: 9px;
         top: 57px;
@@ -152,28 +153,28 @@
         place-items: center;
         cursor: pointer;
         border-radius: 3px;
-        color:black;
+        color:var(--text);
     }
 
     header.header-admin section.header_nav_profile>div.call_to_action:first-child:hover {
-        background-color: var(--blue);
-        color: var(--default-white);
+        background-color: var(--secondary);
+        color: var(--text);
     }
 
     header.header-admin section.header_nav_profile>div.call_to_action:last-child:hover {
-        background-color: var(--purple);
-        color: var(--default-white);
+        background-color: var(--red);
+        color: var(--white);
     }
 
     div.username#current-user-name {
-        background-color: var(--blue);
+        background-color: var(--accent);
         height: 45px;
         width: 120px;
         display: flex;
         align-items: center;
         justify-content: center;
         border-radius: var(--border-radius);
-        color: #fff;
+        color: var(--white);
         text-transform: lowercase;
     }
 }

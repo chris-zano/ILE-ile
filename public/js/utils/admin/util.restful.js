@@ -26,3 +26,16 @@ function getId(id) {
 }
 
 console.log("Util is loaded ");
+
+const toast = (message) => {
+    const pop = document.createElement('div');
+    pop.innerHTML = `
+    <div id="toast" class="toast show">
+        <div id="toastText" class="toast-text">${message}</div>
+    </div>
+    `;
+    document.body.appendChild(pop);
+    setTimeout(function () {
+        document.body.removeChild(pop)
+    }, 3000);
+}

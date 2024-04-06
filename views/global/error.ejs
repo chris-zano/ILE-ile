@@ -1,3 +1,60 @@
-<div>
-    page not available
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ITLE(<%= status %>): Error</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: sans-serif;
+            font-size: 14px;
+        }
+        main {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20%;
+            text-align: center;
+        }
+        section {
+            width: 50%;
+            height: 200px;
+        }
+
+        div.status-code {
+            background-color: #fcfcd9;
+            height: 70%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        div.status-code p {
+            font-family: sans-serif;
+            font-size: 64px;
+            color: #1e1a15;
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <section>
+            <div class="status-code">
+                <p><%= status %></p>
+            </div>
+            <div class="error_message">
+                <p><%= error %></p>
+            </div>
+        </section>
+        <article>
+            <p>Click <a href="#">here</a> to learn how to use our application</p>
+        </article>
+    </main>
+</body>
+</html>

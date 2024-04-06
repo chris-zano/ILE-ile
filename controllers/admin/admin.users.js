@@ -2,7 +2,7 @@ const path = require('path');
 const fs = require('fs');
 //user models import
 
-const { getCourses } = require("./admin.utils");
+const { getCourses, logError } = require("./admin.utils");
 
 const Admins = require('../../models/admin/admin.models');
 const Lecturers = require('../../models/lecturer/lecturer.model');
@@ -85,24 +85,18 @@ const getLecturersDataByOffset = (offset, key, value) => {
 
 //handlers
 exports.createStudent = (req, res) => {
-    const { id, adminId, role } = req.query;
+    try {
+        const { studentId, firstName, lastName, program, year, level, faculty } = req.body;
+        const student = new Students({ studentId, firstName, lastName, program, year, level, faculty, courses: [], files: [], repos: [] });
+        student.save();
 
-    Admins.findOne({ _id: id, adminId: adminId, role: role })
-        .then((doc) => {
-            if (doc._id === id) {
-                const { studentId, firstname, lastname, program, year, level } = req.body;
-                const student = new Students({ studentId, firstname, lastname, program, year, level, courses: [], files: [], repos: [] });
-                student.save();
+        res.status(200).redirect(`/admins/render/imports/students/${req.adminData.id}`)
+    }
+    catch (error) {
+        logError(error);
+        res.status(500).render("global/error", { error: "Failed to create new Student", status: 500 })
+    }
 
-                res.status(200).json({ message: 'saved successfully' });
-            }
-            else {
-                res.status(403).json({ message: 'Bad request' });
-            }
-        }).catch((error) => {
-            console.log(error);
-            res.status(500).json({ message: 'Internal Server Error' });
-        });
 }
 
 exports.importStudentsData = (req, res) => {
@@ -221,7 +215,7 @@ exports.getLecturersData = (req, res) => {
     const { id } = req.query;
 
     Lecturers.findOne({ _id: id })
-        .then( async (doc) => {
+        .then(async (doc) => {
             if (doc == null) {
                 return res.status(404).json({ message: 'no such user found', doc: null });
             }
@@ -234,8 +228,8 @@ exports.getLecturersData = (req, res) => {
 
             if (field) {
                 console.log(doc[field])
-                
-                return res.status(200).json({ message: 'success', doc: await getCourses(doc[field])});
+
+                return res.status(200).json({ message: 'success', doc: await getCourses(doc[field]) });
             }
 
             return res.status(403).json({ message: 'action not recognised', doc: null });
