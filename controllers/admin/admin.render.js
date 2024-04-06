@@ -45,7 +45,7 @@ exports.renderImports = async (req, res) => {
     res.render('admin/admin-main', {
         admin: adminData,
         pageTitle: "Imports",
-        stylesheets: [],
+        stylesheets: ["/css/admin/import"],
         pageUrl: 'layouts/imports',
         userType: userType,
         scripts: ["/script/scripts/admin/import"]

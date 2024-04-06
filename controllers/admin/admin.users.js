@@ -1,6 +1,9 @@
 const path = require('path');
 const fs = require('fs');
 //user models import
+
+const { getCourses } = require("./admin.utils");
+
 const Admins = require('../../models/admin/admin.models');
 const Lecturers = require('../../models/lecturer/lecturer.model');
 const Students = require('../../models/student/student.model');
@@ -103,9 +106,9 @@ exports.createStudent = (req, res) => {
 }
 
 exports.importStudentsData = (req, res) => {
-    const { id, adminId, role } = req.query;
+    const { id } = req.params;
     const { originalname, filename } = req.file;
-    const filePath = path.join(__dirname, '..', '..', 'models/student/studentsDataImports', filename);
+    const filePath = path.join(__dirname, '..', '..', 'models/imports', filename);
 
 
     try {
@@ -118,7 +121,6 @@ exports.importStudentsData = (req, res) => {
                 program: student.program,
                 year: student.year,
                 level: student.level,
-                department: student.department,
                 faculty: student.faculty,
                 courses: student.courses,
                 files: student.files,
@@ -127,15 +129,15 @@ exports.importStudentsData = (req, res) => {
             newStudent.save();
         });
 
-        const newFile = new Files({
-            filename,
-            originalname,
-            fileUrl: filePath,
-            owner: id,
-            'created-at': new Date().getDate()
-        });
-        newFile.save();
-        res.status(200).redirect(`/admin/dashboards?id=${id}&&adminId=${adminId}`)
+        // const newFile = new Files({
+        //     filename,
+        //     originalname,
+        //     fileUrl: filePath,
+        //     owner: id,
+        //     'created-at': new Date().getDate()
+        // });
+        // newFile.save();
+        res.status(200).redirect(`/admins/render/students/${id}`)
     }
     catch (error) {
         console.log("failed to readfile: ", error);
@@ -219,7 +221,7 @@ exports.getLecturersData = (req, res) => {
     const { id } = req.query;
 
     Lecturers.findOne({ _id: id })
-        .then((doc) => {
+        .then( async (doc) => {
             if (doc == null) {
                 return res.status(404).json({ message: 'no such user found', doc: null });
             }
@@ -229,10 +231,11 @@ exports.getLecturersData = (req, res) => {
             };
 
             const field = actionsMap[action];
-            console.log(field)
 
             if (field) {
-                return res.status(200).json({ message: 'success', doc: doc[field] });
+                console.log(doc[field])
+                
+                return res.status(200).json({ message: 'success', doc: await getCourses(doc[field])});
             }
 
             return res.status(403).json({ message: 'action not recognised', doc: null });

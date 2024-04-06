@@ -1,6 +1,6 @@
 button#nextPage {
-    background-color: var(--blue);
-    color: inherit;
+    background-color: var(--accent);
+    color: var(--eye-dark);
     transition: all 0.3s ease-in-out;
 }
 
@@ -40,7 +40,6 @@ section.main-section {
     section.students {
         display: grid;
         grid-template-rows: 100px 1fr;
-        background-color: green;
     }
 
     div.section-header {
@@ -120,6 +119,17 @@ section.main-section {
 
     tbody tr:hover {
         background-color: rgba(205, 200, 200, 0.626) !important;
+    }
+
+    button.actionButton {
+        background-color: var(--text);
+        color: var(--eye-dark);
+        cursor: pointer;
+        box-shadow: none;
+    }
+
+    button.actionButton.btn-courses:hover {
+        background-color: var(--primary);
     }
 
 }

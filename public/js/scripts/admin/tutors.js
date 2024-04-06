@@ -33,23 +33,43 @@ const modalWrite = (message) => {
     return;
 };
 
-const modalRender = (object) => {
+const modalRender = (array) => {
     // TODO: render the students data here (courrses, repos, files etc);
+    const overlay = document.createElement('div');
+    overlay.classList.add('overlay')
     const modalContent = document.createElement('div');
-    modalContent.classList.add('modal-content');
+    modalContent.classList.add('popup');
 
-    for (const key in object) {
-        if (Object.hasOwnProperty.call(object, key)) {
-            const value = object[key];
+    modalContent.style.display = 'block';
+    modalContent.innerHTML = `
+        <div id="close">&#10060;</div>
+    `;
 
-            const paragraph = document.createElement('p');
-            paragraph.textContent = `${key}: ${value}`;
+    const closeBtn = modalContent.querySelector('#close');
+    closeBtn.classList.add('close');
+    closeBtn.addEventListener('click', () => {
+        modalContent.style.display = 'none';
+        document.getElementById('wrapper-main').classList.remove('blur');
+        document.getElementById('wrapper-main').style.pointerEvents = 'inherit';
+    })
 
-            modalContent.appendChild(paragraph);
+    for (let object of array) {
+        for (const key in object) {
+            if (Object.hasOwnProperty.call(object, key)) {
+                const value = object[key];
+
+                const paragraph = document.createElement('p');
+                paragraph.textContent = `${key}: ${value}`;
+
+                modalContent.appendChild(paragraph);
+            }
         }
     }
+    document.getElementById('wrapper-main').classList.add('blur');
+    document.getElementById('wrapper-main').style.pointerEvents = 'none';
 
-    return modalContent;
+    document.body.appendChild(modalContent);
+
 };
 
 async function showView(e) {
@@ -59,25 +79,21 @@ async function showView(e) {
     const res = await req.json();
     const status = req.status;
 
-    console.log(res)
-
     if (status == 403 || status == 500) {
         console.log('An error occured.\nPlease Try again');
         return;
     }
 
     if (res.doc.length == 0) {
-        return modalWrite('No data available for this student');
+        return modalWrite('No data available for this lecturer');
     }
 
-    for (let item of res.doc) {
-        console.log(item);
-    }
+    modalRender(res.doc);
     return;
 }
 
 const getStudentsByOffset = async (key, value) => {
-    const moffset = localStorage.getItem('students-offset') || 0;
+    const moffset = localStorage.getItem('tutors-offset') || 0;
     const req = await fetch(`/admin/get/lecturers/${moffset}?key=${encodeURIComponent(key)}&value=${encodeURIComponent(value)}`);
     console.log(`/admin/get/letcurers/${moffset}?key=${encodeURIComponent(key)}&value=${encodeURIComponent(value)}`);
     const res = await req.json();
@@ -90,8 +106,9 @@ const getStudentsByOffset = async (key, value) => {
 }
 
 const createTableRow = (lecturerObject, parentElement) => {
-    let count = Number(localStorage.getItem('count'));
+    let count = Number(localStorage.getItem('count-2')) || 1;
     const tr = document.createElement('tr');
+
     tr.style.cursor = 'pointer';
     tr.innerHTML = `
         <td>${count}</td>
@@ -99,11 +116,11 @@ const createTableRow = (lecturerObject, parentElement) => {
         <td>${lecturerObject.firstName}</td>
         <td>${lecturerObject.lastName}</td>
         <td>${lecturerObject.faculty}</td>
-        <td><button type="button" class="actionButton" data-label-type="courses" data-label-Lecturer-id="${lecturerObject._id}" style="cursor: pointer; background-color: var(--blue-light); color: var(--default-white);">Courses</button></td>
+        <td><button type="button" class="actionButton btn-courses" data-label-type="courses" data-label-Lecturer-id="${lecturerObject._id}" ">Courses</button></td>
     `;
 
     count += 1;
-    localStorage.setItem('count', JSON.stringify(count));
+    localStorage.setItem('count-2', JSON.stringify(count));
 
     document.getElementById(parentElement).append(tr);
 
@@ -131,7 +148,7 @@ const callFetchForStudents = (key, value) => {
             const actionButtons = document.getElementsByClassName('actionButton');
             [...actionButtons].forEach((actionButton) => listen(actionButton, 'click', showView));
 
-            localStorage.setItem('students-offset', JSON.stringify(data.data.cursor));
+            localStorage.setItem('tutors-offset', JSON.stringify(data.data.cursor));
             // console.log('Offset updated:', data.data.cursor);
         }).catch((error) => {
             console.log('Error on line 23(forge.js): ', error);
@@ -146,30 +163,14 @@ const main = () => {
 
     const tdlist = document.getElementById('lecturers-list');
     tdlist.innerHTML = "";
+    // Initialize count to 1
+    let count = 1;
+    localStorage.setItem('count-2', JSON.stringify(count));
 
-    function ensureCount(initialValue = 1) {
-        let count = localStorage.getItem('count');
-        if (count === null || count === undefined) {
-            count = initialValue;
-        } else {
-            count = Number(count);
-        }
-        localStorage.setItem('count', JSON.stringify(count));
-        return count;
-    }
-
-    let offset = Number(localStorage.getItem('students-offset') || 0);
-    let count = ensureCount(); // Call without initialValue argument
-
-    function resetCountAndOffset() {
-        localStorage.setItem('count', JSON.stringify(1)); // Reset count to 1 explicitly
-        localStorage.setItem('students-offset', JSON.stringify(0));
-
-        count = 1;
-        offset = 0;
-
-        tdlist.innerHTML = "";
-    }
+    // Initialize offset to 0
+    let offset = 0;
+    localStorage.setItem('tutors-offset', JSON.stringify(offset));
+    
 
     const selectors = [{ id: 'faculty', key: 'faculty' }];
 

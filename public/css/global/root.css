@@ -9,16 +9,23 @@
     --eye-dark: #1b191b;
     --eye-dark-light: #f6edf6;
     --dark-grey: rgba(31, 28, 28, 0.889);
-    --blue: #1551f7;
-    --blue-light: #496bc8;
-    --blue-dark: #092061;
+    --blue: #0b3ec9;
+    --blue-light: #7899f3;
+    --blue-dark: #2547a4;
     --purple: #9a1663;
     --shadow: rgba(0, 0, 0, 0.15) 0px 5px 15px 0px;
 
 
+    --text: #ffffff;
+    --background: #292929;
+    --primary: #d19fd1;
+    --secondary: #753c38;
+    --accent: #39c682;
+
+
     /* fonts */
     --default-font-face: 'noto regular';
-    --default-font-color: var(--eye-dark-light);
+    --default-font-color: var(--text);
     --font-small: 11px;
     --font-standard: 14px;
     --font-medium: 18px;
@@ -47,14 +54,16 @@
 
     /* background colours (light) */
     --background-light: rgb(241, 237, 237);
-    --background-body: #282828;
-    --background-main: #130e09;
+    --background-body: var(--background);
+    /* --background-main: #161313; */
+    --background-main: var(--eye-dark);
     --color-theme-1-light: var(--blue-dark);
     --color-theme-2-light: #584e01dd;
 
     /* input-fields */
     --button-height: 45px;
     --button-width: 100px;
+    --button-disabled-color: rgb(171, 171, 171);
 
 }
 
@@ -89,6 +98,7 @@ li {
 
 body {
     background-color: var(--background-body);
+    font-size: var(--font-standard);
 }
 
 
@@ -107,9 +117,14 @@ body {
         height: 45px;
         border-radius: 0.7rem;
         border: 1px solid transparent;
-        box-shadow: var(--box-shadow-thin);
-        /* background-color: ; */   
+        /* box-shadow: var(--box-shadow-thin); */
+        /* background-color: ; */
     }
+}
+
+button[disabled] {
+    background-color: var(--button-disabled-color);
+    color: #092061;
 }
 
 *.hidden {
@@ -120,14 +135,14 @@ body {
     filter: blur(5px);
 }
 
-.popup{
+.popup {
     position: fixed;
     top: 40%;
     left: 50%;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
     width: 600px;
     padding: 50px;
-    box-shadow: 0 5px 30px rgba(0,0,0,.30);
+    box-shadow: 0 5px 30px rgba(0, 0, 0, .30);
     color: var(--eye-dark);
     background: #fff;
     opacity: 1;
@@ -135,7 +150,7 @@ body {
     border-radius: 15px;
 }
 
-.popup > * {
+.popup>* {
     color: var(--eye-dark);
 }
 

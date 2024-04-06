@@ -19,8 +19,8 @@ router.get('/login', (req, res) => {
 
 
 //get admin interfaces
-router.get('/admins/render/imports/:userType/:id', verifyAdmin, adminRender.renderImports);
 router.get('/admins/render/dashboards/:id', verifyAdmin, adminRender.renderDashboard);
+router.get('/admins/render/imports/:userType/:id', verifyAdmin, adminRender.renderImports);
 router.get('/admins/render/students/:id', verifyAdmin, adminRender.renderStudents);
 router.get('/admins/render/tutors/:id', verifyAdmin, adminRender.renderTutors);
 router.get('/admins/render/courses/:id', verifyAdmin, adminRender.renderCourses);

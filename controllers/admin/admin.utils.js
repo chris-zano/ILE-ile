@@ -1,5 +1,9 @@
 const { MongooseError } = require('mongoose');
 const Admins = require('../../models/admin/admin.models');
+const Courses = require('../../models/courses/courses.model');
+const Students = require('../../models/student/student.model');
+const Lecturers = require('../../models/lecturer/lecturer.model');
+
 const utils = require('./admin.utils');
 const path = require('path');
 const fs = require('fs');
@@ -74,5 +78,46 @@ exports.logSession = (username, ip, status="") => {
         console.log('Session logged successfully.'); 
     } catch (error) {
         console.error('Error logging session:', error);
+    }
+}
+
+exports.getCourses = async (coursesArray = []) => {
+    const courses = [];
+    const courseObj = {
+        title: '',
+        courseCode: '',
+        faculty: '',
+        level: '',
+        semester: '',
+        year: '',
+        students: '',
+        resources: '',
+        recordings: '',
+        schedule: ''
+    }
+    if (coursesArray.length != 0) {
+        let i = 0;
+        for (i; i < coursesArray.length; ++i) {
+            const course = await Courses.findOne({ courseCode: coursesArray[i] });
+            if (course != null) {
+                courseObj.title = course.title;
+                courseObj.courseCode = course.courseCode;
+                courseObj.faculty = course.faculty;
+                courseObj.level = course.level;
+                courseObj.semester = course.semester;
+                courseObj.year = course.year;
+                courseObj.students = course.students.length;
+                courseObj.resources = course.resources.length;
+                courseObj.recordings = course.recordings.length;
+                courseObj.schedule = course.schedule;
+
+                courses.push(courseObj)
+            }
+        }
+        if (i == coursesArray.length) {
+            return courses
+        }
+    }else {
+        return courses;
     }
 }

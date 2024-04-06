@@ -115,6 +115,8 @@ exports.getCourses = async (coursesArray = []) => {
         if (i == coursesArray.length) {
             return courses
         }
+    }else {
+        return courses;
     }
 }
 
