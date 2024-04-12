@@ -1,7 +1,7 @@
 const socket = io();
 
 
-const main = () => {
+const search = () => {
     const globalSearchBtn = document.getElementById('searchBtn');
 
     globalSearchBtn.addEventListener('click', (e) => {
@@ -30,5 +30,5 @@ const main = () => {
 
 
 
-if (document.readyState == "loading") document.addEventListener("DOMContentLoaded", main);
-else main();
+if (document.readyState == "loading") document.addEventListener("DOMContentLoaded", search);
+else search();
