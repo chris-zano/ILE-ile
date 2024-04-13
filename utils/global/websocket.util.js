@@ -1,5 +1,5 @@
 const socketIo = require('socket.io');
-const { findCourse, findStudent } = require('../../controllers/admin/admin.search');
+const { findCourse, findStudent, findTutor, findMaterial } = require('../../controllers/admin/admin.search');
 
 function setupWebSocketServer(server) {
     const io = socketIo(server);
@@ -22,6 +22,12 @@ function setupWebSocketServer(server) {
                     break;
                 case "students":
                     findStudent(socket, searchInput);
+                    break;
+                case "lecturers":
+                    findTutor(socket, searchInput);
+                    break;
+                case "materials":
+                    findMaterial(socket, searchInput);
                     break;
                 default:
                     break;

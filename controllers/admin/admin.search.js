@@ -8,6 +8,10 @@ const Materials = require('../../models/courses/courses.model');
 exports.findCourse = (socket, value) => {
     const regex = new RegExp(value, 'i');
 
+    if (value == "") {
+        return;
+    }
+
     const query = {
       $or: [
         { courseCode: { $regex: regex } },
@@ -20,8 +24,7 @@ exports.findCourse = (socket, value) => {
 
     Courses.find(query)
     .then((docs) => {
-       console.log(docs)
-       socket.emit("searchResults", docs);
+       socket.emit("searchResults", {type: "courses", results: docs});
     }).catch((error) => {
         console.log(error);
     })
@@ -29,6 +32,10 @@ exports.findCourse = (socket, value) => {
 
 exports.findStudent = (socket, value) => {
     const regex = new RegExp(value, "i");
+
+    if (value == "") {
+        return;
+    }
 
     const query = {
         $or: [
@@ -40,8 +47,56 @@ exports.findStudent = (socket, value) => {
 
     Students.find(query)
     .then((docs) => {
-        console.log(docs);
-        socket.emit("searchResults", docs)
+        socket.emit("searchResults", {type: "students", results: docs})
+    }).catch((error) => {
+        console.log(error);
+    })
+}
+
+exports.findTutor = (socket, value) => {
+    const regex = new RegExp(value, "i");
+    if (value == "") {
+        return;
+    }
+
+    const query = {
+        $or: [
+            {lecturerId: {$regex: regex}},
+            {firstName: {$regex: regex}},
+            {lastName: {$regex: regex}}
+        ]
+    }
+
+    Tutors.find(query)
+    .then((docs) => {
+        socket.emit("searchResults", {type: "tutors", results: docs})
+    }).catch((error) => {
+        console.log(error);
+    })
+}
+
+exports.findMaterial = (socket, value) => {
+    const regex = new RegExp(value, "i");
+
+    if (value == "") {
+        return;
+    }
+
+    const query = {
+        $or: [
+            {originalname: {$regex: regex}},
+            {courseId: {$regex: regex}},
+            {'created-at': {
+                date: {$regex: regex},
+                month: {$regex: regex},
+                year: {$regex: regex}
+            }}
+        ]
+    }
+
+    Materials.find(query)
+    .then((docs) => {
+        socket.emit("searchResults", {type: "materials", results: docs})
     }).catch((error) => {
         console.log(error);
     })

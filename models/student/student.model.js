@@ -11,6 +11,22 @@ const Schema = mongoose.Schema;
  * uploadedFiles
  * codeRepos
  */
+
+const createdAtSchema = new Schema({
+    date: {
+        type: String,
+        required: true
+    },
+    month: {
+        type: String,
+        required: true
+    },
+    year: {
+        type: String,
+        required: true
+    }
+});
+
 const studentSchema = new Schema({
     studentId: {
         type: String,
@@ -51,6 +67,10 @@ const studentSchema = new Schema({
     repos: {
         type: Array,
         default: []
+    },
+    'created-at': {
+        type: createdAtSchema,
+        required: true
     }
 });
 

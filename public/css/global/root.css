@@ -6,7 +6,7 @@
 :root {
     /* colors */
     --text: #051e0e;
-    --white: #fcf9f9;
+    --white: #ffffff;
     --background: #f8fefb;
     --background-main: #e8ebea;
     --primary: #3074d9;
@@ -37,6 +37,7 @@
     /* borders and border-radius */
     --border-default: 1px solid var(--text);
     --border-radius: 7rem;
+    --border-radius-thin: 0.5rem;
     --boder-radius-circle: 50%;
 
     /* box shadows */
