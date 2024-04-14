@@ -17,6 +17,21 @@ const main = () => {
 
     programSelect.addEventListener("change", updateFaculty);
 
+    document.getElementById("add-student").addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const studentId = document.getElementById("studentId").value;
+        const studentIdRegEexp = /^\d{9}$/;
+
+        if (!studentIdRegEexp.test(studentId)) {
+            document.getElementById("studentId").style.border = "1px solid var(--red)"
+            toast("Invalid student Id format")
+            return;
+        }
+
+        e.target.submit();
+    })
+
 }
 
 if (document.readyState == "loading") document.addEventListener("DOMContentLoaded", main);

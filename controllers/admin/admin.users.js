@@ -2,7 +2,7 @@ const path = require('path');
 const fs = require('fs');
 //user models import
 
-const { getCourses, logError } = require("./admin.utils");
+const { getCourses, logError, getSystemDate } = require("./admin.utils");
 
 const Admins = require('../../models/admin/admin.models');
 const Lecturers = require('../../models/lecturer/lecturer.model');
@@ -83,6 +83,33 @@ const getLecturersDataByOffset = (offset, key, value) => {
         )
 }
 
+exports.createLecturer = async (req, res) => {
+    try {
+        const createdAt = getSystemDate();
+        const { lecturerId, firstName, lastName, faculty } = req.body;
+
+        const tutor = new Lecturers({
+            lecturerId: lecturerId,
+            firstName: firstName,
+            lastName: lastName,
+            faculty: faculty,
+            "created-at": createdAt
+        });
+
+        await tutor.save();
+
+        res.status(200).redirect(`/admins/render/imports/lecturers/${req.adminData.id}`);
+    } catch (error) {
+        if (error.code === 11000 && error.keyValue && error.keyPattern) {
+            res.status(400).render("global/error", { error: `Lecturer with ID ${error.keyValue.lecturerId} already exists`, status: 400 });
+        } else {
+            logError(error);
+            res.status(500).render("global/error", { error: "Failed to create new Lecturer", status: 500 });
+        }
+    }
+};
+
+
 //handlers
 exports.createStudent = (req, res) => {
     try {
@@ -99,15 +126,50 @@ exports.createStudent = (req, res) => {
 
 }
 
-exports.importStudentsData = (req, res) => {
+exports.importLecturersData = async (req, res) => {
     const { id } = req.params;
     const { originalname, filename } = req.file;
     const filePath = path.join(__dirname, '..', '..', 'models/imports', filename);
+    const createdAt = getSystemDate();
 
+    try {
+        const lecturersArray = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        await Promise.all(lecturersArray.map(async (tutor) => {
+            const newtutor = new Lecturers({
+                lecturerId: tutor.lecturerId,
+                firstName: tutor.firstName,
+                lastName: tutor.lastName,
+                faculty: tutor.faculty,
+                "created-at": createdAt
+            });
+            await newtutor.save();
+        }));
+        res.status(200).redirect(`/admins/render/lecturers/${id}`);
+    } catch (error) {
+        if (error.name === 'ValidationError') {
+            const errorMessage = Object.values(error.errors).map(err => err.message).join(', ');
+            res.status(400).render("global/error", { error: errorMessage, status: 400 });
+        } else if (error.code === 11000 && error.keyValue && error.keyPattern) {
+            res.status(400).render("global/error", { error: `Lecturer with ID ${error.keyValue.lecturerId} already exists`, status: 400 });
+        } else {
+            logError(error);
+            res.status(400).render("global/error", { error: "Failed to import new lecturer", status: 400 });
+        }
+    }
+};
+
+
+
+exports.importStudentsData = async (req, res) => {
+    const { id } = req.params;
+    const { originalname, filename } = req.file;
+    const filePath = path.join(__dirname, '..', '..', 'models/imports', filename);
+    const createdAt = getSystemDate();
 
     try {
         const studentsArray = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-        studentsArray.forEach((student) => {
+        console.log(createdAt);
+        await Promise.all(studentsArray.map(async (student) => {
             const newStudent = new Students({
                 studentId: student.studentId,
                 firstName: student.firstName,
@@ -118,47 +180,26 @@ exports.importStudentsData = (req, res) => {
                 faculty: student.faculty,
                 courses: student.courses,
                 files: student.files,
-                repos: student.repos
+                repos: student.repos,
+                "created-at": createdAt
             });
-            newStudent.save();
-        });
+            await newStudent.save();
+        }));
+        res.status(200).redirect(`/admins/render/students/${id}`);
+    } catch (error) {
+        if (error.name === 'ValidationError') {
+            const errorMessage = Object.values(error.errors).map(err => err.message).join(', ');
+            res.status(400).render("global/error", { error: errorMessage, status: 400 });
+        } else if (error.code === 11000 && error.keyValue && error.keyPattern) {
+            res.status(400).render("global/error", { error: `Student with ID ${error.keyValue.studentId} already exists`, status: 400 });
+        } else {
+            logError(error);
+            res.status(400).render("global/error", { error: "Failed to import new students", status: 400 });
+        }
+    }
+};
 
-        // const newFile = new Files({
-        //     filename,
-        //     originalname,
-        //     fileUrl: filePath,
-        //     owner: id,
-        //     'created-at': new Date().getDate()
-        // });
-        // newFile.save();
-        res.status(200).redirect(`/admins/render/students/${id}`)
-    }
-    catch (error) {
-        console.log("failed to readfile: ", error);
-    }
-}
 
-exports.manageUser = (id, adminId, role, victimId, res) => {
-    if (victimId != null || victimId != undefined) {
-
-        Admins.findById(victimId)
-            .then(doc => {
-                const copyDash = { ...dashboardData }
-                copyDash.adminId = doc.adminId;
-                copyDash._id = doc._id;
-                copyDash.adminObject = doc
-                copyDash.role = doc.role;
-                if (doc != null) {
-                    res.render('admin/manage-users', { user: doc, id, adminId, role, ...copyDash });
-                }
-            }).catch(error => {
-                console.log('from here: ', error);
-            });
-    }
-    else {
-        res.render('global/error');
-    }
-}
 
 exports.getUserDataByOffset = (req, res) => {
     const { userType, offset } = req.params;

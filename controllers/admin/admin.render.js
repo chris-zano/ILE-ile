@@ -48,7 +48,7 @@ exports.renderImports = async (req, res) => {
         stylesheets: ["/css/admin/import"],
         pageUrl: 'layouts/imports',
         userType: userType,
-        scripts: ["/script/scripts/admin/import"]
+        scripts: [`/script/scripts/admin/import-${userType}`]
     });
 
     return;

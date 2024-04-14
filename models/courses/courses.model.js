@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const createdAtSchema = new Schema({
+    day: {
+        type: String,
+        required: true
+    },
     date: {
         type: String,
         required: true
@@ -16,10 +20,21 @@ const createdAtSchema = new Schema({
     }
 });
 
+const scheduleSchema = new Schema({
+    day: {
+        type: String
+    },
+    time: {
+        type: String
+    }
+})
+
 const courseSchema = new Schema({
     courseCode: {
         type: String,
-        required: true
+        required: true,
+        index: true,
+        unique: true
     },
     title: {
         type: String,

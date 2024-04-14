@@ -1,0 +1,98 @@
+[
+    {
+        "studentId": "0001",
+        "firstName": "Chris",
+        "lastName": "Harnes",
+        "program": "BSc. Computer Engineering",
+        "year": "2023/2024",
+        "level": 400,
+        "faculty": "Engineering",
+        "courses": [],
+        "files": [],
+        "repos": []
+    },
+    {
+        "studentId": "0002",
+        "firstName": "Jessica",
+        "lastName": "Boine",
+        "program": "BSc. Telecom Engineering",
+        "year": "2023/2024",
+        "level": 400,
+        "faculty": "Engineering",
+        "courses": [],
+        "files": [],
+        "repos": []
+    },
+    {
+        "studentId": "0003",
+        "firstName": "Micah",
+        "lastName": "Hels",
+        "program": "BSc. Computer Engineering",
+        "year": "2023/2024",
+        "level": 400,
+        "faculty": "Engineering",
+        "courses": [],
+        "files": [],
+        "repos": []
+    },
+    {
+        "studentId": "0004",
+        "firstName": "Erica",
+        "lastName": "Ethel",
+        "program": "BSc. Information Technology",
+        "year": "2023/2024",
+        "level": 400,
+        "faculty": "FoCIS",
+        "courses": [],
+        "files": [],
+        "repos": []
+    },
+    {
+        "studentId": "0001",
+        "firstName": "Chris",
+        "lastName": "Harnes",
+        "program": "BSc. Computer Engineering",
+        "year": "2023/2024",
+        "level": 400,
+        "faculty": "Engineering",
+        "courses": [],
+        "files": [],
+        "repos": []
+    },
+    {
+        "studentId": "0002",
+        "firstName": "Jessica",
+        "lastName": "Boine",
+        "program": "BSc. Telecom Engineering",
+        "year": "2023/2024",
+        "level": 400,
+        "faculty": "Engineering",
+        "courses": [],
+        "files": [],
+        "repos": []
+    },
+    {
+        "studentId": "0003",
+        "firstName": "Micah",
+        "lastName": "Hels",
+        "program": "BSc. Computer Engineering",
+        "year": "2023/2024",
+        "level": 400,
+        "faculty": "Engineering",
+        "courses": [],
+        "files": [],
+        "repos": []
+    },
+    {
+        "studentId": "0004",
+        "firstName": "Erica",
+        "lastName": "Ethel",
+        "program": "BSc. Information Technology",
+        "year": "2023/2024",
+        "level": 400,
+        "faculty": "FoCIS",
+        "courses": [],
+        "files": [],
+        "repos": []
+    }
+]

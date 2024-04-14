@@ -15,6 +15,8 @@ const userJSONUpload = multer({
 
 router.post('/auth/users/login', authenticateLoginSequence, adminController.loginUser);
 router.post('/admins/imports/students/:id',userJSONUpload.single('file'), verifyAdmin, usersController.importStudentsData);
+router.post('/admins/imports/lecturers/:id',userJSONUpload.single('file'), verifyAdmin, usersController.importLecturersData);
 router.post('/admins/create/students/:id', verifyAdmin, usersController.createStudent)
+router.post('/admins/create/lecturers/:id', verifyAdmin, usersController.createLecturer)
 
 module.exports = router;

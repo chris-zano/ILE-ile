@@ -3,14 +3,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 
-/**
- * fileName
- * fileUrl
- * owner - the (studentId / lecturerId )
- * courseId
- * created-at:
- */
 const createdAtSchema = new Schema({
+    day: {
+        type: String,
+        required: true
+    },
     date: {
         type: String,
         required: true

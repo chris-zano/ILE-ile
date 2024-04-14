@@ -47,8 +47,8 @@ exports.validateAuthId = async (id) => {
             else {
                 const adminData = {
                     id: admin._id,
-                    firstname: admin.firstname,
-                    lastname: admin.lastname,
+                    firstname: admin.firstName,
+                    lastname: admin.lastName,
                     faculty: admin.faculty
                 }
                 return {
@@ -67,15 +67,15 @@ exports.validateAuthId = async (id) => {
         });
 }
 
-exports.logSession = (username, ip, status="") => {
+exports.logSession = (username, ip, status = "") => {
     try {
-        const logFilePath = path.join(__dirname, '..', '..','logs', 'session.log');
+        const logFilePath = path.join(__dirname, '..', '..', 'logs', 'session.log');
         const timestamp = new Date().toISOString();
         const sessionLog = `${status.toUpperCase()}//:: ${timestamp}: Username: ${username}, IP: ${ip}\n`;
-        
+
         fs.appendFileSync(logFilePath, sessionLog);
-        
-        console.log('Session logged successfully.'); 
+
+        console.log('Session logged successfully.');
     } catch (error) {
         console.error('Error logging session:', error);
     }
@@ -117,7 +117,20 @@ exports.getCourses = async (coursesArray = []) => {
         if (i == coursesArray.length) {
             return courses
         }
-    }else {
+    } else {
         return courses;
     }
+}
+
+exports.getSystemDate = () => {
+    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const date = new Date();
+
+    return {
+        day: days[date.getDay()],
+        date: date.getDate(),
+        month: months[date.getMonth()],
+        year: date.getFullYear()
+    };
 }

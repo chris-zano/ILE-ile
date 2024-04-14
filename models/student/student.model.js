@@ -13,6 +13,10 @@ const Schema = mongoose.Schema;
  */
 
 const createdAtSchema = new Schema({
+    day: {
+        type: String,
+        required: true
+    },
     date: {
         type: String,
         required: true
@@ -30,7 +34,9 @@ const createdAtSchema = new Schema({
 const studentSchema = new Schema({
     studentId: {
         type: String,
-        required: true
+        required: true,
+        index: true,
+        unique: true
     },
     firstName: {
         type: String,
