@@ -103,7 +103,7 @@ const renderSearchResults = (searchResults) => {
             break;
     }
 
-    document.getElementById("search-matches").innerText = results.length + " matches found."
+    document.getElementById("search-matches").innerText = results.length == 1? results.length + " match found.": results.length + " matches found."
 }
 const handleSearch = () => {
     const socket = io();

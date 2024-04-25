@@ -35,7 +35,7 @@ exports.authenticateLoginSequence = (req, res, next) => {
 
     const adminRegexp = /^AD-\d{3}[A-Za-z0-9]*$/;
     const tutorRegexp = /^TU-\d{3}[A-Za-z0-9]*$/;
-    const studentRegexp = /^\d{9}$/;
+    const studentRegexp = /^\d{10}$/;
 
 
     if (adminRegexp.test(user)) req.usernameformat = "admin";

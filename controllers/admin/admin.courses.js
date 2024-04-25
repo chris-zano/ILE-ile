@@ -4,6 +4,7 @@ const Students = require('../../models/student/student.model');
 const Files = require('../../models/courses/files.models');
 
 const fs = require('fs');
+const { getSystemDate, logError } = require('./admin.utils');
 
 exports.manageCoursesViews = (req, res) => {
     const { id, adminId, role } = req.query;
@@ -46,96 +47,69 @@ exports.manageCoursesViews = (req, res) => {
         }).catch((error) => res.end('Manage courses encountered an error'));
 }
 
-exports.manageCourses = (req, res) => {
-    const { id, adminId, role, department } = req.query;
+exports.manageCourses = async (req, res) => {
+    const { courseId, id } = req.params;
+    const { adminData } = req;
+    const course = req.body;
 
-    if (req.params.action === 'create') {
-        Admins.findOne({ _id: id, adminId, role, department })
-            .then((doc) => {
-                console.log(doc);
-                if (doc.role === role && role === 'shepherd') {
-                    const course = new Courses({
-                        courseCode: req.body.courseCode,
-                        title: req.body.title,
-                        year: req.body.year,
-                        level: req.body.level,
-                        semester: req.body.semester,
-                        department: req.body.department,
-                        lecturer: req.body.lecturer,
-                        students: [],
-                        resources: [],
-                        assignments: [],
-                        recordings: [],
-                        submissions: [],
-                        schedule: {}
-                    });
-                    course.save();
-                    res.redirect(`/admin/dashboards?id=${id}&&adminId=${adminId}`);
-                }
-                else {
-                    res.render('global/error');
-                }
-            }).catch((error) => console.log('error on line 31 (admin.courses): ', error));
-    }
-    else if (req.params.action === 'update') {
-        Courses.findByIdAndUpdate(req.body.id)
-            .then(doc => {
-                if (doc.__v == req.body.v) {
-                    doc.courseCode = req.body.courseCode;
-                    doc.title = req.body.title;
-                    doc.year = req.body.year;
-                    doc.level = req.body.level;
-                    doc.semester = req.body.semester;
-                    doc.department = req.body.department;
-                    doc.lecturer = req.body.lecturer;
-                    doc.__v = Number(req.body.v) + 1;
 
-                    doc.save();
-                    res.redirect(`/admin/dashboards?id=${id}&&adminId=${adminId}`);
-                }
-                else {
-                    res.render('global/error');
-                }
-            }).catch((error) => {
-                console.log(error);
-            })
-    }
-    else if (req.params.action === 'add_student') {
-        const { studentId, courseCode } = req.body;
-        Students.findOne({ studentId: studentId })
-            .then((doc) => {
-                if (doc !== null) {
-                    let courses = [...doc.courses];
-                    if (courses.find(courseCode)) {
-                        Courses.findOneAndUpdate({ courseCode: courseCode })
-                            .then((course) => {
-                                let students = [...course.students];
-                                if (!students.find(studentId)) {
-                                    students.push(studentId);
-                                    course.students = students;
-                                    course.save();
 
-                                    res.status(200).json({ message: 'user added to course' });
-                                }
-                                else {
-                                    res.status(400).json({ message: 'Student already added' });
-                                }
-                            }).catch((error) => {
-                                console.log('error while adding student to a course: ', error);
-                                res.status(500).json({ message: 'Internal server error' });
-                            });
-                    }
-                } else {
-                    res.status(400).json({ message: 'no such user' });
-                }
-            })
-            .catch((error) => {
-                console.log('Error while checking if user exists: ', error);
-                res.status(500).json({ message: 'Internal server error' });
-            })
+    if (courseId === 'new') {
+        try {
+            const createdAt = getSystemDate();
+            const [lecturerId, name] = course.lecturer.split("_");
+
+            const newCourse = new Courses({
+                courseCode: course.courseCode,
+                title: course.courseTitle,
+                lecturer: {
+                    lecturerId: lecturerId,
+                    name: name
+                },
+                year: course.year,
+                level: Number(course.level),
+                semester: Number(course.semester),
+                faculty: course.faculty,
+                program: course.program,
+                'created-at': createdAt,
+            });
+
+            await newCourse.save();
+            res.redirect(`/admins/render/courses/${id}`)
+
+        }
+        catch (err) {
+            console.log(err)
+        }
     }
     else {
-        res.redirect(`/admin/dashboards?id=${id}&&adminId=${adminId}`);
+        try {
+            const [lecturerId, name] = course.lecturer.split("_");
+            Courses.findByIdAndUpdate({ _id: courseId })
+                .then((c) => {
+                    if (c.__v === Number(course.v)) {
+                        c.courseCode = course.courseCode
+                        c.title = course.courseTitle
+                        c.lecturer.lecturerId = lecturerId;
+                        c.lecturer.name = name;
+                        c.year = course.year
+                        c.level = Number(course.level)
+                        c.semester = Number(course.semester)
+                        c.faculty = course.faculty
+                        c.program = course.program
+                        c.__v = Number(course.v) + 1
+                        c.save();
+                        res.redirect(`/admins/render/courses/${id}`)
+
+                    }
+                    else {
+                        res.render('global/error', { error: "Failed to update course - [ Inconsistent Data ]", status: 400 })
+                    }
+                })
+        } catch (err) {
+            logError(err);
+            console.log(err)
+        }
     }
 }
 

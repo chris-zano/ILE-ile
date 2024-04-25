@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+const Chapters = require('./chapter.model');
+
 const createdAtSchema = new Schema({
     day: {
         type: String,
@@ -27,7 +29,157 @@ const scheduleSchema = new Schema({
     time: {
         type: String
     }
+});
+
+const lecturerSchema = new Schema({
+    lecturerId: {
+        type: String,
+        default: "TU-000FoE",
+        required: true,
+        index: true,
+        macth: /^TU-\d{3}[A-Za-z]*$/
+    },
+    name: {
+        type: String,
+    }
+});
+
+const studentSchema = new Schema({
+    studentId: {
+        type: String,
+        default:"0000000000",
+        match: /^\d{10}$/
+    }
+});
+
+const dateRecordedSchema = new Schema({
+    day: {
+        type: String,
+        default: ""
+    },
+    date: {
+        type: String,
+        default: ""
+    },
+    month: {
+        type: String,
+        default: ""
+    },
+    year: {
+        type: String,
+        default: ""
+    },
+    startTime: {
+        type: String,
+        default: ""
+    },
+    endTime: {
+        type: String,
+        default: ""
+    }
+});
+
+const durationSchema = new Schema({
+    hours: {
+        type: String,
+        default: ""
+    },
+    minutes: {
+        type: String,
+        default: ""
+    },
+    seconds: {
+        type: String,
+        default: ""
+    }
+});
+
+const attendeesSchema = new Schema({
+    studentId: {
+        type: String,
+        default: ""
+    },
+    name: {
+        type: String,
+        default: ""
+    },
+    joined: {
+        type: String,
+        default: ""
+    },
+    left: {
+        type: String,
+        default: ""
+    }
 })
+
+const attendanceSchema = new Schema({
+    count: {
+        type: Number,
+        default: 0
+    },
+    expected: {
+        type: Number,
+        default: 0
+    },
+    attendees: [attendeesSchema],
+    absentees: [attendeesSchema]
+});
+
+const recordingsSchema =  new Schema({
+    title: {
+        type: String,
+        default: ""
+    },
+    dateRecorded: dateRecordedSchema,
+    duration: durationSchema,
+    fileUrl: {
+        type: String,
+        default: ""
+    },
+    attendance: attendanceSchema
+});
+
+const submissionSchema = new Schema({
+    studentId: {
+        type: String,
+        default: ""
+    },
+    fileurl: {
+        type: String,
+        default: ""
+    }
+});
+
+const courseMaterialSchema = new Schema({
+    title: {
+        type: String,
+        default: ""
+    },
+    filetype: {
+        type: String,
+        default: "",
+        index: true
+    },
+    url: {
+        type: String,
+        default: ""
+    }
+});
+
+const chapterSchema = new Schema({
+    lessons: {
+        type: Array,
+        default: []
+    },
+    courseMaterials: [courseMaterialSchema],
+    courseLectureRecordings: [recordingsSchema],
+    submissions: [submissionSchema],
+    'created-at': {
+        type: createdAtSchema,
+        required: false
+    }
+});
 
 const courseSchema = new Schema({
     courseCode: {
@@ -56,32 +208,15 @@ const courseSchema = new Schema({
         type: String,
         required: true
     },
-    lecturer: {
+    program: {
         type: String,
-        default: ""
+        required: true
     },
-    students: {
-        type: Array,
-        default: []
-    },
-    resources: {
-        type: Array,
-        default: []
-    },
-    assignments: {
-        type: Array,
-        default: []
-    },
-    recordings: {
-        type: Array,
-        default: []
-    },
-    submissions: {
-        type: Array,
-        default: []
-    },
+    lecturer: lecturerSchema,
+    students: [studentSchema],
+    chapters:[chapterSchema],
     schedule: {
-        type: Object,
+        type: scheduleSchema,
         default: {}
     },
     'created-at': {
@@ -90,14 +225,11 @@ const courseSchema = new Schema({
     }
 });
 
-courseSchema.pre('save', function(next) {
-    // Check if the 'created-at' field is being modified
-    if (this.isModified('created-at')) {
-        // If it's being modified, prevent the save operation
-        return next(new Error("Cannot update 'created-at' field"));
-    }
-    // If not being modified, proceed with the save operation
-    next();
-});
+// courseSchema.pre('save', function(next) {
+//     if (this.isModified('created-at')) {
+//         return next(new Error("Cannot update 'created-at' field"));
+//     }
+//     next();
+// });
 
 module.exports = mongoose.model('Courses', courseSchema);

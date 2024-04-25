@@ -1,3 +1,129 @@
 <section class="update-course">
-    A form to update course details would be setup here
+    <!-- A form to update course details would be setup here -->
+    <% if (course == "null") { %>
+        <div class="imports-container">
+            <form action="/admins/update/course/new/<%= admin.id %>" method="post" id="add-course" class="course-form">
+                <h2>Create a new course</h2>
+                <div class="input-field">
+                    <label for="courseCode">Course Code</label>
+                    <input type="text" id="courseCode" name="courseCode" required>
+                </div>
+                <div class="input-field">
+                    <label for="courseTitle">Course Title</label>
+                    <input type="text" id="courseTitle" name="courseTitle" required>
+                </div>
+                <div class="input-field">
+                    <label for="faculty">Faculty</label>
+                    <select name="faculty" id="faculty">
+                        <option value="none">---Select-a-faculty---</option>
+                        <option value="Engineering">Engineering</option>
+                        <option value="FoCIS">FoCIS</option>
+                        <option value="Business">Business</option>
+                    </select>
+                </div>
+                <div class="input-field">
+                    <label for="lecturer">lecturer</label>
+                    <select name="lecturer" id="lecturer">
+                        <option value="TU-000FoE_unassigned">Unassigned</option>
+                    </select>
+                </div>
+                <div class="input-field">
+                    <label for="year">Year</label>
+                    <input type="text" id="year" name="year" required>
+                </div>
+                <div class="input-field">
+                    <label for="semester">Semester</label>
+                    <select name="semester" id="semester">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                    </select>
+                </div>
+                <div class="input-field">
+                    <label for="level">Level</label>
+                    <select name="level" id="level">
+                        <option value="100">100</option>
+                        <option value="200">200</option>
+                        <option value="300">300</option>
+                        <option value="400">400</option>
+                        <option value="Top-Up">Top-Up</option>
+                    </select>
+                </div>
+                <div class="input-field">
+                    <label for="program">Program</label>
+                    <select name="program" id="program">
+                        <option value="BSc. Computer Engineering">BSc. Computer Engineering</option>
+                        <option value="BSc. Telecom Engineering">BSc. Telecom Engineering</option>
+                        <option value="BSc. Computer Science">BSc. Computer Science</option>
+                        <option value="Bsc. Information Technology">Bsc. Information Technology</option>
+                    </select>
+                </div>
+                <button type="submit" class="submit-button">Submit</button>
+            </form>
+        </div>
+    <% } else { %>
+        <div class="imports-container">
+            <form action="/admins/update/course/<%= course._id %>/<%= admin.id %>" method="post" id="add-course" class="course-form">
+                <h2>Create a new course</h2>
+                <div class="input-field">
+                    <label for="courseCode">Course Code</label>
+                    <input type="text" id="courseCode" name="courseCode" value="<%= course.courseCode %>" required>
+                </div>
+                <div class="input-field">
+                    <label for="courseTitle">Course Title</label>
+                    <input type="text" id="courseTitle" name="courseTitle" value="<%= course.title %>" required>
+                </div>
+                <div class="input-field">
+                    <label for="faculty">Faculty</label>
+                    <select name="faculty" id="faculty">
+                        <option value="<%= course.faculty %>"><%= course.faculty %></option>
+                        <option value="Engineering">Engineering</option>
+                        <option value="FoCIS">FoCIS</option>
+                        <option value="Business">Business</option>
+                    </select>
+                </div>
+                <div class="input-field">
+                    <label for="lecturer">lecturer</label>
+                    <select name="lecturer" id="lecturer">
+                        <option value="<%= course.lecturer.lecturerId %>_<%= course.lecturer.name  %>"><%= course.lecturer.name %></option>
+                        <option value="unassigned">Unassigned</option>
+                    </select>
+                </div>
+                <div class="input-field">
+                    <label for="year">Year</label>
+                    <input type="text" id="year" name="year" value="<%= course.year %>" required>
+                </div>
+                <div class="input-field">
+                    <label for="semester">Semester</label>
+                    <select name="semester" id="semester">
+                        <option value="<%= course.semester %>"><%= course.semester %></option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                    </select>
+                </div>
+                <div class="input-field">
+                    <label for="level">Level</label>
+                    <select name="level" id="level">
+                        <option value="<%= course.level %>"><%= course.level %></option>
+                        <option value="100">100</option>
+                        <option value="200">200</option>
+                        <option value="300">300</option>
+                        <option value="400">400</option>
+                        <option value="Top-Up">Top-Up</option>
+                    </select>
+                </div>
+                <div class="input-field">
+                    <label for="program">Program</label>
+                    <select name="program" id="program">
+                        <option value="<%= course.program %>"><%= course.program %></option>
+                        <option value="BSc. Computer Engineering">BSc. Computer Engineering</option>
+                        <option value="BSc. Telecom Engineering">BSc. Telecom Engineering</option>
+                        <option value="BSc. Computer Science">BSc. Computer Science</option>
+                        <option value="Bsc. Information Technology">Bsc. Information Technology</option>
+                    </select>
+                </div>
+                <input type="hidden" name="v" value="<%= course.__v %>">
+                <button type="submit" class="submit-button">Submit</button>
+            </form>
+        </div>
+    <% } %>
 </section>

@@ -229,4 +229,7 @@
     li.results-item a p {
         font-size: 11px;
     }
+    ul#results-ul {
+        margin: 10px 3px;
+    }
 }

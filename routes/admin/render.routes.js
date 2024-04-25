@@ -33,7 +33,7 @@ router.get('/admins/render/profile/tutor/:tutorId/id', verifyAdmin, adminRender.
 router.get('/admins/render/profile/course/:courseCode/id', verifyAdmin, adminRender.renderViewCourse);
 router.get('/admins/render/updates/student/:studentId/:id', verifyAdmin, adminRender.renderUpdateStudent);
 router.get('/admins/render/updates/tutor/:tutorId/:id', verifyAdmin, adminRender.renderUpdateTutor);
-router.get('/admins/render/updates/course/:courseId/:id', verifyAdmin, adminRender.renderUpdateCourse);
+router.get('/admins/render/updates/course/:courseCode/:id', verifyAdmin, adminRender.renderUpdateCourse);
 
 
 module.exports = router;

@@ -1,5 +1,6 @@
 const path = require('path');
 const fs = require('fs');
+const { AutoEncryptionLoggerLevel } = require('mongodb');
 
 function setFilePath(mimeType, attribute, authFolder, filename) {
     var resolvedpath;

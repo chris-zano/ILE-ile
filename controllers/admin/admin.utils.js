@@ -68,10 +68,32 @@ exports.validateAuthId = async (id) => {
 }
 
 exports.logSession = (username, ip, status = "") => {
+
+    function addSuperscript(num) {
+        const j = num % 10,
+            k = num % 100;
+        if (j === 1 && k !== 11) {
+            return num + "st";
+        }
+        if (j === 2 && k !== 12) {
+            return num + "nd";
+        }
+        if (j === 3 && k !== 13) {
+            return num + "rd";
+        }
+        return num + "th";
+    }
+
     try {
         const logFilePath = path.join(__dirname, '..', '..', 'logs', 'session.log');
-        const timestamp = new Date().toISOString();
-        const sessionLog = `${status.toUpperCase()}//:: ${timestamp}: Username: ${username}, IP: ${ip}\n`;
+
+        const datestamp = this.getSystemDate()
+        const timestamp = this.getSystemTime()
+
+        const logDate = `${datestamp.day},${addSuperscript(datestamp.date)}-${datestamp.month}-${datestamp.year}`;
+        const logTime = `${timestamp.hours}:${timestamp.minutes}:${timestamp.seconds}`;
+
+        const sessionLog = `${status.toUpperCase()}//:: ${logDate} at ${logTime} - Username:{${username}}, IP:= {${ip}}\n`;
 
         fs.appendFileSync(logFilePath, sessionLog);
 
@@ -133,4 +155,18 @@ exports.getSystemDate = () => {
         month: months[date.getMonth()],
         year: date.getFullYear()
     };
+}
+
+exports.getSystemTime = () => {
+    const time = new Date();
+
+    const hours = time.getHours();
+    const minutes = time.getMinutes();
+    const seconds = time.getSeconds();
+
+    return {
+        hours: hours < 10 ? "0"+ hours: hours,
+        minutes: minutes < 10 ? "0"+minutes: minutes,
+        seconds: seconds < 10 ? "0"+seconds: seconds
+    }
 }
