@@ -26,7 +26,8 @@ app.set('view engine', 'ejs');
 const adminsRoutes = require('./routes/admin/admins.routes');
 const adminRoutes = require('./routes/admin/admin.routes');
 const adminFileRoutes = require('./routes/admin/admin.files');
-const adminRenderRoutes = require('./routes/admin/render.routes');
+const adminRenderRoutes = require('./routes/admin/admin.render.routes');
+const lecturerRenderRoutes = require('./routes/admin/lecturer.render.routes');
 
 // const forgeRoutes = require('./routes/admin/forge/forge.routes');
 
@@ -35,6 +36,7 @@ app.use(adminRoutes);
 app.use(adminsRoutes);
 app.use(adminFileRoutes);
 app.use(adminRenderRoutes);
+app.use(lecturerRenderRoutes);
 // app.use(forgeRoutes);
 
 mongoose.connect(process.env.DATABASE_URL);

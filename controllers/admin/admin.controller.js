@@ -13,7 +13,7 @@ const tutorLogin = (username, password, ip, res) => {
             } else {
                 logSession(username, ip, "success");
                 res.status(200).json({
-                    message: "success",userType:"tutor", user: {
+                    message: "success",userType:"lecturer", user: {
                         id: tutor._id,
                         lecturerId: tutor.lecturerId,
                         firstname: tutor.firstName,

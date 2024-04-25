@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 //application imports
-const {verifyAdmin} = require('./router.utils');
+const {verifyAdmin, verifyLecturer} = require('./router.utils');
 const adminRender = require('../../controllers/admin/admin.render');
 
 //get ['/', '/login']
@@ -35,5 +35,8 @@ router.get('/admins/render/updates/student/:studentId/:id', verifyAdmin, adminRe
 router.get('/admins/render/updates/tutor/:tutorId/:id', verifyAdmin, adminRender.renderUpdateTutor);
 router.get('/admins/render/updates/course/:courseCode/:id', verifyAdmin, adminRender.renderUpdateCourse);
 
+
+//get lecturer interfaces
+router.get('/lecturers/render/dashboards/:id', verifyLecturer, )
 
 module.exports = router;

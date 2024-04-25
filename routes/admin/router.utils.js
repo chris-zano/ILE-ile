@@ -1,4 +1,5 @@
 const Admins = require('../../models/admin/admin.models');
+const Lecturers = require('../../models/lecturer/lecturer.model');
 const utils = require('../../controllers/admin/admin.utils');
 
 exports.verifyAdmin = (req, res, next) => {
@@ -15,6 +16,34 @@ exports.verifyAdmin = (req, res, next) => {
                     firstname: admin.firstName,
                     lastname: admin.lastName,
                     faculty: admin.faculty
+                }
+                next();
+            }
+        }).catch((error) => {
+            
+            utils.logError(error);
+            return {
+                message: "An error occured",
+                admin: {},
+                status: 500
+            }
+        });
+}
+
+exports.verifyLecturer = (req, res, next) => {
+    Lecturers.findById(req.params.id)
+        .then((lecturer) => {
+            if (lecturer == null) {
+                utils.logError(new ReferenceError());
+                res.render('global/error', { message: "Unauthorised access", status: 403 });
+                return
+            }
+            else {
+                req.lecturerData = {
+                    id: lecturer._id,
+                    firstname: lecturer.firstName,
+                    lastname: lecturer.lastName,
+                    faculty: lecturer.faculty
                 }
                 next();
             }
