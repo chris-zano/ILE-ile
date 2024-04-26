@@ -108,3 +108,24 @@ exports.getFonts = (req, res) => {
     res.type('font/ttf');
     fs.createReadStream(filePath).pipe(res);
 }
+
+exports.getRandomImage = (req, res) => {
+    function url (filename) {
+        return path.join(__dirname, '..', '..', 'public', 'assets', 'random_images', `${filename}.jpg`)
+    } 
+    const imageurls = [
+        url("porto"),
+        url("italy"),
+        url("great_wall"),
+        url("hintersee"),
+        url("mclaren"),
+        url("lake_hintersee"),
+        url("oceanscolorful"),
+    ]
+
+    const randomIndex = Math.floor(Math.random() * imageurls.length);
+    const randomImageUrl = imageurls[randomIndex];
+
+    res.type('jpg');
+    fs.createReadStream(randomImageUrl).pipe(res);
+}

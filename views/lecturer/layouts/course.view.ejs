@@ -23,7 +23,7 @@
                     <% for( let i=0; i < course.chapters.length; i++ ) { %>
                         <div class="chapter">
                             <div class="chapter-banner">
-                                <img src="/images/ui" alt="chapter banner">
+                                <img src="/random/image/<%= i %>" alt="chapter banner">
                             </div>
                             <div class="chapter-description">
                                 <div class="chpt-des-outline">
@@ -102,7 +102,7 @@
                                 </summary>
                                 <% for( let j=0; j < course.chapters[i].courseMaterials.length; j++ ) { %>
                                     <div>
-                                        <img src="/images/ui" alt="video file" width="20px">
+                                        <img src="/random/image/<%= i * 2 %>" alt="video file" width="20px">
                                         <a href="<%= course.chapters[i].courseMaterials[j].url %>"
                                             download="<%= course.chapters[i].courseMaterials[j].title %>">
                                             <%= course.chapters[i].courseMaterials[j].title %>
@@ -129,7 +129,7 @@
                                     <summary>Chapter <%= i + 1 %>
                                     </summary>
                                     <div>
-                                        <img src="/images/ui" alt="video file" width="20px">
+                                        <img src="/random/image/<% i+ 1 %>" alt="video file" width="20px">
                                         <a href="<%=rec.fileUrl %>" download="<%=rec.title %>.mp4">
                                             <%= rec.title %>
                                         </a>

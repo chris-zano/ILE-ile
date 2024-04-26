@@ -7,7 +7,7 @@
             <% for( let course of courses ) { %>
                 <a href="/lecturers/render/course/<%= course._id %>/<%= lecturer.id %>" class="card" preload>
                     <section class="card-header">
-                        <img src="/images/ui" alt="course thumbnail" width="150px" height="150px">
+                        <img src="/random/image/<%= course._id %>" alt="course thumbnail" width="150px" height="150px">
                     </section>
                     <section class="card-body">
                         <div class="title">
