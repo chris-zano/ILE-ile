@@ -152,6 +152,10 @@ const submissionSchema = new Schema({
 });
 
 const courseMaterialSchema = new Schema({
+    owner: {
+        type: String,
+        default: ""
+    },
     title: {
         type: String,
         default: ""
@@ -161,6 +165,7 @@ const courseMaterialSchema = new Schema({
         default: "",
         index: true
     },
+    duration: durationSchema,
     url: {
         type: String,
         default: ""

@@ -41,6 +41,7 @@ exports.verifyLecturer = (req, res, next) => {
             else {
                 req.lecturerData = {
                     id: lecturer._id,
+                    lecturerId: lecturer.lecturerId,
                     firstname: lecturer.firstName,
                     lastname: lecturer.lastName,
                     faculty: lecturer.faculty

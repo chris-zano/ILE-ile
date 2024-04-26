@@ -93,7 +93,7 @@
                 <span class="tooltip">assignments</span>
             </li>
             <li>
-                <a href="/lecturers/render/live lectures/<%= lecturer.id %>">
+                <a href="/lecturers/render/live/<%= lecturer.id %>">
                     <i class="">
                         <img src="/images/live" alt="go live">
                     </i>
@@ -123,7 +123,7 @@
         }
     </script>
     <main class="wrapper-main main-content" id="wrapper-main">
-        
+        <%- include(pageUrl) %>
     </main>
 
     <script src="/socket.io/socket.io.js"></script>

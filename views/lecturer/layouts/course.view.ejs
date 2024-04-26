@@ -1,0 +1,151 @@
+<section class="course-main" id="course-main">
+
+    <input type="hidden" name="courseId" id="courseId" value="<%= course._id %>">
+    <input type="hidden" name="v" id="v" value="<%= course.__v %>">
+
+    <section class="course-overview">
+        <article class="overview-header">
+            <div class="coursetitle">
+                <h1><%= course.title %> (<%= course.courseCode %>)</h1>
+            </div>
+            <div class="add-lesson-chapter">
+                <button type="button" id="add-chapter">&plus; Add Chapter</button>
+            </div>
+        </article>
+
+        <% if (course.chapters.length == 0) { %>
+            <p>No chapters for this course</p>
+        <% } else { %>
+            <article class="chapters" id="chapters-container">
+                <div class="chapter">
+                    <div class="chapter-banner">
+                        <img src="/images/ui" alt="chapter banner">
+                    </div>
+                    <div class="chapter-description">
+                            <% for( let i = 0; i < course.chapters.length; i++ ) { %>
+                                <div class="chpt-des-outline">
+                                    <div class="outline-title">
+                                        <h2>Chapter <%= i + 1 %></h2>
+                                    </div>
+                                    <div class="outline-chapters">
+                                        <ol id="lessons-container-<%= i + 1  %>">
+                                            <% if (course.chapters[i].lessons.length == 0) { %>
+                                                <p>No available lessons for this chapter</p>
+                                            <% } %>
+                                            <% for( let lesson of course.chapters[i].lessons) { %>
+                                                <li><%= lesson %></li>
+                                            <% } %>
+                                        </ol>
+                                    </div>
+                                </div>
+                                <div class="chpt-des-overview">
+                                    <div class="add-chapter-lesson">
+                                        <button type="button" onclick="addLesson(this)" id="add-chapter-lessons-1">&plus; Upload Lessons</button>
+                                    </div>
+            
+                                    <div class="chaper-stats">
+                                        <div>
+                                            <img src="/images/timer" alt="class duration" width="35px">
+                                            <div class="class-duration">
+                                                <p>50 Min</p>
+                                                <small>Class Duration</small>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <img src="/images/open-book" alt="number of lessons" width="35px">
+                                            <div class="course-lessons">
+                                                <p>5 Lessons</p>
+                                                <small>Class Outline</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% } %>
+                    </div>
+                    <div class="chapter-actions">
+                        <div class="chapter-actions-btns">
+                            <button type="button" id="del-btn">
+                                <img src="/images/delete-btn" alt="delete chapter" width="20px">
+                                <p>Delete</p>
+                            </button>
+                        </div>
+                        <div class="chapter-actions-btns">
+                            <button type="button" id="live-btn">
+                                <img id="live" src="/images/live" alt="start live class" width="20px">
+                                <p>Start Live</p>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </article>
+        <% } %>
+    </section>
+
+    <section class="course-materials">
+        <h3>Course Materials</h3>
+        <% if (course.chapters.length == 0) { %>
+            <p>No materials for this course</p>
+        <% } else { %>
+            <% for( let i = 0; i < course.chapters.length; i++ ) { %>
+                <% if (course.chapters[i].courseMaterials.length == 0) { %>
+                    <p>No materials for this course</p>
+                <% } else { %>
+                    <% for( let j = 0; j < course.chapters[i].courseMaterials.length; j++ ) { %>
+                        <details class="chapter-material">
+                            <summary>Chapter <%= i + 1 %></summary>
+                            <div>
+                                <img src="/images/ui" alt="video file" width="20px">
+                                <a href="<%= course.chapters[i].courseMaterials[j].url %>" download="<%= course.chapters[i].courseMaterials[j].title %>.<%= course.chapters[i].courseMaterials[j].filetype %>"><%= course.chapters[i].courseMaterials[j].title %></a>
+                                <small>
+                                    <%= 
+                                      course.chapters[i].courseMaterials[j].duration.hours === "" 
+                                        ? course.chapters[i].courseMaterials[j].duration.seconds + 's'  // Show seconds if hours and minutes are empty
+                                        : (course.chapters[i].courseMaterials[j].duration.hours === "0" 
+                                            ? course.chapters[i].courseMaterials[j].duration.minutes + ':' + course.chapters[i].courseMaterials[j].duration.seconds + 'm' // Show minutes if hours is 0
+                                            : course.chapters[i].courseMaterials[j].duration.hours + ':' + course.chapters[i].courseMaterials[j].duration.minutes + ':' + course.chapters[i].courseMaterials[j].duration.seconds + 'h' // Show all if hours present
+                                          ) 
+                                    %>
+                                  </small>
+                            </div>
+                        </details>
+                    <% } %>
+                <% } %>
+            <% } %>
+        <% } %>
+    </section>
+
+    <section class="course-recordings">
+        <h3>Lecture Recordings</h3>
+        <% if (course.chapters.length == 0) { %>
+            <p>No recordings for this course</p>
+        <% } else { %>
+            <% for( let i = 0; i < course.chapters.length; i++ ) { %>
+                <% if (course.chapters[i].courseLectureRecordings.length == 0) { %>
+                    <p>No materials for this course</p>
+                <% } else { %>
+                    <% for( let rec of course.chapters[i].courseLectureRecordings) { %>
+                        <details class="chapter-material">
+                            <summary>Chapter <%= i + 1 %></summary>
+                            <div>
+                                <img src="/images/ui" alt="video file" width="20px">
+                                <a href="<%=rec.fileUrl %>" download="<%=rec.title %>.mp4"><%= rec.title %></a>
+                                <small>
+                                    <%= 
+                                      rec.duration.hours === "" 
+                                        ? rec.duration.seconds + 's'  // Show seconds if hours and minutes are empty
+                                        : (rec.duration.hours === "0" 
+                                            ? rec.duration.minutes + ':' + rec.duration.seconds + 'm' // Show minutes if hours is 0
+                                            : rec.duration.hours + ':' + rec.duration.minutes + ':' + rec.duration.seconds + 'h' // Show all if hours present
+                                          ) 
+                                    %>
+                                  </small>
+                            </div>
+                        </details>
+                    <% } %>
+                <% } %>
+            <% } %>
+        <% } %>
+    </section>
+    <div class="chapter-form">
+    </div>
+</section>
