@@ -165,7 +165,6 @@ const courseMaterialSchema = new Schema({
         default: "",
         index: true
     },
-    duration: durationSchema,
     url: {
         type: String,
         default: ""

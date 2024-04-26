@@ -28,6 +28,8 @@ const adminRoutes = require('./routes/admin/admin.routes');
 const adminFileRoutes = require('./routes/admin/admin.files');
 const adminRenderRoutes = require('./routes/admin/admin.render.routes');
 const lecturerRenderRoutes = require('./routes/lecturer/lecturer.render.routes');
+const lecturerChaptersRoutes = require('./routes/lecturer/lecturer.chapters.routes');
+const lecturerFilesRoutes = require('./routes/lecturer/lecturer.files.routes');
 
 // const forgeRoutes = require('./routes/admin/forge/forge.routes');
 
@@ -36,7 +38,9 @@ app.use(adminRoutes);
 app.use(adminsRoutes);
 app.use(adminFileRoutes);
 app.use(adminRenderRoutes);
+app.use(lecturerFilesRoutes);
 app.use(lecturerRenderRoutes);
+app.use(lecturerChaptersRoutes);
 // app.use(forgeRoutes);
 
 mongoose.connect(process.env.DATABASE_URL);
