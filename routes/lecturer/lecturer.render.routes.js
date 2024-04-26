@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 //application imports
-const {verifyLecturer} = require('./router.utils');
+const {verifyLecturer} = require('../admin/router.utils');
 const lecturerRender = require('../../controllers/lecturer/lecturer.render');
 
 

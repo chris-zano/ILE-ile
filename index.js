@@ -27,7 +27,7 @@ const adminsRoutes = require('./routes/admin/admins.routes');
 const adminRoutes = require('./routes/admin/admin.routes');
 const adminFileRoutes = require('./routes/admin/admin.files');
 const adminRenderRoutes = require('./routes/admin/admin.render.routes');
-const lecturerRenderRoutes = require('./routes/admin/lecturer.render.routes');
+const lecturerRenderRoutes = require('./routes/lecturer/lecturer.render.routes');
 
 // const forgeRoutes = require('./routes/admin/forge/forge.routes');
 
