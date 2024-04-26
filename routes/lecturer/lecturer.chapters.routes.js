@@ -12,7 +12,7 @@ const materialsUploads = multer({
 });
 
 router.get('/lecturer/courses/addchapter/:courseId/:v/:id', verifyLecturer, chaptersController.addChapter);
-
+router.get('/lecturer/courses/deleteChapter/:courseId/:v/:id', verifyLecturer, chaptersController.deleteChapter);
 router.post('/lecturer/courses/addLesson/:courseId/:v/:id', materialsUploads.single('lessonFile') , verifyLecturer, chaptersController.addLesson);
 
 module.exports = router;

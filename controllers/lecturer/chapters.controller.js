@@ -16,6 +16,27 @@ const newChapter = () => {
     return newChapter;
 }
 
+const isfileType = (originalname) => {
+    const validDocumentTypes = ['pptx', 'ppt', 'pdf', 'docx', 'doc', 'xls', 'xlsx', 'txt'];
+    const validMediaTypes = ['mp4', 'mkv', 'mp3'];
+
+    const fileType = originalname.slice(originalname.lastIndexOf(".") + 1);
+
+    if (fileType == "") {
+        return "executable";
+    }
+
+    if (validDocumentTypes.indexOf(fileType) !== -1) {
+        return "document";
+    }
+    else if (validMediaTypes.indexOf(fileType) !== -1) {
+        return "media";
+    }
+    else {
+        return "invalid"
+    }
+}
+
 exports.addChapter = (req, res) => {
     const { lecturerData } = req;
     const { courseId, v } = req.params;
@@ -53,27 +74,6 @@ exports.addChapter = (req, res) => {
     }
 }
 
-const isfileType = (originalname) => {
-    const validDocumentTypes = ['pptx', 'ppt', 'pdf', 'docx', 'doc', 'xls', 'xlsx', 'txt'];
-    const validMediaTypes = ['mp4', 'mkv', 'mp3'];
-
-    const fileType = originalname.slice(originalname.lastIndexOf(".") + 1);
-
-    if (fileType == "") {
-        return "executable";
-    }
-
-    if (validDocumentTypes.indexOf(fileType) !== -1) {
-        return "document";
-    }
-    else if (validMediaTypes.indexOf(fileType) !== -1) {
-        return "media";
-    }
-    else {
-        return "invalid"
-    }
-}
-
 exports.addLesson = (req, res) => {
     const { lecturerData } = req;
     const { lessonName, chapter } = req.body;
@@ -86,33 +86,51 @@ exports.addLesson = (req, res) => {
                     //addlesson no file
                     const chpt = course.chapters[chapter - 1];
                     chpt.lessons.push(lessonName);
-
                     course.save();
                 } else {
                     const { originalname, filename, path } = req.file;
                     const fileType = isfileType(originalname)
                     if (fileType !== "media" && fileType !== "invalid") {
-                       //it is a document or executable [materials]
-                       const chpt = course.chapters[chapter - 1];
-                       chpt.lessons.push(lessonName);
-                       
-                       const material = {
-                            title:  originalname,
+                        //it is a document or executable [materials]
+                        const chpt = course.chapters[chapter - 1];
+                        chpt.lessons.push(lessonName);
+
+                        const material = {
+                            title: originalname,
                             owner: lecturerData.id,
                             fileType: originalname.slice(originalname.lastIndexOf(".") + 1),
                             url: `/courses/materials/${filename}`
-                       }
-                       chpt.courseMaterials.push(material);
-
-                       course.save();
-
+                        }
+                        chpt.courseMaterials.push(material);
+                        course.save();
                     }
-
-                    console.log(course.chapters[chapter - 1]);
                 }
                 res.redirect(`/lecturers/render/course/${courseId}/${lecturerData.id}`)
             }
+        }).catch((error) => {
+            logError(error)
+            res.render('global/error', { error: "Failed to add lesson - not found", status: 404 })
+        })
+}
 
+
+exports.deleteChapter = (req, res) => {
+    const { lecturerData } = req;
+    const { courseId, v, chapter } = req.params;
+
+    Courses.findByIdAndUpdate(courseId)
+        .then((course) => {
+            if (course == null) {
+                res.redirect(`/lecturers/render/course/${courseId}/${lecturerData.id}`)
+                return;
+            }
+            else {
+                if (course.__v == v) {
+                    course.chapters.splice(chapter - 1, 1);
+                    course.save();
+                }
+                res.redirect(`/lecturers/render/course/${courseId}/${lecturerData.id}`);
+            }
         }).catch((error) => {
             logError(error)
             res.render('global/error', { error: "Failed to add lesson - not found", status: 404 })
