@@ -7,5 +7,19 @@
         overflow-y: scroll;
         margin-right: 10px;
         background-color: var(--background-main);
+
+    }
+}
+
+@media (max-width: 768px) {
+    main.wrapper-main {
+        grid-area: main;
+        border-radius: 1rem;
+        height: 90vh;
+        width: 97vw;
+        overflow-y: scroll;
+        margin: 0 auto;
+        background-color: var(--background-main);
+
     }
 }

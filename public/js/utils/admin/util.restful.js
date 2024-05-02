@@ -39,3 +39,9 @@ const toast = (message) => {
         document.body.removeChild(pop)
     }, 3000);
 }
+
+const isLoggedin = window.sessionStorage.getItem("auth-user")
+
+if (!isLoggedin) {
+    window.location.href = '/login'
+}

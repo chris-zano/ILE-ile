@@ -1,3 +1,5 @@
 node_modules/
 .env
 .vs/
+ITLE_FS/
+logs/

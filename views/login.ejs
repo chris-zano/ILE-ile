@@ -6,6 +6,71 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="/favicon" type="image/x-icon">
     <title>ITLE: Session New (Login)</title>
+    <style>
+        .login-form-container {
+            width: 95%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: 400px;
+        }
+
+        #login-form {
+            min-width: 90%;
+            max-width: 400px;
+            margin:auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        fieldset {
+            margin-bottom: 20px;
+            border: none;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            height: 45px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+
+        .submit-btn-wrapper {
+            text-align: center;
+        }
+
+        input[type="submit"] {
+            width: 120px;
+            height: 45px;
+            border-radius: 0.5rem;
+            border: 1px solid transparent;
+            background-color: #3074d9;
+            color: #fff;
+            transition: all ease-in-out 200ms;
+        }
+
+        input[type="submit"]:hover {
+            background-color: darkblue;
+        }
+
+        @media screen and (max-width: 480px) {
+            .login-form-container {
+                padding: 10px;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -25,61 +90,10 @@
                 <input type="submit" value="Login">
             </div>
         </form>
-        <script src="/script/utils/admin/util.restful"></script>
+
         <script src="/script/scripts/admin/login"></script>
     </div>
 
-    <!-- <div class="create-admin-form-container">
-        <form id="createAdmin-form">
-            
-            <fieldset>
-            <label for="adminId">Admin ID:</label>
-            <input type="text" name="adminId" id="adminId" required>
-        </fieldset>
-
-        <fieldset>
-            <label for="firstName">First name: </label>
-            <input type="text" name="firstName" id="firstName" required>
-        </fieldset>
-
-        <fieldset>
-            <label for="lastName">Last name: </label>
-            <input type="text" name="lastName" id="lastName" required>
-        </fieldset>
-
-        <fieldset>
-            <label for="department">Department: </label>
-            <select name="department" id="department">
-                <option value="none">Select a department</option>
-                <option value="Computer Engineering">Computer Engineering</option>
-                <option value="Telecommunications Engineering">Telecommunications Engineering</option>
-                <option value="Computer Science">Computer Science</option>
-            </select>
-        </fieldset>
-
-        <fieldset>
-            <label for="password">Default Password: </label>
-            <input type="password" name="password" id="password" required>
-        </fieldset>
-
-        <fieldset>
-            <label for="role">Admnistrator Role:</label>
-            <select name="role" id="role">
-                <option value="none">Select a Role</option>
-                <option value="archon">General Admnistrator</option>
-                <option value="shepherd">Departmental Admnistrator</option>
-                <option value="forge">IT Admnistrator</option>
-            </select>
-        </fieldset>
-
-        <div class="submit-btn-wrapper">
-            <input type="submit" value="Create">
-        </div>
-        <script src="/script/utils/admin/util.restful"></script>
-        <script src="/script/scripts/admin/createAdmin"></script>
-    </form>
-    </div> -->
-     
 </body>
 
 </html>

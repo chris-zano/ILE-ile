@@ -103,7 +103,7 @@
             </li>
         </ul>
         <div class="logout-navsec">
-            <li>
+            <li id="logout-li">
                 <a href="#">
                     <i class="">
                         <img src="/images/logout" alt="logout">
@@ -113,6 +113,13 @@
                 <span class="tooltip">Logout</span>
             </li>
         </div>
+        <script>
+            document.getElementById("logout-li").addEventListener("click", ()=> {
+                sessionStorage.clear();
+                localStorage.clear();
+                window.location.reload()
+            })
+        </script>
     </nav>
     <script>
         let btn = document.querySelector('#btn');

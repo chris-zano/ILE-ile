@@ -28,7 +28,7 @@
         <div class="top">
             <div class="logo">
                 <i>
-                    <div>icons by <a href="https://icons8.com">Icons8</a></div>
+                    <div id="icon8">icons by <a href="https://icons8.com">Icons8</a></div>
                 </i>
                 <span></span>
             </div>
@@ -94,7 +94,7 @@
             </li>
         </ul>
         <div class="logout-navsec">
-            <li>
+            <li id="logout-li">
                 <a href="#">
                     <i class="">
                         <img src="/images/logout" alt="logout">
@@ -104,6 +104,13 @@
                 <span class="tooltip">Logout</span>
             </li>
         </div>
+        <script>
+            document.getElementById("logout-li").addEventListener("click", ()=> {
+                sessionStorage.clear();
+                localStorage.clear();
+                window.location.reload()
+            })
+        </script>
     </nav>
     <script>
         let btn = document.querySelector('#btn');

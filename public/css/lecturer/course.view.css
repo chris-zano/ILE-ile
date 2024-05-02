@@ -5,10 +5,7 @@
 }
 
 section.course-overview::-webkit-scrollbar {
-    /* display: block; */
-    height: 3px;
-    width: 3px;
-    background-color: var(--accent);
+   display: none;
 }
 
 @media screen and (min-width: 768px) {
@@ -293,17 +290,16 @@ section.course-overview::-webkit-scrollbar {
         width: calc(100vw - 1rem);
         margin-inline: auto;
         padding: 1rem 0;
-        background-color: #3fffac;
     }
 
     section.course-overview {
         border-radius: 7px;
         background-color: #ffffff;
         box-shadow: 1px 3px 3px #919191;
-        width: 95%;
+        width: 100%;
         height: max-content;
         margin: 5px auto;
-        padding: 4px 10px;
+        padding: 4px ;
         display: flex;
         flex-flow: column;
         gap: 2px;
@@ -311,15 +307,15 @@ section.course-overview::-webkit-scrollbar {
 
     section.course-overview article.overview-header {
         display: grid;
-        grid-template-columns: 60% 40%;
+        grid-template-rows: 1fr 1fr;
         align-items: center;
         padding: 3px 0;
     }
 
     section.course-overview article.overview-header .coursetitle h1 {
         font-family: sans-serif;
-        font-size: 14px;
-        font-weight: 400;
+        font-size: 13px;
+        font-weight: 600;
         padding: 7px 14px;
         overflow: hidden;
         white-space: nowrap;
@@ -328,7 +324,9 @@ section.course-overview::-webkit-scrollbar {
     }
 
     .overview-header div.add-lesson-chapter button {
+        width: fit-content;
         padding: 7px 14px;
+        margin: 0 20px;
         background-color: #3f3fff;
         outline: none;
         border: 1px solid #3f3fff;
@@ -336,7 +334,7 @@ section.course-overview::-webkit-scrollbar {
         border-radius: 7px;
         cursor: pointer;
         box-shadow: 1px 3px 3px #bbb9b9;
-        float: right;
+        float: left;
     }
 
     .overview-header div.add-lesson-chapter button:hover {
@@ -361,13 +359,13 @@ section.course-overview::-webkit-scrollbar {
         background-color: #ffffff;
         width: 220px;
         border-radius: 7px;
-        box-shadow: 1px 3px 3px #919191;
+        box-shadow: 1px 3px 3px #ddd;
         box-shadow: inset;
     }
 
     article div .chapter-banner img {
         width: 100%;
-        height: 70px;
+        height: 90px;
         aspect-ratio: 4 / 3;
         border-top-left-radius: 7px;
         border-top-right-radius: 7px;
@@ -394,17 +392,20 @@ section.course-overview::-webkit-scrollbar {
 
 
     .chpt-des-outline .outline-chapters ol {
-        /* display: grid;
-        grid-auto-flow: row; */
-        /* gap: 3.56px; */
-        height: 140px;
         overflow-y: scroll;
+        width: 100%;
+        padding-left: 19px;
+        height: 140px;
+    }
+
+    .chpt-des-outline .outline-chapters ol::-webkit-scrollbar {
+        display: none;
     }
 
     .chpt-des-outline .outline-chapters ol>li {
         margin-block: 3.56px;
+        color: #b4aeae;
         list-style: decimal;
-        color: #8a8a8a;
     }
 
     .chpt-des-outline .outline-chapters ol>li {
@@ -414,6 +415,8 @@ section.course-overview::-webkit-scrollbar {
 
     .add-chapter-lesson>button {
         margin-top: 15px;
+        color: var(--text);
+        width: fit-content;
         background-color: white;
         padding: 7px 14px;
         border: 1px solid #e8e6e6;
@@ -429,7 +432,7 @@ section.course-overview::-webkit-scrollbar {
         font-weight: 500;
         border: 1px solid #3fffac;
     }
-
+    
     div.chaper-stats {
         margin-top: 15px;
         display: grid;
@@ -437,35 +440,35 @@ section.course-overview::-webkit-scrollbar {
         gap: 7px;
         align-items: center;
     }
-
+    
     div.chaper-stats>div {
         display: flex;
         align-items: center;
         gap: 15px;
     }
-
+    
     div.chaper-stats>div>img {
         width: 20px;
         height: 20px;
     }
-
+    
     div.chaper-stats>div>div {
         border-left: 3px solid #bdbdbd;
         padding-left: 10px;
     }
-
+    
     div.chaper-stats>div>div>p {
         color: #8a8a8a;
         font-family: sans-serif;
         font-size: 12px
     }
-
+    
     div.chaper-stats>div>div>small {
         color: #8a8a8a;
         font-family: sans-serif;
         font-size: 12px
     }
-
+    
     div.chapter-actions {
         padding: 5px;
         display: grid;
@@ -473,7 +476,7 @@ section.course-overview::-webkit-scrollbar {
         gap: 7px;
         place-items: center;
     }
-
+    
     div.chapter-actions div.chapter-actions-btns>a {
         cursor: pointer;
         display: flex;
@@ -486,24 +489,37 @@ section.course-overview::-webkit-scrollbar {
         outline: none;
         background-color: white;
         box-shadow: 1px 3px 3px #c5c5c58f;
-
+    
+    }
+    
+    div.chapter-actions div.chapter-actions-btns>a#del-btn:hover {
+        border-color: var(--red);
+        background-color: var(--red);
+    }
+    
+    div.chapter-actions div.chapter-actions-btns>a#del-btn:hover > img {
+        display: none;
     }
 
-    div.chapter-actions div.chapter-actions-btns>a:hover {
-        border-color: #3f3fff;
-        background-color: #3f3fff;
-        color: #e8e6e6;
+    div.chapter-actions div.chapter-actions-btns>a#live-btn:hover {
+        border-color: var(--accent);
+        background-color: var(--accent);
+    }
+    
+    div.chapter-actions div.chapter-actions-btns>a#live-btn:hover > img {
+        display: none;
     }
 
+    div.chapter-actions div.chapter-actions-btns>a:hover > p {
+        color: #ffffff;
+    }
+    
     div.chapter-actions div.chapter-actions-btns>a>p {
         font-family: sans-serif;
         font-size: 11px;
+        margin-left: 2px;
     }
-
-    div.chapter-actions div.chapter-actions-btns>a>img#live {
-        margin: 2px 0px 8px 2px
-    }
-
+    
     form#lessonForm {
         margin-left: 1rem;
         padding: 1rem;
@@ -514,35 +530,35 @@ section.course-overview::-webkit-scrollbar {
         display: grid;
         gap: 10px;
         align-items: center;
-        position: fixed;
-        top: 20%;
-        left: 30%;
+        position: absolute;
+        top: 20px;
+        left: 5%;
     }
-
+    
     form#lessonForm div {
         display: grid;
         gap: 5px;
     }
-
+    
     form#lessonForm div input {
         height: 30px;
         min-width: 90%;
         max-width: 300px;
         margin: 0;
     }
-
+    
     form#lessonForm div label {
         font-weight: 500;
         font-size: 15px;
     }
-
+    
     form#lessonForm button {
         width: 150px;
         height: 35px;
         margin: auto;
         cursor: pointer;
     }
-
+    
     form#lessonForm.hidden {
         display: unset;
         position: unset;
@@ -569,7 +585,7 @@ div.course-overview {
 
 
 section.course-materials, section.course-recordings {
-    width: 70%;
+    width: 100%;
     margin: 10px 0;
     border: 1px solid #ddd;
     background-color: var(--white);
@@ -597,11 +613,11 @@ summary {
 }
 
 details div {
-    padding: 10px;
+    padding: 20px 10px;
     background-color: #fff;
     border-top: 1px solid #e7e2e2;
     display: grid;
-    grid-template-columns: 3% 97%;
+    grid-template-columns: 20px 1fr;
     justify-content: left;
     align-items: center;
     gap: 10px;
@@ -615,3 +631,7 @@ details div:hover > * {
     color: var(--red);
     text-decoration: underline;
 }
+
+section.course-overview::-webkit-scrollbar {
+    display: none;
+ }
