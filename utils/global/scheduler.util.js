@@ -94,15 +94,4 @@ const checkUserAvailabilityStatus = (user_schedules = [], start_time = 8, durati
     return user_schedules;
 };
 
-let userSchedules = []
-userSchedules = checkUserAvailabilityStatus(userSchedules, 15, 1)
-
-while (userSchedules.length < 3) {
-    const start_time = Math.floor(Math.random() * (16 - 8 + 1)) + 8;
-    const duration = Math.floor(Math.random() * (3 - 1 + 1)) + 1;
-    
-    userSchedules = checkUserAvailabilityStatus(userSchedules, start_time, duration)
-    console.log(userSchedules.length);
-}
-
-console.log(userSchedules)
+module.exports = checkUserAvailabilityStatus;

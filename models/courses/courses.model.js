@@ -229,11 +229,4 @@ const courseSchema = new Schema({
     }
 });
 
-// courseSchema.pre('save', function(next) {
-//     if (this.isModified('created-at')) {
-//         return next(new Error("Cannot update 'created-at' field"));
-//     }
-//     next();
-// });
-
 module.exports = mongoose.model('Courses', courseSchema);
