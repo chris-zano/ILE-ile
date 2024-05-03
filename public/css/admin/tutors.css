@@ -159,7 +159,7 @@ section.main-section {
 
 }
 
-@media (max-width: 768px) {
+@media (max-width: 767px) {
     section.students {
         display: grid;
         grid-template-rows: 100px 1fr;

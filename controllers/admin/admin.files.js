@@ -124,7 +124,7 @@ exports.getRandomImage = (req, res) => {
     ]
 
     const randomIndex = Math.floor(Math.random() * imageurls.length);
-    const randomImageUrl = imageurls[randomIndex];
+    const randomImageUrl = url("oceanscolorful");
 
     res.type('jpg');
     fs.createReadStream(randomImageUrl).pipe(res);
