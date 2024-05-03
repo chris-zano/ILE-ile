@@ -101,7 +101,21 @@ exports.renderClassrooms = (req, res) => {
     const { userType, id } = req.params;
     const { adminData } = req;
 
-    
+    Classes.find()
+    .then((classes) => {
+        res.render('admin/admin-main', {
+            admin: adminData,
+            pageTitle: "Classes",
+            stylesheets: ["/css/admin/classes"],
+            pageUrl: 'layouts/classes',
+            userType: userType,
+            scripts: ["/script/scripts/admin/classes"],
+            classes: classes
+        });
+    }).catch((error) => {
+        utils.logError(error);
+        console.log(error)
+    })
 }
 
 exports.renderUpdateStudent = (req, res) => {

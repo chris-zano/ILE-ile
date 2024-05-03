@@ -1,4 +1,4 @@
-@media (min-width: 810px) {
+@media (min-width: 810px){
     header.header-admin {
         background-color: var(--background);
         margin-left: 80px;
@@ -72,9 +72,11 @@
         border: 1px solid var(--accent);
         border-radius: var(--border-radius);
         padding: 0 5px;
+        background-color: unset;
     }
 
     header.header-admin .search-box input {
+        background-color: unset;
         width: 100%;
         font-size: var(--font-standard);
         font-weight: 500;

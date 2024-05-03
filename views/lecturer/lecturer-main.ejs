@@ -20,119 +20,119 @@
 </head>
 
 <body>
-    
-    <!-- include header -->
-    <%- include('templates/header') %>
+    <div class="parent-main">
+        <!-- include header -->
+        <%- include('templates/header') %>
 
-    <nav class="sidebar">
-        <div class="top">
-            <div class="logo">
-                <i>
-                    <div>icons by <a href="https://icons8.com">Icons8</a></div>
+        <nav class="sidebar">
+            <div class="top">
+                <div class="logo">
+                    <i>
+                        <div>icons by <a href="https://icons8.com">Icons8</a></div>
+                    </i>
+                    <span></span>
+                </div>
+                <i class="" id="btn">
+                    <img
+                        src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAABHElEQVR4nO3WUUdDYRwG8MOOyCETEzOSSCQyMTEjk97TB+hUkpQkzWQzk5KkbO9HqENkRERERCQiImLEESM7RG37DM8uZpc7TTd71fPjf/883vfi0TQiIqK/QsjvmWlZcYWs4qebyn0hfvSJyUMXsYMPRPdLmNh7R2TXwfjOG8LbRYxlXzGaecFI+hnDqScMbT1iMPmAgcQ9+jfvENq4RXD9Bn1r1wisXqF35RL+5Qv0LJ3DWCyge+EMXfOn0C27cbO267OOzZYFlA5vNUuclD1eQPHwVuN+XUCF8LpXAa8vpEp43esLmfmaKfKVssrhfXO2aFmAiKizBLeQwy1kcAtJbiFwCxHRPyW4hRxuIYNbSHILgVuIiIhIa08d5UPvZUT5powAAAAASUVORK5CYII=">
                 </i>
-                <span></span>
             </div>
-            <i class="" id="btn">
-                <img
-                    src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAABHElEQVR4nO3WUUdDYRwG8MOOyCETEzOSSCQyMTEjk97TB+hUkpQkzWQzk5KkbO9HqENkRERERCQiImLEESM7RG37DM8uZpc7TTd71fPjf/883vfi0TQiIqK/QsjvmWlZcYWs4qebyn0hfvSJyUMXsYMPRPdLmNh7R2TXwfjOG8LbRYxlXzGaecFI+hnDqScMbT1iMPmAgcQ9+jfvENq4RXD9Bn1r1wisXqF35RL+5Qv0LJ3DWCyge+EMXfOn0C27cbO267OOzZYFlA5vNUuclD1eQPHwVuN+XUCF8LpXAa8vpEp43esLmfmaKfKVssrhfXO2aFmAiKizBLeQwy1kcAtJbiFwCxHRPyW4hRxuIYNbSHILgVuIiIhIa08d5UPvZUT5powAAAAASUVORK5CYII=">
-            </i>
-        </div>
-        <div class="user">
-            <div>
-                <section class="adminProfileCard">
-                    <div>
-                        <img src="/images/darkSide" alt="me" class="user-img">
-                        <div class="img-div">
-                            <p class="bold">
-                                <%= lecturer.firstname %>
-                                    <%= lecturer.lastname %>
-                            </p>
-                            <p class="role">
-                                <%= lecturer.faculty%>
-                            </p>
+            <div class="user">
+                <div>
+                    <section class="adminProfileCard">
+                        <div>
+                            <img src="/images/darkSide" alt="me" class="user-img">
+                            <div class="img-div">
+                                <p class="bold">
+                                    <%= lecturer.firstname %>
+                                        <%= lecturer.lastname %>
+                                </p>
+                                <p class="role">
+                                    <%= lecturer.faculty%>
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                </section>
+                    </section>
+                </div>
             </div>
-        </div>
-        <ul>
-            <li>
-                <a href="/lecturers/render/dashboards/<%= lecturer.id %>">
-                    <i class="">
-                        <img src="/images/dashboard" alt="dashboard">
-                    </i>
-                    <span class="nav-item">Dashboard</span>
-                </a>
-                <span class="tooltip">Dashboard</span>
-            </li>
-            <li>
-                <a href="/lecturers/render/courses/<%= lecturer.id %>">
-                    <i class=''>
-                        <img src="/images/courses" alt="courses">
-                    </i>
-                    <span class="nav-item">courses</span>
-                </a>
-                <span class="tooltip">courses</span>
-            </li>
-            <li>
-                <a href="/lecturers/render/schedules/<%= lecturer.id %>">
-                    <i class="">
-                        <img src="/images/schedule" alt="schedule">
-                    </i>
-                    <span class="nav-item">schedules</span>
-                </a>
-                <span class="tooltip">schedules</span>
-            </li>
-            <li>
-                <a href="/lecturers/render/assignments/<%= lecturer.id %>">
-                    <i class="">
-                        <img src="/images/assignment" alt="assignment">
-                    </i>
-                    <span class="nav-item">assignments</span>
-                </a>
-                <span class="tooltip">assignments</span>
-            </li>
-            <li>
-                <a href="/lecturers/render/live/<%= lecturer.id %>">
-                    <i class="">
-                        <img src="/images/live" alt="go live">
-                    </i>
-                    <span class="nav-item">Go Live</span>
-                </a>
-                <span class="tooltip">Go Live</span>
-            </li>
-        </ul>
-        <div class="logout-navsec">
-            <li id="logout-li">
-                <a href="#">
-                    <i class="">
-                        <img src="/images/logout" alt="logout">
-                    </i>
-                    <span class="nav-item">Logout</span>
-                </a>
-                <span class="tooltip">Logout</span>
-            </li>
-        </div>
+            <ul>
+                <li>
+                    <a href="/lecturers/render/dashboards/<%= lecturer.id %>">
+                        <i class="">
+                            <img src="/images/dashboard" alt="dashboard">
+                        </i>
+                        <span class="nav-item">Dashboard</span>
+                    </a>
+                    <span class="tooltip">Dashboard</span>
+                </li>
+                <li>
+                    <a href="/lecturers/render/courses/<%= lecturer.id %>">
+                        <i class=''>
+                            <img src="/images/courses" alt="courses">
+                        </i>
+                        <span class="nav-item">courses</span>
+                    </a>
+                    <span class="tooltip">courses</span>
+                </li>
+                <li>
+                    <a href="/lecturers/render/schedules/<%= lecturer.id %>">
+                        <i class="">
+                            <img src="/images/schedule" alt="schedule">
+                        </i>
+                        <span class="nav-item">schedules</span>
+                    </a>
+                    <span class="tooltip">schedules</span>
+                </li>
+                <li>
+                    <a href="/lecturers/render/assignments/<%= lecturer.id %>">
+                        <i class="">
+                            <img src="/images/assignment" alt="assignment">
+                        </i>
+                        <span class="nav-item">assignments</span>
+                    </a>
+                    <span class="tooltip">assignments</span>
+                </li>
+                <li>
+                    <a href="/lecturers/render/live/<%= lecturer.id %>">
+                        <i class="">
+                            <img src="/images/live" alt="go live">
+                        </i>
+                        <span class="nav-item">Go Live</span>
+                    </a>
+                    <span class="tooltip">Go Live</span>
+                </li>
+            </ul>
+            <div class="logout-navsec">
+                <li id="logout-li">
+                    <a href="#">
+                        <i class="">
+                            <img src="/images/logout" alt="logout">
+                        </i>
+                        <span class="nav-item">Logout</span>
+                    </a>
+                    <span class="tooltip">Logout</span>
+                </li>
+            </div>
+            <script>
+                document.getElementById("logout-li").addEventListener("click", ()=> {
+                    sessionStorage.clear();
+                    localStorage.clear();
+                    window.location.reload()
+                })
+            </script>
+        </nav>
         <script>
-            document.getElementById("logout-li").addEventListener("click", ()=> {
-                sessionStorage.clear();
-                localStorage.clear();
-                window.location.reload()
-            })
+            let btn = document.querySelector('#btn');
+            let sidebar = document.querySelector('.sidebar');
+
+            btn.onclick = () => {
+                sidebar.classList.toggle('active');
+            }
         </script>
-    </nav>
-    <script>
-        let btn = document.querySelector('#btn');
-        let sidebar = document.querySelector('.sidebar');
-
-        btn.onclick = () => {
-            sidebar.classList.toggle('active');
-        }
-    </script>
-    <main class="wrapper-main main-content" id="wrapper-main">
-        <%- include(pageUrl) %>
-    </main>
-
+        <main class="wrapper-main main-content" id="wrapper-main">
+            <%- include(pageUrl) %>
+        </main>
+    </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/script/utils/admin/util.restful"></script>
     <script src="/script/scripts/admin/global.search"></script>

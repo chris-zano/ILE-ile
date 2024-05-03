@@ -7,10 +7,10 @@
     /* colors */
     --text: #051e0e;
     --white: #ffffff;
-    --background: #f8fefb;
-    --background-main: #e8ebea;
+    --background: #f2f2f2;
+    --background-main: #fdfdfd;
     --primary: #3074d9;
-    --secondary: #82e6e8;
+    --secondary: #54b1b3;
     --accent: #57b0e0;
     --red: #ac0000;
     --blue: #4648cf;
@@ -77,6 +77,7 @@ li {
     width: 3px;
     height: 3px;
 }
+
 *::-webkit-scrollbar-track {
     background-color: var(--accent);
     border-radius: 50px;
@@ -89,18 +90,34 @@ li {
     background-color: green;
 }
 
-body {
+body>div.parent-main {
     background-color: var(--background);
     font-size: var(--font-standard);
+    max-width: 1920px;
+    margin: 0 auto;
 }
 
-body, body> * {
+body>div.parent-main,
+body>div.parent-main>* {
     scroll-behavior: smooth;
+}
+
+body>div.parent-main {
+    max-width: 1920px;
+    margin-inline: auto;
+    position: relative;
+}
+
+@media screen and (min-width: 1920px) {
+    body>div.parent-main {
+        max-width: 1920px;
+        position: relative;
+    }  
 }
 
 
 @media (min-width: 768px) {
-    body {
+    body>div.parent-main {
         display: grid;
         grid-template-areas:
             "header header header"
@@ -118,6 +135,7 @@ body, body> * {
         color: var(--white);
         transition: all ease-in-out 200ms;
     }
+
     .popup {
         position: fixed;
         top: 50%;
@@ -137,7 +155,7 @@ body, body> * {
 }
 
 @media (max-width: 767px) {
-    body {
+    body>div.parent-main {
         display: grid;
         grid-template-areas:
             "header header header"
@@ -155,6 +173,7 @@ body, body> * {
         color: var(--white);
         transition: all ease-in-out 200ms;
     }
+
     .popup {
         position: fixed;
         top: 50%;

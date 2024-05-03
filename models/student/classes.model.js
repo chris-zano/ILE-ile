@@ -40,6 +40,15 @@ const classesSchema = new Schema({
     'created-at': {
         type: createdAtSchema,
         required: true
+    },
+    faculty: {
+        type: String,
+        default: "",
+        required: true
+    },
+    numberOfCourses: {
+        type: Number,
+        default: 0
     }
 })
 
