@@ -1,8 +1,5 @@
 const { MongooseError } = require('mongoose');
-const Admins = require('../../models/admin/admin.models');
-const Courses = require('../../models/courses/courses.model');
-const Students = require('../../models/student/student.model');
-const Lecturers = require('../../models/lecturer/lecturer.model');
+const { AdminsDB, StudentsDB, CoursesDB, LecturersDB } = require('../../utils/global/db.utils');
 
 const utils = require('./admin.utils');
 const path = require('path');
@@ -33,7 +30,7 @@ exports.logError = (error) => {
 };
 
 exports.validateAuthId = async (id) => {
-    Admins.findById(id)
+    AdminsDB.findById(id)
         .then((admin) => {
             if (admin == null) {
                 utils.logError(new ReferenceError());
@@ -120,7 +117,7 @@ exports.getCourses = async (coursesArray = []) => {
     if (coursesArray.length != 0) {
         let i = 0;
         for (i; i < coursesArray.length; ++i) {
-            const course = await Courses.findOne({ courseCode: coursesArray[i] });
+            const course = await CoursesDB.findOne({ courseCode: coursesArray[i] });
             if (course != null) {
                 courseObj.title = course.title;
                 courseObj.courseCode = course.courseCode;

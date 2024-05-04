@@ -1,9 +1,4 @@
-
-const Admins = require('../../models/admin/admin.models');
-const Lecturers = require('../../models/lecturer/lecturer.model');
-const Students = require('../../models/student/student.model');
-const Courses = require('../../models/courses/courses.model');
-const Classes = require('../../models/student/classes.model')
+const { AdminsDB, ClassesDB, CoursesDB } = require('../../utils/global/db.utils');
 const utils = require('./admin.utils');
 
 
@@ -76,7 +71,7 @@ exports.renderCourses = (req, res) => {
     const { userType, id } = req.params;
     const { adminData } = req;
 
-    Courses.find({})
+    CoursesDB.find({})
         .limit(300)
         .exec()
         .then((courses) => {
@@ -101,7 +96,7 @@ exports.renderClassrooms = (req, res) => {
     const { userType, id } = req.params;
     const { adminData } = req;
 
-    Classes.find()
+    ClassesDB.find()
     .then((classes) => {
         res.render('admin/admin-main', {
             admin: adminData,
@@ -167,7 +162,7 @@ exports.renderUpdateCourse = (req, res) => {
         });
     }
     else {
-        Courses.findOne({ _id: courseCode })
+        CoursesDB.findOne({ _id: courseCode })
         .then((course) => {
             console.log(course);
             res.render('admin/admin-main', {

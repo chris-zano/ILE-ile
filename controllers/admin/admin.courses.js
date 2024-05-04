@@ -1,7 +1,6 @@
-const Admins = require('../../models/admin/admin.models');
-const Courses = require('../../models/courses/courses.model');
-const Students = require('../../models/student/student.model');
 const Files = require('../../models/courses/files.models');
+
+const { AdminsDB, StudentsDB, CoursesDB } = require('../../utils/global/db.utils');
 
 const fs = require('fs');
 const { getSystemDate, logError } = require('./admin.utils');
@@ -9,7 +8,7 @@ const { getSystemDate, logError } = require('./admin.utils');
 exports.manageCoursesViews = (req, res) => {
     const { id, adminId, role } = req.query;
 
-    Admins.findOne({ _id: id, adminId: adminId, role: role })
+    AdminsDB.findOne({ _id: id, adminId: adminId, role: role })
         .then((doc) => {
             if (doc !== null) {
                 switch (req.params.action) {
@@ -21,7 +20,7 @@ exports.manageCoursesViews = (req, res) => {
                         break;
                     case 'manage':
                         if (req.query.victim) {
-                            Courses.findById(req.query.victim)
+                            CoursesDB.findById(req.query.victim)
                                 .then(course => {
                                     res.render('admin/courses', {
                                         action: 'manage',
@@ -59,7 +58,7 @@ exports.manageCourses = async (req, res) => {
             const createdAt = getSystemDate();
             const [lecturerId, name] = course.lecturer.split("_");
 
-            const newCourse = new Courses({
+            const newCourse = new CoursesDB({
                 courseCode: course.courseCode,
                 title: course.courseTitle,
                 lecturer: {
@@ -85,7 +84,7 @@ exports.manageCourses = async (req, res) => {
     else {
         try {
             const [lecturerId, name] = course.lecturer.split("_");
-            Courses.findByIdAndUpdate({ _id: courseId })
+            CoursesDB.findByIdAndUpdate({ _id: courseId })
                 .then((c) => {
                     if (c.__v === Number(course.v)) {
                         c.courseCode = course.courseCode
@@ -131,10 +130,10 @@ exports.importStudentToCourse = (req, res) => {
 
     const studentsArray = JSON.parse(fs.readFileSync(filePath));
     studentsArray.foreach(student => {
-        Students.find({ studentId: student })
+        StudentsDB.find({ studentId: student })
             .then((doc) => {
                 if (doc !== null) {
-                    Courses.findOneAndUpdate({ courseCode: courseCode })
+                    CoursesDB.findOneAndUpdate({ courseCode: courseCode })
                         .then((course) => {
                             let students = [...course.students];
                             if (!students.find(doc.studentId)) {

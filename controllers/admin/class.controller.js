@@ -1,6 +1,4 @@
-const Classes = require('../../models/student/classes.model');
-const Lecturer = require('../../models/lecturer/lecturer.model');
-const Student = require('../../models/student/student.model');
+const { AdminsDB, StudentsDB, CoursesDB, LecturersDB } = require('../../utils/global/db.utils');
 
 
 exports.runCreateClasses = (req, res) => {

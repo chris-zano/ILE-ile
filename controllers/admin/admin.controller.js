@@ -1,11 +1,9 @@
-const Tutors = require('../../models/lecturer/lecturer.model');
-const Admins = require('../../models/admin/admin.models');
-const Students = require('../../models/student/student.model');
 
+const { AdminsDB, StudentsDB, LecturersDB } = require('../../utils/global/db.utils');
 const { logSession, logError } = require('./admin.utils');
 
 const tutorLogin = (username, password, ip, res) => {
-    Tutors.findOne({ lecturerId: username, password: password })
+    LecturersDB.findOne({ lecturerId: username, password: password })
         .then((tutor) => {
             if (!tutor) {
                 logSession(username, ip, "failed");
@@ -33,7 +31,7 @@ const tutorLogin = (username, password, ip, res) => {
 }
 
 const adminLogin = (username, password, ip, res) => {
-    Admins.findOne({ adminId: username, password: password })
+    AdminsDB.findOne({ adminId: username, password: password })
         .then((admin) => {
             if (!admin) {
                 logSession(username, ip, "failed");
@@ -59,7 +57,7 @@ const adminLogin = (username, password, ip, res) => {
         });
 }
 const studentLogin = (username, password, ip, res) => {
-    Students.findOne({ studentId: username, password: password })
+    StudentsDB.findOne({ studentId: username, password: password })
         .then((student) => {
             if (!student) {
                 logSession(username, ip, "failed");

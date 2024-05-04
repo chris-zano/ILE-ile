@@ -1,3 +1,10 @@
+/**
+ * 
+ * @param {Array} user_schedules an array of existing user schedules. >>> user_schedules.length < 3
+ * @param {Number} start_time The proposed start time for the class
+ * @param {Number} duration The proposed duration of the class
+ * @returns {Array}
+ */
 const checkUserAvailabilityStatus = (user_schedules = [], start_time = 8, duration = 1) => {
     let schedules = []
     let difference_in_time = false;

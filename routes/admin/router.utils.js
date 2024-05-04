@@ -1,9 +1,8 @@
-const Admins = require('../../models/admin/admin.models');
-const Lecturers = require('../../models/lecturer/lecturer.model');
+const { AdminsDB, StudentsDB, CoursesDB, LecturersDB } = require('../../utils/global/db.utils');
 const utils = require('../../controllers/admin/admin.utils');
 
 exports.verifyAdmin = (req, res, next) => {
-    Admins.findById(req.params.id)
+    AdminsDB.findById(req.params.id)
         .then((admin) => {
             if (admin == null) {
                 utils.logError(new ReferenceError());
@@ -31,7 +30,7 @@ exports.verifyAdmin = (req, res, next) => {
 }
 
 exports.verifyLecturer = (req, res, next) => {
-    Lecturers.findById(req.params.id)
+    LecturersDB.findById(req.params.id)
         .then((lecturer) => {
             if (lecturer == null) {
                 utils.logError(new ReferenceError());

@@ -1,9 +1,5 @@
-const Tutors = require('../../models/lecturer/lecturer.model');
-const Admins = require('../../models/admin/admin.models');
-const Students = require('../../models/student/student.model');
-const Courses = require('../../models/courses/courses.model');
-const Files = require('../../models/courses/files.models');
 const Materials = require('../../models/courses/courses.model');
+const { AdminsDB, StudentsDB, CoursesDB, LecturersDB } = require('../../utils/global/db.utils');
 
 exports.findCourse = (socket, value) => {
     const regex = new RegExp(value, 'i');
@@ -22,7 +18,7 @@ exports.findCourse = (socket, value) => {
       ],
     };
 
-    Courses.find(query)
+    CoursesDB.find(query)
     .then((docs) => {
        socket.emit("searchResults", {type: "courses", results: docs});
     }).catch((error) => {
@@ -45,7 +41,7 @@ exports.findStudent = (socket, value) => {
         ]
     }
 
-    Students.find(query)
+    StudentsDB.find(query)
     .then((docs) => {
         socket.emit("searchResults", {type: "students", results: docs})
     }).catch((error) => {
@@ -67,7 +63,7 @@ exports.findTutor = (socket, value) => {
         ]
     }
 
-    Tutors.find(query)
+    LecturersDB.find(query)
     .then((docs) => {
         socket.emit("searchResults", {type: "tutors", results: docs})
     }).catch((error) => {

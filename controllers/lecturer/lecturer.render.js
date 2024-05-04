@@ -1,7 +1,4 @@
-const Tutors = require('../../models/lecturer/lecturer.model');
-const Students = require('../../models/student/student.model');
-const Courses = require('../../models/courses/courses.model');
-
+const { StudentsDB, CoursesDB, LecturersDB } = require('../../utils/global/db.utils');
 const { logError, logSession, getSystemDate } = require('../admin/admin.utils');
 
 exports.renderDashboard = (req, res) => {
@@ -33,7 +30,7 @@ exports.renderSchedules = (req, res) => {
 exports.renderCourses = (req, res) => {
     const { lecturerData } = req;
 
-    Courses.find({
+    CoursesDB.find({
         $and: [{ 'lecturer.lecturerId': lecturerData.lecturerId },
         { 'lecturer.name': `${lecturerData.firstname} ${lecturerData.lastname}` }]
     })
@@ -84,7 +81,7 @@ exports.renderCourse = (req, res) => {
     const { lecturerData } = req;
     const { courseId, id } = req.params;
 
-    Courses.findOne({ _id: courseId })
+    CoursesDB.findOne({ _id: courseId })
         .then((course) => {
             res.render('lecturer/lecturer-main', {
                 lecturer: lecturerData,

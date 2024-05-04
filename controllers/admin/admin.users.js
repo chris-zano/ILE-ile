@@ -3,13 +3,8 @@ const fs = require('fs');
 //user models import
 
 const { getCourses, logError, getSystemDate } = require("./admin.utils");
-
-const Admins = require('../../models/admin/admin.models');
-const Lecturers = require('../../models/lecturer/lecturer.model');
-const Students = require('../../models/student/student.model');
-const Courses = require('../../models/courses/courses.model');
+const { AdminsDB, StudentsDB, CoursesDB, LecturersDB } = require('../../utils/global/db.utils');
 const Files = require('../../models/courses/files.models');
-
 
 const dashboardData = {
     pageTitle: 'Admin Dashboard',
@@ -23,7 +18,7 @@ const getStudentsDataByOffset = async (offset, key, value) => {
     let end = false;
     let query = key != 'null' || value != 'null' ? { [key]: value } : {};
 
-    return Students.find(query)
+    return StudentsDB.find(query)
         .skip(offset)
         .limit(256)
         .exec()
@@ -55,7 +50,7 @@ const getLecturersDataByOffset = (offset, key, value) => {
     let end = false;
     let query = key != 'null' || value != 'null' ? { [key]: value } : {};
 
-    return Lecturers.find(query)
+    return LecturersDB.find(query)
         .skip(offset)
         .limit(256)
         .exec()
@@ -88,7 +83,7 @@ exports.createLecturer = async (req, res) => {
         const createdAt = getSystemDate();
         const { lecturerId, firstName, lastName, faculty } = req.body;
 
-        const tutor = new Lecturers({
+        const tutor = new LecturersDB({
             lecturerId: lecturerId,
             firstName: firstName,
             lastName: lastName,
@@ -114,7 +109,7 @@ exports.createLecturer = async (req, res) => {
 exports.createStudent = (req, res) => {
     try {
         const { studentId, firstName, lastName, program, year, level, faculty } = req.body;
-        const student = new Students({ studentId, firstName, lastName, program, year, level, faculty, courses: [], files: [], repos: [] });
+        const student = new StudentsDB({ studentId, firstName, lastName, program, year, level, faculty, courses: [], files: [], repos: [] });
         student.save();
 
         res.status(200).redirect(`/admins/render/imports/students/${req.adminData.id}`)
@@ -135,7 +130,7 @@ exports.importLecturersData = async (req, res) => {
     try {
         const lecturersArray = JSON.parse(fs.readFileSync(filePath, 'utf8'));
         await Promise.all(lecturersArray.map(async (tutor) => {
-            const newtutor = new Lecturers({
+            const newtutor = new LecturersDB({
                 lecturerId: tutor.lecturerId,
                 firstName: tutor.firstName,
                 lastName: tutor.lastName,
@@ -170,7 +165,7 @@ exports.importStudentsData = async (req, res) => {
         const studentsArray = JSON.parse(fs.readFileSync(filePath, 'utf8'));
         console.log(createdAt);
         await Promise.all(studentsArray.map(async (student) => {
-            const newStudent = new Students({
+            const newStudent = new StudentsDB({
                 studentId: student.studentId,
                 firstName: student.firstName,
                 lastName: student.lastName,
@@ -227,7 +222,7 @@ exports.getStudentData = (req, res) => {
     const { action } = req.params;
     const { studentId } = req.query;
 
-    Students.findOne({ _id: studentId })
+    StudentsDB.findOne({ _id: studentId })
         .then((doc) => {
             if (doc == null) {
                 return res.status(404).json({ message: 'no such user found', doc: null });
@@ -255,7 +250,7 @@ exports.getLecturersData = (req, res) => {
     const { action } = req.params;
     const { id } = req.query;
 
-    Lecturers.findOne({ _id: id })
+    LecturersDB.findOne({ _id: id })
         .then(async (doc) => {
             if (doc == null) {
                 return res.status(404).json({ message: 'no such user found', doc: null });

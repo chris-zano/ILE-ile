@@ -1,4 +1,4 @@
-const Courses = require("../../models/courses/courses.model");
+const { CoursesDB } = require('../../utils/global/db.utils');
 const { getSystemDate, logError } = require("../admin/admin.utils");
 
 //course material url = "/courses/materials/filename"
@@ -44,7 +44,7 @@ exports.addChapter = (req, res) => {
     console.log(courseId, v)
 
     try {
-        Courses.findOne({
+        CoursesDB.findOne({
             $and: [
                 { _id: courseId },
                 { __v: v }
@@ -79,7 +79,7 @@ exports.addLesson = (req, res) => {
     const { lessonName, chapter } = req.body;
     const { courseId, v } = req.params;
 
-    Courses.findByIdAndUpdate(courseId)
+    CoursesDB.findByIdAndUpdate(courseId)
         .then((course) => {
             if (course.__v == v) {
                 if (req.file == undefined) {
@@ -118,7 +118,7 @@ exports.deleteChapter = (req, res) => {
     const { lecturerData } = req;
     const { courseId, v, chapter } = req.params;
 
-    Courses.findByIdAndUpdate(courseId)
+    CoursesDB.findByIdAndUpdate(courseId)
         .then((course) => {
             if (course == null) {
                 res.redirect(`/lecturers/render/course/${courseId}/${lecturerData.id}`)
