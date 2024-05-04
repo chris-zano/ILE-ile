@@ -2,7 +2,7 @@
     <% if (classes.length === 0 || classes === undefined) { %>
         <article class="header">
             <div class="button-wrapper">
-                <a href="#" id="script">Run create classrooms</a>
+                <a href="/admin/classes/create/<%= admin.id %>" id="script">Run create classrooms</a>
                 <small class="classes-btn-tooltip" id="run-script">This will run a program to start the class creation and scheduling processes.</small>
                 <a href="#" id="manual">Create a class</a>
                 <small class="classes-btn-tooltip" id="run-manual">This will allow you to manually create a class and assign users to it</small>
@@ -24,27 +24,30 @@
         <article class="classes-list">
             <div class="classes-list-right">
                 <ul id="admin-class-list-ul">
-                    <li class="admin-class-list-li">
-                        <a href="#">
-                            <div class="class-profile-image">
-                                <img src="/random/image" alt="class profile" width="45px" height="45px">
-                            </div>
-                            <div class="class-info">
-                                <div class="class-id">
-                                    <p>200-FoE-A-M</p>
+                    <% for( let c of classes ) { %>
+                        <li class="admin-class-list-li">
+                            <a href="#">
+                                <div class="class-profile-image">
+                                    <img src="<%= c.profileUrl %>" alt="class profile" width="45px" height="45px">
                                 </div>
-                                <div class="class-count">
-                                    <p>43 students enrolled</p>
+                                <div class="class-info">
+                                    <div class="class-id">
+                                        <p><%= c.classId %></p>
+                                    </div>
+                                    <div class="class-count">
+                                        <p><%= c.students.length %> students</p>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="courses-info">
-                                <span>6 courses</span>
-                            </div>
-                            <div class="schedule-btn">
-                                <button>view schedule</button>
-                            </div>
-                        </a>
-                    </li>
+                                <div class="courses-info">
+                                    <span><%= c.courses.length %> courses</span>
+                                </div>
+                                <div class="schedule-btn">
+                                    <button>view schedule</button>
+                                </div>
+                            </a>
+                        </li>
+                    <% } %>
+                    
                 </ul>
             </div>
         </article>

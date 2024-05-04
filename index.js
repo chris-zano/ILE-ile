@@ -27,17 +27,17 @@ const adminsRoutes = require('./routes/admin/admins.routes');
 const adminRoutes = require('./routes/admin/admin.routes');
 const adminFileRoutes = require('./routes/admin/admin.files');
 const adminRenderRoutes = require('./routes/admin/admin.render.routes');
+const classRoutes = require('./routes/admin/classes.routes');
 const lecturerRenderRoutes = require('./routes/lecturer/lecturer.render.routes');
 const lecturerChaptersRoutes = require('./routes/lecturer/lecturer.chapters.routes');
 const lecturerFilesRoutes = require('./routes/lecturer/lecturer.files.routes');
-
-// const forgeRoutes = require('./routes/admin/forge/forge.routes');
 
 //system config
 app.use(adminRoutes);
 app.use(adminsRoutes);
 app.use(adminFileRoutes);
 app.use(adminRenderRoutes);
+app.use(classRoutes);
 app.use(lecturerFilesRoutes);
 app.use(lecturerRenderRoutes);
 app.use(lecturerChaptersRoutes);
