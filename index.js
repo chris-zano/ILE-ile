@@ -41,7 +41,10 @@ app.use(classRoutes);
 app.use(lecturerFilesRoutes);
 app.use(lecturerRenderRoutes);
 app.use(lecturerChaptersRoutes);
-// app.use(forgeRoutes);
+
+app.use((req, res) => {
+  res.render('global/error', {error: "Page not found", status: 404});
+})
 
 mongoose.connect(process.env.DATABASE_URL);
 
