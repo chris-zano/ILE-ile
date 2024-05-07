@@ -18,7 +18,7 @@ const getStudentsDataByOffset = async (offset, key, value) => {
     let end = false;
     let query = key != 'null' || value != 'null' ? { [key]: value } : {};
 
-    return StudentsDB.find(query)
+    return StudentsDB().find(query)
         .skip(offset)
         .limit(256)
         .exec()
@@ -50,7 +50,7 @@ const getLecturersDataByOffset = (offset, key, value) => {
     let end = false;
     let query = key != 'null' || value != 'null' ? { [key]: value } : {};
 
-    return LecturersDB.find(query)
+    return LecturersDB().find(query)
         .skip(offset)
         .limit(256)
         .exec()
@@ -109,7 +109,9 @@ exports.createLecturer = async (req, res) => {
 exports.createStudent = (req, res) => {
     try {
         const { studentId, firstName, lastName, program, year, level, faculty } = req.body;
-        const student = new StudentsDB({ studentId, firstName, lastName, program, year, level, faculty, courses: [], files: [], repos: [] });
+        const createdAt = getSystemDate();
+        const StudentInstance = StudentsDB();
+        const student = new StudentInstance({ studentId, firstName, lastName, program, year, level, faculty, courses: [], files: [], repos: [], "created-at": createdAt });
         student.save();
 
         res.status(200).redirect(`/admins/render/imports/students/${req.adminData.id}`)
@@ -165,7 +167,8 @@ exports.importStudentsData = async (req, res) => {
         const studentsArray = JSON.parse(fs.readFileSync(filePath, 'utf8'));
         console.log(createdAt);
         await Promise.all(studentsArray.map(async (student) => {
-            const newStudent = new StudentsDB({
+            const StudentInstance = StudentsDB();
+            const newStudent = new StudentInstance({
                 studentId: student.studentId,
                 firstName: student.firstName,
                 lastName: student.lastName,
@@ -222,7 +225,7 @@ exports.getStudentData = (req, res) => {
     const { action } = req.params;
     const { studentId } = req.query;
 
-    StudentsDB.findOne({ _id: studentId })
+    StudentsDB().findOne({ _id: studentId })
         .then((doc) => {
             if (doc == null) {
                 return res.status(404).json({ message: 'no such user found', doc: null });
@@ -250,7 +253,7 @@ exports.getLecturersData = (req, res) => {
     const { action } = req.params;
     const { id } = req.query;
 
-    LecturersDB.findOne({ _id: id })
+    LecturersDB().findOne({ _id: id })
         .then(async (doc) => {
             if (doc == null) {
                 return res.status(404).json({ message: 'no such user found', doc: null });

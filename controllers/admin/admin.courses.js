@@ -8,7 +8,7 @@ const { getSystemDate, logError } = require('./admin.utils');
 exports.manageCoursesViews = (req, res) => {
     const { id, adminId, role } = req.query;
 
-    AdminsDB.findOne({ _id: id, adminId: adminId, role: role })
+    AdminsDB().findOne({ _id: id, adminId: adminId, role: role })
         .then((doc) => {
             if (doc !== null) {
                 switch (req.params.action) {
@@ -20,7 +20,7 @@ exports.manageCoursesViews = (req, res) => {
                         break;
                     case 'manage':
                         if (req.query.victim) {
-                            CoursesDB.findById(req.query.victim)
+                            CoursesDB().findById(req.query.victim)
                                 .then(course => {
                                     res.render('admin/courses', {
                                         action: 'manage',
@@ -84,7 +84,7 @@ exports.manageCourses = async (req, res) => {
     else {
         try {
             const [lecturerId, name] = course.lecturer.split("_");
-            CoursesDB.findByIdAndUpdate({ _id: courseId })
+            CoursesDB().findByIdAndUpdate({ _id: courseId })
                 .then((c) => {
                     if (c.__v === Number(course.v)) {
                         c.courseCode = course.courseCode
@@ -130,10 +130,10 @@ exports.importStudentToCourse = (req, res) => {
 
     const studentsArray = JSON.parse(fs.readFileSync(filePath));
     studentsArray.foreach(student => {
-        StudentsDB.find({ studentId: student })
+        StudentsDB().find({ studentId: student })
             .then((doc) => {
                 if (doc !== null) {
-                    CoursesDB.findOneAndUpdate({ courseCode: courseCode })
+                    CoursesDB().findOneAndUpdate({ courseCode: courseCode })
                         .then((course) => {
                             let students = [...course.students];
                             if (!students.find(doc.studentId)) {

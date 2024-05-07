@@ -30,7 +30,7 @@ exports.renderSchedules = (req, res) => {
 exports.renderCourses = (req, res) => {
     const { lecturerData } = req;
 
-    CoursesDB.find({
+    CoursesDB().find({
         $and: [{ 'lecturer.lecturerId': lecturerData.lecturerId },
         { 'lecturer.name': `${lecturerData.firstname} ${lecturerData.lastname}` }]
     })
@@ -81,7 +81,7 @@ exports.renderCourse = (req, res) => {
     const { lecturerData } = req;
     const { courseId, id } = req.params;
 
-    CoursesDB.findOne({ _id: courseId })
+    CoursesDB().findOne({ _id: courseId })
         .then((course) => {
             res.render('lecturer/lecturer-main', {
                 lecturer: lecturerData,

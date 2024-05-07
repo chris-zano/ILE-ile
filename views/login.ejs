@@ -5,100 +5,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="/favicon" type="image/x-icon">
+    <link rel="stylesheet" href="/css/global/login">
     <title>ITLE: Session New (Login)</title>
-    <style>
-        body {
-            display: grid;
-            place-items: center;
-            font-family: sans-serif;
-        }
-        .login-form-container {
-            width: 95%;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            max-width: 400px;
-        }
-
-        #login-form {
-            min-width: 90%;
-            max-width: 400px;
-            margin:auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        fieldset {
-            margin-bottom: 20px;
-            border: none;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        input[type="text"],
-        input[type="password"] {
-            width: 100%;
-            height: 45px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-        }
-
-        .submit-btn-wrapper {
-            text-align: center;
-        }
-
-        input[type="submit"] {
-            width: 120px;
-            height: 45px;
-            border-radius: 0.5rem;
-            border: 1px solid transparent;
-            background-color: #3074d9;
-            color: #fff;
-            transition: all ease-in-out 200ms;
-        }
-
-        input[type="submit"]:hover {
-            background-color: darkblue;
-        }
-
-        @media screen and (max-width: 480px) {
-            .login-form-container {
-                padding: 10px;
-            }
-        }
-    </style>
 </head>
 
 <body>
-    <div class="login-form-container">
-        <form id="login-form">
-            <fieldset>
-                <label for="username">username: </label>
-                <input type="text" name="username" id="username" placeholder="Enter username" required>
-            </fieldset>
+    <main class="wrapper-main">
+        <img src="/images/school-admin-block" alt="splash" id="splash">
 
-            <fieldset>
-                <label for="password">password: </label>
-                <input type="password" name="password" id="password" required>
-            </fieldset>
+        <div class="login-form-container">
+            <form id="login-form">
+                <fieldset >
+                    <div class="title">
+                        <div class="image-holder">
+                            <img src="/images/logo" alt="school logo" width="20px">
+                        </div>
+                        <h1>GCTU-ITLE</h1>
+                    </div>
+                    <div class="des">
+                        <p>Online learning made easier than ever before</p>
+                    </div>
+                </fieldset>
+                <fieldset>
+                    <label for="username">user-ID: </label>
+                    <input type="text" name="username" id="username" placeholder="Enter username" required>
+                </fieldset>
 
-            <div class="submit-btn-wrapper">
-                <input type="submit" value="Login">
-            </div>
-        </form>
+                <fieldset>
+                    <label for="password">password: </label>
+                    <input type="password" name="password" id="password" required>
+                </fieldset>
+                <fieldset>
+                    <a href="#">Forgot your password?</a>
+                </fieldset>
 
-        <script src="/script/scripts/admin/login"></script>
-    </div>
+                <div class="submit-btn-wrapper">
+                    <input type="submit" value="Login">
+                </div>
+            </form>
+        </div>
+    </main>
 
+    <script src="/script/scripts/admin/login"></script>
 </body>
 
 </html>

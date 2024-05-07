@@ -44,7 +44,7 @@ exports.addChapter = (req, res) => {
     console.log(courseId, v)
 
     try {
-        CoursesDB.findOne({
+        CoursesDB().findOne({
             $and: [
                 { _id: courseId },
                 { __v: v }
@@ -79,7 +79,7 @@ exports.addLesson = (req, res) => {
     const { lessonName, chapter } = req.body;
     const { courseId, v } = req.params;
 
-    CoursesDB.findByIdAndUpdate(courseId)
+    CoursesDB().findByIdAndUpdate(courseId)
         .then((course) => {
             if (course.__v == v) {
                 if (req.file == undefined) {
@@ -118,7 +118,7 @@ exports.deleteChapter = (req, res) => {
     const { lecturerData } = req;
     const { courseId, v, chapter } = req.params;
 
-    CoursesDB.findByIdAndUpdate(courseId)
+    CoursesDB().findByIdAndUpdate(courseId)
         .then((course) => {
             if (course == null) {
                 res.redirect(`/lecturers/render/course/${courseId}/${lecturerData.id}`)

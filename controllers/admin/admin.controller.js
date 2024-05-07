@@ -3,7 +3,7 @@ const { AdminsDB, StudentsDB, LecturersDB } = require('../../utils/global/db.uti
 const { logSession, logError } = require('./admin.utils');
 
 const tutorLogin = (username, password, ip, res) => {
-    LecturersDB.findOne({ lecturerId: username, password: password })
+    LecturersDB().findOne({ lecturerId: username, password: password })
         .then((tutor) => {
             if (!tutor) {
                 logSession(username, ip, "failed");
@@ -31,7 +31,7 @@ const tutorLogin = (username, password, ip, res) => {
 }
 
 const adminLogin = (username, password, ip, res) => {
-    AdminsDB.findOne({ adminId: username, password: password })
+    AdminsDB().findOne({ adminId: username, password: password })
         .then((admin) => {
             if (!admin) {
                 logSession(username, ip, "failed");
@@ -57,7 +57,7 @@ const adminLogin = (username, password, ip, res) => {
         });
 }
 const studentLogin = (username, password, ip, res) => {
-    StudentsDB.findOne({ studentId: username, password: password })
+    StudentsDB().findOne({ studentId: username, password: password })
         .then((student) => {
             if (!student) {
                 logSession(username, ip, "failed");

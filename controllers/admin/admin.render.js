@@ -71,11 +71,10 @@ exports.renderCourses = (req, res) => {
     const { userType, id } = req.params;
     const { adminData } = req;
 
-    CoursesDB.find({})
+    CoursesDB().find({})
         .limit(300)
         .exec()
         .then((courses) => {
-            console.log(courses);
             res.render('admin/admin-main', {
                 admin: adminData,
                 pageTitle: "Courses",
@@ -96,7 +95,7 @@ exports.renderClassrooms = (req, res) => {
     const { userType, id } = req.params;
     const { adminData } = req;
 
-    ClassesDB.find()
+    ClassesDB().find()
     .then((classes) => {
         res.render('admin/admin-main', {
             admin: adminData,
@@ -162,9 +161,8 @@ exports.renderUpdateCourse = (req, res) => {
         });
     }
     else {
-        CoursesDB.findOne({ _id: courseCode })
+        CoursesDB().findOne({ _id: courseCode })
         .then((course) => {
-            console.log(course);
             res.render('admin/admin-main', {
                 admin: adminData,
                 pageTitle: "Update-Course",

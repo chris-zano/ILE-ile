@@ -18,7 +18,7 @@ exports.findCourse = (socket, value) => {
       ],
     };
 
-    CoursesDB.find(query)
+    CoursesDB().find(query)
     .then((docs) => {
        socket.emit("searchResults", {type: "courses", results: docs});
     }).catch((error) => {
@@ -41,7 +41,7 @@ exports.findStudent = (socket, value) => {
         ]
     }
 
-    StudentsDB.find(query)
+    StudentsDB().find(query)
     .then((docs) => {
         socket.emit("searchResults", {type: "students", results: docs})
     }).catch((error) => {
@@ -63,7 +63,7 @@ exports.findTutor = (socket, value) => {
         ]
     }
 
-    LecturersDB.find(query)
+    LecturersDB().find(query)
     .then((docs) => {
         socket.emit("searchResults", {type: "tutors", results: docs})
     }).catch((error) => {

@@ -2,7 +2,7 @@ const { AdminsDB, StudentsDB, CoursesDB, LecturersDB } = require('../../utils/gl
 const utils = require('../../controllers/admin/admin.utils');
 
 exports.verifyAdmin = (req, res, next) => {
-    AdminsDB.findById(req.params.id)
+    AdminsDB().findById(req.params.id)
         .then((admin) => {
             if (admin == null) {
                 utils.logError(new ReferenceError());
@@ -30,7 +30,7 @@ exports.verifyAdmin = (req, res, next) => {
 }
 
 exports.verifyLecturer = (req, res, next) => {
-    LecturersDB.findById(req.params.id)
+    LecturersDB().findById(req.params.id)
         .then((lecturer) => {
             if (lecturer == null) {
                 utils.logError(new ReferenceError());
