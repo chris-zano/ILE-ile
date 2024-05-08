@@ -104,6 +104,26 @@ exports.addLesson = (req, res) => {
                         chpt.courseMaterials.push(material);
                         course.save();
                     }
+                    else if (fileType === "media") {
+                        const chpt = course.chapters[chapter - 1];
+                        chpt.lessons.push(lessonName);
+
+                        const material = {
+                            title: originalname,
+                            owner: lecturerData.id,
+                            fileType: originalname.slice(originalname.lastIndexOf(".") + 1),
+                            url: `/courses/materials/${filename}`
+                        }
+                        chpt.courseLectureRecordings.push(material);
+                        course.save();
+
+                    }
+                    else {
+                        //reject file
+                        const chpt = course.chapters[chapter - 1];
+                        chpt.lessons.push(lessonName);
+                        course.save();
+                    }
                 }
                 res.redirect(`/lecturers/render/course/${courseId}/${lecturerData.id}`)
             }

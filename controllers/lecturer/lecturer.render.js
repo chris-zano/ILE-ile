@@ -51,27 +51,27 @@ exports.renderCourses = (req, res) => {
 
 }
 
-exports.renderAssignments = (req, res) => {
+exports.renderClassrooms = (req, res) => {
     const { lecturerData } = req;
 
     res.render('lecturer/lecturer-main', {
         lecturer: lecturerData,
-        pageTitle: "Assignments",
+        pageTitle: "Classrooms",
         stylesheets: [],
-        pageUrl: 'layouts/assignments',
+        pageUrl: 'layouts/classrooms',
         userType: 'Lecturer',
         scripts: []
     });
 }
 
-exports.renderAssignment = (req, res) => {
+exports.renderClassroom = (req, res) => {
     const { lecturerData } = req;
 
     res.render('lecturer/lecturer-main', {
         lecturer: lecturerData,
-        pageTitle: "Assignment",
+        pageTitle: "Classroom",
         stylesheets: [],
-        pageUrl: 'layouts/assignment',
+        pageUrl: 'layouts/classrooms.view.ejs',
         userType: 'Lecturer',
         scripts: []
     });
