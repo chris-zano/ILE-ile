@@ -67,7 +67,7 @@ body {
 
 .wrapper-main .login-form-container form#login-form {
     min-height: 400px;
-    background-color: rgba(255, 255, 255, 0.338);
+    background-color: rgb(255, 255, 255);
     border: 2px solid white;
     backdrop-filter: blur(6px);
     border-radius: 1rem;
@@ -97,21 +97,20 @@ div.title h1 {
     margin-left: 5px;
     font-family: poets;
     font-size: 24px;
-    color: aliceblue;
+    color: #111;
 }
 
 .des p {
     text-align: center;
-    color: aliceblue;
+   color: #111;
     font-size: 12px;
 }
 
 label {
-    font-family: sans-serif;
-    color: aliceblue;
+    font-family: 'noto regular';
+   color: #111;
     display: block;
     font-size: 14px;
-    font-weight: 600;
     margin-bottom: 5px;
 }
 
@@ -123,7 +122,7 @@ input[type="password"] {
     border: 1px solid #ccc;
     border-radius: 5px;
     box-sizing: border-box;
-    font-family: sans-serif;
+    font-family: 'noto regular';
     font-size: 14px;
     background-color: unset;
 }
@@ -149,10 +148,12 @@ input[type="submit"] {
 input[type="submit"]:hover {
     border-color: #3074d9;
     background-color: transparent;
+    color: #111;
 }
 
 a {
-    color: white;
+    color: #111;
+    font-size: 13px;
 }
 a:hover {
     color: darkblue;

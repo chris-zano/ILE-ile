@@ -1,9 +1,95 @@
-<header class="header-admin .main-content">
-    <div class="logo">
-        <a href="/admins/render/dashboards/<%= admin.id %>">
-            <img src="/images/logo" alt="app_logo" width="50px">
-        </a>
-    </div>
+<header>
+    <section id="header-logo">
+        <div class="logo-img">
+            <a href="/admins/render/dashboards/<%= admin.id %>">
+                <img width="20px" src="/images/logo" alt="logo">
+            </a>
+        </div>
+        <div class="logo-name">
+            <a href="/admins/render/dashboards/<%= admin.id %>">
+                <h1>ITLE</h1>
+            </a>
+        </div>
+    </section>
+    <section id="header-nav">
+        <nav>
+            <div><a href="/admins/render/dashboards/<%= admin.id %>" class="header_nav-a"  aria-current="page">Dashboard</a></div>
+            <div><a href="/admins/render/tutors/<%= admin.id %>" class="header_nav-a" >Lecturers</a></div>
+            <div><a href="/admins/render/students/<%= admin.id %>" class="header_nav-a" >Students</a></div>
+            <div><a href="/admins/render/courses/<%= admin.id %>" class="header_nav-a" >Courses</a></div>
+            <div><a href="/admins/render/classrooms/<%= admin.id %>" class="header_nav-a" >Classrooms</a></div>
+        </nav>
+    </section>
+    <section id="header-profile">
+        <div class="profile-main" >
+            <img width="20px" src="/images/darkSide"  id="profile-main" alt="profile avatar">
+        </div>
+        <div class="profile-card hidden" id="calm">
+            <div class="profile-card-header">
+                <div class="pc-img-x">
+                    <img width="20px" src="/images/darkSide" alt="profile avatar">
+                </div>
+                <div class="pc-h-y">
+                    <p><%= admin.firstname %> <%= admin.lastname %></p>
+                    <p id="p-faculty"><%= admin.faculty%></p>
+                </div>
+                <div class="px-h-z">
+                    <div class="inner-wrapper-z">
+                        <a href="#">Manage Account</a>
+                    </div>
+                </div>
+            </div>
+            <div class="profile-card-main">
+                <div class="pc-m-a">
+                    <div class="pc-m-a-img">
+                        <img width="20px" src="/images/icons8-settings-50" alt="settings icon">
+                    </div>
+                    <div class="pc-m-a-link">
+                        <a href="#">Settings</a>
+                    </div>
+                </div>
+                <div class="pc-m-b">
+                    <div class="pc-m-a-img">
+                        <img width="20px" src="/images/icons8-dark-mode-50" alt="theme icon">
+                    </div>
+                    <div class="pc-m-a-link">
+                        <p>Dark Mode</p>
+                    </div>
+                    <div class="pc-m-a-toggle">
+                        <div class="toggle-switch">
+                            <input type="checkbox" id="toggle" class="toggle-input">
+                            <label for="toggle" class="toggle-label"></label>
+                          </div>
+                    </div>
+                </div>
+            </div>
+            <div class="profile-card-footer">
+                <div class="pc-m-a-img">
+                    <img width="20px" src="/images/logout" alt="logout icon">
+                </div>
+                <div class="pc-m-a-link">
+                    <p id="logout" style="cursor: pointer;">Logout</p>
+                </div>
+                <script>
+                    document.getElementById("logout").addEventListener("click", ()=> {
+                        sessionStorage.clear();
+                        localStorage.clear();
+                        window.location.reload()
+                    })
+                </script>
+            </div>
+        </div>
+
+        <script>
+            const profileMain = document.getElementById('profile-main');
+            profileMain.addEventListener('click', (e) => {
+                document.getElementById('calm').classList.toggle('hidden')
+            })
+        </script>
+    </section>
+</header>
+
+<section id="header-seach-bar">
     <form action="/global-search" class="search-bar">
         <div>
             <select class="dropdown" name="search-content" id="search-category">
@@ -22,7 +108,7 @@
         </div>
         <div class="results-container hidden" id="search-results-div">
             <small id="search-matches">0 matches found</small>
-
+    
             <ul id="results-ul">
             </ul>
         </div>
@@ -36,28 +122,4 @@
             document.body.addEventListener('click', handleOutsideClick);
         </script>
     </form>
-    <div class="profile">
-        <nav class="header-nav">
-            <ul>
-                <li><a href="#">Dashboard</a></li>
-                <li><a href="#">Settings</a></li>
-                <li>
-                    <div class="username" id="current-user-name">
-                        <%= admin.firstname %> &caron;
-                    </div>
-                </li>
-            </ul>
-            <section class="header_nav_profile hidden" id="header_nav_profile">
-                <div class="call_to_action">Profile</div>
-                <div class="call_to_action">Logout</div>
-            </section>
-            <script>
-                document.getElementById('current-user-name').addEventListener('click', () => {
-                    const profilePopUp = document.getElementById('header_nav_profile');
-
-                    profilePopUp.classList.toggle('hidden');
-                });
-            </script>
-        </nav>
-    </div>
-</header>
+</section>
