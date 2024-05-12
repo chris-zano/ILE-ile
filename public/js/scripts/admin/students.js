@@ -138,7 +138,7 @@ const createTableRow = (studentObject, parentElement) => {
         <td>${studentObject.level}</td>
         <td>${studentObject.program}</td>
         <td>${studentObject.faculty}</td>
-        <td><button type="button" class="actionButton btn-courses" data-label-type="courses" data-label-Student-id="${studentObject._id}">Courses</button></td>
+        <td>${studentObject.registeredCourses}</td>
         <td><button type="button" class="actionButton btn-repos" data-label-type="repos" data-label-Student-id="${studentObject._id}">Repos</button></td>
         <td><button type="button" class="actionButton btn-files" data-label-type="files" data-label-Student-id="${studentObject._id}">Files</button></td>
     `;

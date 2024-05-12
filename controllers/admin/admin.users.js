@@ -14,13 +14,13 @@ const dashboardData = {
     bodyUrl: 'admin/main'
 };
 
-const getStudentsDataByOffset = async (offset, key, value) => {
+exports.getStudentsDataByOffset = async (offset, key, value, limit = 256) => {
     let end = false;
     let query = key != 'null' || value != 'null' ? { [key]: value } : {};
 
     return StudentsDB().find(query)
         .skip(offset)
-        .limit(256)
+        .limit(limit)
         .exec()
         .then((docs) => {
             if (docs.length < 256) {
@@ -30,7 +30,7 @@ const getStudentsDataByOffset = async (offset, key, value) => {
                 status: 200,
                 message: 'success',
                 docs: docs,
-                cursor: Number(offset) + 256,
+                cursor: Number(offset) + limit,
                 end: end
             }
         })
@@ -46,7 +46,7 @@ const getStudentsDataByOffset = async (offset, key, value) => {
         )
 }
 
-const getLecturersDataByOffset = (offset, key, value) => {
+exports.getLecturersDataByOffset = (offset, key, value) => {
     let end = false;
     let query = key != 'null' || value != 'null' ? { [key]: value } : {};
 
@@ -108,10 +108,10 @@ exports.createLecturer = async (req, res) => {
 //handlers
 exports.createStudent = (req, res) => {
     try {
-        const { studentId, firstName, lastName, program, year, level, faculty } = req.body;
+        const { studentId, firstName, lastName, program, year, level, faculty, registeredCourses } = req.body;
         const createdAt = getSystemDate();
         const StudentInstance = StudentsDB();
-        const student = new StudentInstance({ studentId, firstName, lastName, program, year, level, faculty, courses: [], files: [], repos: [], "created-at": createdAt });
+        const student = new StudentInstance({ studentId, firstName, lastName, program, year, level, faculty, registeredCourses, courses: [], files: [], repos: [], "created-at": createdAt });
         student.save();
 
         res.status(200).redirect(`/admins/render/imports/students/${req.adminData.id}`)
@@ -176,6 +176,7 @@ exports.importStudentsData = async (req, res) => {
                 year: student.year,
                 level: student.level,
                 faculty: student.faculty,
+                registeredCourses: student.registeredCourses,
                 courses: student.courses,
                 files: student.files,
                 repos: student.repos,
@@ -202,8 +203,8 @@ exports.importStudentsData = async (req, res) => {
 exports.getUserDataByOffset = (req, res) => {
     const { userType, offset } = req.params;
     const userActionMethods = {
-        students: getStudentsDataByOffset,
-        lecturers: getLecturersDataByOffset
+        students: this.getStudentsDataByOffset,
+        lecturers: this.getLecturersDataByOffset
     };
 
     const userDataMethod = userActionMethods[userType];

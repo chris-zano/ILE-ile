@@ -66,6 +66,10 @@ const studentSchema = new Schema({
         type: Array,
         default: []
     },
+    registeredCourses: {
+        type: String, // Representing the String value for registered courses (eg, 100_BCE)
+        default: 0
+    },
     files: {
         type: Array,
         default: []

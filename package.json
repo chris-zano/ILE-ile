@@ -1,6 +1,6 @@
 {
   "name": "integrated_learning_environment",
-  "version": "1.0.0",
+  "version": "0.1.3",
   "description": "An Integrated Learning environment for an enhanced and interactive educational experience",
   "main": "index.js",
   "scripts": {

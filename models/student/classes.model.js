@@ -46,9 +46,9 @@ const classesSchema = new Schema({
         default: "",
         required: true
     },
-    numberOfCourses: {
-        type: Number,
-        default: 0
+    courses: {
+        type: Array,
+        default: []
     }
 })
 
