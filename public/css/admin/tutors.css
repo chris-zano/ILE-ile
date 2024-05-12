@@ -124,7 +124,7 @@ section.main-section {
     }
 
     tbody tr:hover {
-        background-color: #f3f3f2;
+        background-color: var(--white);
     }
 
     /*

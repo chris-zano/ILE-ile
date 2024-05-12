@@ -15,6 +15,15 @@
     --red: #ac0000;
     --blue: #4648cf;
     --purple: #905fae;
+    --inactive: hsl(0, 0%, 43%);
+
+    /* --text: #f6eef6;
+    --background: #292929;
+    --white: #131313;
+    --primary: #3074d9;
+    --secondary: #742774;
+    --accent: #4eda51;
+    --red: #4eda51; */
 
 
     /* fonts */
@@ -95,6 +104,7 @@ body {
     height: 100%;
     overflow-y: scroll;
     scroll-behavior: smooth;
+    background-color: var(--background);
 }
 
 img {
@@ -107,11 +117,11 @@ div.container-max_width::-webkit-scrollbar {
 }
 
 div.container-max_width header {
+    background-color: var(--background);
     position: sticky;
     top: 0;
     left: 0;
     right: 0;
-    background-color: white;
 }
 
 div.container-max_width main {
@@ -127,7 +137,7 @@ div.container-max_width footer {
 }
 
 p#p-faculty {
-    color: rgb(0, 38, 162);
+    color: var(--primary);
 }
 
 
@@ -190,55 +200,30 @@ button[disabled] {
 }
 
 div.container-max_width {
+    background-color: var(--background);
     overflow-x: hidden;
-    border-left: 1px solid hsl(0, 4%, 95%);
-    border-right: 1px solid hsl(0, 4%, 95%);
+    border-left: 1px solid transparent;
+    border-right: 1px solid transparent;
     height: 100vh;
     overflow-y: scroll;
     position: relative;
 }
 
-.toggle-switch {
-    position: relative;
-    display: inline-block;
-    width: 32px;
-    height: 16px;
-}
-
-.toggle-input {
-    display: none;
-}
-
-.toggle-label {
-    position: absolute;
+button#toggle {
+    height: 20px;
+    width: 50px;
+    border-radius: 4px;
+    background-color: transparent;
+    border-color: var(--primary);
+    color: var(--text);
     cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    border-radius: 34px;
-    transition: background-color 0.4s;
+    transition: all ease-in-out 200ms;
 }
 
-.toggle-label::before {
-    position: absolute;
-    content: "";
-    height: 16px;
-    width: 16px;
-    left: 0px;
-    bottom: 0px;
-    background-color: rgb(235, 235, 235);
-    border-radius: 50%;
-    transition: transform 200ms;
-}
+button#toggle[data-enabled="true"] {
+    background-color: var(--primary);
+    color: var(--white);
 
-.toggle-input:checked+.toggle-label {
-    background-color: #026db4;
-}
-
-.toggle-input:checked+.toggle-label::before {
-    transform: translateX(17px);
 }
 
 @media screen and (min-width: 310px) {
@@ -302,7 +287,6 @@ div.container-max_width {
         box-shadow: 0 5px 30px rgba(0, 0, 0, .30);
         color: var(--text);
         background: var(--background);
-        background-color: red;
         opacity: 1;
         transition: 0.3s;
         border-radius: 15px;

@@ -22,16 +22,11 @@
           <!-- include header -->
           <%- include('templates/header') %>
 
-        <main>
+        <main id="wrapper-main">
             <section id="section-main">
                 <%- include(pageUrl) %>
             </section>
         </main>
-        <footer>
-           <section id="footer-main">
-            <%- include('templates/footer') %>
-           </section>
-        </footer>
     </div>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/script/utils/admin/util.restful"></script>

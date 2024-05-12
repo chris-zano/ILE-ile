@@ -40,17 +40,16 @@ article.cards {
 }
 
 article.cards a.card {
-    background-color: var(--white);
+    background-color: var(--background);
     width: 310px;
     height: 350px;
     color: unset;
     text-decoration: unset;
     cursor: pointer;
-    border:1px solid #ffffff;
-    box-shadow: 0px 3px 3px #bebeeb5a;
+    border:1px solid var(--background-main);
+    box-shadow: 0px 3px 3px #111;
     backdrop-filter: blur(290px);
     border-radius: 9px;
-    /* padding: 5px; */
 }
 
 section.card-header {
@@ -65,7 +64,7 @@ section.card-header img {
     aspect-ratio: 4 / 3;
     border-top-left-radius: 9px;
     border-top-right-radius: 9px;
-    box-shadow: 0px 3px 3px #abababca;
+    box-shadow: 0px 3px 3px var(--background-main);
 }
 
 a.card section.card-body {

@@ -77,7 +77,7 @@
         letter-spacing: 0.2px;
         text-align: center;
         text-decoration: none;
-        color: hsl(0, 0%, 43%);
+        color: var(--inactive);
         transition: all ease-in-out 200ms;
     }
 
@@ -85,20 +85,20 @@
     section#header-nav nav div a:focus {
         background-color: hsl(117, 100%, 58%);
         box-shadow: 0px 3px 4px rgba(66, 66, 66, 0.372);
-        color: hsl(269, 100%, 9%);
+        color: var(--text);
 
     }
 
     section#header-nav nav div a[aria-current="page"] {
         /* border-bottom: 2px solid hsla(0, 78%, 59%, 0.384); */
-        color: hsl(269, 100%, 9%);
+        color: var(--text);
     }
 
     section#header-nav nav div a[aria-current="page"]:hover,
     section#header-nav nav div a[aria-current="page"]:focus {
         background-color: hsl(117, 100%, 58%);
         box-shadow: 0px 3px 4px rgba(66, 66, 66, 0.372);
-        color: hsl(269, 100%, 9%);
+        color: var(--text);
         border-bottom: 2px solid transparent;
     }
 
@@ -118,7 +118,7 @@
     }
 
     section#header-profile .profile-main > img {
-        border: 1px solid #02020258;
+        border: 1px solid var(--white);
         border-radius: 50%;
         transition: all ease-in-out 250ms;
     }
@@ -128,8 +128,8 @@
     }
 
     section#header-profile div.profile-card {
-        background-color: rgb(255, 255, 255);
-        box-shadow: 0px 3px 4px rgba(66, 66, 66, 0.372);
+        background-color: var(--background-main);
+        box-shadow: 0px 3px 4px #111;
         position: absolute;
         z-index: 2;
         top: 75px;
@@ -142,11 +142,15 @@
     }
 
     .profile-card .profile-card-header {
-        border: 1px solid hsl(0, 4%, 95%);
+        border: 1px solid var(--inactive);
         border-radius: 8px;
         padding: 1ch;
         display: grid;
         place-items: center;
+    }
+
+    .profile-card .profile-card-header img {
+        border-radius: 50%;
     }
 
     .profile-card .profile-card-header .pc-h-y {
@@ -159,7 +163,7 @@
     }
 
     .profile-card .profile-card-header .inner-wrapper-z {
-        border: 1px solid hsla(212, 100%, 67%, 0.439);
+        border: 1px solid var(--accent);
         cursor: pointer;
         border-radius: 1rem;
         padding: 1ch 2ch;
@@ -168,23 +172,23 @@
 
     .profile-card .profile-card-header .inner-wrapper-z a {
         transition: all ease-in-out 200ms;
-        color: hsl(0, 0%, 43%);
+        color: var(--inactive);
     }
 
     .profile-card .profile-card-header .inner-wrapper-z:hover,
     .profile-card .profile-card-header .inner-wrapper-z:focus {
-        background-color: aliceblue;
+        background-color: var(--accent);
         border: 1px solid transparent;
         box-shadow: 0px 3px 4px rgba(188, 188, 188, 0.151);
     }
 
     .profile-card .profile-card-header .inner-wrapper-z:hover a,
     .profile-card .profile-card-header .inner-wrapper-z:focus a {
-        color: hsl(269, 100%, 9%);
+        color: var(--text);
     }
 
     .profile-card .profile-card-main {
-        border: 1px solid hsl(0, 4%, 95%);
+        border: 1px solid var(--inactive);
         padding: 1ch;
         border-radius: 8px;
         margin-top: 1ch;
@@ -193,7 +197,7 @@
     }
 
     .profile-card-footer {
-        border: 1px solid hsla(0, 100%, 70%, 0.314);
+        border: 1px solid var(--inactive);
         padding: 1ch;
         border-radius: 8px;
         margin-top: 1ch;
@@ -221,6 +225,10 @@
     .pc-m-a-toggle {
         float: right;
         margin-left: 100%;
+    }
+
+    p#logout:hover, p#logout:focus {
+        color: red;
     }
 
     .profile-card.profile-card.hidden > * {
@@ -325,24 +333,24 @@
         letter-spacing: 0.1px;
         text-align: center;
         text-decoration: none;
-        color: hsl(0, 0%, 43%);
+        color: var(--inactive);
         transition: all ease-in-out 200ms;
     }
     
     section#header-nav nav div a:focus {
         border-bottom: 2px solid hsla(0, 78%, 59%, 0.384);
-        color: hsl(269, 100%, 9%);
+        color: var(--text);
     }
     
     section#header-nav nav div a[aria-current="page"] {
         border-bottom: 2px solid hsla(0, 78%, 59%, 0.384);
-        color: hsl(269, 100%, 9%);
+        color: var(--text);
     }
     
     section#header-nav nav div a[aria-current="page"]:focus {
         background-color: rgb(255, 255, 255);
         box-shadow: 0px 3px 4px rgba(66, 66, 66, 0.372);
-        color: hsl(269, 100%, 9%);
+        color: var(--text);
         border-bottom: 2px solid transparent;
     }
     
@@ -380,8 +388,7 @@
     }
 
     section#header-profile div.profile-card {
-        background-color: rgb(255, 255, 255);
-        box-shadow: 0px 3px 4px rgba(66, 66, 66, 0.372);
+        background-color: var(--background);
         position: absolute;
         z-index: 2;
         top: 75px;
@@ -394,7 +401,7 @@
     }
 
     .profile-card .profile-card-header {
-        border: 1px solid hsl(0, 4%, 95%);
+        border: 1px solid var(--inactive);
         border-radius: 8px;
         padding: 1ch;
         display: grid;
@@ -407,6 +414,7 @@
     }
     
     .profile-card .profile-card-header .pc-h-y  p{
+        color: var(--text);
         text-align: center;
     }
 
@@ -420,7 +428,7 @@
 
     .profile-card .profile-card-header .inner-wrapper-z a {
         transition: all ease-in-out 200ms;
-        color: hsl(0, 0%, 43%);
+        color: var(--text);
     }
 
     .profile-card .profile-card-header .inner-wrapper-z:hover,
@@ -432,7 +440,7 @@
 
     .profile-card .profile-card-header .inner-wrapper-z:hover a,
     .profile-card .profile-card-header .inner-wrapper-z:focus a {
-        color: hsl(269, 100%, 9%);
+        color: var(--text);
     }
 
     .profile-card .profile-card-main {

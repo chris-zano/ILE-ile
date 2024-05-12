@@ -23,7 +23,7 @@ section#header-seach-bar  .dropdown {
     font-size: small;
     color: aliceblue;
     border-radius: var(--border-radius);
-    background-color: var(--accent);
+    background-color: var(--background-main);
     cursor: pointer;
     margin-right: 10px;
 }
@@ -41,16 +41,18 @@ section#header-seach-bar  .search-box {
     align-items: center;
     padding-right: 1rem;
     width: 100%;
+    height: 45px;
     color: var(--text);
-    border: 1px solid var(--accent);
+    border: 1px solid var(--background-main);
     border-radius: var(--border-radius);
-    padding: 0 5px;
-    background-color: unset;
 }
 
 section#header-seach-bar  .search-box input {
-    background-color: unset;
+    border-radius: var(--border-radius);
+    background-color: var(--inactive);
     width: 100%;
+    height: 40px;
+    text-indent: 10px;
     font-size: var(--font-standard);
     font-weight: 500;
     color: var(--text);
@@ -67,7 +69,7 @@ section#header-seach-bar  .search-box i {
 section#header-seach-bar  .search-box input::placeholder {
     font-size: var(--font-standard);
     font-weight: 500;
-    color: var(--accent);
+    color: var(--text);
 }
 
 section#header-seach-bar  button#searchBtn {
@@ -75,4 +77,57 @@ section#header-seach-bar  button#searchBtn {
     background: none;
     border: none;
     outline: 0;
+}
+
+div.results-container {
+    transition: all ease-in-out 250ms;
+    z-index: 9999;
+    background-color: var(--background);
+    box-shadow: 0px 3px 3px #111;
+    position: absolute;
+    top: 100%;
+    margin-top: 10px;
+    padding: 0 10px;
+    border-radius: var(--border-radius-thin);
+    min-width: 100%;
+    min-height: max-content;
+    max-height: 400px;
+    overflow-y: scroll;
+}
+
+#search-matches {
+    position: sticky;
+    top: 0;
+    background-color: var(--white);
+    padding: 5px;
+}
+
+div.results-container ul {
+    margin-top: 2ch;
+    padding: 0 1ch 2ch 0;
+    display: grid;
+    grid-template-rows: auto;
+    gap: 5px;
+}
+
+div.results-container ul li.results-item {
+    border-radius: var(--border-radius-thin);
+    padding: 5px;
+}
+
+div.results-container ul li.results-item:hover {
+    background-color: var(--inactive);
+}
+
+div.results-container ul li.results-item:hover > a > * {
+    color: var(--text);
+}
+
+li.results-item a h2 {
+    font-size: 14px;
+    font-weight: 300;
+}
+
+li.results-item a p {
+    font-size: 11px;
 }

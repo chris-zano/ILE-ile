@@ -3,7 +3,7 @@
     max-width: 400px;
     margin: 0 auto;
     padding: 20px;
-    border: 1px solid #e0e0e0;
+    border: 1px solid  transparent;
     background-color: var(--background);
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -33,7 +33,7 @@ h2 {
 .file-input {
     width: 100%;
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--background-main);
     border-radius: 4px;
     box-sizing: border-box;
     font-size: var(--font-standard);
@@ -45,7 +45,7 @@ h2 {
 
 .upload-button {
     padding: 10px 20px;
-    background-color: var(--primary);
+    background-color: red;
     border: none;
     border-radius: 4px;
     cursor: pointer;
@@ -66,10 +66,10 @@ option {
     max-width: 400px;
     margin: 1rem  auto 0;
     padding: 20px;
-    border: 1px solid var(--white);
+    border: 1px solid var(--background-main);
     background-color: var(--background);
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 3px 3px #111;
 }
 
 .input-field {
@@ -88,18 +88,19 @@ input[type="password"],
 select {
     width: 100%;
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--inactive);
     border-radius: 4px;
     box-sizing: border-box;
     color: var(--eye-dark);
     font-size: var(--font-standard);
+    background-color: var(--background);
 }
 
 section.imports-section button {
     width: 100%;
     padding: 10px;
     border: 1px solid var(--primary);
-    background-color: var(--white);
+    background-color: var(--background);
     color: var(--text);
     border-radius: 4px;
     cursor: pointer;
