@@ -13,13 +13,13 @@
     </section>
     <section id="header-nav">
         <nav>
-            <div><a href="/admins/render/dashboards/<%= admin.id %>" class="header_nav-a"
-                    aria-current="page">Dashboard</a></div>
-            <div><a href="/admins/render/tutors/<%= admin.id %>" class="header_nav-a">Lecturers</a></div>
-            <div><a href="/admins/render/students/<%= admin.id %>" class="header_nav-a">Students</a></div>
-            <div><a href="/admins/render/courses/<%= admin.id %>" class="header_nav-a">Courses</a></div>
-            <div><a href="/admins/render/classrooms/<%= admin.id %>" class="header_nav-a">Classrooms</a></div>
+            <div><a href="/admins/render/dashboards/<%= admin.id %>" class="header_nav-a" <%= currentPage === 'dashboard' ? 'aria-current=page' : '' %> >Dashboard</a></div>
+            <div><a href="/admins/render/tutors/<%= admin.id %>" class="header_nav-a" <%= currentPage === 'tutors' ? 'aria-current=page' : '' %> >Lecturers</a></div>
+            <div><a href="/admins/render/students/<%= admin.id %>" class="header_nav-a" <%= currentPage === 'students' ? 'aria-current=page' : '' %> >Students</a></div>
+            <div><a href="/admins/render/courses/<%= admin.id %>" class="header_nav-a" <%= currentPage === 'courses' ? 'aria-current=page' : '' %> >Courses</a></div>
+            <div><a href="/admins/render/classrooms/<%= admin.id %>" class="header_nav-a" <%= currentPage === 'classrooms' ? 'aria-current=page' : '' %> >Classrooms</a></div>
         </nav>
+        
     </section>
     <section id="header-profile">
         <div class="profile-main">

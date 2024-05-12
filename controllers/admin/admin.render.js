@@ -11,6 +11,7 @@ exports.renderImports = async (req, res) => {
         pageTitle: "Imports",
         stylesheets: ["/css/admin/import"],
         pageUrl: 'layouts/imports',
+        currentPage: '',
         userType: userType,
         scripts: [`/script/scripts/admin/import-${userType}`]
     });
@@ -27,6 +28,7 @@ exports.renderDashboard = (req, res) => {
         pageTitle: "Dashboard",
         stylesheets: ["/css/admin/dashboard"],
         pageUrl: 'layouts/dashboard',
+        currentPage: 'dashboard',
         userType: userType,
         scripts: ["/script/scripts/admin/dashboard"]
     });
@@ -43,6 +45,7 @@ exports.renderStudents = (req, res) => {
         pageTitle: "Students",
         stylesheets: ["/css/admin/students"],
         pageUrl: 'layouts/students',
+        currentPage: 'students',
         userType: userType,
         scripts: ["/script/scripts/admin/students"]
     });
@@ -60,6 +63,7 @@ exports.renderTutors = (req, res) => {
         pageTitle: "Tutors",
         stylesheets: ["/css/admin/tutors"],
         pageUrl: 'layouts/tutors',
+        currentPage: 'tutors',
         userType: userType,
         scripts: ["/script/scripts/admin/tutors"]
     });
@@ -81,6 +85,7 @@ exports.renderCourses = (req, res) => {
                 stylesheets: ["/css/admin/courses"],
                 pageUrl: 'layouts/courses',
                 userType: userType,
+                currentPage: 'courses',
                 scripts: ["/script/scripts/admin/courses"],
                 courses: courses
             });
@@ -102,6 +107,7 @@ exports.renderClassrooms = (req, res) => {
             pageTitle: "Classes",
             stylesheets: ["/css/admin/classes"],
             pageUrl: 'layouts/classes',
+            currentPage: 'classrooms',
             userType: userType,
             scripts: ["/script/scripts/admin/classes"],
             classes: classes
@@ -121,6 +127,7 @@ exports.renderUpdateStudent = (req, res) => {
         pageTitle: "Update-Student",
         stylesheets: ["/css/admin/update.student"],
         pageUrl: 'layouts/update.student.ejs',
+        currentPage: 'students',
         userType: userType,
         scripts: ["/script/scripts/admin/update.student"]
     });
@@ -137,6 +144,7 @@ exports.renderUpdateTutor = (req, res) => {
         pageTitle: "Update-Tutor",
         stylesheets: ["/css/admin/update.tutor"],
         pageUrl: 'layouts/update.tutor..ejs',
+        currentPage: 'tutor',
         userType: userType,
         scripts: ["/script/scripts/admin/update.tutor"]
     });
@@ -155,6 +163,7 @@ exports.renderUpdateCourse = (req, res) => {
             pageTitle: "Update-Course",
             stylesheets: ["/css/admin/update.course"],
             pageUrl: 'layouts/update.course.ejs',
+            currentPage: 'course',
             userType: "Admin",
             scripts: ["/script/scripts/admin/update.course"],
             course: "null"
@@ -168,6 +177,7 @@ exports.renderUpdateCourse = (req, res) => {
                 pageTitle: "Update-Course",
                 stylesheets: ["/css/admin/update.course"],
                 pageUrl: 'layouts/update.course.ejs',
+                currentPage: 'course',
                 userType: "Admin",
                 scripts: ["/script/scripts/admin/update.course"],
                 course: course
@@ -190,6 +200,7 @@ exports.renderViewStudent = (req, res) => {
         pageTitle: "Student-Profile",
         stylesheets: ["/css/admin/view.student"],
         pageUrl: 'layouts/view.student.ejs',
+        currentPage: 'students',
         userType: userType,
         scripts: ["/script/scripts/admin/view.student"]
     });
@@ -206,6 +217,7 @@ exports.renderViewTutor = (req, res) => {
         pageTitle: "Tutor-Profile",
         stylesheets: ["/css/admin/view.tutor"],
         pageUrl: 'layouts/view.tutor.ejs',
+        currentPage: 'tutor',
         userType: userType,
         scripts: ["/script/scripts/admin/view.tutor"]
     });
@@ -222,6 +234,7 @@ exports.renderViewCourse = (req, res) => {
         pageTitle: "Course-Profile",
         stylesheets: ["/css/admin/view.courses"],
         pageUrl: 'layouts/view.courses.ejs',
+        currentPage: 'course',
         userType: userType,
         scripts: ["/script/scripts/admin/view.courses"]
     });

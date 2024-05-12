@@ -3,7 +3,7 @@ section#header-seach-bar {
     margin: 1ch auto;
 }
 
-section#header-seach-bar  .search-bar {
+section#header-seach-bar .search-bar {
     position: relative;
     display: flex;
     align-items: center;
@@ -13,7 +13,7 @@ section#header-seach-bar  .search-bar {
     border-radius: var(--border-radius);
 }
 
-section#header-seach-bar  .dropdown {
+section#header-seach-bar .dropdown {
     border: none;
     outline: none;
     position: relative;
@@ -28,7 +28,21 @@ section#header-seach-bar  .dropdown {
     margin-right: 10px;
 }
 
-section#header-seach-bar  select>option {
+section#header-seach-bar .dropdown:hover,
+section#header-seach-bar .dropdown:focus {
+    background-color: transparent;
+    border: 1px solid var(--primary);
+    color: var(--text);
+}
+
+section#header-seach-bar .dropdown:hover,
+section#header-seach-bar .dropdown:focus {
+    background-color: transparent;
+    border: 1px solid var(--primary);
+    color: var(--text);
+}
+
+section#header-seach-bar select>option {
     display: unset;
     display: flex;
     min-height: unset;
@@ -36,7 +50,12 @@ section#header-seach-bar  select>option {
     width: 150px;
 }
 
-section#header-seach-bar  .search-box {
+section#header-seach-bar .dropdown:hover > option,
+section#header-seach-bar .dropdown:focus > option {
+    color: var(--text);
+}
+
+section#header-seach-bar .search-box {
     display: flex;
     align-items: center;
     padding-right: 1rem;
@@ -48,7 +67,7 @@ section#header-seach-bar  .search-box {
 
 }
 
-section#header-seach-bar  .search-box input {
+section#header-seach-bar .search-box input {
     border-radius: var(--border-radius);
     background-color: var(--background);
     width: 100%;
@@ -61,19 +80,19 @@ section#header-seach-bar  .search-box input {
     outline: 0;
 }
 
-section#header-seach-bar  .search-box i {
+section#header-seach-bar .search-box i {
     font-size: 1.3rem;
     cursor: pointer;
     color: var(--text);
 }
 
-section#header-seach-bar  .search-box input::placeholder {
+section#header-seach-bar .search-box input::placeholder {
     font-size: var(--font-standard);
     font-weight: 500;
     color: var(--text);
 }
 
-section#header-seach-bar  button#searchBtn {
+section#header-seach-bar button#searchBtn {
     background-color: none;
     background: none;
     border: none;
@@ -120,7 +139,7 @@ div.results-container ul li.results-item:hover {
     background-color: var(--inactive);
 }
 
-div.results-container ul li.results-item:hover > a > * {
+div.results-container ul li.results-item:hover>a>* {
     color: var(--text);
 }
 

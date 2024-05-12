@@ -25,6 +25,67 @@ function getId(id) {
     return document.getElementById(id);
 }
 
+
+const navigateToPage = (position = 0) => {
+    location.href = document.getElementsByClassName("header_nav-a")[position].getAttribute('href');
+}
+
+const toggleThemeShortcut = () => {
+    document.getElementById("toggle").click();
+}
+
+document.addEventListener('keydown', (e) => {
+    const shortcutKey = e.key.toLowerCase();
+    if (e.shiftKey) {
+        switch (shortcutKey) {
+            case "i":
+                document.getElementById('calm').classList.toggle('hidden');
+                break;
+            case "h":
+                navigateToPage();
+                break;
+            case "t":
+                toggleThemeShortcut();
+                break;
+            default:
+                break;
+        }
+    }
+    else if (Number(shortcutKey) >= 0) {
+        switch (shortcutKey) {
+            case "1":
+                navigateToPage();
+                break;
+            case "2":
+                navigateToPage(1);
+                break;
+            case "3":
+                navigateToPage(2);
+                break;
+            case "4":
+                navigateToPage(3);
+                break;
+            case "5":
+                navigateToPage(4);
+                break;
+            default:
+                break;
+        }
+    }
+    else if (e.ctrlKey) {
+        switch (shortcutKey) {
+            case ".":
+                document.getElementById('search-input').focus();
+                break;
+            case ",":
+                localStorage.href = "/settings";
+                break;
+            default:
+                break;
+        }
+    }
+})
+
 console.log("Util is loaded ");
 
 const toast = (message) => {
@@ -56,7 +117,7 @@ const root = document.documentElement
 if (themeToggleBtn.getAttribute('data-enabled') == "true" && (lsThemeValue) == true) {
     console.log(themeToggleBtn.getAttribute('data-enabled') === String(lsThemeValue) === "true");
     console.log(themeToggleBtn.getAttribute('data-enabled'), String(lsThemeValue));
-    
+
     root.style.setProperty("--text", "#f6eef6")
     root.style.setProperty("--background", "#292929")
     root.style.setProperty("--background-main", "#363636")

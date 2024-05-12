@@ -17,14 +17,6 @@
     --purple: #905fae;
     --inactive: hsl(0, 0%, 43%);
 
-    /* --text: #f6eef6;
-    --background: #292929;
-    --white: #131313;
-    --primary: #3074d9;
-    --secondary: #742774;
-    --accent: #4eda51;
-    --red: #4eda51; */
-
 
     /* fonts */
     --default-font-face: 'robotoReg';
@@ -210,8 +202,8 @@ div.container-max_width {
 }
 
 button#toggle {
-    height: 20px;
-    width: 50px;
+    height: 15px;
+    width: fit-content;
     border-radius: 4px;
     background-color: transparent;
     border-color: var(--primary);
