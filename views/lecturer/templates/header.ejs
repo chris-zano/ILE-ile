@@ -56,10 +56,43 @@
                         <p>Dark Mode</p>
                     </div>
                     <div class="pc-m-a-toggle">
-                        <div class="toggle-switch">
-                            <input type="checkbox" id="toggle" class="toggle-input">
-                            <label for="toggle" class="toggle-label"></label>
-                          </div>
+                        <button id="toggle" type="button" data-enabled="true">Enable</button>
+                        <script>
+                            const toggleBtn = document.getElementById('toggle');
+
+                            const lsValue = JSON.parse(localStorage.getItem('toggle-btn-enabled'));
+
+                            toggleBtn.setAttribute('data-enabled', lsValue);
+                            if (lsValue == false) {
+                                toggleBtn.textContent = "Enable";
+                            }
+                            else {
+                                toggleBtn.textContent = "Enabled";
+                            }
+
+                            toggleBtn.addEventListener("click", (e) => {
+                                const btnValue = e.target.getAttribute('data-enabled');
+                                if (btnValue == "false") {
+                                    updateToggleData(e.target, true);
+                                    e.target.textContent = "Enabled"
+                                }
+                                else {
+                                    updateToggleData(e.target, false);
+                                    e.target.textContent = "Enable"
+                                }
+                            })
+
+                            function updateToggleData(toggle, value) {
+                                toggle.setAttribute('data-enabled', value);
+                                localStorage.setItem('toggle-btn-enabled', JSON.stringify(value));
+                                if (value == "false")
+                                    toggle.textContent = "Enable";
+                                else
+                                    toggle.textContent = "Enabled";
+                                location.reload();
+                            }
+                        </script>
+
                     </div>
                 </div>
             </div>
