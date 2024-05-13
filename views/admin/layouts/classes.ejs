@@ -4,8 +4,6 @@
             <div class="button-wrapper">
                 <a href="/admin/classes/create/<%= admin.id %>" id="script">Run create classrooms</a>
                 <small class="classes-btn-tooltip" id="run-script">This will run a program to start the class creation and scheduling processes.</small>
-                <a href="#" id="manual">Create a class</a>
-                <small class="classes-btn-tooltip" id="run-manual">This will allow you to manually create a class and assign users to it</small>
             </div>
         </article>
         <h3>List of all Classes</h3>
@@ -15,10 +13,8 @@
         </article>
     <% } else { %>
         <article class="header">
-            <a href="#" id="script">Run update classrooms</a>
+            <a href="/admin/classes/create/<%= admin.id %>" id="script">Run update classrooms</a>
             <small class="classes-btn-tooltip" id="run-script">This will run a program to rerun the class creation and scheduling processes</small>
-            <a href="#" id="manual">Create a class</a>
-            <small class="classes-btn-tooltip" id="run-manual">This will allow you to manually create a class and assign users to it</small>
         </article>
         <h3>List of all Classes</h3>
         <article class="classes-list">

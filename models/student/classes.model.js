@@ -27,7 +27,7 @@ const classesSchema = new Schema({
         required: true,
         index:true,
         unique: true,
-        match: /^\d{3}-[A-Za-z]*-[A-Z]_[ME]$/
+        match: /^\d{3}-[A-Za-z]*_[MEW]$/
     },
     students: {
         type: Array,
@@ -49,6 +49,10 @@ const classesSchema = new Schema({
     courses: {
         type: Array,
         default: []
+    },
+    session: {
+        type: String,
+        required: true
     }
 })
 

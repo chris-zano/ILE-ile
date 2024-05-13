@@ -54,6 +54,10 @@ const studentSchema = new Schema({
         type: Number,
         required: true
     },
+    session: {
+        type: String,
+        required: true
+    },
     faculty: {
         type: String,
         required: true
@@ -84,7 +88,7 @@ const studentSchema = new Schema({
     },
     classId: {
         type: String,
-        default: ""
+        default: "unset"
     }
 });
 

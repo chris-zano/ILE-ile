@@ -8,19 +8,19 @@ const fs = require('fs');
 
 exports.logError = (error) => {
     if (error instanceof MongooseError) {
-        const eMes = new MongooseError("Mongoose encountered an error");
+        const eMes = new MongooseError(error.message);
         console.error(eMes.stack);
     }
     else if (error instanceof ReferenceError) {
-        const eMes = new ReferenceError("Error retrieving lecturer")
+        const eMes = new ReferenceError(error.message)
         console.error(eMes.stack);
     }
     else if (error instanceof SyntaxError) {
-        const eMes = new SyntaxError("Error retrieving lecturer");
+        const eMes = new SyntaxError(error.message);
         console.error(eMes.stack);
     }
     else if (error instanceof TypeError) {
-        const eMes = new TypeError("Error validating instance");
+        const eMes = new TypeError(error.message);
         console.error(eMes.stack);
     }
     else {

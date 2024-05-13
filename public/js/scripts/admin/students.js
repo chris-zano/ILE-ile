@@ -98,7 +98,6 @@ async function showView(e) {
 const getStudentsByOffset = async (key, value) => {
     const moffset = localStorage.getItem('students-offset') || 0;
     const req = await fetch(`/admin/get/students/${moffset}?key=${encodeURIComponent(key)}&value=${encodeURIComponent(value)}`);
-    console.log(`/admin/get/students/${moffset}?key=${encodeURIComponent(key)}&value=${encodeURIComponent(value)}`);
     const res = await req.json();
     const status = req.status;
 
@@ -138,6 +137,7 @@ const createTableRow = (studentObject, parentElement) => {
         <td>${studentObject.level}</td>
         <td>${studentObject.program}</td>
         <td>${studentObject.faculty}</td>
+        <td>${studentObject.session}</td>
         <td>${studentObject.registeredCourses}</td>
         <td><button type="button" class="actionButton btn-repos" data-label-type="repos" data-label-Student-id="${studentObject._id}">Repos</button></td>
         <td><button type="button" class="actionButton btn-files" data-label-type="files" data-label-Student-id="${studentObject._id}">Files</button></td>
@@ -152,7 +152,6 @@ const createTableRow = (studentObject, parentElement) => {
     tr.addEventListener('click', (e) => {
         if (e.target.tagName != 'BUTTON') {
             const studentId = e.currentTarget.querySelector('[data-label-Student-id]').getAttribute('data-label-Student-id');
-            // console.log('Student ID:', studentId);
             const anchor = document.createElement('a');
             anchor.href = `/students/view_profile/${studentId}`
             anchor.click();
@@ -176,7 +175,6 @@ const callFetchForStudents = (key, value) => {
             [...actionButtons].forEach((actionButton) => listen(actionButton, 'click', showView));
 
             localStorage.setItem('students-offset', JSON.stringify(data.data.cursor));
-            // console.log('Offset updated:', data.data.cursor);
         }).catch((error) => {
             console.log('Error on line 23(forge.js): ', error);
         });
@@ -209,7 +207,7 @@ const main = () => {
         document.getElementById('nextPage').style.display = "unset"
     }
 
-    const selectors = [{ id: 'studentLevel', key: 'level' }, { id: 'program', key: 'program' }, { id: 'faculty', key: 'faculty' }];
+    const selectors = [{ id: 'studentLevel', key: 'level' }, { id: 'program', key: 'program' }, { id: 'faculty', key: 'faculty' }, {id: 'session', key: 'session'}];
 
     callFetchForStudents(query.key, query.value);
 

@@ -108,10 +108,10 @@ exports.createLecturer = async (req, res) => {
 //handlers
 exports.createStudent = (req, res) => {
     try {
-        const { studentId, firstName, lastName, program, year, level, faculty, registeredCourses } = req.body;
+        const { studentId, firstName, lastName, program, year, level, session, faculty, registeredCourses } = req.body;
         const createdAt = getSystemDate();
         const StudentInstance = StudentsDB();
-        const student = new StudentInstance({ studentId, firstName, lastName, program, year, level, faculty, registeredCourses, courses: [], files: [], repos: [], "created-at": createdAt });
+        const student = new StudentInstance({ studentId, firstName, lastName, program, year, level,session, faculty, registeredCourses, courses: [], files: [], repos: [], "created-at": createdAt });
         student.save();
 
         res.status(200).redirect(`/admins/render/imports/students/${req.adminData.id}`)
@@ -176,6 +176,7 @@ exports.importStudentsData = async (req, res) => {
                 year: student.year,
                 level: student.level,
                 faculty: student.faculty,
+                session: student.session,
                 registeredCourses: student.registeredCourses,
                 courses: student.courses,
                 files: student.files,
