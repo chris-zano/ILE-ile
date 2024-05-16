@@ -61,8 +61,9 @@ const main = async () => {
 
     let rooms = sortLengthsInAscendingOrder([classes_400, classes_300, classes_200, classes_100]);
     const lecturersList = await getLecturersList(rooms);
+    console.log(lecturersList);
 
-    console.log(lecturersList)
+    //use rooms - iterate through each room access schedule and pass to function alog with lecturerList
 }
 
 main();
