@@ -17,7 +17,6 @@ const main = () => {
         const res = await req.json();
 
         res.data.forEach(lecturer => {
-            console.log(lecturer)
             const option = document.createElement('option');
             option.value = `${lecturer.lecturerId}_${lecturer.firstName} ${lecturer.lastName}`;
             option.textContent = `${lecturer.firstName} ${lecturer.lastName}`;

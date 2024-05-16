@@ -50,6 +50,7 @@ exports.loadScript = (req, res) => {
     const filePath = getScriptFilePath('scripts', auth, filename);
 
     if (filePath != 'not found') {
+        res.set('Cache-Control', 'public, max-age=45');
         res.type('text/javascript');
         fs.createReadStream(filePath).pipe(res);
     }
@@ -66,6 +67,7 @@ exports.loadUtilityScript = (req, res) => {
     const filePath = getScriptFilePath('utils', auth, filename);
 
     if (filePath != 'not found') {
+        res.set('Cache-Control', 'public, max-age=45');
         res.type('text/javascript');
         fs.createReadStream(filePath).pipe(res);
     }
@@ -81,6 +83,7 @@ exports.getStyleSheet = (req, res) => {
     const filePath = setFilePath('css', null, auth, filename);
 
     if (filePath != 'not found') {
+        res.set('Cache-Control', 'public, max-age=30');
         res.type('css');
         fs.createReadStream(filePath).pipe(res);
     }
@@ -94,17 +97,20 @@ exports.getStyleSheet = (req, res) => {
 exports.getImage = (req, res) => {
     const filePath = path.join(__dirname, '..', '..', 'public', 'assets', 'images', `${req.params.filename}.png`);
     res.type('png');
+    res.set('Cache-Control', 'public, max-age=3600');
     fs.createReadStream(filePath).pipe(res);
 }
 
 exports.getFavicon = (req, res) => {
     const filePath = path.join(__dirname, '..', '..', 'public', 'assets', 'favicon', 'favicon.png');
+    res.set('Cache-Control', 'public, max-age=86400');
     res.type('image/x-icon');
     fs.createReadStream(filePath).pipe(res);
 }
 
 exports.getFonts = (req, res) => {
     const filePath = path.join(__dirname, '..', '..', 'public', 'assets', 'fonts', `${req.params.filename}.ttf`);
+    res.set('Cache-Control', 'public, max-age=86400');
     res.type('font/ttf');
     fs.createReadStream(filePath).pipe(res);
 }
@@ -126,6 +132,7 @@ exports.getRandomImage = (req, res) => {
     const randomIndex = Math.floor(Math.random() * imageurls.length);
     const randomImageUrl = url("oceanscolorful");
 
+    res.set('Cache-Control', 'public, max-age=1200');
     res.type('jpg');
     fs.createReadStream(randomImageUrl).pipe(res);
 }

@@ -21,6 +21,24 @@ async function initiatePostRequest(url_endpoint, headers, options) {
     }
 }
 
+/**
+ * 
+ * @param {URL} url - the api endpoint to navigate to 
+ * @returns {Object} - response object
+ */
+const fetchData = async (url) => {
+    const headers = { "Content-Type": "application/json" };
+    try {
+        const response = await fetch(url);
+
+        return {status: response.status, data: await response.json()};
+    }
+    catch (error) {
+        console.log(error);
+        // window.location.href = "/global/error";
+    }
+}
+
 function getId(id) {
     return document.getElementById(id);
 }

@@ -10,42 +10,6 @@
 </section>
 
 <section class="courses" id="courses-section">
-    <article class="cards">
-        <% if (courses.length == 0) { %>
-         <div>No courses available for your department</div>
-         <div>Create a new course now.</div>
-        <% } else { %>
-            <% for( let course of courses ) { %>
-                <a href="/admins/render/updates/course/<%= course._id %>/<%= admin.id %>" class="card" preload>
-                    <section class="card-header">
-                        <img src="/images/ui" alt="course thumbnail" width="150px" height="150px">
-                    </section>
-                    <section class="card-body">
-                        <div class="title">
-                            <h2><%= course.title %></h2>
-                            <small><%= course.courseCode %></small>
-                        </div>
-                        <div class="professor">
-                            <img src="/images/professor" alt="professor">
-                            <% if (course.lecturer.lecturerId == "TU-000FoE" && course.lecturer.name == "unassigned") { %>
-                                <p>No lecturer assigned</p>
-                            <% } else { %>
-                                <p><%= course.lecturer.name %></p>
-                            <% } %>
-                        </div>
-                        <div class="footer">
-                            <div class="highlight-footer">
-                                <img src="/images/class" alt="course level">
-                                <small><%= course.level %></small>
-                            </div>
-                            <div class="highlight-footer">
-                                <img src="/images/student" alt="students count">
-                                <small><%= course.students.length %></small>
-                            </div>
-                        </div>
-                    </section>
-                </a>
-            <% } %>
-        <% } %>
+    <article class="cards" id="courses-cards">
     </article>
 </section>

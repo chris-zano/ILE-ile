@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin [Dev]</title>
+</head>
+<body>
+    <div class="container-main">
+        <form action="" id="form-create">
+            <div>
+                <h1>Create new admin login</h1>
+            </div>
+
+            <div>
+                <label for="firstname">First Name</label>
+                <input type="text" name="firstname" id="firstname">
+            </div>
+
+            <div>
+                <label for="lastname">Last Name</label>
+                <input type="text" name="lastname" id="lastname">
+            </div>
+
+            <div>
+                <label for="password">Create a Password</label>
+                <input type="password" name="Password" id="password">
+            </div>
+
+            <div>
+                <label for="role">What is your role? </label>
+                <select name="role" id="role">
+                    <option value="forge">System Administrator</option>
+                    <option value="shepherd">Departmental Administrator</option>
+                </select>
+            </div>
+
+            <div>
+                <label for="faculty">Which Faculty are you? </label>
+                <select name="faculty" id="faculty">
+                    <option value="Engineering">Engineering Faculty</option>
+                    <option value="FoCIS">Faculty of Computing and Information Systems</option>
+                    <option value="Business">Business Faculty</option>
+                </select>
+            </div>
+            <div>
+                <input type="submit" value="Create account">
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const submitAdminCredentials = async (credentialsObject) => {
+            const headers = {
+                "Content-Type": "application/json",
+            }
+            const options = {...credentialsObject};
+
+            const req = await fetch('/developers/create-new-admin?bypass=true', {
+                method: "POST",
+                headers: {...headers},
+                body: JSON.stringify({...options})
+            });
+
+            const res = await req.json();
+
+            return {status: req.status, data: res};
+        }
+
+        const form = document.getElementById('form-create');
+
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            const firstname = document.getElementById('firstname').value;
+            const lastname = document.getElementById('lastname').value;
+            const userPassword = document.getElementById('password').value;
+            const role = document.getElementById('role').value;
+            const faculty = document.getElementById('faculty').value;
+
+            const adminCredentials = {firstname, lastname, userPassword, role, faculty};
+
+            submitAdminCredentials(adminCredentials)
+            .then((res) => {
+                if (res.status === 200) {
+                    const confirmValue = confirm(`Your id is ${res.data.admin.adminId}. Copy to clipboard?`);
+                    if (confirmValue) {
+                        navigator.clipboard.writeText(`${res.data.admin.adminId}`)
+                        window.location.href = "/";
+                    }
+                    else {
+                        window.location.href = "/";
+                    }
+                }
+                else {
+                    if (res.status === 403) {
+                        console.log(res);
+                        alert(res.data.message)
+                    }
+                    else {
+                        window.location.href = '/global/error';
+                    }
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+        })
+    </script>
+</body>
+</html>

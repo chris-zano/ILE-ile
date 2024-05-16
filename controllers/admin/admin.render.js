@@ -6,6 +6,7 @@ exports.renderImports = async (req, res) => {
     const { userType, id } = req.params;
     const { adminData } = req;
 
+    res.set('Cache-Control', 'public, max-age=30');
     res.render('admin/admin-main', {
         admin: adminData,
         pageTitle: "Imports",
@@ -23,6 +24,7 @@ exports.renderDashboard = (req, res) => {
     const { userType, id } = req.params;
     const { adminData } = req;
 
+    res.set('Cache-Control', 'public, max-age=30');
     res.render('admin/admin-main', {
         admin: adminData,
         pageTitle: "Dashboard",
@@ -40,6 +42,7 @@ exports.renderStudents = (req, res) => {
     const { userType, id } = req.params;
     const { adminData } = req;
 
+    res.set('Cache-Control', 'public, max-age=30');
     res.render('admin/admin-main', {
         admin: adminData,
         pageTitle: "Students",
@@ -58,6 +61,7 @@ exports.renderTutors = (req, res) => {
     const { userType, id } = req.params;
     const { adminData } = req;
 
+    res.set('Cache-Control', 'public, max-age=30');
     res.render('admin/admin-main', {
         admin: adminData,
         pageTitle: "Tutors",
@@ -75,24 +79,16 @@ exports.renderCourses = (req, res) => {
     const { userType, id } = req.params;
     const { adminData } = req;
 
-    CoursesDB().find({})
-        .limit(300)
-        .exec()
-        .then((courses) => {
-            res.render('admin/admin-main', {
-                admin: adminData,
-                pageTitle: "Courses",
-                stylesheets: ["/css/admin/courses"],
-                pageUrl: 'layouts/courses',
-                userType: userType,
-                currentPage: 'courses',
-                scripts: ["/script/scripts/admin/courses"],
-                courses: courses
-            });
-        }).catch((error) => {
-            utils.logError(error);
-            console.log(error)
-        })
+    res.set('Cache-Control', 'public, max-age=30');
+    res.render('admin/admin-main', {
+        admin: adminData,
+        pageTitle: "Courses",
+        stylesheets: ["/css/admin/courses"],
+        pageUrl: 'layouts/courses',
+        userType: userType,
+        currentPage: 'courses',
+        scripts: ["/script/scripts/admin/courses"],
+    });
     return;
 }
 
@@ -101,27 +97,29 @@ exports.renderClassrooms = (req, res) => {
     const { adminData } = req;
 
     ClassesDB().find()
-    .then((classes) => {
-        res.render('admin/admin-main', {
-            admin: adminData,
-            pageTitle: "Classes",
-            stylesheets: ["/css/admin/classes"],
-            pageUrl: 'layouts/classes',
-            currentPage: 'classrooms',
-            userType: userType,
-            scripts: ["/script/scripts/admin/classes"],
-            classes: classes
-        });
-    }).catch((error) => {
-        utils.logError(error);
-        console.log(error)
-    })
+        .then((classes) => {
+            res.set('Cache-Control', 'public, max-age=30');
+            res.render('admin/admin-main', {
+                admin: adminData,
+                pageTitle: "Classes",
+                stylesheets: ["/css/admin/classes"],
+                pageUrl: 'layouts/classes',
+                currentPage: 'classrooms',
+                userType: userType,
+                scripts: ["/script/scripts/admin/classes"],
+                classes: classes
+            });
+        }).catch((error) => {
+            utils.logError(error);
+            console.log(error)
+        })
 }
 
 exports.renderUpdateStudent = (req, res) => {
     const { userType, id } = req.params;
     const { adminData } = req;
 
+    res.set('Cache-Control', 'public, max-age=30');
     res.render('admin/admin-main', {
         admin: adminData,
         pageTitle: "Update-Student",
@@ -139,6 +137,7 @@ exports.renderUpdateTutor = (req, res) => {
     const { userType, id } = req.params;
     const { adminData } = req;
 
+    res.set('Cache-Control', 'public, max-age=30');
     res.render('admin/admin-main', {
         admin: adminData,
         pageTitle: "Update-Tutor",
@@ -156,8 +155,8 @@ exports.renderUpdateCourse = (req, res) => {
     const { courseCode, id } = req.params;
     const { adminData } = req;
 
-    console.log(courseCode)
-    if(courseCode == "null") {
+    if (courseCode == "null") {
+        res.set('Cache-Control', 'public, max-age=30');
         res.render('admin/admin-main', {
             admin: adminData,
             pageTitle: "Update-Course",
@@ -171,20 +170,21 @@ exports.renderUpdateCourse = (req, res) => {
     }
     else {
         CoursesDB().findOne({ _id: courseCode })
-        .then((course) => {
-            res.render('admin/admin-main', {
-                admin: adminData,
-                pageTitle: "Update-Course",
-                stylesheets: ["/css/admin/update.course"],
-                pageUrl: 'layouts/update.course.ejs',
-                currentPage: 'course',
-                userType: "Admin",
-                scripts: ["/script/scripts/admin/update.course"],
-                course: course
+            .then((course) => {
+                res.set('Cache-Control', 'public, max-age=30');
+                res.render('admin/admin-main', {
+                    admin: adminData,
+                    pageTitle: "Update-Course",
+                    stylesheets: ["/css/admin/update.course"],
+                    pageUrl: 'layouts/update.course.ejs',
+                    currentPage: 'course',
+                    userType: "Admin",
+                    scripts: ["/script/scripts/admin/update.course"],
+                    course: course
+                });
+            }).catch((error) => {
+                utils.logError(error);
             });
-        }).catch((error) => {
-            utils.logError(error);
-        });
 
     }
 
@@ -195,6 +195,7 @@ exports.renderViewStudent = (req, res) => {
     const { userType, id } = req.params;
     const { adminData } = req;
 
+    res.set('Cache-Control', 'public, max-age=30');
     res.render('admin/admin-main', {
         admin: adminData,
         pageTitle: "Student-Profile",
@@ -212,6 +213,7 @@ exports.renderViewTutor = (req, res) => {
     const { userType, id } = req.params;
     const { adminData } = req;
 
+    res.set('Cache-Control', 'public, max-age=30');
     res.render('admin/admin-main', {
         admin: adminData,
         pageTitle: "Tutor-Profile",
@@ -229,6 +231,7 @@ exports.renderViewCourse = (req, res) => {
     const { userType, id } = req.params;
     const { adminData } = req;
 
+    res.set('Cache-Control', 'public, max-age=30');
     res.render('admin/admin-main', {
         admin: adminData,
         pageTitle: "Course-Profile",

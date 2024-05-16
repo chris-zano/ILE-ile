@@ -23,9 +23,9 @@ app.set('views', VIEW_ENGINE_PATH);
 app.set('view engine', 'ejs');
 
 //system imports
-const adminsRoutes = require('./routes/admin/admins.routes');
+const adminsUserRoutes = require('./routes/admin/admin.user.routes.js');
 const adminRoutes = require('./routes/admin/admin.routes');
-const adminFileRoutes = require('./routes/admin/admin.files');
+const adminFileRoutes = require('./routes/admin/admin.files.routes.js');
 const adminRenderRoutes = require('./routes/admin/admin.render.routes');
 const classRoutes = require('./routes/admin/classes.routes');
 const lecturerRenderRoutes = require('./routes/lecturer/lecturer.render.routes');
@@ -34,7 +34,7 @@ const lecturerFilesRoutes = require('./routes/lecturer/lecturer.files.routes');
 
 //system config
 app.use(adminRoutes);
-app.use(adminsRoutes);
+app.use(adminsUserRoutes);
 app.use(adminFileRoutes);
 app.use(adminRenderRoutes);
 app.use(classRoutes);

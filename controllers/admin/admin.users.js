@@ -14,6 +14,83 @@ const dashboardData = {
     bodyUrl: 'admin/main'
 };
 
+const generateUniqueAdminID = (faculty) => {
+    const prefix = 'AD';
+
+    // Generate a three-digit number, padded with leading zeros if necessary
+    const number = String(Math.floor(Math.random() * 1000)).padStart(3, '0');
+
+    // Generate a random alphabetic string (length between 0 and 5 for variability)
+    const alphaLength = Math.floor(Math.random() * 6);
+    let alphaString = '';
+
+    if (faculty === "Engineering") {
+        alphaString = 'FoE';
+    } else if (faculty === "FoCIS") {
+        alphaString = 'FoCIS';
+    }
+    else if (faculty === "Business") {
+        alphaString = 'BuS';
+    }
+    else {
+        return 'Faculty Undefined';
+    }
+
+    // Combine all parts to form the ID
+    return `${prefix}-${number}${alphaString}`;
+}
+
+const generateAndVerifyAdminIdHasNoMatch = async (faculty) => {
+    const Admin = AdminsDB();
+    const adminRegexp = /^AD-\d{3}[A-Za-z0-9]*$/;
+    let verifiedAdminId = ""
+    let i = 0;
+    while (i < 3) {
+        const adminId = generateUniqueAdminID(faculty);
+        if (adminId === "Faculty Undefined") {
+            console.log("Faculty Undefined");
+            res.status(403).json({ message: "Faculty Undefined" });
+            return;
+        }
+
+        if (adminRegexp.test(adminId)) {
+            const existingUser = await Admin.findOne({ adminId: adminId });
+            if (!existingUser) {
+                verifiedAdminId = adminId;
+                break;
+            }
+        }
+        i++;
+    }
+
+    if (verifiedAdminId === "") {
+        return null;
+    }
+
+    return verifiedAdminId;
+}
+
+exports.createNewAdmin = async (req, res) => {
+    const Admin = AdminsDB();
+    const { firstname, lastname, userPassword, role, faculty } = req.body;
+
+    const verifiedAdminId = await generateAndVerifyAdminIdHasNoMatch(faculty);
+
+    if (verifiedAdminId === null) {
+        res.status(500).json({message: "Create New Admin Failed - Operation Timed Out"});
+        return;
+    }
+
+    const createdAt = getSystemDate();
+    const admin = new Admin({adminId: verifiedAdminId, firstName: firstname, lastName: lastname, faculty, role, password: userPassword, 'created-at': createdAt});
+    const savedAdmin = await admin.save();
+    const { password, 'created-at': createdAtField, ...rest } = savedAdmin._doc;
+    
+    if (savedAdmin) {
+        res.status(200).json({admin: rest});
+    }
+}
+
 exports.getStudentsDataByOffset = async (offset, key, value, limit = 256) => {
     let end = false;
     let query = key != 'null' || value != 'null' ? { [key]: value } : {};
@@ -80,10 +157,11 @@ exports.getLecturersDataByOffset = (offset, key, value) => {
 
 exports.createLecturer = async (req, res) => {
     try {
+        const Lecturer = LecturersDB()
         const createdAt = getSystemDate();
         const { lecturerId, firstName, lastName, faculty } = req.body;
 
-        const tutor = new LecturersDB({
+        const tutor = new Lecturer({
             lecturerId: lecturerId,
             firstName: firstName,
             lastName: lastName,
@@ -111,7 +189,7 @@ exports.createStudent = (req, res) => {
         const { studentId, firstName, lastName, program, year, level, session, faculty, registeredCourses } = req.body;
         const createdAt = getSystemDate();
         const StudentInstance = StudentsDB();
-        const student = new StudentInstance({ studentId, firstName, lastName, program, year, level,session, faculty, registeredCourses, courses: [], files: [], repos: [], "created-at": createdAt });
+        const student = new StudentInstance({ studentId, firstName, lastName, program, year, level, session, faculty, registeredCourses, courses: [], files: [], repos: [], "created-at": createdAt });
         student.save();
 
         res.status(200).redirect(`/admins/render/imports/students/${req.adminData.id}`)

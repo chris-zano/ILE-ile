@@ -53,14 +53,5 @@ const adminSchema = new Schema({
     }
 });
 
-adminSchema.pre('save', function(next) {
-    // Check if the 'created-at' field is being modified
-    if (this.isModified('created-at')) {
-        // If it's being modified, prevent the save operation
-        return next(new Error("Cannot update 'created-at' field"));
-    }
-    // If not being modified, proceed with the save operation
-    next();
-});
 
 module.exports = mongoose.model('Admins', adminSchema);
