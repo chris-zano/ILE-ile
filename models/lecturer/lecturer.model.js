@@ -21,6 +21,21 @@ const createdAtSchema = new Schema({
     }
 });
 
+const scheduleSchema = new Schema({
+    day: {
+        type: String
+    },
+    time: {
+        type: String
+    },
+    duration: {
+        type: String
+    },
+    courseCode: {
+        type: String
+    }
+});
+
 const lecturerSchema = new Schema({
     lecturerId: {
         type: String,
@@ -51,6 +66,10 @@ const lecturerSchema = new Schema({
     'created-at': {
         type: createdAtSchema,
         required: true
+    },
+    schedule: {
+        type: [scheduleSchema],
+        default: []
     }
 });
 

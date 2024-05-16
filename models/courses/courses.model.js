@@ -28,6 +28,9 @@ const scheduleSchema = new Schema({
     },
     time: {
         type: String
+    },
+    duration: {
+        type: String
     }
 });
 

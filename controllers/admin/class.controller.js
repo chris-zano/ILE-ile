@@ -10,15 +10,15 @@ const generateClassId = (groupId, session) => {
 
 const getRegisteredCourses = (groupId) => {
     const registeredCoursesObjectMap = {
-        '400_BCE': ['ENCE 451', 'ENCE 421', 'ENGE 352', 'CSE 101'],
-        '400_BIT': ['ENCE 451', 'ENCE 421', 'ENGE 352', 'CSE 101'],
-        '400_BTE': ['ENCE 451', 'ENCE 421', 'ENGE 352', 'CSE 101'],
-        '300_BCE': ['ENCE 451', 'ENCE 421', 'ENGE 352', 'CSE 101'],
-        '300_BTE': ['ENCE 451', 'ENCE 421', 'ENGE 352', 'CSE 101'],
-        '200_BCE': ['ENCE 451', 'ENCE 421', 'ENGE 352', 'CSE 101'],
-        '200_BTE': ['ENCE 451', 'ENCE 421', 'ENGE 352', 'CSE 101'],
-        '100_BCE': ['ENCE 451', 'ENCE 421', 'ENGE 352', 'CSE 101'],
-        '100_BTE': ['ENCE 451', 'ENCE 421', 'ENGE 352', 'CSE 101'],
+        '400_BCE': ['ENCE 421', 'CS 135'],
+        '400_BIT': ['ENCE 421', 'CS 135'],
+        '400_BTE': ['ENCE 421', 'CS 135'],
+        '300_BCE': ['ENCE 421', 'CS 135'],
+        '300_BTE': ['ENCE 421', 'CS 135'],
+        '200_BCE': ['ENCE 421', 'CS 135'],
+        '200_BTE': ['ENCE 421', 'CS 135'],
+        '100_BCE': ['ENCE 421', 'CS 135'],
+        '100_BTE': ['ENCE 421', 'CS 135'],
     }
 
     return registeredCoursesObjectMap[groupId];
