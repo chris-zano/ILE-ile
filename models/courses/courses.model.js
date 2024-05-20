@@ -229,6 +229,10 @@ const courseSchema = new Schema({
     'created-at': {
         type: createdAtSchema,
         required: true
+    },
+    credit: {
+        type: String,
+        required: true
     }
 });
 

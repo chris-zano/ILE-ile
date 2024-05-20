@@ -209,8 +209,9 @@ exports.importLecturersData = async (req, res) => {
 
     try {
         const lecturersArray = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        let Lecturers = LecturersDB();
         await Promise.all(lecturersArray.map(async (tutor) => {
-            const newtutor = new LecturersDB({
+            const newtutor = new Lecturers({
                 lecturerId: tutor.lecturerId,
                 firstName: tutor.firstName,
                 lastName: tutor.lastName,

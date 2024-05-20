@@ -1,4 +1,5 @@
 const { AdminsDB, StudentsDB, CoursesDB, LecturersDB, ClassesDB } = require('../../utils/global/db.utils');
+const main = require('../../utils/global/schedule.map.utils');
 const { getStudentsDataByOffset } = require('./admin.users');
 const { logError, getSystemDate } = require('./admin.utils');
 
@@ -10,15 +11,18 @@ const generateClassId = (groupId, session) => {
 
 const getRegisteredCourses = (groupId) => {
     const registeredCoursesObjectMap = {
-        '400_BCE': ['ENCE 421', 'CS 135'],
-        '400_BIT': ['ENCE 421', 'CS 135'],
-        '400_BTE': ['ENCE 421', 'CS 135'],
-        '300_BCE': ['ENCE 421', 'CS 135'],
-        '300_BTE': ['ENCE 421', 'CS 135'],
-        '200_BCE': ['ENCE 421', 'CS 135'],
-        '200_BTE': ['ENCE 421', 'CS 135'],
-        '100_BCE': ['ENCE 421', 'CS 135'],
-        '100_BTE': ['ENCE 421', 'CS 135'],
+        '400_BCE': ["ENCE 131","ENGE 235","ENTE 341","ENEE 311","CS 131","IT 235","SCTE 341"],
+        '400_BTE': ["ENCE 131","ENGE 235","ENTE 341","ENEE 311","CS 131","IT 235","SCTE 341", "ENTE 421", "ENCE 311"],
+        '400_BCS': ["ENCE 131","ENGE 235","ENTE 341","CS 121","IT 235","CS 421","CS 101","SCCS 341","CS 311"],
+        '300_BCE': ["ENCE 131","ENGE 235","IT 235","CS 421","CS 101","SCCS 341","CS 311"],
+        '300_BTE': ["ENCE 121","ENCE 131","ENGE 235","ENTE 421","ENTE 101","ENTE 341","ENEE 311","ENCE 311","CS 121","CS 131","IT 235"],
+        '300_BCS': ["ENGE 235","ENTE 421","ENTE 101","ENTE 341","ENEE 311","ENCE 311","CS 121","CS 131","IT 235"],
+        '200_BCE': ["ENCE 121","ENCE 131","ENGE 235","ENTE 421","ENTE 101","ENTE 341","ENEE 311","ENCE 311","CS 121","CS 131","IT 235"],
+        '200_BTE': ["ENCE 121","ENCE 131","ENGE 235","ENTE 101","ENTE 341","ENEE 311","ENCE 311","CS 121","CS 131","IT 235"],
+        '200_BCS': ["ENCE 121","ENCE 131","ENGE 235","ENTE 421","ENTE 101","ENTE 341","ENEE 311","ENCE 311","CS 121","CS 131","IT 235"],
+        '100_BCE': ["ENCE 121","ENCE 131","ENGE 235","ENEE 311","ENCE 311","CS 121","CS 131","IT 235"],
+        '100_BTE': ["ENCE 121","ENCE 131","ENGE 235","ENTE 421","ENTE 101","ENTE 341","ENEE 311","ENCE 311","CS 121"],
+        '100_BCS': ["ENCE 131","ENGE 235","ENTE 421","ENTE 101","ENTE 341","ENEE 311","ENCE 311","CS 121","CS 131","IT 235"],
     }
 
     return registeredCoursesObjectMap[groupId];
@@ -62,6 +66,8 @@ async function createClassrooms() {
                 { classId: classId }
             );
         }
+
+        await main()
 
         return 0
     }

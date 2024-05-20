@@ -50,7 +50,7 @@ exports.loadScript = (req, res) => {
     const filePath = getScriptFilePath('scripts', auth, filename);
 
     if (filePath != 'not found') {
-        res.set('Cache-Control', 'public, max-age=45');
+        // res.set('Cache-Control', 'public, max-age=45');
         res.type('text/javascript');
         fs.createReadStream(filePath).pipe(res);
     }
@@ -67,7 +67,7 @@ exports.loadUtilityScript = (req, res) => {
     const filePath = getScriptFilePath('utils', auth, filename);
 
     if (filePath != 'not found') {
-        res.set('Cache-Control', 'public, max-age=45');
+        // res.set('Cache-Control', 'public, max-age=45');
         res.type('text/javascript');
         fs.createReadStream(filePath).pipe(res);
     }
@@ -83,7 +83,7 @@ exports.getStyleSheet = (req, res) => {
     const filePath = setFilePath('css', null, auth, filename);
 
     if (filePath != 'not found') {
-        res.set('Cache-Control', 'public, max-age=30');
+        // res.set('Cache-Control', 'public, max-age=30');
         res.type('css');
         fs.createReadStream(filePath).pipe(res);
     }

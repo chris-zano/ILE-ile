@@ -94,11 +94,14 @@ const checkUserAvailabilityStatus = (user_schedules = [], start_time = 8, durati
         }
 
         else {
-            return userSchedules;
+            return user_schedules;
         }
+        
     }
 
     return user_schedules;
 };
+
+
 
 module.exports = checkUserAvailabilityStatus;

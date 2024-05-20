@@ -43,6 +43,7 @@ exports.manageCourses = async (req, res) => {
             const newCourse = new Course({
                 courseCode: course.courseCode,
                 title: course.courseTitle,
+                credit: course.creditHours,
                 lecturer: {
                     lecturerId: lecturerId,
                     name: name
