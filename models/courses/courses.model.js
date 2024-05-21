@@ -1,9 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const Chapters = require('./chapter.model');
-
-const createdAtSchema = new Schema({
+const dateSchema = new Schema({
     day: {
         type: String,
         required: true
@@ -20,7 +18,7 @@ const createdAtSchema = new Schema({
         type: String,
         required: true
     }
-});
+}, { _id: false });
 
 const scheduleSchema = new Schema({
     day: {
@@ -32,7 +30,7 @@ const scheduleSchema = new Schema({
     duration: {
         type: String
     }
-});
+}, { _id: false });
 
 const lecturerSchema = new Schema({
     lecturerId: {
@@ -45,7 +43,7 @@ const lecturerSchema = new Schema({
     name: {
         type: String,
     }
-});
+}, { _id: false });
 
 const studentSchema = new Schema({
     studentId: {
@@ -53,7 +51,7 @@ const studentSchema = new Schema({
         default:"0000000000",
         match: /^\d{10}$/
     }
-});
+}, { _id: false });
 
 const dateRecordedSchema = new Schema({
     day: {
@@ -80,7 +78,7 @@ const dateRecordedSchema = new Schema({
         type: String,
         default: ""
     }
-});
+}, { _id: false });
 
 const durationSchema = new Schema({
     hours: {
@@ -95,7 +93,7 @@ const durationSchema = new Schema({
         type: String,
         default: ""
     }
-});
+}, { _id: false });
 
 const attendeesSchema = new Schema({
     studentId: {
@@ -114,7 +112,7 @@ const attendeesSchema = new Schema({
         type: String,
         default: ""
     }
-})
+}, { _id: false });
 
 const attendanceSchema = new Schema({
     count: {
@@ -127,7 +125,7 @@ const attendanceSchema = new Schema({
     },
     attendees: [attendeesSchema],
     absentees: [attendeesSchema]
-});
+}, { _id: false });
 
 const recordingsSchema =  new Schema({
     title: {
@@ -141,7 +139,7 @@ const recordingsSchema =  new Schema({
         default: ""
     },
     attendance: attendanceSchema
-});
+}, { _id: false });
 
 const submissionSchema = new Schema({
     studentId: {
@@ -152,7 +150,7 @@ const submissionSchema = new Schema({
         type: String,
         default: ""
     }
-});
+}, { _id: false });
 
 const courseMaterialSchema = new Schema({
     owner: {
@@ -172,7 +170,7 @@ const courseMaterialSchema = new Schema({
         type: String,
         default: ""
     }
-});
+}, { _id: false });
 
 const chapterSchema = new Schema({
     lessons: {
@@ -182,11 +180,11 @@ const chapterSchema = new Schema({
     courseMaterials: [courseMaterialSchema],
     courseLectureRecordings: [recordingsSchema],
     submissions: [submissionSchema],
-    'created-at': {
+    createdAt: {
         type: createdAtSchema,
         required: false
     }
-});
+}, { _id: false });
 
 const courseSchema = new Schema({
     courseCode: {
@@ -226,14 +224,20 @@ const courseSchema = new Schema({
         type: scheduleSchema,
         default: {}
     },
-    'created-at': {
-        type: createdAtSchema,
-        required: true
-    },
     credit: {
         type: String,
         required: true
-    }
+    },
+    createdAt: {
+        type: dateSchema,
+        required: true,
+    },
+    updatedAt: {
+        type: dateSchema,
+        required: true
+    },
+}, {
+    timestamps: true // Automatically manage createdAt and updatedAt timestamps
 });
 
 module.exports = mongoose.model('Courses', courseSchema);

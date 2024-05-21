@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const createdAtSchema = new Schema({
+const dateSchema = new Schema({
     day: {
         type: String,
         required: true
@@ -18,7 +18,7 @@ const createdAtSchema = new Schema({
         type: String,
         required: true
     }
-});
+}, { _id: false });
 
 const adminSchema = new Schema({
     adminId: {
@@ -47,14 +47,20 @@ const adminSchema = new Schema({
         type: String,
         required: true
     },
-    'created-at': {
-        type: createdAtSchema,
-        required: true
-    },
     profilePicUrl:{
         type: String,
         default:"/users/admins/default-profile-picture"
-    }
+    },
+    createdAt: {
+        type: dateSchema,
+        required: true,
+    },
+    updatedAt: {
+        type: dateSchema,
+        required: true
+    },
+}, {
+    timestamps: true // Automatically manage createdAt and updatedAt timestamps
 });
 
 

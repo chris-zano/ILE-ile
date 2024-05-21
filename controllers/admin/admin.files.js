@@ -1,8 +1,10 @@
 const path = require('path');
 const fs = require('fs');
-const { AutoEncryptionLoggerLevel } = require('mongodb');
 
-function setFilePath(mimeType, attribute, authFolder, filename) {
+const {UsersCommonsDB} = require("../../utils/global/db.utils");
+const PATH_NOT_FOUND = PATH_NOT_FOUND;
+
+const setFilePath = (mimeType, attribute, authFolder, filename) => {
     var resolvedpath;
 
     switch (mimeType) {
@@ -13,7 +15,7 @@ function setFilePath(mimeType, attribute, authFolder, filename) {
             resolvedpath = path.join(__dirname, '..', '..', 'public', 'css', `${authFolder}`, `${filename}.css`);
             break;
         default:
-            resolvedpath = 'not found';
+            resolvedpath = PATH_NOT_FOUND;
             break;
     }
 
@@ -22,11 +24,11 @@ function setFilePath(mimeType, attribute, authFolder, filename) {
         return resolvedpath;
     }
     else {
-        return 'not found';
+        return PATH_NOT_FOUND;
     }
 }
 
-function getScriptFilePath(attribute, authLevel, filename) {
+const getScriptFilePath = (attribute, authLevel, filename) => {
     let filePath;
     switch (authLevel) {
         case 'admin':
@@ -39,17 +41,35 @@ function getScriptFilePath(attribute, authLevel, filename) {
             filePath = setFilePath('js', attribute, 'student', filename);
             break;
         default:
-            filePath = 'not found';
+            filePath = PATH_NOT_FOUND;
             break;
     }
     return filePath;
+}
+
+const getAdminProfilePicture = (callState = "system", request_params = {}) => {
+    let copyCallState = callState;
+    if (copyCallState === "system") {
+        
+        let defaultFilePath = path.join(__dirname, "public", "assets", "profile_pictures", "system", "admin.png");
+        
+        if (fs.existsSync(defaultFilePath)) {
+            return defaultFilePath;
+        }
+        else {
+            return PATH_NOT_FOUND;
+        }
+    }
+    else if (copyCallState === "user") {
+
+    }
 }
 
 module.exports.loadScript = (req, res) => {
     const { auth, filename } = req.params;
     const filePath = getScriptFilePath('scripts', auth, filename);
 
-    if (filePath != 'not found') {
+    if (filePath != PATH_NOT_FOUND) {
         // res.set('Cache-Control', 'public, max-age=45');
         res.type('text/javascript');
         fs.createReadStream(filePath).pipe(res);
@@ -66,7 +86,7 @@ module.exports.loadUtilityScript = (req, res) => {
 
     const filePath = getScriptFilePath('utils', auth, filename);
 
-    if (filePath != 'not found') {
+    if (filePath != PATH_NOT_FOUND) {
         // res.set('Cache-Control', 'public, max-age=45');
         res.type('text/javascript');
         fs.createReadStream(filePath).pipe(res);
@@ -82,7 +102,7 @@ module.exports.getStyleSheet = (req, res) => {
     const { auth, filename } = req.params;
     const filePath = setFilePath('css', null, auth, filename);
 
-    if (filePath != 'not found') {
+    if (filePath != PATH_NOT_FOUND) {
         // res.set('Cache-Control', 'public, max-age=30');
         res.type('css');
         fs.createReadStream(filePath).pipe(res);
@@ -116,7 +136,7 @@ module.exports.getFonts = (req, res) => {
 }
 
 module.exports.getRandomImage = (req, res) => {
-    function url(filename) {
+    const url = (filename) => {
         return path.join(__dirname, '..', '..', 'public', 'assets', 'random_images', `${filename}.jpg`)
     }
     const imageurls = [
@@ -139,22 +159,26 @@ module.exports.getRandomImage = (req, res) => {
 
 module.exports.getDefaultProfilePicture = (req, res) => {
     const { userType } = req.params;
-    const userTypeMatch = {"admins": getAdminProfilePicture, "lecturers": getLecturersProfilePicture, "students": getStudentsProfilePicture};
+    const userTypeMatch = { "admins": getAdminProfilePicture, "lecturers": getLecturersProfilePicture, "students": getStudentsProfilePicture };
+    const profilePictureconstReference = userTypeMatch[userType];
 
-    const profilePictureFunctionReference = userTypeMatch[userType];
-    if (profilePictureFunctionReference) {
-        const profilePictureFilePath = profilePictureFunctionReference();
-        if (profilePictureFilePath === "path not found") {
-            res.status(404).json({message: "File not found", path: req.url});
+    if (profilePictureconstReference) {
+
+        const profilePictureFilePath = profilePictureconstReference();
+
+        if (profilePictureFilePath === PATH_NOT_FOUND) {
+            res.status(404).json({ message: "File not found", path: req.url });
         }
+
         else {
             res.type('png');
             res.status(200);
             res.set('Cache-Control', 'public, max-age=8600')
+            
             fs.createReadStream(profilePictureFilePath).pipe(res);
         }
     }
     else {
-        res.status(404).json({message: "User not found", path: req.url});
+        res.status(404).json({ message: "User not found", path: req.url });
     }
 }

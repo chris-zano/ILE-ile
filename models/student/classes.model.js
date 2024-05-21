@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const createdAtSchema = new Schema({
+const dateSchema = new Schema({
     day: {
         type: String,
         required: true
@@ -18,7 +18,7 @@ const createdAtSchema = new Schema({
         type: String,
         required: true
     }
-});
+}, { _id: false });
 
 
 const classesSchema = new Schema({
@@ -37,10 +37,6 @@ const classesSchema = new Schema({
         type: Array,
         default: []
     },
-    'created-at': {
-        type: createdAtSchema,
-        required: true
-    },
     faculty: {
         type: String,
         default: "",
@@ -53,7 +49,17 @@ const classesSchema = new Schema({
     session: {
         type: String,
         required: true
-    }
-})
+    },
+    createdAt: {
+        type: dateSchema,
+        required: true,
+    },
+    updatedAt: {
+        type: dateSchema,
+        required: true
+    },
+}, {
+    timestamps: true // Automatically manage createdAt and updatedAt timestamps
+});
 
 module.exports = mongoose.model('Classes', classesSchema);

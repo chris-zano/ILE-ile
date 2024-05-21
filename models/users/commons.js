@@ -1,7 +1,6 @@
-const { ObjectId } = require('mongodb');
-const mongoose = require('mongoose');
+const { ObjectId } = require("mongodb");
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-
 
 const dateSchema = new Schema({
     day: {
@@ -22,26 +21,20 @@ const dateSchema = new Schema({
     }
 }, { _id: false });
 
-const materialSchema = new Schema({
-    filename: {
-        type: String,
-        required: true
-    },
-    originalname: {
-        type: String,
-        required: true
-    },
-    fileurl: {
-        type: String,
-        required: true
-    },
-    owner: {
-        type: String,
-        required: true
-    },
-    courseId: {
+const CommonsSchema = new Schema({
+    userId: {
         type: ObjectId,
-        required: true
+        required: true,
+        unique: true,
+        index: true
+    },
+    profilePicUrl: {
+        type: String,
+        default: ""
+    },
+    fileUrls: {
+        type: [String], // Specify that the array contains strings
+        default: []
     },
     createdAt: {
         type: dateSchema,
@@ -55,4 +48,4 @@ const materialSchema = new Schema({
     timestamps: true // Automatically manage createdAt and updatedAt timestamps
 });
 
-module.exports =  mongoose.model('Materials', materialSchema);
+module.exports = mongoose.model("Commons", CommonsSchema);

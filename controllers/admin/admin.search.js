@@ -82,7 +82,7 @@ module.exports.findMaterial = (socket, value) => {
         $or: [
             {originalname: {$regex: regex}},
             {courseId: {$regex: regex}},
-            {'created-at': {
+            {createdAt: {
                 date: {$regex: regex},
                 month: {$regex: regex},
                 year: {$regex: regex}

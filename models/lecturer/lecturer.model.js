@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 
-const createdAtSchema = new Schema({
+const dateSchema = new Schema({
     day: {
         type: String,
         required: true
@@ -19,7 +19,7 @@ const createdAtSchema = new Schema({
         type: String,
         required: true
     }
-});
+}, { _id: false });
 
 const scheduleSchema = new Schema({
     day: {
@@ -34,7 +34,7 @@ const scheduleSchema = new Schema({
     courseCode: {
         type: String
     }
-});
+}, { _id: false });
 
 const lecturerSchema = new Schema({
     lecturerId: {
@@ -63,10 +63,6 @@ const lecturerSchema = new Schema({
         type: Array,
         default: []
     },
-    'created-at': {
-        type: createdAtSchema,
-        required: true
-    },
     schedule: {
         type: [scheduleSchema],
         default: []
@@ -74,7 +70,17 @@ const lecturerSchema = new Schema({
     profilePicUrl:{
         type: String,
         default:"/users/lecturers/default-profile-picture"
-    }
+    },
+    createdAt: {
+        type: dateSchema,
+        required: true,
+    },
+    updatedAt: {
+        type: dateSchema,
+        required: true
+    },
+}, {
+    timestamps: true // Automatically manage createdAt and updatedAt timestamps
 });
 
 module.exports = mongoose.model('Lecturers', lecturerSchema);
