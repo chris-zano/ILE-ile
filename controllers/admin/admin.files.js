@@ -45,7 +45,7 @@ function getScriptFilePath(attribute, authLevel, filename) {
     return filePath;
 }
 
-exports.loadScript = (req, res) => {
+module.exports.loadScript = (req, res) => {
     const { auth, filename } = req.params;
     const filePath = getScriptFilePath('scripts', auth, filename);
 
@@ -61,7 +61,7 @@ exports.loadScript = (req, res) => {
     }
 }
 
-exports.loadUtilityScript = (req, res) => {
+module.exports.loadUtilityScript = (req, res) => {
     const { auth, filename } = req.params;
 
     const filePath = getScriptFilePath('utils', auth, filename);
@@ -78,7 +78,7 @@ exports.loadUtilityScript = (req, res) => {
     }
 }
 
-exports.getStyleSheet = (req, res) => {
+module.exports.getStyleSheet = (req, res) => {
     const { auth, filename } = req.params;
     const filePath = setFilePath('css', null, auth, filename);
 
@@ -94,28 +94,28 @@ exports.getStyleSheet = (req, res) => {
     }
 }
 
-exports.getImage = (req, res) => {
+module.exports.getImage = (req, res) => {
     const filePath = path.join(__dirname, '..', '..', 'public', 'assets', 'images', `${req.params.filename}.png`);
     res.type('png');
     res.set('Cache-Control', 'public, max-age=3600');
     fs.createReadStream(filePath).pipe(res);
 }
 
-exports.getFavicon = (req, res) => {
+module.exports.getFavicon = (req, res) => {
     const filePath = path.join(__dirname, '..', '..', 'public', 'assets', 'favicon', 'favicon.png');
     res.set('Cache-Control', 'public, max-age=86400');
     res.type('image/x-icon');
     fs.createReadStream(filePath).pipe(res);
 }
 
-exports.getFonts = (req, res) => {
+module.exports.getFonts = (req, res) => {
     const filePath = path.join(__dirname, '..', '..', 'public', 'assets', 'fonts', `${req.params.filename}.ttf`);
     res.set('Cache-Control', 'public, max-age=86400');
     res.type('font/ttf');
     fs.createReadStream(filePath).pipe(res);
 }
 
-exports.getRandomImage = (req, res) => {
+module.exports.getRandomImage = (req, res) => {
     function url (filename) {
         return path.join(__dirname, '..', '..', 'public', 'assets', 'random_images', `${filename}.jpg`)
     } 

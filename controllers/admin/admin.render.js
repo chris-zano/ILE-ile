@@ -2,7 +2,7 @@ const { AdminsDB, ClassesDB, CoursesDB } = require('../../utils/global/db.utils'
 const utils = require('./admin.utils');
 
 
-exports.renderImports = async (req, res) => {
+module.exports.renderImports = async (req, res) => {
     const { userType, id } = req.params;
     const { adminData } = req;
 
@@ -20,7 +20,7 @@ exports.renderImports = async (req, res) => {
     return;
 }
 
-exports.renderDashboard = (req, res) => {
+module.exports.renderDashboard = (req, res) => {
     const { userType, id } = req.params;
     const { adminData } = req;
 
@@ -38,7 +38,7 @@ exports.renderDashboard = (req, res) => {
     return;
 }
 
-exports.renderStudents = (req, res) => {
+module.exports.renderStudents = (req, res) => {
     const { userType, id } = req.params;
     const { adminData } = req;
 
@@ -57,7 +57,7 @@ exports.renderStudents = (req, res) => {
 
 }
 
-exports.renderTutors = (req, res) => {
+module.exports.renderTutors = (req, res) => {
     const { userType, id } = req.params;
     const { adminData } = req;
 
@@ -75,7 +75,7 @@ exports.renderTutors = (req, res) => {
     return;
 }
 
-exports.renderCourses = (req, res) => {
+module.exports.renderCourses = (req, res) => {
     const { userType, id } = req.params;
     const { adminData } = req;
 
@@ -92,7 +92,7 @@ exports.renderCourses = (req, res) => {
     return;
 }
 
-exports.renderClassrooms = (req, res) => {
+module.exports.renderClassrooms = (req, res) => {
     const { userType, id } = req.params;
     const { adminData } = req;
 
@@ -115,7 +115,7 @@ exports.renderClassrooms = (req, res) => {
         })
 }
 
-exports.renderUpdateStudent = (req, res) => {
+module.exports.renderUpdateStudent = (req, res) => {
     const { userType, id } = req.params;
     const { adminData } = req;
 
@@ -133,7 +133,7 @@ exports.renderUpdateStudent = (req, res) => {
     return;
 }
 
-exports.renderUpdateTutor = (req, res) => {
+module.exports.renderUpdateTutor = (req, res) => {
     const { userType, id } = req.params;
     const { adminData } = req;
 
@@ -151,7 +151,7 @@ exports.renderUpdateTutor = (req, res) => {
     return;
 }
 
-exports.renderUpdateCourse = (req, res) => {
+module.exports.renderUpdateCourse = (req, res) => {
     const { courseCode, id } = req.params;
     const { adminData } = req;
 
@@ -191,7 +191,7 @@ exports.renderUpdateCourse = (req, res) => {
     return;
 }
 
-exports.renderViewStudent = (req, res) => {
+module.exports.renderViewStudent = (req, res) => {
     const { userType, id } = req.params;
     const { adminData } = req;
 
@@ -209,7 +209,7 @@ exports.renderViewStudent = (req, res) => {
     return;
 }
 
-exports.renderViewTutor = (req, res) => {
+module.exports.renderViewTutor = (req, res) => {
     const { userType, id } = req.params;
     const { adminData } = req;
 
@@ -227,7 +227,7 @@ exports.renderViewTutor = (req, res) => {
     return;
 }
 
-exports.renderViewCourse = (req, res) => {
+module.exports.renderViewCourse = (req, res) => {
     const { userType, id } = req.params;
     const { adminData } = req;
 

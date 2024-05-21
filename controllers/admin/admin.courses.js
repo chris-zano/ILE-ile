@@ -5,7 +5,7 @@ const { AdminsDB, StudentsDB, CoursesDB } = require('../../utils/global/db.utils
 const fs = require('fs');
 const { getSystemDate, logError } = require('./admin.utils');
 
-exports.getCoursesByOffset = async (req, res) => {
+module.exports.getCoursesByOffset = async (req, res) => {
     const { adminData } = req;
     const { key, value, offset } = req.query;
     const limit = 256;
@@ -27,7 +27,7 @@ exports.getCoursesByOffset = async (req, res) => {
     return;
 }
 
-exports.manageCourses = async (req, res) => {
+module.exports.manageCourses = async (req, res) => {
     const { courseId, id } = req.params;
     const { adminData } = req;
     const course = req.body;

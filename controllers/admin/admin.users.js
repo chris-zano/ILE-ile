@@ -70,7 +70,7 @@ const generateAndVerifyAdminIdHasNoMatch = async (faculty) => {
     return verifiedAdminId;
 }
 
-exports.createNewAdmin = async (req, res) => {
+module.exports.createNewAdmin = async (req, res) => {
     const Admin = AdminsDB();
     const { firstname, lastname, userPassword, role, faculty } = req.body;
 
@@ -91,7 +91,7 @@ exports.createNewAdmin = async (req, res) => {
     }
 }
 
-exports.getStudentsDataByOffset = async (offset, key, value, limit = 256) => {
+module.exports.getStudentsDataByOffset = async (offset, key, value, limit = 256) => {
     let end = false;
     let query = key != 'null' || value != 'null' ? { [key]: value } : {};
 
@@ -123,7 +123,7 @@ exports.getStudentsDataByOffset = async (offset, key, value, limit = 256) => {
         )
 }
 
-exports.getLecturersDataByOffset = (offset, key, value) => {
+module.exports.getLecturersDataByOffset = (offset, key, value) => {
     let end = false;
     let query = key != 'null' || value != 'null' ? { [key]: value } : {};
 
@@ -155,7 +155,7 @@ exports.getLecturersDataByOffset = (offset, key, value) => {
         )
 }
 
-exports.createLecturer = async (req, res) => {
+module.exports.createLecturer = async (req, res) => {
     try {
         const Lecturer = LecturersDB()
         const createdAt = getSystemDate();
@@ -184,7 +184,7 @@ exports.createLecturer = async (req, res) => {
 
 
 //handlers
-exports.createStudent = (req, res) => {
+module.exports.createStudent = (req, res) => {
     try {
         const { studentId, firstName, lastName, program, year, level, session, faculty, registeredCourses } = req.body;
         const createdAt = getSystemDate();
@@ -201,7 +201,7 @@ exports.createStudent = (req, res) => {
 
 }
 
-exports.importLecturersData = async (req, res) => {
+module.exports.importLecturersData = async (req, res) => {
     const { id } = req.params;
     const { originalname, filename } = req.file;
     const filePath = path.join(__dirname, '..', '..', 'models/imports', filename);
@@ -236,7 +236,7 @@ exports.importLecturersData = async (req, res) => {
 
 
 
-exports.importStudentsData = async (req, res) => {
+module.exports.importStudentsData = async (req, res) => {
     const { id } = req.params;
     const { originalname, filename } = req.file;
     const filePath = path.join(__dirname, '..', '..', 'models/imports', filename);
@@ -280,7 +280,7 @@ exports.importStudentsData = async (req, res) => {
 
 
 
-exports.getUserDataByOffset = (req, res) => {
+module.exports.getUserDataByOffset = (req, res) => {
     const { userType, offset } = req.params;
     const userActionMethods = {
         students: this.getStudentsDataByOffset,
@@ -302,7 +302,7 @@ exports.getUserDataByOffset = (req, res) => {
     }
 }
 
-exports.getStudentData = (req, res) => {
+module.exports.getStudentData = (req, res) => {
     const { action } = req.params;
     const { studentId } = req.query;
 
@@ -330,7 +330,7 @@ exports.getStudentData = (req, res) => {
         })
 }
 
-exports.getLecturersData = (req, res) => {
+module.exports.getLecturersData = (req, res) => {
     const { action } = req.params;
     const { id } = req.query;
 

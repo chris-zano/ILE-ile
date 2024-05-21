@@ -1,7 +1,7 @@
 const { StudentsDB, CoursesDB, LecturersDB } = require('../../utils/global/db.utils');
 const { logError, logSession, getSystemDate } = require('../admin/admin.utils');
 
-exports.renderDashboard = (req, res) => {
+module.exports.renderDashboard = (req, res) => {
     const { lecturerData } = req;
 
     res.render('lecturer/lecturer-main', {
@@ -14,7 +14,7 @@ exports.renderDashboard = (req, res) => {
     });
 }
 
-exports.renderSchedules = (req, res) => {
+module.exports.renderSchedules = (req, res) => {
     const { lecturerData } = req;
 
     res.render('lecturer/lecturer-main', {
@@ -27,7 +27,7 @@ exports.renderSchedules = (req, res) => {
     });
 }
 
-exports.renderCourses = (req, res) => {
+module.exports.renderCourses = (req, res) => {
     const { lecturerData } = req;
 
     CoursesDB().find({
@@ -51,7 +51,7 @@ exports.renderCourses = (req, res) => {
 
 }
 
-exports.renderClassrooms = (req, res) => {
+module.exports.renderClassrooms = (req, res) => {
     const { lecturerData } = req;
 
     res.render('lecturer/lecturer-main', {
@@ -64,7 +64,7 @@ exports.renderClassrooms = (req, res) => {
     });
 }
 
-exports.renderClassroom = (req, res) => {
+module.exports.renderClassroom = (req, res) => {
     const { lecturerData } = req;
 
     res.render('lecturer/lecturer-main', {
@@ -77,7 +77,7 @@ exports.renderClassroom = (req, res) => {
     });
 }
 
-exports.renderCourse = (req, res) => {
+module.exports.renderCourse = (req, res) => {
     const { lecturerData } = req;
     const { courseId, id } = req.params;
 
@@ -100,7 +100,7 @@ exports.renderCourse = (req, res) => {
     return;
 }
 
-exports.renderLive = (req, res) => {
+module.exports.renderLive = (req, res) => {
     const { lecturerData } = req;
 
     res.render('lecturer/lecturer-main', {

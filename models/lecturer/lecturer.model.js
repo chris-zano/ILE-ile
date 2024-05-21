@@ -70,6 +70,10 @@ const lecturerSchema = new Schema({
     schedule: {
         type: [scheduleSchema],
         default: []
+    },
+    profilePicUrl:{
+        type: String,
+        default:"/users/lecturers/default-profile-picture"
     }
 });
 

@@ -50,6 +50,10 @@ const adminSchema = new Schema({
     'created-at': {
         type: createdAtSchema,
         required: true
+    },
+    profilePicUrl:{
+        type: String,
+        default:"/users/admins/default-profile-picture"
     }
 });
 

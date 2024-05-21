@@ -88,7 +88,7 @@ const studentLogin = (username, password, ip, res) => {
 }
 
 
-exports.loginUser = (req, res) => {
+module.exports.loginUser = (req, res) => {
     const { usernameformat } = req;
     const { username, password } = req.body;
     const userFormats = {

@@ -1,7 +1,7 @@
 const Materials = require('../../models/courses/courses.model');
 const { AdminsDB, StudentsDB, CoursesDB, LecturersDB } = require('../../utils/global/db.utils');
 
-exports.findCourse = (socket, value) => {
+module.exports.findCourse = (socket, value) => {
     const regex = new RegExp(value, 'i');
 
     if (value == "") {
@@ -26,7 +26,7 @@ exports.findCourse = (socket, value) => {
     })
 };
 
-exports.findStudent = (socket, value) => {
+module.exports.findStudent = (socket, value) => {
     const regex = new RegExp(value, "i");
 
     if (value == "") {
@@ -49,7 +49,7 @@ exports.findStudent = (socket, value) => {
     })
 }
 
-exports.findTutor = (socket, value) => {
+module.exports.findTutor = (socket, value) => {
     const regex = new RegExp(value, "i");
     if (value == "") {
         return;
@@ -71,7 +71,7 @@ exports.findTutor = (socket, value) => {
     })
 }
 
-exports.findMaterial = (socket, value) => {
+module.exports.findMaterial = (socket, value) => {
     const regex = new RegExp(value, "i");
 
     if (value == "") {

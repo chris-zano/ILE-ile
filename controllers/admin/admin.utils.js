@@ -6,7 +6,7 @@ const path = require('path');
 const fs = require('fs');
 
 
-exports.logError = (error) => {
+module.exports.logError = (error) => {
     if (error instanceof MongooseError) {
         const eMes = new MongooseError(error.message);
         console.error(eMes.stack);
@@ -29,7 +29,7 @@ exports.logError = (error) => {
     return 0;
 };
 
-exports.validateAuthId = async (id) => {
+module.exports.validateAuthId = async (id) => {
     AdminsDB().findById(id)
         .then((admin) => {
             if (admin == null) {
@@ -64,7 +64,7 @@ exports.validateAuthId = async (id) => {
         });
 }
 
-exports.logSession = (username, ip, status = "") => {
+module.exports.logSession = (username, ip, status = "") => {
 
     function addSuperscript(num) {
         const j = num % 10,
@@ -100,7 +100,7 @@ exports.logSession = (username, ip, status = "") => {
     }
 }
 
-exports.getCourses = async (coursesArray = []) => {
+module.exports.getCourses = async (coursesArray = []) => {
     const courses = [];
     const courseObj = {
         title: '',
@@ -141,7 +141,7 @@ exports.getCourses = async (coursesArray = []) => {
     }
 }
 
-exports.getSystemDate = () => {
+module.exports.getSystemDate = () => {
     const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
     const date = new Date();
@@ -154,7 +154,7 @@ exports.getSystemDate = () => {
     };
 }
 
-exports.getSystemTime = () => {
+module.exports.getSystemTime = () => {
     const time = new Date();
 
     const hours = time.getHours();

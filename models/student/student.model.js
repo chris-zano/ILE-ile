@@ -89,6 +89,10 @@ const studentSchema = new Schema({
     classId: {
         type: String,
         default: "unset"
+    },
+    profilePicUrl:{
+        type: String,
+        default:"/users/students/default-profile-picture"
     }
 });
 

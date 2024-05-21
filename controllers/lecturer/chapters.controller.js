@@ -37,7 +37,7 @@ const isfileType = (originalname) => {
     }
 }
 
-exports.addChapter = (req, res) => {
+module.exports.addChapter = (req, res) => {
     const { lecturerData } = req;
     const { courseId, v } = req.params;
 
@@ -74,7 +74,7 @@ exports.addChapter = (req, res) => {
     }
 }
 
-exports.addLesson = (req, res) => {
+module.exports.addLesson = (req, res) => {
     const { lecturerData } = req;
     const { lessonName, chapter } = req.body;
     const { courseId, v } = req.params;
@@ -134,7 +134,7 @@ exports.addLesson = (req, res) => {
 }
 
 
-exports.deleteChapter = (req, res) => {
+module.exports.deleteChapter = (req, res) => {
     const { lecturerData } = req;
     const { courseId, v, chapter } = req.params;
 

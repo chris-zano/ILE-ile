@@ -1,7 +1,7 @@
 const { AdminsDB, StudentsDB, CoursesDB, LecturersDB } = require('../../utils/global/db.utils');
 const utils = require('../../controllers/admin/admin.utils');
 
-exports.verifyAdmin = (req, res, next) => {
+module.exports.verifyAdmin = (req, res, next) => {
     AdminsDB().findById(req.params.id)
         .then((admin) => {
             if (admin == null) {
@@ -29,7 +29,7 @@ exports.verifyAdmin = (req, res, next) => {
         });
 }
 
-exports.verifyLecturer = (req, res, next) => {
+module.exports.verifyLecturer = (req, res, next) => {
     LecturersDB().findById(req.params.id)
         .then((lecturer) => {
             if (lecturer == null) {
@@ -58,7 +58,7 @@ exports.verifyLecturer = (req, res, next) => {
         });
 }
 
-exports.authenticateLoginSequence = (req, res, next) => {
+module.exports.authenticateLoginSequence = (req, res, next) => {
     const { username, password } = req.body;
     const user = String(username)
 

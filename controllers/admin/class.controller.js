@@ -80,7 +80,7 @@ async function createClassrooms() {
 
 }
 
-exports.runCreateClasses = (req, res) => {
+module.exports.runCreateClasses = (req, res) => {
     const { adminData } = req;
     const classes = ClassesDB();
 
