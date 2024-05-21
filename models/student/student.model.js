@@ -77,7 +77,7 @@ const studentSchema = new Schema({
     },
     profilePicUrl:{
         type: String,
-        default:"/users/students/default-profile-picture"
+        default:"/users/students/get-profile-picture/no-id"
     },
     createdAt: {
         type: dateSchema,
@@ -88,7 +88,7 @@ const studentSchema = new Schema({
         required: true
     },
 }, {
-    timestamps: true // Automatically manage createdAt and updatedAt timestamps
+    timestamps: true
 });
 
 module.exports = mongoose.model('Students', studentSchema);

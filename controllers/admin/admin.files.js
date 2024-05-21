@@ -1,8 +1,9 @@
 const path = require('path');
 const fs = require('fs');
 
-const {UsersCommonsDB} = require("../../utils/global/db.utils");
-const PATH_NOT_FOUND = PATH_NOT_FOUND;
+const { UsersCommonsDB } = require("../../utils/global/db.utils");
+const Commons = UsersCommonsDB();
+const PATH_NOT_FOUND = "path not found";
 
 const setFilePath = (mimeType, attribute, authFolder, filename) => {
     var resolvedpath;
@@ -47,12 +48,28 @@ const getScriptFilePath = (attribute, authLevel, filename) => {
     return filePath;
 }
 
-const getAdminProfilePicture = (callState = "system", request_params = {}) => {
+const getAdminProfilePicture = async (callState = "system", user_id = "") => {
+    let copyCallState = callState;
+    let defaultFilePath = path.join(__dirname, "public", "assets", "profile_pictures", "system", "admin.png");
+
+    if (copyCallState === "system") {
+        return fs.existsSync(defaultFilePath)? defaultFilePath: PATH_NOT_FOUND
+    }
+    else if (copyCallState === "user") {
+        const userObject = await Commons.findOne({userId: user_id});
+        const userProfilePath =  !userObject ? (fs.existsSync(defaultFilePath)? defaultFilePath: PATH_NOT_FOUND): userObject.profilePicUrl;
+        const resolvedUserProfilePath = path.resolve(__dirname, userProfilePath);
+        console.log(resolvedUserProfilePath);
+        return fs.existsSync(resolvedUserProfilePath)? resolvedUserProfilePath: PATH_NOT_FOUND
+    }
+}
+
+const getLecturersProfilePicture = async (callState = "system", request_params = {}) => {
     let copyCallState = callState;
     if (copyCallState === "system") {
-        
-        let defaultFilePath = path.join(__dirname, "public", "assets", "profile_pictures", "system", "admin.png");
-        
+
+        let defaultFilePath = path.join(__dirname, "public", "assets", "profile_pictures", "system", "lecturer.png");
+
         if (fs.existsSync(defaultFilePath)) {
             return defaultFilePath;
         }
@@ -61,7 +78,27 @@ const getAdminProfilePicture = (callState = "system", request_params = {}) => {
         }
     }
     else if (copyCallState === "user") {
+        const userObject = await Commons.find({userId: request_params.id});
+        console.log(userObject)
+    }
+}
 
+const getStudentsProfilePicture = async (callState = "system", request_params = {}) => {
+    let copyCallState = callState;
+    if (copyCallState === "system") {
+
+        let defaultFilePath = path.join(__dirname, "public", "assets", "profile_pictures", "system", "students.png");
+
+        if (fs.existsSync(defaultFilePath)) {
+            return defaultFilePath;
+        }
+        else {
+            return PATH_NOT_FOUND;
+        }
+    }
+    else if (copyCallState === "user") {
+        const userObject = await Commons.find({userId: request_params.id});
+        console.log(userObject)
     }
 }
 
@@ -157,14 +194,17 @@ module.exports.getRandomImage = (req, res) => {
     fs.createReadStream(randomImageUrl).pipe(res);
 }
 
-module.exports.getDefaultProfilePicture = (req, res) => {
-    const { userType } = req.params;
+module.exports.getDefaultProfilePicture = async(req, res) => {
+    const { userType, id } = req.params;
     const userTypeMatch = { "admins": getAdminProfilePicture, "lecturers": getLecturersProfilePicture, "students": getStudentsProfilePicture };
     const profilePictureconstReference = userTypeMatch[userType];
 
     if (profilePictureconstReference) {
 
-        const profilePictureFilePath = profilePictureconstReference();
+        let profilePictureFilePath = null;
+
+        profilePictureFilePath = id === "no-id"? await profilePictureconstReference(): await profilePictureconstReference("user", id);
+        console.log("Path: ", profilePictureFilePath)
 
         if (profilePictureFilePath === PATH_NOT_FOUND) {
             res.status(404).json({ message: "File not found", path: req.url });
@@ -173,8 +213,8 @@ module.exports.getDefaultProfilePicture = (req, res) => {
         else {
             res.type('png');
             res.status(200);
-            res.set('Cache-Control', 'public, max-age=8600')
-            
+            res.set('Cache-Control', 'public, max-age=8600');
+
             fs.createReadStream(profilePictureFilePath).pipe(res);
         }
     }

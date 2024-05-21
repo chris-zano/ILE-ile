@@ -15,7 +15,7 @@ router.get('/images/:filename', adminFileHandler.getImage);
 router.get('/random/image/',adminFileHandler.getRandomImage);
 router.get('/favicon', adminFileHandler.getFavicon);
 router.get('/fonts/:filename', adminFileHandler.getFonts);
-router.get('/users/:userType/default-profile-picture', adminFileHandler)
+router.get('/users/:userType/get-profile-picture/:id', adminFileHandler.getDefaultProfilePicture);
 
 //export the router instance
 module.exports = router;

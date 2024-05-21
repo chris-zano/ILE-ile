@@ -107,7 +107,7 @@
     /* ---------------------------------------------------- */
     /* profile stylng */
     section#header-profile {
-        grid-column: 10 / 13;
+        grid-column: 12 / 13;
         padding: 1ch 0;
         position: relative;
         display: flex;

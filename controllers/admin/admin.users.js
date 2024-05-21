@@ -357,3 +357,19 @@ module.exports.getLecturersData = (req, res) => {
             res.status(500).json({ message: 'Internal server error', error });
         })
 }
+
+module.exports.getLecturersName = async (req, res) => {
+    const {id} = req.params;
+
+    const Lecturer = LecturersDB();
+
+    const lecturer = await Lecturer.findOne({lecturerId: id});
+
+    if (lecturer) {
+        res.set('Cache-Control', 'public, max-age=8600');
+        res.status(200).json({data: {firstname: lecturer.firstName, lastname: lecturer.lastName}});
+    }
+    else {
+        res.status(400).json({data: {} });
+    }
+}

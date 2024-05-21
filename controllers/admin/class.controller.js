@@ -57,7 +57,8 @@ async function createClassrooms() {
                 faculty: group.faculty,
                 session: group._id.session,
                 courses: [...getRegisteredCourses(group._id.registeredCourses)],
-                'created-at': createdAt
+                createdAt: createdAt,
+                updatedAt: createdAt
             });
             await classroom.save();
 

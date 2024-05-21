@@ -47,7 +47,7 @@ const fileSchema = new Schema({
         required: true
     },
 }, {
-    timestamps: true // Automatically manage createdAt and updatedAt timestamps
+    timestamps: true
 });
 
 module.exports =  mongoose.model('Files', fileSchema);

@@ -23,12 +23,9 @@
                     <% for( let c of classes ) { %>
                         <li class="admin-class-list-li">
                             <a href="#">
-                                <div class="class-profile-image">
-                                    <img src="<%= c.profileUrl %>" alt="class profile" width="45px" height="45px">
-                                </div>
                                 <div class="class-info">
                                     <div class="class-id">
-                                        <p><%= c.classId %></p>
+                                        <p class="class-id-p"><%= c.classId %></p>
                                     </div>
                                     <div class="class-count">
                                         <p><%= c.students.length %> students</p>
@@ -38,9 +35,10 @@
                                     <span><%= c.courses.length %> courses</span>
                                 </div>
                                 <div class="schedule-btn">
-                                    <button>view schedule</button>
+                                    <button class="schedule-btn-b">view schedule</button>
                                 </div>
                             </a>
+                            <div class="hidden class_schedule"><%= JSON.stringify(c.schedule) %></div>
                         </li>
                     <% } %>
                     
@@ -49,3 +47,4 @@
         </article>
     <% } %>
 </section>
+<div id="schedule-container" class="hidden"></div>

@@ -69,7 +69,7 @@ const lecturerSchema = new Schema({
     },
     profilePicUrl:{
         type: String,
-        default:"/users/lecturers/default-profile-picture"
+        default:"/users/lecturers/get-profile-picture/no-id"
     },
     createdAt: {
         type: dateSchema,
@@ -80,7 +80,7 @@ const lecturerSchema = new Schema({
         required: true
     },
 }, {
-    timestamps: true // Automatically manage createdAt and updatedAt timestamps
+    timestamps: true
 });
 
 module.exports = mongoose.model('Lecturers', lecturerSchema);

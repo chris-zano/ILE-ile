@@ -21,13 +21,13 @@
         </nav>
     </section>
     <section id="header-profile">
-        <div class="profile-main" >
-            <img width="20px" src="/images/darkSide"  id="profile-main" alt="profile avatar">
+        <div class="profile-main" id="image-render-py">
+            <img width="20px" src="<%= lecturer.profilePicUrl %>"  id="profile-main" alt="profile avatar">
         </div>
         <div class="profile-card hidden" id="calm">
             <div class="profile-card-header">
                 <div class="pc-img-x">
-                    <img width="20px" src="/images/darkSide" alt="profile avatar">
+                    <img width="20px" src="<%= lecturer.profilePicUrl %>" alt="profile avatar">
                 </div>
                 <div class="pc-h-y">
                     <p><%= lecturer.firstname %> <%= lecturer.lastname %></p>

@@ -44,6 +44,32 @@ function getId(id) {
 }
 
 
+const checkAndRenderImageBackground = () => {
+    const image = document.getElementById("profile-main");
+    const images = document.querySelectorAll("img");
+
+    for (let image of images) {
+        image.addEventListener("load", () => {
+            // console.log("image has successfully loaded");
+        });
+    
+        image.addEventListener("error", (e) => {
+            // console.log("error loading image");
+            image.setAttribute("src", "/images/logo");
+        });
+    }
+
+    image.addEventListener("load", () => {
+        // console.log("image has successfully loaded");
+    })
+
+    image.addEventListener("error", (e) => {
+        // console.log("error loading image");
+        image.setAttribute("src", "/images/logo")
+    })
+}
+checkAndRenderImageBackground();
+
 const navigateToPage = (position = 0) => {
     location.href = document.getElementsByClassName("header_nav-a")[position].getAttribute('href');
 }
@@ -134,8 +160,8 @@ const lsThemeValue = JSON.parse(window.localStorage.getItem('toggle-btn-enabled'
 const root = document.documentElement
 
 if (themeToggleBtn.getAttribute('data-enabled') == "true" && (lsThemeValue) == true) {
-    console.log(themeToggleBtn.getAttribute('data-enabled') === String(lsThemeValue) === "true");
-    console.log(themeToggleBtn.getAttribute('data-enabled'), String(lsThemeValue));
+    // console.log(themeToggleBtn.getAttribute('data-enabled') === String(lsThemeValue) === "true");
+    // console.log(themeToggleBtn.getAttribute('data-enabled'), String(lsThemeValue));
 
     root.style.setProperty("--text", "#f6eef6")
     root.style.setProperty("--background", "#292929")
@@ -147,8 +173,8 @@ if (themeToggleBtn.getAttribute('data-enabled') == "true" && (lsThemeValue) == t
     root.style.setProperty("--red", "#4eda51")
 }
 else {
-    console.log(themeToggleBtn.getAttribute('data-enabled') === String(lsThemeValue));
-    console.log(themeToggleBtn.getAttribute('data-enabled'), String(lsThemeValue));
+    // console.log(themeToggleBtn.getAttribute('data-enabled') === String(lsThemeValue));
+    // console.log(themeToggleBtn.getAttribute('data-enabled'), String(lsThemeValue));
 
     root.style.setProperty("--text", "#051e0e")
     root.style.setProperty("--background", "#f2f2f2")

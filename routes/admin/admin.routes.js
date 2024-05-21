@@ -10,6 +10,7 @@ router.get('/admin/get/:userType/:offset', adminUsersController.getUserDataByOff
 router.get('/admin/students/get/:action', adminUsersController.getStudentData);
 router.get('/admin/lecturers/get/:action', adminUsersController.getLecturersData);
 
+router.get("/admins/user/get-lecturers-name/:id", adminUsersController.getLecturersName);
 //courses
 router.get('/admin/courses/get-courses/:id', verifyAdmin, adminCoursesController.getCoursesByOffset);
 

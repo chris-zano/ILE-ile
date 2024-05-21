@@ -1,4 +1,3 @@
-const { ObjectId } = require("mongodb");
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
@@ -23,7 +22,7 @@ const dateSchema = new Schema({
 
 const CommonsSchema = new Schema({
     userId: {
-        type: ObjectId,
+        type: String,
         required: true,
         unique: true,
         index: true
@@ -33,7 +32,7 @@ const CommonsSchema = new Schema({
         default: ""
     },
     fileUrls: {
-        type: [String], // Specify that the array contains strings
+        type: [String],
         default: []
     },
     createdAt: {
@@ -45,7 +44,7 @@ const CommonsSchema = new Schema({
         required: true
     },
 }, {
-    timestamps: true // Automatically manage createdAt and updatedAt timestamps
+    timestamps: true
 });
 
 module.exports = mongoose.model("Commons", CommonsSchema);

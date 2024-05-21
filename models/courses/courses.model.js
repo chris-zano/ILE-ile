@@ -180,10 +180,6 @@ const chapterSchema = new Schema({
     courseMaterials: [courseMaterialSchema],
     courseLectureRecordings: [recordingsSchema],
     submissions: [submissionSchema],
-    createdAt: {
-        type: createdAtSchema,
-        required: false
-    }
 }, { _id: false });
 
 const courseSchema = new Schema({
@@ -237,7 +233,7 @@ const courseSchema = new Schema({
         required: true
     },
 }, {
-    timestamps: true // Automatically manage createdAt and updatedAt timestamps
+    timestamps: true
 });
 
 module.exports = mongoose.model('Courses', courseSchema);

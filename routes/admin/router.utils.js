@@ -14,7 +14,8 @@ module.exports.verifyAdmin = (req, res, next) => {
                     id: admin._id,
                     firstname: admin.firstName,
                     lastname: admin.lastName,
-                    faculty: admin.faculty
+                    faculty: admin.faculty,
+                    profilePicUrl: admin.profilePicUrl
                 }
                 next();
             }
@@ -43,7 +44,8 @@ module.exports.verifyLecturer = (req, res, next) => {
                     lecturerId: lecturer.lecturerId,
                     firstname: lecturer.firstName,
                     lastname: lecturer.lastName,
-                    faculty: lecturer.faculty
+                    faculty: lecturer.faculty,
+                    profilePicUrl: lecturer.profilePicUrl
                 }
                 next();
             }

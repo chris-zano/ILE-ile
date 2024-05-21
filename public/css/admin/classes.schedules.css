@@ -1,0 +1,66 @@
+div#schedule-container {
+    position: fixed;
+    top: 5%;
+    left: 5%;
+    width: 90%;
+    padding: 20px;
+    box-shadow: 0 5px 30px rgba(0, 0, 0, .30);
+    color: var(--text);
+    background: var(--background);
+    opacity: 1;
+    transition: 0.3s;
+    border-radius: 15px;
+    z-index: 9999;
+}
+
+.schedule-card {
+    border: 1px solid #ccc;
+    padding: 16px;
+    margin: 16px;
+    border-radius: 8px;
+    width: 80%;
+    margin: auto;
+}
+
+.time-schedule {
+    text-align: center;
+    font-size: 1.7ch;
+    font-weight: 600;
+    color: green;
+}
+
+.day-section {
+    display: flex;
+    margin-bottom: 8px;
+}
+
+.day-name {
+    width: 20%;
+    font-weight: bold;
+}
+
+.schedules {
+    width: 80%;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.schedule-item {
+    border: 1px solid #ddd;
+    padding: 8px;
+    margin: 4px;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+.schedule-item > * {
+    text-align: center;
+}
+a.lectId-profile-url {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+a.lectId-profile-url:hover {
+    text-decoration: underline;
+    color: rgb(93, 0, 0);
+}

@@ -102,7 +102,7 @@ module.exports.renderClassrooms = (req, res) => {
             res.render('admin/admin-main', {
                 admin: adminData,
                 pageTitle: "Classes",
-                stylesheets: ["/css/admin/classes"],
+                stylesheets: ["/css/admin/classes", "/css/admin/classes.schedules"],
                 pageUrl: 'layouts/classes',
                 currentPage: 'classrooms',
                 userType: userType,

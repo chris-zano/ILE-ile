@@ -49,7 +49,7 @@ const adminSchema = new Schema({
     },
     profilePicUrl:{
         type: String,
-        default:"/users/admins/default-profile-picture"
+        default:"/users/admins/get-profile-picture/no-id"
     },
     createdAt: {
         type: dateSchema,
@@ -60,7 +60,7 @@ const adminSchema = new Schema({
         required: true
     },
 }, {
-    timestamps: true // Automatically manage createdAt and updatedAt timestamps
+    timestamps: true
 });
 
 
