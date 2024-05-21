@@ -53,52 +53,46 @@ const getAdminProfilePicture = async (callState = "system", user_id = "") => {
     let defaultFilePath = path.join(__dirname, "public", "assets", "profile_pictures", "system", "admin.png");
 
     if (copyCallState === "system") {
-        return fs.existsSync(defaultFilePath)? defaultFilePath: PATH_NOT_FOUND
+        return fs.existsSync(defaultFilePath) ? defaultFilePath : PATH_NOT_FOUND
     }
     else if (copyCallState === "user") {
-        const userObject = await Commons.findOne({userId: user_id});
-        const userProfilePath =  !userObject ? (fs.existsSync(defaultFilePath)? defaultFilePath: PATH_NOT_FOUND): userObject.profilePicUrl;
+        const userObject = await Commons.findOne({ userId: user_id });
+        const userProfilePath = !userObject ? (fs.existsSync(defaultFilePath) ? defaultFilePath : PATH_NOT_FOUND) : userObject.profilePicUrl;
         const resolvedUserProfilePath = path.resolve(__dirname, userProfilePath);
         console.log(resolvedUserProfilePath);
-        return fs.existsSync(resolvedUserProfilePath)? resolvedUserProfilePath: PATH_NOT_FOUND
+        return fs.existsSync(resolvedUserProfilePath) ? resolvedUserProfilePath : PATH_NOT_FOUND
     }
 }
 
 const getLecturersProfilePicture = async (callState = "system", request_params = {}) => {
     let copyCallState = callState;
+    let defaultFilePath = path.join(__dirname, "public", "assets", "profile_pictures", "system", "admin.png");
+
     if (copyCallState === "system") {
-
-        let defaultFilePath = path.join(__dirname, "public", "assets", "profile_pictures", "system", "lecturer.png");
-
-        if (fs.existsSync(defaultFilePath)) {
-            return defaultFilePath;
-        }
-        else {
-            return PATH_NOT_FOUND;
-        }
+        return fs.existsSync(defaultFilePath) ? defaultFilePath : PATH_NOT_FOUND
     }
     else if (copyCallState === "user") {
-        const userObject = await Commons.find({userId: request_params.id});
-        console.log(userObject)
+        const userObject = await Commons.findOne({ userId: user_id });
+        const userProfilePath = !userObject ? (fs.existsSync(defaultFilePath) ? defaultFilePath : PATH_NOT_FOUND) : userObject.profilePicUrl;
+        const resolvedUserProfilePath = path.resolve(__dirname, userProfilePath);
+        console.log(resolvedUserProfilePath);
+        return fs.existsSync(resolvedUserProfilePath) ? resolvedUserProfilePath : PATH_NOT_FOUND
     }
 }
 
 const getStudentsProfilePicture = async (callState = "system", request_params = {}) => {
     let copyCallState = callState;
+    let defaultFilePath = path.join(__dirname, "public", "assets", "profile_pictures", "system", "admin.png");
+
     if (copyCallState === "system") {
-
-        let defaultFilePath = path.join(__dirname, "public", "assets", "profile_pictures", "system", "students.png");
-
-        if (fs.existsSync(defaultFilePath)) {
-            return defaultFilePath;
-        }
-        else {
-            return PATH_NOT_FOUND;
-        }
+        return fs.existsSync(defaultFilePath) ? defaultFilePath : PATH_NOT_FOUND
     }
     else if (copyCallState === "user") {
-        const userObject = await Commons.find({userId: request_params.id});
-        console.log(userObject)
+        const userObject = await Commons.findOne({ userId: user_id });
+        const userProfilePath = !userObject ? (fs.existsSync(defaultFilePath) ? defaultFilePath : PATH_NOT_FOUND) : userObject.profilePicUrl;
+        const resolvedUserProfilePath = path.resolve(__dirname, userProfilePath);
+        console.log(resolvedUserProfilePath);
+        return fs.existsSync(resolvedUserProfilePath) ? resolvedUserProfilePath : PATH_NOT_FOUND
     }
 }
 
@@ -194,7 +188,7 @@ module.exports.getRandomImage = (req, res) => {
     fs.createReadStream(randomImageUrl).pipe(res);
 }
 
-module.exports.getDefaultProfilePicture = async(req, res) => {
+module.exports.getDefaultProfilePicture = async (req, res) => {
     const { userType, id } = req.params;
     const userTypeMatch = { "admins": getAdminProfilePicture, "lecturers": getLecturersProfilePicture, "students": getStudentsProfilePicture };
     const profilePictureconstReference = userTypeMatch[userType];
@@ -203,7 +197,7 @@ module.exports.getDefaultProfilePicture = async(req, res) => {
 
         let profilePictureFilePath = null;
 
-        profilePictureFilePath = id === "no-id"? await profilePictureconstReference(): await profilePictureconstReference("user", id);
+        profilePictureFilePath = id === "no-id" ? await profilePictureconstReference() : await profilePictureconstReference("user", id);
         console.log("Path: ", profilePictureFilePath)
 
         if (profilePictureFilePath === PATH_NOT_FOUND) {

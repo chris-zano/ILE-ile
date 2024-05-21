@@ -73,9 +73,10 @@ const modalRender = (array) => {
 };
 
 async function showView(e) {
-    const lecturerId = e.target.getAttribute('data-label-Lecturer-id');
+    const studentId = e.target.getAttribute('data-label-student-id');
+    const action = e.target.getAttribute('data-label-type');
 
-    const req = await fetch(`/admin/lecturers/get/courses?id=${lecturerId.trim()}`)
+    const req = await fetch(`/admin/lecturers/get/${action}?lecturerId=${studentId.trim()}`)
     const res = await req.json();
     const status = req.status;
 
@@ -88,14 +89,16 @@ async function showView(e) {
         return modalWrite('No data available for this lecturer');
     }
 
-    modalRender(res.doc);
+    for (let item of res.docs) {
+        console.log(item);
+    }
     return;
 }
 
-const getStudentsByOffset = async (key, value) => {
+const getLecturersByOffset = async (key, value) => {
+    console.log("key: ", key, " value: ", value)
     const moffset = localStorage.getItem('tutors-offset') || 0;
     const req = await fetch(`/admin/get/lecturers/${moffset}?key=${encodeURIComponent(key)}&value=${encodeURIComponent(value)}`);
-    console.log(`/admin/get/letcurers/${moffset}?key=${encodeURIComponent(key)}&value=${encodeURIComponent(value)}`);
     const res = await req.json();
     const status = req.status;
 
@@ -105,30 +108,44 @@ const getStudentsByOffset = async (key, value) => {
     }
 }
 
-const createTableRow = (lecturerObject, parentElement) => {
-    let count = Number(localStorage.getItem('count-2')) || 1;
+const createTableRow = (studentObject, parentElement) => {
+    let count = Number(localStorage.getItem('count'));
     const tr = document.createElement('tr');
 
+    if (Object.keys(studentObject).length == 0) {
+        tr.innerHTML = `
+        <td>No</td>
+        <td>data</td>
+        <td>available</td>
+        <td>Import</td>
+        <td>data</td>
+        <td></td>
+        `;
+        document.getElementById(parentElement).append(tr);
+        document.getElementById('nextPage').style.display = "none"
+        return;
+    }
     tr.style.cursor = 'pointer';
     tr.innerHTML = `
         <td>${count}</td>
-        <td>${lecturerObject.lecturerId}</td>
-        <td>${lecturerObject.firstName}</td>
-        <td>${lecturerObject.lastName}</td>
-        <td>${lecturerObject.faculty}</td>
-        <td><button type="button" class="actionButton btn-courses" data-label-type="courses" data-label-Lecturer-id="${lecturerObject._id}" ">Courses</button></td>
+        <td>${studentObject.lecturerId}</td>
+        <td>${studentObject.firstName}</td>
+        <td>${studentObject.lastName}</td>
+        <td>${studentObject.faculty}</td>
+        <td><button type="button" class="actionButton btn-courses" data-label-type="courses" data-label-Lecturer-id="${studentObject._id}" ">Courses</button></td>
     `;
 
     count += 1;
-    localStorage.setItem('count-2', JSON.stringify(count));
+    localStorage.setItem('count', JSON.stringify(count));
 
     document.getElementById(parentElement).append(tr);
 
 
     tr.addEventListener('click', (e) => {
         if (e.target.tagName != 'BUTTON') {
+            
             const lecturerId = e.currentTarget.querySelector('[data-label-Lecturer-id]').getAttribute('data-label-Lecturer-id');
-            // console.log('Student ID:', lecturerId);
+            console.log(lecturerId)
             const anchor = document.createElement('a');
             anchor.href = `/lecturers/view_profile/${lecturerId}`
             anchor.click();
@@ -136,20 +153,23 @@ const createTableRow = (lecturerObject, parentElement) => {
     })
 }
 
-const callFetchForStudents = (key, value) => {
-    getStudentsByOffset(key, value)
+const callfetchForLetcurers = (key, value) => {
+    getLecturersByOffset(key, value)
         .then((data) => {
-            const lecturersArr = [...data.data.data];
+            console.log(data)
+            const studentsArr = [...data.data.data];
 
-            lecturersArr.forEach((lecturer) => {
-                createTableRow(lecturer, 'lecturers-list')
+            if (studentsArr.length == 0) {
+               createTableRow({}, 'lecturers-list')
+            }
+            studentsArr.forEach((student) => {
+                createTableRow(student, 'lecturers-list')
             });
 
             const actionButtons = document.getElementsByClassName('actionButton');
             [...actionButtons].forEach((actionButton) => listen(actionButton, 'click', showView));
 
             localStorage.setItem('tutors-offset', JSON.stringify(data.data.cursor));
-            // console.log('Offset updated:', data.data.cursor);
         }).catch((error) => {
             console.log('Error on line 23(forge.js): ', error);
         });
@@ -165,20 +185,30 @@ const main = () => {
     tdlist.innerHTML = "";
     // Initialize count to 1
     let count = 1;
-    localStorage.setItem('count-2', JSON.stringify(count));
+    localStorage.setItem('count', JSON.stringify(count));
 
     // Initialize offset to 0
     let offset = 0;
     localStorage.setItem('tutors-offset', JSON.stringify(offset));
-    
+
+    function resetCountAndOffset() {
+        localStorage.setItem('count', JSON.stringify(1)); // Reset count to 1 explicitly
+        localStorage.setItem('tutors-offset', JSON.stringify(0));
+
+        count = 1;
+        offset = 0;
+
+        tdlist.innerHTML = "";
+        document.getElementById('nextPage').style.display = "unset"
+    }
 
     const selectors = [{ id: 'faculty', key: 'faculty' }];
 
-    callFetchForStudents(query.key, query.value);
+    callfetchForLetcurers(query.key, query.value);
 
     document.getElementById('nextPage').addEventListener('click', (e) => {
         tdlist.innerHTML = "";
-        callFetchForStudents(query.key, query.value);
+        callfetchForLetcurers(query.key, query.value);
     });
 
     document.getElementById('resetBtn').addEventListener('click', () => {
@@ -188,7 +218,7 @@ const main = () => {
         });
         query.key = null;
         query.value = null;
-        callFetchForStudents(query.key, query.value);
+        callfetchForLetcurers(query.key, query.value);
     });
 
 
@@ -203,7 +233,7 @@ const main = () => {
                 query.key = selector.key;
                 query.value = e.target.value.trim();
             }
-            callFetchForStudents(query.key, query.value);
+            callfetchForLetcurers(query.key, query.value);
         });
     });
 
@@ -215,5 +245,5 @@ const main = () => {
 
 
 
-if (document.readyState == 'loading') document.addEventListener('DOMContentLoaded', main())
+if (document.readyState == 'loading') document.addEventListener('DOMContentLoaded', main)
 else main();

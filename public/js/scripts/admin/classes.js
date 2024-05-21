@@ -2,13 +2,19 @@ const DAY_OF_THE_WEEK = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday",
 let localScheduleStore = [];
 
 const renderSchedule = (schedule) => {
+    const overlay = document.createElement('div');
+    overlay.classList.add('overlay')
     const container = document.getElementById('schedule-container');
+
     const scheduleCard = document.createElement('div');
     scheduleCard.className = 'schedule-card';
 
     const classIdElement = document.createElement('h2');
-    classIdElement.textContent = `${schedule.classId}`;
-    classIdElement.style.textAlign = "center"
+    classIdElement.classList.add("class-h2")
+    classIdElement.innerHTML = `<p>${schedule.classId}</p><div id="close" style="font-size: 20px">&#10060;</div>`;
+
+    
+   
     scheduleCard.appendChild(classIdElement);
 
     const days = Object.keys(schedule.schedule);
@@ -50,7 +56,12 @@ const renderSchedule = (schedule) => {
 
     container.innerHTML = "";
     container.appendChild(scheduleCard);
-    container.classList.remove("hidden")
+    container.classList.remove("hidden");
+
+    const closeBtn = container.querySelector('#close');
+    closeBtn.addEventListener('click', () => {
+        container.classList.add("hidden");
+    })
 }
 
 const renderClassSchedule = (classId) => {

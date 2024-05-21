@@ -64,3 +64,17 @@ a.lectId-profile-url:hover {
     text-decoration: underline;
     color: rgb(93, 0, 0);
 }
+
+.class-h2 {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.class-h2 #close {
+    cursor: pointer;
+    position: absolute;
+    top: 6px;
+    right: 10px;
+}
