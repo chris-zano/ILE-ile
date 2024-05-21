@@ -116,9 +116,9 @@ module.exports.getFonts = (req, res) => {
 }
 
 module.exports.getRandomImage = (req, res) => {
-    function url (filename) {
+    function url(filename) {
         return path.join(__dirname, '..', '..', 'public', 'assets', 'random_images', `${filename}.jpg`)
-    } 
+    }
     const imageurls = [
         url("porto"),
         url("italy"),
@@ -135,4 +135,26 @@ module.exports.getRandomImage = (req, res) => {
     res.set('Cache-Control', 'public, max-age=1200');
     res.type('jpg');
     fs.createReadStream(randomImageUrl).pipe(res);
+}
+
+module.exports.getDefaultProfilePicture = (req, res) => {
+    const { userType } = req.params;
+    const userTypeMatch = {"admins": getAdminProfilePicture, "lecturers": getLecturersProfilePicture, "students": getStudentsProfilePicture};
+
+    const profilePictureFunctionReference = userTypeMatch[userType];
+    if (profilePictureFunctionReference) {
+        const profilePictureFilePath = profilePictureFunctionReference();
+        if (profilePictureFilePath === "path not found") {
+            res.status(404).json({message: "File not found", path: req.url});
+        }
+        else {
+            res.type('png');
+            res.status(200);
+            res.set('Cache-Control', 'public, max-age=8600')
+            fs.createReadStream(profilePictureFilePath).pipe(res);
+        }
+    }
+    else {
+        res.status(404).json({message: "User not found", path: req.url});
+    }
 }
