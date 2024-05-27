@@ -81,10 +81,9 @@ module.exports.createNewAdmin = async (req, res) => {
         return;
     }
 
-    const createdAt = getSystemDate();
-    const admin = new Admin({adminId: verifiedAdminId, firstName: firstname, lastName: lastname, faculty, role, password: userPassword, 'created-at': createdAt});
+    const admin = new Admin({adminId: verifiedAdminId, firstName: firstname, lastName: lastname, faculty, role, password: userPassword});
     const savedAdmin = await admin.save();
-    const { password, 'created-at': createdAtField, ...rest } = savedAdmin._doc;
+    const { password, ...rest } = savedAdmin._doc;
     
     if (savedAdmin) {
         res.status(200).json({admin: rest});

@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-mongoose.connect("mongodb://localhost:27017/ileSchool");
 
 const { ClassesDB, CoursesDB, LecturersDB } = require('./db.utils');
 const checkUserAvailabilityStatus = require('./scheduler.util');

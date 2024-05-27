@@ -51,14 +51,6 @@ const adminSchema = new Schema({
         type: String,
         default:"/users/admins/get-profile-picture/no-id"
     },
-    createdAt: {
-        type: dateSchema,
-        required: true,
-    },
-    updatedAt: {
-        type: dateSchema,
-        required: true
-    },
 }, {
     timestamps: true
 });

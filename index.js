@@ -5,7 +5,7 @@ const path = require('path');
 const dotenv = require('dotenv');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const setupWebSocketServer = require('./utils/global/websocket.util');
+
 
 const app = express();
 const server = http.createServer(app); 
@@ -22,35 +22,36 @@ app.use('/public', express.static(STATIC_FILES_PATH));
 app.set('views', VIEW_ENGINE_PATH);
 app.set('view engine', 'ejs');
 
-//system imports
-const adminsUserRoutes = require('./routes/admin/admin.user.routes.js');
-const adminRoutes = require('./routes/admin/admin.routes');
-const adminFileRoutes = require('./routes/admin/admin.files.routes.js');
-const adminRenderRoutes = require('./routes/admin/admin.render.routes');
-const classRoutes = require('./routes/admin/classes.routes');
-const lecturerRenderRoutes = require('./routes/lecturer/lecturer.render.routes');
-const lecturerChaptersRoutes = require('./routes/lecturer/lecturer.chapters.routes');
-const lecturerFilesRoutes = require('./routes/lecturer/lecturer.files.routes');
+const username = encodeURIComponent(process.env.MONGO_DB_USERNAME);
+const password = encodeURIComponent(process.env.MONGO_DB_PASSWORD);
+const clusterName = encodeURIComponent(process.env.CLUSTER_NAME);
+const appName = encodeURIComponent(process.env.APP_NAME);
+const databasename = encodeURIComponent(process.env.DATABASE_NAME);
 
-//system config
-app.use(adminRoutes);
-app.use(adminsUserRoutes);
-app.use(adminFileRoutes);
-app.use(adminRenderRoutes);
-app.use(classRoutes);
-app.use(lecturerFilesRoutes);
-app.use(lecturerRenderRoutes);
-app.use(lecturerChaptersRoutes);
+const uri = `mongodb+srv://${username}:${password}@${clusterName}.jwscxvu.mongodb.net/${databasename}?retryWrites=true&w=majority&appName=${appName}`;
 
-app.use((req, res) => {
-  res.render('global/error', {error: "Page not found", status: 404});
-})
+//Connect to Database and start server
+(async () => {
+  try {
+      await mongoose.connect(uri);
+      console.log('Connected to MongoDB Atlas');
 
-mongoose.connect(process.env.DATABASE_URL);
+      // Call and execute require stack
+      require('./requireStack').callAndExecuteRequireStack(app, server);      
+      const PORT = process.env.PORT || 8080;
+      server.listen(PORT, () => {
+          console.log(`App is live at http://localhost:${PORT}`);
+      });
 
-const io = setupWebSocketServer(server);
-const PORT = process.env.PORT || 5050;
-
-server.listen(PORT, () => {
-  console.log('Listening on port:', PORT);
-});
+  } catch (error) {
+      console.error('Error connecting to MongoDB Atlas: ');
+      // mongoose.connect("mongodb://localhost:27017/at_File_Server").then(() => {
+      //     console.log("Connected to local");
+      //     require('./requireStack').callAndExecuteRequireStack(app);
+      //     const PORT = process.env.PORT || 8080;
+      //     app.listen(PORT, () => {
+      //         console.log(`App is live at http://localhost:${PORT}`);
+      //     });
+      // }).catch(console.error);
+  }
+})();
