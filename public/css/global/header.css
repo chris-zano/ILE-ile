@@ -220,25 +220,77 @@
     }
 
     .pc-m-a > div,
-    .pc-m-b > div,
     .profile-card-footer > div {
         display: flex;
         align-items: center;
     }
+    
+    .pc-m-a-link {
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        margin: .7ch;
+    }
+    
+    #u-sp-a {
+        padding: 0.5ch;
+        cursor: pointer;
+        border-radius: 2ch;
+    }
+
+    #u-sp-a:hover, #u-sp-a:focus {
+        background: #00000043;
+    }
+
     .pc-m-a-link > * {
-        font-size: 13px;
+        font-size: 1.7ch;
+    }
+
+    .pc-m-b {
+        padding: 0.5ch;
+        cursor: pointer;
+        border-radius: 2ch;
+        display: grid;
+        grid-template-columns: 23px 1fr 70px;
+        align-items: center;
     }
     
     .pc-m-a img,
     .pc-m-b img,
     .profile-card-footer img {
-        width: 15px;
-        height: 15px;
+        width: 22px;
+        height: 22px;
     }
 
     .pc-m-a-toggle {
+        display: flex;
+        align-items: center;
+        height: 100%;
         float: right;
-        margin-left: 100%;
+        margin-block: auto;
+    }
+
+    button#toggle {
+        height: 100%;
+        width: 100%;
+        text-align: center;
+        border-radius: 4px;
+        background-color: transparent;
+        border-color: var(--primary);
+        color: var(--text);
+        cursor: pointer;
+        transition: all ease-in-out 200ms;
+    }
+
+    button#toggle:hover, button#toggle:focus {
+        background-color: #0000001d;
+        border-color: #000;
+    }
+    
+    button#toggle[data-enabled="true"] {
+        background-color: var(--primary);
+        color: var(--white);
+    
     }
 
     p#logout:hover, p#logout:focus {
@@ -249,6 +301,7 @@
         display: none;
         /* visibility: hidden; */
     }
+
     
     .profile-card.hidden {
         display: unset;

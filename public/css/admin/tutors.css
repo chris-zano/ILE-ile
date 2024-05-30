@@ -27,6 +27,7 @@ button#resetBtn:hover {
 div.section-header-nav>a {
     margin: 0 .5rem;
     padding: 1rem 2rem;
+    border: 1px solid var(--background-main);
     border-radius: var(--border-radius);
 }
 

@@ -33,25 +33,39 @@ const uri = `mongodb+srv://${username}:${password}@${clusterName}.jwscxvu.mongod
 //Connect to Database and start server
 (async () => {
   try {
-      await mongoose.connect(uri);
-      console.log('Connected to MongoDB Atlas');
+    //   await mongoose.connect(uri);
+    //   console.log('Connected to MongoDB Atlas');
 
-      // Call and execute require stack
-      require('./requireStack').callAndExecuteRequireStack(app, server);      
-      const PORT = process.env.PORT || 8080;
-      server.listen(PORT, () => {
-          console.log(`App is live at http://localhost:${PORT}`);
-      });
+    //   // Call and execute require stack
+    //   require('./requireStack').callAndExecuteRequireStack(app, server);  
+
+    //   const PORT = process.env.PORT || 8080;
+    //   server.listen(PORT, () => {
+    //       console.log(`App is live at http://localhost:${PORT}`);
+    //   });
+    mongoose.wconnect("mongodb://localhost:27017/ileSchool").then(() => {
+          console.log("Connected to local");
+
+          require('./requireStack').callAndExecuteRequireStack(app);
+          
+          const PORT = process.env.PORT || 8080;
+          app.listen(PORT, () => {
+              console.log(`App is live at http://localhost:${PORT}`);
+          });
+      }).catch(console.error);
 
   } catch (error) {
       console.error('Error connecting to MongoDB Atlas: ');
-      // mongoose.connect("mongodb://localhost:27017/at_File_Server").then(() => {
-      //     console.log("Connected to local");
-      //     require('./requireStack').callAndExecuteRequireStack(app);
-      //     const PORT = process.env.PORT || 8080;
-      //     app.listen(PORT, () => {
-      //         console.log(`App is live at http://localhost:${PORT}`);
-      //     });
-      // }).catch(console.error);
+
+      mongoose.connect("mongodb://localhost:27017/ileSchool").then(() => {
+          console.log("Connected to local");
+
+          require('./requireStack').callAndExecuteRequireStack(app);
+
+          const PORT = process.env.PORT || 8080;
+          app.listen(PORT, () => {
+              console.log(`App is live at http://localhost:${PORT}`);
+          });
+      }).catch(console.error);
   }
 })();

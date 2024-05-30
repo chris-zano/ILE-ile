@@ -14,7 +14,6 @@ router.get("/admins/user/get-lecturers-name/:id", adminUsersController.getLectur
 //courses
 router.get('/admin/courses/get-courses/:id', verifyAdmin, adminCoursesController.getCoursesByOffset);
 
-
 //post requests
 router.post('/admins/update/course/:courseId/:id', verifyAdmin,adminCoursesController.manageCourses);
 

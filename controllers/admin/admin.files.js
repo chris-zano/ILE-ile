@@ -50,7 +50,7 @@ const getScriptFilePath = (attribute, authLevel, filename) => {
 
 const getAdminProfilePicture = async (callState = "system", user_id = "") => {
     let copyCallState = callState;
-    let defaultFilePath = path.join(__dirname, "public", "assets", "profile_pictures", "system", "admin.png");
+    let defaultFilePath = path.join(__dirname, "..", "..","public", "assets", "profile_pictures", "system", "admin.png");
 
     if (copyCallState === "system") {
         return fs.existsSync(defaultFilePath) ? defaultFilePath : PATH_NOT_FOUND
@@ -66,7 +66,7 @@ const getAdminProfilePicture = async (callState = "system", user_id = "") => {
 
 const getLecturersProfilePicture = async (callState = "system", request_params = {}) => {
     let copyCallState = callState;
-    let defaultFilePath = path.join(__dirname, "public", "assets", "profile_pictures", "system", "admin.png");
+    let defaultFilePath = path.join(__dirname, "..", "..","public", "assets", "profile_pictures", "system", "admin.png");
 
     if (copyCallState === "system") {
         return fs.existsSync(defaultFilePath) ? defaultFilePath : PATH_NOT_FOUND
@@ -82,7 +82,7 @@ const getLecturersProfilePicture = async (callState = "system", request_params =
 
 const getStudentsProfilePicture = async (callState = "system", request_params = {}) => {
     let copyCallState = callState;
-    let defaultFilePath = path.join(__dirname, "public", "assets", "profile_pictures", "system", "admin.png");
+    let defaultFilePath = path.join(__dirname, "..", "..","public", "assets", "profile_pictures", "system", "admin.png");
 
     if (copyCallState === "system") {
         return fs.existsSync(defaultFilePath) ? defaultFilePath : PATH_NOT_FOUND
@@ -106,7 +106,7 @@ module.exports.loadScript = (req, res) => {
         fs.createReadStream(filePath).pipe(res);
     }
     else {
-        console.log('file not found');
+        console.log('javascript file: ',req.url, ' file not found');
         res.status(400);
         res.end();
     }
@@ -123,7 +123,7 @@ module.exports.loadUtilityScript = (req, res) => {
         fs.createReadStream(filePath).pipe(res);
     }
     else {
-        console.log('file not found');
+        console.log('javascript file: ',req.url, ' file not found');
         res.status(400);
         res.end();
     }
@@ -139,7 +139,7 @@ module.exports.getStyleSheet = (req, res) => {
         fs.createReadStream(filePath).pipe(res);
     }
     else {
-        console.log('file not found');
+        console.log('css file: ',req.url, ' file not found');
         res.status(404);
         res.end();
     }

@@ -191,6 +191,23 @@ module.exports.renderUpdateCourse = (req, res) => {
     return;
 }
 
+module.exports.renderViewAdminProfile = (req, res) => {
+    const { adminData } = req;
+
+    // res.set('Cache-Control', 'public, max-age=30');
+    res.render('admin/admin-main', {
+        admin: adminData,
+        pageTitle: `Profile ~ ${adminData.firstname}`,
+        stylesheets: ["/css/admin/view.profile"],
+        pageUrl: 'layouts/view.admin-profile.ejs',
+        currentPage: '',
+        userType: "Admin",
+        scripts: ["/script/scripts/admin/view.profile"]
+    });
+
+    return;
+}
+
 module.exports.renderViewStudent = (req, res) => {
     const { userType, id } = req.params;
     const { adminData } = req;

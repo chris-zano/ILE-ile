@@ -8,7 +8,7 @@
     --text: #051e0e;
     --white: #777676;
     --background: #8a8888;
-    --background-main: #fdfdfd;
+    --background-main: #e6e4e4;
     --primary: #3074d9;
     --secondary: #54b1b3;
     --accent: #57b0e0;
@@ -201,22 +201,7 @@ div.container-max_width {
     position: relative;
 }
 
-button#toggle {
-    height: 15px;
-    width: fit-content;
-    border-radius: 4px;
-    background-color: transparent;
-    border-color: var(--primary);
-    color: var(--text);
-    cursor: pointer;
-    transition: all ease-in-out 200ms;
-}
 
-button#toggle[data-enabled="true"] {
-    background-color: var(--primary);
-    color: var(--white);
-
-}
 
 @media screen and (min-width: 310px) {
     div.container-max_width {
