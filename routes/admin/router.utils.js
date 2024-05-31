@@ -2,7 +2,6 @@ const { AdminsDB, StudentsDB, CoursesDB, LecturersDB } = require('../../utils/gl
 const utils = require('../../controllers/admin/admin.utils');
 
 module.exports.verifyAdmin = (req, res, next) => {
-    console.log(req.url)
     AdminsDB().findById(req.params.id)
         .then((admin) => {
             if (admin == null) {

@@ -23,12 +23,12 @@
     </section>
     <section id="header-profile">
         <div class="profile-main">
-            <img width="20px" src="<%= admin.profilePicUrl %>" id="profile-main" alt="profile avatar">
+            <img width="20px" src="<%= String(admin.profilePicUrl).includes("no-id")? admin.profilePicUrl : "/users/admins/get-profile-picture/" + admin.id %>" id="profile-main" alt="profile avatar">
         </div>
         <div class="profile-card hidden" id="calm">
             <div class="profile-card-header">
                 <div class="pc-img-x">
-                    <img width="20px" src="<%= admin.profilePicUrl %>" alt="profile avatar">
+                    <img width="20px" src="<%= String(admin.profilePicUrl).includes("no-id")? admin.profilePicUrl : "/users/admins/get-profile-picture/" + admin.id %>" alt="profile avatar">
                 </div>
                 <div class="pc-h-y">
                     <p><%= admin.firstname %><%= admin.lastname %></p>

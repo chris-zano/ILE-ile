@@ -2,6 +2,7 @@ const path = require('path');
 const fs = require('fs');
 
 const { UsersCommonsDB } = require("../../utils/global/db.utils");
+const adminModels = require('../../models/admin/admin.models');
 const Commons = UsersCommonsDB();
 const PATH_NOT_FOUND = "path not found";
 
@@ -50,16 +51,18 @@ const getScriptFilePath = (attribute, authLevel, filename) => {
 
 const getAdminProfilePicture = async (callState = "system", user_id = "") => {
     let copyCallState = callState;
+
+    console.log(copyCallState)
     let defaultFilePath = path.join(__dirname, "..", "..","public", "assets", "profile_pictures", "system", "admin.png");
 
     if (copyCallState === "system") {
         return fs.existsSync(defaultFilePath) ? defaultFilePath : PATH_NOT_FOUND
     }
     else if (copyCallState === "user") {
-        const userObject = await Commons.findOne({ userId: user_id });
+        const userObject = await adminModels.findOne({ _id: user_id });
         const userProfilePath = !userObject ? (fs.existsSync(defaultFilePath) ? defaultFilePath : PATH_NOT_FOUND) : userObject.profilePicUrl;
+
         const resolvedUserProfilePath = path.resolve(__dirname, userProfilePath);
-        console.log(resolvedUserProfilePath);
         return fs.existsSync(resolvedUserProfilePath) ? resolvedUserProfilePath : PATH_NOT_FOUND
     }
 }
@@ -198,7 +201,6 @@ module.exports.getDefaultProfilePicture = async (req, res) => {
         let profilePictureFilePath = null;
 
         profilePictureFilePath = id === "no-id" ? await profilePictureconstReference() : await profilePictureconstReference("user", id);
-        console.log("Path: ", profilePictureFilePath)
 
         if (profilePictureFilePath === PATH_NOT_FOUND) {
             res.status(404).json({ message: "File not found", path: req.url });

@@ -4,7 +4,7 @@
         </div>
         <div class="profile-picture-container">
             <div class="image-wrapper">
-                <img src="<%= admin.profilePicUrl %>" alt="admin profile picture">
+                <img src="<%= String(admin.profilePicUrl).includes("no-id")? admin.profilePicUrl : "/users/admins/get-profile-picture/" + admin.id %>" alt="admin profile picture">
             </div>
             <div class="change-picture-button-wrapper">
                 <button type="button" id="edit-pp-button">
@@ -43,7 +43,7 @@
 
                         const updatePPForm = document.createElement("form");
                         updatePPForm.method = "post";
-                        updatePPForm.action = `/admins/profile/update-component/profile-picture/${userId}qwqw`;
+                        updatePPForm.action = `/admins/profile/update-component/profile-picture/${userId}`;
                         updatePPForm.enctype = "multipart/form-data";
                         updatePPForm.innerHTML = `
                             <input type="file" name="profile_picture" required="true" id="file-input">
