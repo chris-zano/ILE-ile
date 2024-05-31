@@ -1,3 +1,133 @@
-<section class="view-admin">
-    Welcome, <%= admin.firstname %> <%= admin.lastname %>.
+<section id="profile-main-wrapper">
+    <section class="view-admin">
+        <div class="banner-wrapper">
+        </div>
+        <div class="profile-picture-container">
+            <div class="image-wrapper">
+                <img src="<%= admin.profilePicUrl %>" alt="admin profile picture">
+            </div>
+            <div class="change-picture-button-wrapper">
+                <button type="button" id="edit-pp-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100"
+                        viewBox="0,0,256,256">
+                        <g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt"
+                            stroke-linejoin="miter" stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0"
+                            font-family="none" font-weight="none" font-size="none" text-anchor="none"
+                            style="mix-blend-mode: normal">
+                            <g transform="scale(5.33333,5.33333)">
+                                <path
+                                    d="M42.583,9.067l-3.651,-3.65c-0.555,-0.556 -1.459,-0.556 -2.015,0l-1.718,1.72l5.664,5.664l1.72,-1.718c0.556,-0.557 0.556,-1.458 0,-2.016"
+                                    fill="#ef3636"></path>
+                                <path transform="translate(56.40946,27.69386) rotate(134.999)"
+                                    d="M4.465,21.524h36.007v8.011h-36.007z" fill="#fa9f18"></path>
+                                <path transform="translate(2.67864,29.23361) rotate(-45.02)"
+                                    d="M34.61,7.379h4.006v8.013h-4.006z" fill="#d2e2ea"></path>
+                                <path d="M6.905,35.43l-1.905,7.57l7.571,-1.906z" fill="#464131"></path>
+                                <path d="M5.965,39.172l-0.965,3.828l3.827,-0.965z" fill="#000000"></path>
+                            </g>
+                        </g>
+                    </svg>
+                </button>
+            </div>
+            <script>
+                const userId = JSON.parse(window.sessionStorage.getItem("auth-user")).data.id;
+
+                if (!userId) {
+                    window.sessionStorage.clear();
+                    window.localStorage.clear();
+                    window.location.href = "/login";
+                } else {
+                    const ppBtn = document.getElementById("edit-pp-button");
+                    ppBtn.addEventListener("click", () => {
+                        console.log("clicked");
+
+                        const updatePPForm = document.createElement("form");
+                        updatePPForm.method = "post";
+                        updatePPForm.action = `/admins/profile/update-component/profile-picture/${userId}qwqw`;
+                        updatePPForm.enctype = "multipart/form-data";
+                        updatePPForm.innerHTML = `
+                            <input type="file" name="profile_picture" required="true" id="file-input">
+                        `;
+                        updatePPForm.style.display = "none";
+                        document.getElementById("profile-main-wrapper").append(updatePPForm);
+
+                        updatePPForm.querySelector("#file-input").click();
+
+                        const fileInput = updatePPForm.querySelector("#file-input")
+                        fileInput.addEventListener("change", async (e) => {
+                            if ((e.target.value)) {
+                                updatePPForm.submit();
+                            }
+                        });
+                    });
+                }
+
+            </script>
+        </div>
+        <article id="user-info-main">
+            <div class="article-form-container-main">
+                <div class="form-item-pair">
+                    <div class="form-item-pair-label">
+                        <p>Admin ID: </p>
+                    </div>
+
+                    <div class="form-item-pair-value">
+                        <p class="diabled">
+                            <%= admin.adminId %>
+                        </p>
+                    </div>
+                </div>
+                <div class="form-item-pair">
+                    <div class="form-item-pair-label">
+                        <p>First name: </p>
+                    </div>
+
+                    <div class="form-item-pair-value">
+                        <p class="diabled">
+                            <%= admin.firstname %>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-item-pair">
+                    <div class="form-item-pair-label">
+                        <p>Last name: </p>
+                    </div>
+
+                    <div class="form-item-pair-value">
+                        <p class="diabled">
+                            <%= admin.lastname %>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-item-pair">
+                    <div class="form-item-pair-label">
+                        <p>Role: </p>
+                    </div>
+
+                    <div class="form-item-pair-value">
+                        <p class="diabled">
+                            <%= admin.role %>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="form-item-pair">
+                    <div class="form-item-pair-label">
+                        <p>Faculty: </p>
+                    </div>
+
+                    <div class="form-item-pair-value">
+                        <p class="diabled">
+                            <%= admin.faculty %>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </section>
+
+    <section class="notifications-area">Notifications</section>
+    <section class="activities-history">Activity History</section>
 </section>

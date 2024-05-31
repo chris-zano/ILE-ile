@@ -2,6 +2,7 @@ const { AdminsDB, StudentsDB, CoursesDB, LecturersDB } = require('../../utils/gl
 const utils = require('../../controllers/admin/admin.utils');
 
 module.exports.verifyAdmin = (req, res, next) => {
+    console.log(req.url)
     AdminsDB().findById(req.params.id)
         .then((admin) => {
             if (admin == null) {
@@ -12,6 +13,8 @@ module.exports.verifyAdmin = (req, res, next) => {
             else {
                 req.adminData = {
                     id: admin._id,
+                    adminId: admin.adminId,
+                    role: admin.role,
                     firstname: admin.firstName,
                     lastname: admin.lastName,
                     faculty: admin.faculty,
@@ -22,11 +25,8 @@ module.exports.verifyAdmin = (req, res, next) => {
         }).catch((error) => {
             
             utils.logError(error);
-            return {
-                message: "An error occured",
-                admin: {},
-                status: 500
-            }
+            res.render("index", {flush: "true"})
+            return;
         });
 }
 

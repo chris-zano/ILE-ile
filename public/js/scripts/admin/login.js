@@ -2,6 +2,22 @@ if (document.readyState == 'loading') document.addEventListener("DOMContentLoade
 else main();
 
 function main() {
+
+    function createValidAuth() {
+        function generateSerialString(length) {
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let result = '';
+            for (let i = 0; i < length; i++) {
+                result += characters.charAt(Math.floor(Math.random() * characters.length));
+            }
+            return result;
+        }
+        const now = new Date().getTime();
+        const serialString = generateSerialString(12);
+        const auTimestamp = `AU-${now}::${serialString}`;
+        localStorage.setItem("x03n8af6", JSON.stringify(auTimestamp))
+    }
+
     document.getElementById('login-form').addEventListener("submit", (e) => {
         e.preventDefault();
 
@@ -15,7 +31,7 @@ function main() {
             'Content-Type': 'application/json'
         }
 
-        console.log(options)
+        console.log("here: => ", options)
 
         initiatePostRequest(
             '/auth/users/login',
@@ -32,9 +48,8 @@ function main() {
                     }
 
                     window.sessionStorage.setItem("auth-user", JSON.stringify(userData));
-
-                    console.log(`/${response.data.userType}s/render/dashboards/${response.data.user.id}`)
-                    window.location.href = `/${response.data.userType}s/render/dashboards/${response.data.user.id}`;
+                    createValidAuth();
+                    window.location.replace(`/${response.data.userType}s/render/dashboards/${response.data.user.id}`);
 
                 }
                 else {
@@ -55,6 +70,7 @@ function main() {
  * @returns {ObjectConstructor} { status_code ( as status ), data }
  */
 async function initiatePostRequest(url_endpoint, headers, options) {
+    console.log("here: 1")
     const res = await fetch(url_endpoint, {
         method: 'POST',
         headers: headers,
@@ -63,6 +79,7 @@ async function initiatePostRequest(url_endpoint, headers, options) {
 
     const status = res.status;
     const data = await res.json();
+    console.log("here: 2 => ", data);
 
     return {
         status: status,

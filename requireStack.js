@@ -12,6 +12,7 @@ const callAndExecuteRequireStack = (app, server) => {
     const lecturerRenderRoutes = require('./routes/lecturer/lecturer.render.routes');
     const lecturerChaptersRoutes = require('./routes/lecturer/lecturer.chapters.routes');
     const lecturerFilesRoutes = require('./routes/lecturer/lecturer.files.routes');
+    const modelUpdatesRoutes = require('./routes/admin/models.updates.routes.js');
 
     //system config
     app.use(adminRoutes);
@@ -22,6 +23,7 @@ const callAndExecuteRequireStack = (app, server) => {
     app.use(lecturerFilesRoutes);
     app.use(lecturerRenderRoutes);
     app.use(lecturerChaptersRoutes);
+    app.use(modelUpdatesRoutes);
 
     app.use((req, res) => {
         res.render('global/error', {error: "Page not found", status: 404});

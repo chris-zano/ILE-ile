@@ -8,7 +8,7 @@ const adminRender = require('../../controllers/admin/admin.render');
 //get ['/', '/login']
 router.get('/', (req, res) => {
     console.log("New session: ", req.ip);
-    res.render('index');
+    res.render('index', {flush: "false"});
 });
 
 //get ['/admin/developer/new', '/admin/developer/index]
