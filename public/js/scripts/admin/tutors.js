@@ -81,7 +81,6 @@ async function showView(e) {
     const status = req.status;
 
     if (status == 403 || status == 500) {
-        console.log('An error occured.\nPlease Try again');
         return;
     }
 
@@ -90,13 +89,11 @@ async function showView(e) {
     }
 
     for (let item of res.docs) {
-        console.log(item);
     }
     return;
 }
 
 const getLecturersByOffset = async (key, value) => {
-    console.log("key: ", key, " value: ", value)
     const moffset = localStorage.getItem('tutors-offset') || 0;
     const req = await fetch(`/admin/get/lecturers/${moffset}?key=${encodeURIComponent(key)}&value=${encodeURIComponent(value)}`);
     const res = await req.json();
@@ -145,7 +142,7 @@ const createTableRow = (studentObject, parentElement) => {
         if (e.target.tagName != 'BUTTON') {
             
             const lecturerId = e.currentTarget.querySelector('[data-label-Lecturer-id]').getAttribute('data-label-Lecturer-id');
-            console.log(lecturerId)
+            
             const anchor = document.createElement('a');
             anchor.href = `/lecturers/view_profile/${lecturerId}`
             anchor.click();
@@ -156,7 +153,6 @@ const createTableRow = (studentObject, parentElement) => {
 const callfetchForLetcurers = (key, value) => {
     getLecturersByOffset(key, value)
         .then((data) => {
-            console.log(data)
             const studentsArr = [...data.data.data];
 
             if (studentsArr.length == 0) {
@@ -171,7 +167,7 @@ const callfetchForLetcurers = (key, value) => {
 
             localStorage.setItem('tutors-offset', JSON.stringify(data.data.cursor));
         }).catch((error) => {
-            console.log('Error on line 23(forge.js): ', error);
+            console.log(error)
         });
 }
 

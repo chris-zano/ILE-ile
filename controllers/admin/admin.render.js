@@ -111,7 +111,6 @@ module.exports.renderClassrooms = (req, res) => {
             });
         }).catch((error) => {
             utils.logError(error);
-            console.log(error)
         })
 }
 

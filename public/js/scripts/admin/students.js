@@ -81,7 +81,7 @@ async function showView(e) {
     const status = req.status;
 
     if (status == 403 || status == 500) {
-        console.log('An error occured.\nPlease Try again');
+        ('An error occured.\nPlease Try again');
         return;
     }
 
@@ -90,7 +90,7 @@ async function showView(e) {
     }
 
     for (let item of res.docs) {
-        console.log(item);
+        (item);
     }
     return;
 }
@@ -165,7 +165,7 @@ const callFetchForStudents = (key, value) => {
             const studentsArr = [...data.data.data];
 
             if (studentsArr.length == 0) {
-               createTableRow({}, 'students-list')
+                createTableRow({}, 'students-list')
             }
             studentsArr.forEach((student) => {
                 createTableRow(student, 'students-list')
@@ -176,7 +176,7 @@ const callFetchForStudents = (key, value) => {
 
             localStorage.setItem('students-offset', JSON.stringify(data.data.cursor));
         }).catch((error) => {
-            console.log('Error on line 23(forge.js): ', error);
+            console.log(error)
         });
 }
 
@@ -207,7 +207,7 @@ const main = () => {
         document.getElementById('nextPage').style.display = "unset"
     }
 
-    const selectors = [{ id: 'studentLevel', key: 'level' }, { id: 'program', key: 'program' }, { id: 'faculty', key: 'faculty' }, {id: 'session', key: 'session'}];
+    const selectors = [{ id: 'studentLevel', key: 'level' }, { id: 'program', key: 'program' }, { id: 'faculty', key: 'faculty' }, { id: 'session', key: 'session' }];
 
     callFetchForStudents(query.key, query.value);
 

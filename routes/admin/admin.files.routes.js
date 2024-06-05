@@ -11,6 +11,7 @@ router.get('/script/utils/:auth/:filename', adminFileHandler.loadUtilityScript);
 //get stylesheets
 router.get('/css/:auth/:filename', adminFileHandler.getStyleSheet);
 
+router.get('/images/system/:filename', adminFileHandler.getSystemImage);
 router.get('/images/:filename', adminFileHandler.getImage);
 router.get('/random/image/',adminFileHandler.getRandomImage);
 router.get('/favicon', adminFileHandler.getFavicon);

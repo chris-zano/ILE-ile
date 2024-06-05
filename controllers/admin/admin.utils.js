@@ -24,7 +24,9 @@ module.exports.logError = (error) => {
         console.error(eMes.stack);
     }
     else {
-        console.log("An error occured: ", error);
+        let unknown_error = new Error(error);
+        console.log("An error occured: ", unknown_error.name, " :: ", unknown_error.message );
+        console.log(unknown_error.stack);
     }
     return 0;
 };
@@ -94,7 +96,7 @@ module.exports.logSession = (username, ip, status = "") => {
 
         fs.appendFileSync(logFilePath, sessionLog);
 
-        console.log('Session logged successfully.');
+        ('Session logged successfully.');
     } catch (error) {
         console.error('Error logging session:', error);
     }

@@ -3,7 +3,6 @@ const addLesson = (targetButton) => {
     const lecturerId = document.getElementById('lecturerId').value;
     const courseVersion = document.getElementById('v').value;
 
-    console.log(targetButton.getAttribute("data-chapter"))
 
     const lessonForm = document.createElement("form");
     lessonForm.setAttribute('enctype', 'multipart/form-data');
@@ -29,7 +28,6 @@ const addLesson = (targetButton) => {
     lessonForm.addEventListener("submit", async (event) => {
         event.preventDefault();
         const lesson = lessonForm.querySelector("#lessonName").value;
-        console.log(lesson);
         
         lessonForm.submit();
 

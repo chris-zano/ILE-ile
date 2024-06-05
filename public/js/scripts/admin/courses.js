@@ -13,7 +13,7 @@ const courseCard = (course) => {
     card.setAttribute("href", `/admins/render/updates/course/${course._id}/${adminId}`);
     card.innerHTML = `
         <section class="card-header">
-            <img src="/images/ui" alt="course thumbnail" width="150px" height="150px">
+            <img src="/images/system/ui" alt="course thumbnail" width="150px" height="150px">
         </section>
         <section class="card-body">
             <div class="title">
@@ -21,16 +21,16 @@ const courseCard = (course) => {
                 <small>${course.courseCode}</small>
             </div>
             <div class="professor">
-                <img src="/images/professor" alt="professor">
+                <img src="/images/system/lecturer" alt="professor">
                     <p>${course.lecturer.name == "unassigned" ? "No lecturer assigned" : course.lecturer.name}</p>
             </div>
             <div class="footer">
                 <div class="highlight-footer">
-                    <img src="/images/class" alt="course level">
+                    <img src="/images/system/classrooms" alt="course level">
                     <small>${course.level}</small>
                 </div>
                 <div class="highlight-footer">
-                    <img src="/images/student" alt="students count">
+                    <img src="/images/system/students" alt="students count">
                     <small>${course.students.length}</small>
                 </div>
             </div>

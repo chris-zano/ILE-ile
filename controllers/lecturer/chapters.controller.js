@@ -41,7 +41,7 @@ module.exports.addChapter = (req, res) => {
     const { lecturerData } = req;
     const { courseId, v } = req.params;
 
-    console.log(courseId, v)
+    (courseId, v)
 
     try {
         CoursesDB().findOne({
@@ -51,7 +51,6 @@ module.exports.addChapter = (req, res) => {
             ]
         }).then((course) => {
             if (course == null) {
-                console.log(course)
                 res.render('global/error', { error: "Failed to add chapter - not found", status: 404 })
                 return;
             }

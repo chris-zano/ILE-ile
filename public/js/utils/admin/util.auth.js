@@ -1,5 +1,4 @@
 const auth_token = JSON.parse(localStorage.getItem("x03n8af6"));
-console.log("Auth token and status is : ", auth_token);
 isADorAU(auth_token)
 
 function isADorAU(authToken) {

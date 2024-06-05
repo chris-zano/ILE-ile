@@ -1,6 +1,4 @@
 const main = () => {
-    console.log("Lecturers hold")
-
     document.getElementById("add-tutor").addEventListener("submit", (e) => {
         e.preventDefault();
 

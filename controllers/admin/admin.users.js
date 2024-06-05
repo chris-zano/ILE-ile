@@ -48,7 +48,7 @@ const generateAndVerifyAdminIdHasNoMatch = async (faculty) => {
     while (i < 3) {
         const adminId = generateUniqueAdminID(faculty);
         if (adminId === "Faculty Undefined") {
-            console.log("Faculty Undefined");
+            ("Faculty Undefined");
             res.status(403).json({ message: "Faculty Undefined" });
             return;
         }
@@ -77,16 +77,16 @@ module.exports.createNewAdmin = async (req, res) => {
     const verifiedAdminId = await generateAndVerifyAdminIdHasNoMatch(faculty);
 
     if (verifiedAdminId === null) {
-        res.status(500).json({message: "Create New Admin Failed - Operation Timed Out"});
+        res.status(500).json({ message: "Create New Admin Failed - Operation Timed Out" });
         return;
     }
 
-    const admin = new Admin({adminId: verifiedAdminId, firstName: firstname, lastName: lastname, faculty, role, password: userPassword});
+    const admin = new Admin({ adminId: verifiedAdminId, firstName: firstname, lastName: lastname, faculty, role, password: userPassword });
     const savedAdmin = await admin.save();
     const { password, ...rest } = savedAdmin._doc;
-    
+
     if (savedAdmin) {
-        res.status(200).json({admin: rest});
+        res.status(200).json({ admin: rest });
     }
 }
 
@@ -243,7 +243,7 @@ module.exports.importStudentsData = async (req, res) => {
 
     try {
         const studentsArray = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-        console.log(createdAt);
+        (createdAt);
         await Promise.all(studentsArray.map(async (student) => {
             const StudentInstance = StudentsDB();
             const newStudent = new StudentInstance({
@@ -292,7 +292,7 @@ module.exports.getUserDataByOffset = (req, res) => {
             .then((r) => {
                 res.status(r.status).json({ data: r.docs, cursor: r.cursor, end: r.end });
             }).catch((e) => {
-                console.log(e);
+                (e);
                 res.status(e.status).json({ data: e.docs, cursor: e.cursor, end: e.end });
             })
     }
@@ -346,8 +346,6 @@ module.exports.getLecturersData = (req, res) => {
             const field = actionsMap[action];
 
             if (field) {
-                console.log(doc[field])
-
                 return res.status(200).json({ message: 'success', doc: await getCourses(doc[field]) });
             }
 
@@ -358,17 +356,17 @@ module.exports.getLecturersData = (req, res) => {
 }
 
 module.exports.getLecturersName = async (req, res) => {
-    const {id} = req.params;
+    const { id } = req.params;
 
     const Lecturer = LecturersDB();
 
-    const lecturer = await Lecturer.findOne({lecturerId: id});
+    const lecturer = await Lecturer.findOne({ lecturerId: id });
 
     if (lecturer) {
         res.set('Cache-Control', 'public, max-age=8600');
-        res.status(200).json({data: {firstname: lecturer.firstName, lastname: lecturer.lastName}});
+        res.status(200).json({ data: { firstname: lecturer.firstName, lastname: lecturer.lastName } });
     }
     else {
-        res.status(400).json({data: {} });
+        res.status(400).json({ data: {} });
     }
 }

@@ -52,8 +52,7 @@ const getScriptFilePath = (attribute, authLevel, filename) => {
 const getAdminProfilePicture = async (callState = "system", user_id = "") => {
     let copyCallState = callState;
 
-    console.log(copyCallState)
-    let defaultFilePath = path.join(__dirname, "..", "..","public", "assets", "profile_pictures", "system", "admin.png");
+    let defaultFilePath = path.join(__dirname, "..", "..", "public", "assets", "profile_pictures", "system", "admin.png");
 
     if (copyCallState === "system") {
         return fs.existsSync(defaultFilePath) ? defaultFilePath : PATH_NOT_FOUND
@@ -69,7 +68,7 @@ const getAdminProfilePicture = async (callState = "system", user_id = "") => {
 
 const getLecturersProfilePicture = async (callState = "system", request_params = {}) => {
     let copyCallState = callState;
-    let defaultFilePath = path.join(__dirname, "..", "..","public", "assets", "profile_pictures", "system", "admin.png");
+    let defaultFilePath = path.join(__dirname, "..", "..", "public", "assets", "profile_pictures", "system", "admin.png");
 
     if (copyCallState === "system") {
         return fs.existsSync(defaultFilePath) ? defaultFilePath : PATH_NOT_FOUND
@@ -78,14 +77,14 @@ const getLecturersProfilePicture = async (callState = "system", request_params =
         const userObject = await Commons.findOne({ userId: user_id });
         const userProfilePath = !userObject ? (fs.existsSync(defaultFilePath) ? defaultFilePath : PATH_NOT_FOUND) : userObject.profilePicUrl;
         const resolvedUserProfilePath = path.resolve(__dirname, userProfilePath);
-        console.log(resolvedUserProfilePath);
+        (resolvedUserProfilePath);
         return fs.existsSync(resolvedUserProfilePath) ? resolvedUserProfilePath : PATH_NOT_FOUND
     }
 }
 
 const getStudentsProfilePicture = async (callState = "system", request_params = {}) => {
     let copyCallState = callState;
-    let defaultFilePath = path.join(__dirname, "..", "..","public", "assets", "profile_pictures", "system", "admin.png");
+    let defaultFilePath = path.join(__dirname, "..", "..", "public", "assets", "profile_pictures", "system", "admin.png");
 
     if (copyCallState === "system") {
         return fs.existsSync(defaultFilePath) ? defaultFilePath : PATH_NOT_FOUND
@@ -94,7 +93,7 @@ const getStudentsProfilePicture = async (callState = "system", request_params = 
         const userObject = await Commons.findOne({ userId: user_id });
         const userProfilePath = !userObject ? (fs.existsSync(defaultFilePath) ? defaultFilePath : PATH_NOT_FOUND) : userObject.profilePicUrl;
         const resolvedUserProfilePath = path.resolve(__dirname, userProfilePath);
-        console.log(resolvedUserProfilePath);
+        (resolvedUserProfilePath);
         return fs.existsSync(resolvedUserProfilePath) ? resolvedUserProfilePath : PATH_NOT_FOUND
     }
 }
@@ -109,7 +108,7 @@ module.exports.loadScript = (req, res) => {
         fs.createReadStream(filePath).pipe(res);
     }
     else {
-        console.log('javascript file: ',req.url, ' file not found');
+        ('javascript file: ', req.url, ' file not found');
         res.status(400);
         res.end();
     }
@@ -126,7 +125,7 @@ module.exports.loadUtilityScript = (req, res) => {
         fs.createReadStream(filePath).pipe(res);
     }
     else {
-        console.log('javascript file: ',req.url, ' file not found');
+        ('javascript file: ', req.url, ' file not found');
         res.status(400);
         res.end();
     }
@@ -142,7 +141,7 @@ module.exports.getStyleSheet = (req, res) => {
         fs.createReadStream(filePath).pipe(res);
     }
     else {
-        console.log('css file: ',req.url, ' file not found');
+        ('css file: ', req.url, ' file not found');
         res.status(404);
         res.end();
     }
@@ -150,6 +149,13 @@ module.exports.getStyleSheet = (req, res) => {
 
 module.exports.getImage = (req, res) => {
     const filePath = path.join(__dirname, '..', '..', 'public', 'assets', 'images', `${req.params.filename}.png`);
+    res.type('png');
+    res.set('Cache-Control', 'public, max-age=3600');
+    fs.createReadStream(filePath).pipe(res);
+}
+
+module.exports.getSystemImage = (req, res) => {
+    const filePath = path.join(__dirname, '..', '..', 'public', 'assets', 'images', 'system', `${req.params.filename}.png`);
     res.type('png');
     res.set('Cache-Control', 'public, max-age=3600');
     fs.createReadStream(filePath).pipe(res);

@@ -2,5 +2,5 @@ if (document.readyState === 'loading') document.addEventListener('DOMContentLoad
 else main();
 
 function main() {
-    console.log('hello')
+    
 }

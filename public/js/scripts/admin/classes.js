@@ -66,7 +66,7 @@ const renderSchedule = (schedule) => {
 
 const renderClassSchedule = (classId) => {
     const classScheduleData = localScheduleStore.filter((item) => item.classId === classId)[0];
-    console.log(classScheduleData)
+    (classScheduleData)
     renderSchedule(classScheduleData)
 }
 
@@ -123,7 +123,7 @@ const classesMain = async () => {
         localScheduleStore.push(classSchedule);
     }
 
-    // console.log(localScheduleStore)
+    // (localScheduleStore)
     Array.from(document.getElementsByClassName("schedule-btn-b")).forEach((button) => {
         const buttonParent = button.parentElement.parentElement;
         const classId = buttonParent.querySelector(".class-id-p").textContent;

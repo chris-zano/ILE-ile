@@ -11,7 +11,7 @@ module.exports.getCoursesByOffset = async (req, res) => {
     const limit = 256;
     const Courses = CoursesDB();
     const query = key === "default" || value === "null" ? {} : { [key]: value };
-    // console.log(query);
+    // (query);
     try {
         const courses = await Courses.find(query).limit(limit).skip(offset).exec();
 
@@ -61,7 +61,7 @@ module.exports.manageCourses = async (req, res) => {
 
         }
         catch (err) {
-            console.log(err)
+            logError(err)
         }
     }
     else {
@@ -90,7 +90,6 @@ module.exports.manageCourses = async (req, res) => {
                 })
         } catch (err) {
             logError(err);
-            console.log(err)
         }
     }
 }

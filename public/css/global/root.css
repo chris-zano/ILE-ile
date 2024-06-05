@@ -170,7 +170,6 @@ button[disabled] {
 .toast {
     position: fixed;
     top: -100px;
-    /* Initially hidden above the viewport */
     left: 50%;
     transform: translateX(-50%);
     background-color: var(--primary);
@@ -201,6 +200,28 @@ div.container-max_width {
     position: relative;
 }
 
+div#container-max_width {
+    display: grid;
+    grid-template-areas:
+        "header header header"
+        "sidenav main main"
+        "footer footer footer"
+    ;
+}
+
+div#container-max_width header#header-top_main {
+    grid-area: header;
+}
+
+div#contaier-max_width nav#nav-main {
+    grid-area: sidenav;
+}
+
+div#container-max_width main#wrapper-main {
+    grid-area: main;
+    height: 100dvh;
+    overflow-y: scroll;
+}
 
 
 @media screen and (min-width: 310px) {
@@ -239,7 +260,7 @@ div.container-max_width {
 @media screen and (min-width: 768px) {
     div.container-max_width {
         width: 100%;
-        max-width: 1140px;
+        max-width: 1240px;
         margin: 0 auto;
     }
 

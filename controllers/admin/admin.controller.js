@@ -25,7 +25,6 @@ const tutorLogin = (username, password, ip, res) => {
             return;
         }).catch((error) => {
             logError(error);
-            console.log(error);
             res.status(500).render('global/error', { error: "Internal Server Error", status: 500 });
         });
 }
@@ -52,7 +51,6 @@ const adminLogin = (username, password, ip, res) => {
             }
         }).catch((error) => {
             logError(error);
-            console.log(error);
             res.status(500).render('global/error', { error: "Internal Server Error", status: 500 });
         });
 }
@@ -82,7 +80,6 @@ const studentLogin = (username, password, ip, res) => {
             }
         }).catch((error) => {
             logError(error);
-            console.log(error);
             res.status(500).render('global/error', { error: "Internal Server Error", status: 500 });
         });
 }
@@ -104,6 +101,6 @@ module.exports.loginUser = (req, res) => {
     }
     else {
         //handle if unrecogneised username format
-        console.log("Unmatched format")
+        res.render("index",{flush: "false"})
     }
 }

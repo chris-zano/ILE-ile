@@ -45,7 +45,7 @@
 
     .banner-wrapper {
         background-color: rgba(0, 0, 0, 0.595);
-        background-image: url("/images/ui");
+        background-image: url("/images/system/ui");
         background-blend-mode: multiply;
         background-size: cover; 
         background-position: center center;

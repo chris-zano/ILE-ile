@@ -34,8 +34,6 @@ const fetchData = async (url) => {
         return {status: response.status, data: await response.json()};
     }
     catch (error) {
-        console.log(error);
-        // window.location.href = "/global/error";
     }
 }
 
@@ -50,12 +48,10 @@ const checkAndRenderImageBackground = () => {
 
     for (let image of images) {
         image.addEventListener("load", () => {
-            // console.log("image has successfully loaded");
         });
     
         image.addEventListener("error", (e) => {
-            // console.log("error loading image");
-            image.setAttribute("src", "/images/logo");
+            image.setAttribute("src", "/images/system/logo");
         });
     }
 
@@ -65,7 +61,7 @@ const checkAndRenderImageBackground = () => {
 
     image.addEventListener("error", (e) => {
         // console.log("error loading image");
-        image.setAttribute("src", "/images/logo")
+        image.setAttribute("src", "/images/system/logo")
     })
 }
 checkAndRenderImageBackground();

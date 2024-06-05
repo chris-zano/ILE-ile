@@ -1,0 +1,111 @@
+nav#nav-main.open {
+    width: 200px;
+    width: max-content;
+}
+
+nav#nav-main.closed {
+    width: 80px;
+}
+
+nav#nav-main {
+    box-shadow: var(--box-shadow-thin);
+    margin: 0.3ch;
+    padding: 0.3ch;
+    border-radius: 1ch;
+    display: grid;
+    gap: 1ch;
+    height: calc(94% - 1ch);
+}
+
+nav#nav-main>section {
+    border-radius: inherit;
+}
+
+nav#nav-main i.side-nav_icon img {
+    width: 30px;
+    height: 30px;
+}
+
+section.side-header {
+    display: flex;
+    height: fit-content;
+    padding: 0.2ch;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+
+section.side-header div.side-header_logo {
+    display: flex;
+    gap: 3px;
+    justify-content: center;
+    align-items: center;
+    border-radius: inherit;
+    padding: 0.3ch;
+}
+
+section.side-header div.side-header_logo p {
+    font-size: 14px;
+}
+
+section.side-nav_list {
+    display: grid;
+    place-items: center;
+}
+
+ul {
+    display: flex;
+    flex-direction: column;
+    gap: 1ch;
+    width: 100%;
+    height: 100%;
+    padding: 1ch;
+    cursor: pointer;
+}
+
+ul li {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+ul li div.abstract-tooltip {
+    position: absolute;
+    left: calc(100% + 3ch);
+    visibility: hidden;
+}
+
+ul li a {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding: 0.5ch 1ch;
+    border-radius: 1ch;
+    column-gap: 3ch;
+}
+
+ul a[aria-current="page"] {
+    background-color: var(--accent);
+}
+
+ul a[aria-current="page"]>p {
+    color: var(--text);
+}
+
+section.side-nav_list ul li a:hover,
+section.side-nav_list ul li a :focus {
+    background-color: var(--primary);
+}
+
+section.side-secondary_nav>ul>li>a:hover,
+section.side-secondary_nav>ul>li>a:focus {
+    background-color: var(--secondary);
+}
+
+section.side-nav_actions>ul>li>a:hover,
+section.side-nav_actions>ul>li>a:focus {
+    background-color: var(--purple);
+}

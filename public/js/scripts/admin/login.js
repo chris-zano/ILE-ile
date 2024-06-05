@@ -31,15 +31,13 @@ function main() {
             'Content-Type': 'application/json'
         }
 
-        console.log("here: => ", options)
-
         initiatePostRequest(
             '/auth/users/login',
             headers,
             options
         )
             .then(response => {
-                console.log(response)
+                (response)
                 if (response.status === 200 && response.data.message === 'success') {
                     const userData = {
                         user: response.data.userType,
@@ -70,7 +68,7 @@ function main() {
  * @returns {ObjectConstructor} { status_code ( as status ), data }
  */
 async function initiatePostRequest(url_endpoint, headers, options) {
-    console.log("here: 1")
+    ("here: 1")
     const res = await fetch(url_endpoint, {
         method: 'POST',
         headers: headers,
@@ -79,8 +77,6 @@ async function initiatePostRequest(url_endpoint, headers, options) {
 
     const status = res.status;
     const data = await res.json();
-    console.log("here: 2 => ", data);
-
     return {
         status: status,
         data: data

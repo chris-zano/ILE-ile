@@ -119,13 +119,12 @@ const handleSearch = () => {
         return;
     } 
     else {
-        console.log("Search: ", searchInput);
-        console.log("Category: ", category);
+        ("Search: ", searchInput);
+        ("Category: ", category);
 
         socket.emit('search', { category, searchInput });
 
         socket.on('searchResults', (searchResults) => {
-            console.log(searchResults);
             renderSearchResults(searchResults);
             socket.disconnect();
         });
