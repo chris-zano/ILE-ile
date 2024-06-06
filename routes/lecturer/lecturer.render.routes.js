@@ -15,5 +15,6 @@ router.get('/lecturers/render/classrooms/:id', verifyLecturer, lecturerRender.re
 router.get('/lecturers/render/live/:id', verifyLecturer, lecturerRender.renderLive);
 router.get('/lecturers/render/course/:courseId/:id', verifyLecturer, lecturerRender.renderCourse);
 router.get('/lecturers/render/classroom/:id', verifyLecturer, lecturerRender.renderClassroom);
+router.get('/lecturers/render/profiles/lecturer/:id', verifyLecturer, lecturerRender.renderViewLecturerProfile);
 
 module.exports = router;

@@ -119,3 +119,20 @@ module.exports.renderLive = (req, res) => {
         scripts: []
     });
 }
+
+module.exports.renderViewLecturerProfile = (req, res) => {
+    const { lecturerData } = req;
+
+    // res.set('Cache-Control', 'public, max-age=30');
+    res.render('lecturer/lecturer-main', {
+        lecturer: lecturerData,
+        pageTitle: `Profile ~ ${lecturerData.firstname}`,
+        stylesheets: ["/css/lecturer/view.profile"],
+        pageUrl: 'layouts/view.lecturer-profile.ejs',
+        currentPage: '',
+        userType: "lecturer",
+        scripts: ["/script/scripts/lecturer/view.profile"]
+    });
+
+    return;
+}

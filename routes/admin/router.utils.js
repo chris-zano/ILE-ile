@@ -6,7 +6,7 @@ module.exports.verifyAdmin = (req, res, next) => {
         .then((admin) => {
             if (admin == null) {
                 utils.logError(new ReferenceError());
-                res.render('global/error', { message: "Unauthorised access", status: 403 });
+                res.render('global/error', { error: "Unauthorised access", status: 403 });
                 return
             }
             else {
@@ -34,7 +34,7 @@ module.exports.verifyLecturer = (req, res, next) => {
         .then((lecturer) => {
             if (lecturer == null) {
                 utils.logError(new ReferenceError());
-                res.render('global/error', { message: "Unauthorised access", status: 403 });
+                res.render('global/error', { error: "Unauthorised access", status: 403 });
                 return
             }
             else {

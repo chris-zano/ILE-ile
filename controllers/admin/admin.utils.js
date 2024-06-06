@@ -36,7 +36,7 @@ module.exports.validateAuthId = async (id) => {
         .then((admin) => {
             if (admin == null) {
                 utils.logError(new ReferenceError());
-                res.render('global/error', { message: "Unauthorised access", status: 403 });
+                res.render('global/error', { error: "Unauthorised access", status: 403 });
                 return {
                     message: "An error occured",
                     admin: {},
