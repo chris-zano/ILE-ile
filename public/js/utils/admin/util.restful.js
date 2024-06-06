@@ -168,15 +168,3 @@ if (themeToggleBtn.getAttribute('data-enabled') == "true" && (lsThemeValue) == t
     root.style.setProperty("--accent", "#4eda51")
     root.style.setProperty("--red", "#4eda51")
 }
-else {
-    // console.log(themeToggleBtn.getAttribute('data-enabled') === String(lsThemeValue));
-    // console.log(themeToggleBtn.getAttribute('data-enabled'), String(lsThemeValue));
-
-    root.style.setProperty("--text", "#051e0e")
-    root.style.setProperty("--background", "#f2f2f2")
-    root.style.setProperty("--white", "#ffffff")
-    root.style.setProperty("--primary", "#3074d9")
-    root.style.setProperty("--secondary", "#54b1b3")
-    root.style.setProperty("--accent", "#57b0e0")
-    root.style.setProperty("--red", "#ac0000")
-}

@@ -1,6 +1,5 @@
 nav#nav-main.open {
-    width: 200px;
-    width: max-content;
+    width: 99%;
 }
 
 nav#nav-main.closed {
@@ -9,13 +8,12 @@ nav#nav-main.closed {
 
 nav#nav-main {
     position: relative;
-    box-shadow: var(--box-shadow-thin);
-    margin: 0.3ch;
     padding: 0.3ch;
-    border-radius: 1ch;
-    display: grid;
+    display: flex;
+    flex-flow: column;
     gap: 1ch;
     height: 99%;
+    width: 100%;
 }
 
 nav#nav-main>section {
@@ -23,8 +21,8 @@ nav#nav-main>section {
 }
 
 nav#nav-main i.side-nav_icon img {
-    width: 30px;
-    height: 30px;
+    width: 20px;
+    height: 20px;
 }
 
 section.side-header {
@@ -47,12 +45,17 @@ section.side-header div.side-header_logo {
 }
 
 section.side-header div.side-header_logo p {
-    font-size: 14px;
+    font-size: 16px;
 }
 
 section.side-nav_list {
     display: grid;
     place-items: center;
+    margin-top: 3rem;
+    flex-basis: max-content;
+    flex-grow: 0;
+    flex-shrink: 0;
+    height: 100%;
 }
 
 ul {
@@ -83,31 +86,42 @@ ul li a {
     height: 100%;
     display: flex;
     align-items: center;
-    padding: 0.5ch 1ch;
+    line-height: 1ch;
+    padding: 1ch;
     border-radius: 1ch;
     column-gap: 3ch;
     transition: all ease-in-out 250ms;
 }
 
 ul a[aria-current="page"] {
-    background-color: var(--accent);
+    background-color: var(--background-main);
 }
 
 ul a[aria-current="page"]>p {
     color: var(--text);
 }
 
-section.side-nav_list ul li a:hover,
-section.side-nav_list ul li a :focus {
-    background-color: var(--primary);
+ul li a:hover,
+ul li a :focus {
+    background-color: var(--background-main);
 }
 
-section.side-secondary_nav>ul>li>a:hover,
-section.side-secondary_nav>ul>li>a:focus {
-    background-color: var(--secondary);
+ul li a img {
+    width: 20px;
+    height: 20px;
 }
 
-section.side-nav_actions>ul>li>a:hover,
-section.side-nav_actions>ul>li>a:focus {
-    background-color: var(--purple);
+ul li a p {
+    font-size: 14px;
+}
+
+section.side-nav_actions {
+    height: 100%;
+    position: relative;
+}
+
+section.side-nav_actions ul {
+    position: absolute;
+    bottom: 0;
+    top: 65%;
 }

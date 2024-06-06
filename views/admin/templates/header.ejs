@@ -2,12 +2,12 @@
     <section id="header-logo">
         <div class="logo-img">
             <a href="/admins/render/dashboards/<%= admin.id %>">
-                <img width="20px" src="/images/system/logo" alt="logo">
+                <img width="20px" src="/images/system/school-logo" alt="logo">
             </a>
         </div>
         <div class="logo-name">
             <a href="/admins/render/dashboards/<%= admin.id %>">
-                <h1>ITLE</h1>
+                <h1>GCTU</h1>
             </a>
         </div>
     </section>
@@ -32,7 +32,7 @@
             </div>
             <div class="results-container hidden" id="search-results-div">
                 <small id="search-matches">0 matches found</small>
-    
+
                 <ul id="results-ul">
                 </ul>
             </div>
@@ -48,104 +48,22 @@
         </form>
     </section>
     <section id="header-profile">
-        <div class="profile-main">
-            <img width="20px" src="<%= String(admin.profilePicUrl).includes("no-id")? admin.profilePicUrl : "/users/admins/get-profile-picture/" + admin.id %>" id="profile-main" alt="profile avatar">
-        </div>
-        <div class="profile-card hidden" id="calm">
-            <div class="profile-card-header">
-                <div class="pc-img-x">
-                    <img width="20px" src="<%= String(admin.profilePicUrl).includes("no-id")? admin.profilePicUrl : "/users/admins/get-profile-picture/" + admin.id %>" alt="profile avatar">
-                </div>
-                <div class="pc-h-y">
-                    <p><%= admin.firstname %><%= admin.lastname %></p>
-                    <p id="p-faculty"><%= admin.faculty%></p>
-                </div>
-                <div class="px-h-z">
-                    <div class="inner-wrapper-z">
-                        <a href="/admins/render/profiles/admin/<%= admin.id %>">Manage Account</a>
-                    </div>
-                </div>
-            </div>
-            <div class="profile-card-main">
-                <div class="pc-m-a" id="u-sp-a">
-                    <div class="pc-m-a-img">
-                        <img width="20px" src="/images/system/settings" alt="settings icon">
-                    </div>
-                    <div class="pc-m-a-link">
-                        <a href="#" aria-label="user settings page">Settings</a>
-                    </div>
-                </div>
-                <div class="pc-m-b">
-                    <div class="pc-m-a-img">
-                        <img width="20px" src="/images/system/dark_mode" alt="theme icon">
-                    </div>
-                    <div class="pc-m-a-link">
-                        <p>Dark Mode</p>
-                    </div>
-                    <div class="pc-m-a-toggle">
-                        <button id="toggle" type="button" data-enabled="true">Enable</button>
-                        <script>
-                            const toggleBtn = document.getElementById('toggle');
-
-                            const lsValue = JSON.parse(localStorage.getItem('toggle-btn-enabled'));
-
-                            toggleBtn.setAttribute('data-enabled', lsValue);
-                            if (lsValue == false) {
-                                toggleBtn.textContent = "Enable";
-                            }
-                            else {
-                                toggleBtn.textContent = "Enabled";
-                            }
-
-                            toggleBtn.addEventListener("click", (e) => {
-                                const btnValue = e.target.getAttribute('data-enabled');
-                                if (btnValue == "false") {
-                                    updateToggleData(e.target, true);
-                                    e.target.textContent = "Enabled"
-                                }
-                                else {
-                                    updateToggleData(e.target, false);
-                                    e.target.textContent = "Enable"
-                                }
-                            })
-
-                            function updateToggleData(toggle, value) {
-                                toggle.setAttribute('data-enabled', value);
-                                localStorage.setItem('toggle-btn-enabled', JSON.stringify(value));
-                                if (value == "false")
-                                    toggle.textContent = "Enable";
-                                else
-                                    toggle.textContent = "Enabled";
-                                location.reload();
-                            }
-                        </script>
-
-                    </div>
-                </div>
-            </div>
-            <div class="profile-card-footer">
-                <div class="pc-m-a-img">
-                    <img width="20px" src="/images/system/logout" alt="logout icon">
-                </div>
-                <div class="pc-m-a-link">
-                    <p id="logout" style="cursor: pointer;">Logout</p>
-                </div>
-                <script>
-                    document.getElementById("logout").addEventListener("click", () => {
-                        sessionStorage.clear();
-                        localStorage.clear();
-                        window.location.reload()
-                    })
-                </script>
+        <div class="profile-main notification-header">
+            <img width="20px" src="/images/system/notifications" id="profile-main" alt="profile avatar">
+            <div class="notification-dot">
+                <span>9+</span>
             </div>
         </div>
-
-        <script>
-            const profileMain = document.getElementById('profile-main');
-            profileMain.addEventListener('click', (e) => {
-                document.getElementById('calm').classList.toggle('hidden')
-            })
-        </script>
+        <a href="/admins/render/profiles/admin/<%= admin.id %>" id="">
+            <div class="profile-main user_profile-header">
+                <img width="20px" src="<%= String(admin.profilePicUrl).includes(" no-id")? admin.profilePicUrl
+                    : "/users/admins/get-profile-picture/" + admin.id %>" id="profile-main" alt="profile avatar">
+                <div class="username">
+                    <p>
+                        <%= admin.firstname %>
+                    </p>
+                </div>
+            </div>
+        </a>
     </section>
 </header>
-
