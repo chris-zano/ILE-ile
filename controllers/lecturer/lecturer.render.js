@@ -9,6 +9,7 @@ module.exports.renderDashboard = (req, res) => {
         pageTitle: "Dashboard",
         stylesheets: [],
         pageUrl: 'layouts/dashboard',
+        currentPage: 'dashboard',
         userType: 'Lecturer',
         scripts: []
     });
@@ -22,6 +23,7 @@ module.exports.renderSchedules = (req, res) => {
         pageTitle: "Schedules",
         stylesheets: [],
         pageUrl: 'layouts/schedules',
+        currentPage: 'schedules',
         userType: 'Lecturer',
         scripts: []
     });
@@ -40,6 +42,7 @@ module.exports.renderCourses = (req, res) => {
                 pageTitle: "Courses",
                 stylesheets: ['/css/lecturer/courses'],
                 pageUrl: 'layouts/courses',
+                currentPage: 'courses',
                 userType: 'Lecturer',
                 scripts: [],
                 courses: courses
@@ -59,6 +62,7 @@ module.exports.renderClassrooms = (req, res) => {
         pageTitle: "Classrooms",
         stylesheets: [],
         pageUrl: 'layouts/classrooms',
+        currentPage: 'classrooms',
         userType: 'Lecturer',
         scripts: []
     });
@@ -72,6 +76,7 @@ module.exports.renderClassroom = (req, res) => {
         pageTitle: "Classroom",
         stylesheets: [],
         pageUrl: 'layouts/classrooms.view.ejs',
+        currentPage: 'classrooms',
         userType: 'Lecturer',
         scripts: []
     });
@@ -88,6 +93,7 @@ module.exports.renderCourse = (req, res) => {
                 pageTitle: "Course",
                 stylesheets: ['/css/lecturer/course.view'],
                 pageUrl: 'layouts/course.view.ejs',
+                currentPage: 'course',
                 userType: 'Lecturer',
                 course: course,
                 scripts: ['/script/scripts/lecturer/course.view']
@@ -108,6 +114,7 @@ module.exports.renderLive = (req, res) => {
         pageTitle: "Live",
         stylesheets: [],
         pageUrl: 'layouts/live',
+        currentPage: 'live',
         userType: 'Lecturer',
         scripts: []
     });

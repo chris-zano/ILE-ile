@@ -39,7 +39,7 @@ div.section-header-nav>a:hover {
 section.main-section {
     min-width: fit-content;
     height: 100%;
-    padding-inline: 10px;
+    /* padding-inline: 10px; */
 }
 
 @media (min-width: 768px) {

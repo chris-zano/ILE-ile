@@ -16,6 +16,7 @@
     --blue: #4648cf;
     --purple: #905fae;
     --inactive: hsl(0, 0%, 43%);
+    --black:#292828b6;
 
 
     /* fonts */
@@ -42,8 +43,8 @@
     --boder-radius-circle: 50%;
 
     /* box shadows */
-    --box-shadow-thin: 0px 3px 3px #68606089;
-    --box-shadow-extra-thin: 0px 3px 3px rgba(223, 221, 221, 0.834);
+    --box-shadow-thin: 0px 3px 3px var(--black);
+    --box-shadow-extra-thin: 0px 3px 3px var(--black);
 
     /* input-fields */
     --button-height: 45px;
@@ -202,11 +203,14 @@ div.container-max_width {
 
 div#container-max_width {
     display: grid;
+    grid-template-columns: 220px 1fr;
     grid-template-areas:
-        "header header header"
-        "sidenav main main"
-        "footer footer footer"
+        "header header"
+        "sidenav main"
+        "footer footer"
     ;
+    grid-template-rows: auto 1fr auto;
+    height: 100vh;
 }
 
 div#container-max_width header#header-top_main {
@@ -215,11 +219,12 @@ div#container-max_width header#header-top_main {
 
 div#contaier-max_width nav#nav-main {
     grid-area: sidenav;
+    min-height: 0;
 }
 
 div#container-max_width main#wrapper-main {
+    width: 100% !important;
     grid-area: main;
-    height: 100dvh;
     overflow-y: scroll;
 }
 

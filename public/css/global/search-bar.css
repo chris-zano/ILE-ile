@@ -1,6 +1,7 @@
 section#header-seach-bar {
-    width: 35%;
-    margin: 1ch auto;
+    grid-area: search;
+    /* width: 35%; */
+    /* margin: 1ch auto; */
 }
 
 section#header-seach-bar .search-bar {
@@ -9,8 +10,7 @@ section#header-seach-bar .search-bar {
     align-items: center;
     min-width: 120px;
     height: 45px;
-    border: var(--boder-default);
-    border-radius: var(--border-radius);
+    border-radius:1ch;
 }
 
 section#header-seach-bar .dropdown {
@@ -22,7 +22,7 @@ section#header-seach-bar .dropdown {
     text-align: center;
     font-size: small;
     color: var(--white);
-    border-radius: var(--border-radius);
+    border-radius:1ch;
     background-color: var(--primary);
     cursor: pointer;
     margin-right: 10px;
@@ -58,17 +58,17 @@ section#header-seach-bar .dropdown:focus > option {
 section#header-seach-bar .search-box {
     display: flex;
     align-items: center;
-    padding-right: 1rem;
+    /* padding-right: 1rem; */
     width: 100%;
     height: 45px;
     border: 1px solid var(--primary);
-    border-radius: var(--border-radius);
+    border-radius:1ch;
     background-color: var(--background);
 
 }
 
 section#header-seach-bar .search-box input {
-    border-radius: var(--border-radius);
+    border-radius:1ch;
     background-color: var(--background);
     width: 100%;
     height: 40px;
@@ -80,10 +80,11 @@ section#header-seach-bar .search-box input {
     outline: 0;
 }
 
-section#header-seach-bar .search-box i {
-    font-size: 1.3rem;
+section#header-seach-bar .search-box i img {
     cursor: pointer;
-    color: var(--text);
+    margin-right: 0;
+    width: 30px;
+    height: 30px;
 }
 
 section#header-seach-bar .search-box input::placeholder {
@@ -108,7 +109,7 @@ div.results-container {
     top: 100%;
     margin-top: 10px;
     padding: 0 10px;
-    border-radius: var(--border-radius-thin);
+    border-radius:1ch;
     min-width: 100%;
     min-height: max-content;
     max-height: 400px;
@@ -131,7 +132,7 @@ div.results-container ul {
 }
 
 div.results-container ul li.results-item {
-    border-radius: var(--border-radius-thin);
+    border-radius:1ch;
     padding: 5px;
 }
 

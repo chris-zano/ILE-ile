@@ -223,15 +223,7 @@ const courseSchema = new Schema({
     credit: {
         type: String,
         required: true
-    },
-    createdAt: {
-        type: dateSchema,
-        required: true,
-    },
-    updatedAt: {
-        type: dateSchema,
-        required: true
-    },
+    }
 }, {
     timestamps: true
 });

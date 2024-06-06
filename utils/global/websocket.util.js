@@ -8,9 +8,9 @@ function setupWebSocketServer(server) {
         console.log('Socket.IO client connected');
 
         socket.on('search', ({ category, searchInput }) => {
-            console.log('Received search request from client:');
-            console.log('Category:', category);
-            console.log('Search Input:', searchInput);
+            // console.log('Received search request from client:');
+            // console.log('Category:', category);
+            // console.log('Search Input:', searchInput);
 
             if (category == "courses") {
                 findCourse(socket, searchInput)
@@ -42,4 +42,4 @@ function setupWebSocketServer(server) {
     return io;
 }
 
-module.exports = setupWebSocketServer;
+module.exports = { setupWebSocketServer };

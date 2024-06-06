@@ -1,3 +1,5 @@
+const socket = io();
+
 let searchTimer;
 
 const mountcourses = (course) => {
@@ -106,7 +108,6 @@ const renderSearchResults = (searchResults) => {
     document.getElementById("search-matches").innerText = results.length == 1? results.length + " match found.": results.length + " matches found."
 }
 const handleSearch = () => {
-    const socket = io();
     const category = document.getElementById("search-category").value;
     const searchInput = document.getElementById("search-input").value;
 
@@ -119,14 +120,10 @@ const handleSearch = () => {
         return;
     } 
     else {
-        ("Search: ", searchInput);
-        ("Category: ", category);
-
         socket.emit('search', { category, searchInput });
-
         socket.on('searchResults', (searchResults) => {
             renderSearchResults(searchResults);
-            socket.disconnect();
+            // socket.disconnect();
         });
     }
 };
@@ -138,3 +135,7 @@ const handleInputChange = () => {
     resetTimer();
 };
 document.getElementById("search-input").addEventListener('input', handleInputChange);
+document.getElementById("search-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    handleSearch();
+})

@@ -9,12 +9,12 @@
     <link rel="stylesheet" href="/css/global/sidenav">
     <link rel="stylesheet" href="/css/global/search-bar">
     <% for( let styleUrl of stylesheets) { %>
-        <link rel="stylesheet" href="<%= styleUrl %>">
-        <% } %>
-            <script src="/script/utils/admin/util.auth"></script>
-            <title>
-                ITLE(Admin): <%= pageTitle %>
-            </title>
+    <link rel="stylesheet" href="<%= styleUrl %>">
+    <% } %>
+    <script src="/script/utils/admin/util.auth"></script>
+    <title>
+        ITLE(Admin): <%= pageTitle %>
+    </title>
 </head>
 
 <body>
@@ -36,7 +36,7 @@
     <!-- include scripts -->
     <script src="/socket.io/socket.io.js"></script>
     <script src="/script/utils/admin/util.restful"></script>
-    <!-- <script src="/script/scripts/admin/global.search"></script> -->
+    <script src="/script/scripts/admin/global.search"></script>
     <% for( let scriptUrl of scripts) { %>
         <script src="<%= scriptUrl %>"></script>
         <% } %>

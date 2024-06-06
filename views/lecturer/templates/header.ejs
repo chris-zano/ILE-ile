@@ -1,56 +1,84 @@
-<header>
+<header id="header-top_main">
     <section id="header-logo">
         <div class="logo-img">
-            <a href="/lecturers/render/dashboards/<%= lecturer.id %>">
+            <a href="/admins/render/dashboards/<%= lecturer.id %>">
                 <img width="20px" src="/images/system/logo" alt="logo">
             </a>
         </div>
         <div class="logo-name">
-            <a href="/lecturers/render/dashboards/<%= lecturer.id %>">
+            <a href="/admins/render/dashboards/<%= lecturer.id %>">
                 <h1>ITLE</h1>
             </a>
         </div>
     </section>
-    <section id="header-nav">
-        <nav>
-            <div><a href="/lecturers/render/dashboards/<%= lecturer.id %>" class="header_nav-a"  aria-current="page">Dashboard</a></div>
-            <div><a href="/lecturers/render/courses/<%= lecturer.id %>" class="header_nav-a" >Courses</a></div>
-            <div><a href="/lecturers/render/schedules/<%= lecturer.id %>" class="header_nav-a" >Schedules</a></div>
-            <div><a href="/lecturers/render/classrooms/<%= lecturer.id %>" class="header_nav-a" >Classrooms</a></div>
-            <div><a href="/lecturers/render/live/<%= lecturer.id %>" class="header_nav-a" >Live</a></div>
-        </nav>
+    <section id="header-seach-bar">
+        <form action="#" id="search-form" class="search-bar">
+            <div>
+                <select class="dropdown" name="search-content" id="search-category">
+                    <option class="dropdown-list-item dropdown-text" value="none">categories</option>
+                    <option class="dropdown-list-item" value="courses">Courses</option>
+                    <option class="dropdown-list-item" value="students">Students</option>
+                    <option class="dropdown-list-item" value="lecturers">Lecturers</option>
+                    <option class="dropdown-list-item" value="materials">Materials</option>
+                </select>
+            </div>
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="Search anything... [ / ]" required />
+                <button type="submit" id="searchBtn" style="box-shadow: none;">
+                    <i class="fa-solid fa-magnifying-glass">
+                        <img src="/images/system/search" alt="">
+                    </i>
+                </button>
+            </div>
+            <div class="results-container hidden" id="search-results-div">
+                <small id="search-matches">0 matches found</small>
+
+                <ul id="results-ul">
+                </ul>
+            </div>
+
+            <script>
+                const handleOutsideClick = (event) => {
+                    const searchResultsDiv = document.getElementById('search-results-div');
+                    if (!searchResultsDiv.contains(event.target)) {
+                        searchResultsDiv.classList.add('hidden');
+                    }
+                };
+                document.body.addEventListener('click', handleOutsideClick);
+            </script>
+        </form>
     </section>
     <section id="header-profile">
-        <div class="profile-main" id="image-render-py">
-            <img width="20px" src="<%= lecturer.profilePicUrl %>"  id="profile-main" alt="profile avatar">
+        <div class="profile-main">
+            <img width="20px" src="<%= String(lecturer.profilePicUrl).includes("no-id")? lecturer.profilePicUrl : "/users/admins/get-profile-picture/" + lecturer.id %>" id="profile-main" alt="profile avatar">
         </div>
         <div class="profile-card hidden" id="calm">
             <div class="profile-card-header">
                 <div class="pc-img-x">
-                    <img width="20px" src="<%= lecturer.profilePicUrl %>" alt="profile avatar">
+                    <img width="20px" src="<%= String(lecturer.profilePicUrl).includes("no-id")? lecturer.profilePicUrl : "/users/admins/get-profile-picture/" + lecturer.id %>" alt="profile avatar">
                 </div>
                 <div class="pc-h-y">
-                    <p><%= lecturer.firstname %> <%= lecturer.lastname %></p>
+                    <p><%= lecturer.firstname %><%= lecturer.lastname %></p>
                     <p id="p-faculty"><%= lecturer.faculty%></p>
                 </div>
                 <div class="px-h-z">
                     <div class="inner-wrapper-z">
-                        <a href="#">Manage Account</a>
+                        <a href="/admins/render/profiles/admin/<%= lecturer.id %>">Manage Account</a>
                     </div>
                 </div>
             </div>
             <div class="profile-card-main">
-                <div class="pc-m-a">
+                <div class="pc-m-a" id="u-sp-a">
                     <div class="pc-m-a-img">
-                        <img width="20px" src="/images/icons8-settings-50" alt="settings icon">
+                        <img width="20px" src="/images/system/settings" alt="settings icon">
                     </div>
                     <div class="pc-m-a-link">
-                        <a href="#">Settings</a>
+                        <a href="#" aria-label="user settings page">Settings</a>
                     </div>
                 </div>
                 <div class="pc-m-b">
                     <div class="pc-m-a-img">
-                        <img width="20px" src="/images/icons8-dark-mode-50" alt="theme icon">
+                        <img width="20px" src="/images/system/dark_mode" alt="theme icon">
                     </div>
                     <div class="pc-m-a-link">
                         <p>Dark Mode</p>
@@ -98,13 +126,13 @@
             </div>
             <div class="profile-card-footer">
                 <div class="pc-m-a-img">
-                    <img width="20px" src="/images/icons8-logout-50" alt="logout icon">
+                    <img width="20px" src="/images/system/logout" alt="logout icon">
                 </div>
                 <div class="pc-m-a-link">
                     <p id="logout" style="cursor: pointer;">Logout</p>
                 </div>
                 <script>
-                    document.getElementById("logout").addEventListener("click", ()=> {
+                    document.getElementById("logout").addEventListener("click", () => {
                         sessionStorage.clear();
                         localStorage.clear();
                         window.location.reload()
@@ -121,38 +149,3 @@
         </script>
     </section>
 </header>
-
-<section id="header-seach-bar">
-    <form action="/global-search" class="search-bar">
-        <div>
-            <select class="dropdown" name="search-content" id="search-category">
-                <option class="dropdown-list-item dropdown-text" value="none">categories</option>
-                <option class="dropdown-list-item" value="courses">Courses</option>
-                <option class="dropdown-list-item" value="students">Students</option>
-                <option class="dropdown-list-item" value="lecturers">Lecturers</option>
-                <option class="dropdown-list-item" value="materials">Materials</option>
-            </select>
-        </div>
-        <div class="search-box">
-            <input type="text" id="search-input" placeholder="Search anything..." required />
-            <button type="submit" id="searchBtn" style="box-shadow: none;">
-                <i class="fa-solid fa-magnifying-glass"></i>
-            </button>
-        </div>
-        <div class="results-container hidden" id="search-results-div">
-            <small id="search-matches">0 matches found</small>
-    
-            <ul id="results-ul">
-            </ul>
-        </div>
-        <script>
-            const handleOutsideClick = (event) => {
-                const searchResultsDiv = document.getElementById('search-results-div');
-                if (!searchResultsDiv.contains(event.target)) {
-                    searchResultsDiv.classList.add('hidden');
-                }
-            };
-            document.body.addEventListener('click', handleOutsideClick);
-        </script>
-    </form>
-</section>

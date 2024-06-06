@@ -46,10 +46,10 @@ const uri = `mongodb+srv://${username}:${password}@${clusterName}.jwscxvu.mongod
     mongoose.wconnect("mongodb://localhost:27017/ileSchool").then(() => {
           console.log("Connected to local");
 
-          require('./requireStack').callAndExecuteRequireStack(app);
+          require('./requireStack').callAndExecuteRequireStack(app, server);
           
           const PORT = process.env.PORT || 8080;
-          app.listen(PORT, () => {
+          server.listen(PORT, () => {
               console.log(`App is live at http://localhost:${PORT}`);
           });
       }).catch(console.error);
@@ -60,10 +60,10 @@ const uri = `mongodb+srv://${username}:${password}@${clusterName}.jwscxvu.mongod
       mongoose.connect("mongodb://localhost:27017/ileSchool").then(() => {
           console.log("Connected to local");
 
-          require('./requireStack').callAndExecuteRequireStack(app);
+          require('./requireStack').callAndExecuteRequireStack(app, server);
 
           const PORT = process.env.PORT || 8080;
-          app.listen(PORT, () => {
+          server.listen(PORT, () => {
               console.log(`App is live at http://localhost:${PORT}`);
           });
       }).catch(console.error);

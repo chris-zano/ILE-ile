@@ -11,15 +11,41 @@
             </a>
         </div>
     </section>
-    <section id="header-nav">
-        <nav>
-            <div><a href="/admins/render/dashboards/<%= admin.id %>" class="header_nav-a" <%= currentPage === 'dashboard' ? 'aria-current=page' : '' %> >Dashboard</a></div>
-            <div><a href="/admins/render/tutors/<%= admin.id %>" class="header_nav-a" <%= currentPage === 'tutors' ? 'aria-current=page' : '' %> >Lecturers</a></div>
-            <div><a href="/admins/render/students/<%= admin.id %>" class="header_nav-a" <%= currentPage === 'students' ? 'aria-current=page' : '' %> >Students</a></div>
-            <div><a href="/admins/render/courses/<%= admin.id %>" class="header_nav-a" <%= currentPage === 'courses' ? 'aria-current=page' : '' %> >Courses</a></div>
-            <div><a href="/admins/render/classrooms/<%= admin.id %>" class="header_nav-a" <%= currentPage === 'classrooms' ? 'aria-current=page' : '' %> >Classrooms</a></div>
-        </nav>
-        
+    <section id="header-seach-bar">
+        <form action="#" id="search-form" class="search-bar">
+            <div>
+                <select class="dropdown" name="search-content" id="search-category">
+                    <option class="dropdown-list-item dropdown-text" value="none">categories</option>
+                    <option class="dropdown-list-item" value="courses">Courses</option>
+                    <option class="dropdown-list-item" value="students">Students</option>
+                    <option class="dropdown-list-item" value="lecturers">Lecturers</option>
+                    <option class="dropdown-list-item" value="materials">Materials</option>
+                </select>
+            </div>
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="Search anything... [ / ]" required />
+                <button type="submit" id="searchBtn" style="box-shadow: none;">
+                    <i class="fa-solid fa-magnifying-glass">
+                        <img src="/images/system/search" alt="">
+                    </i>
+                </button>
+            </div>
+            <div class="results-container hidden" id="search-results-div">
+                <small id="search-matches">0 matches found</small>
+    
+                <ul id="results-ul">
+                </ul>
+            </div>
+            <script>
+                const handleOutsideClick = (event) => {
+                    const searchResultsDiv = document.getElementById('search-results-div');
+                    if (!searchResultsDiv.contains(event.target)) {
+                        searchResultsDiv.classList.add('hidden');
+                    }
+                };
+                document.body.addEventListener('click', handleOutsideClick);
+            </script>
+        </form>
     </section>
     <section id="header-profile">
         <div class="profile-main">
@@ -123,37 +149,3 @@
     </section>
 </header>
 
-<!-- <section id="header-seach-bar">
-    <form action="/global-search" class="search-bar">
-        <div>
-            <select class="dropdown" name="search-content" id="search-category">
-                <option class="dropdown-list-item dropdown-text" value="none">categories</option>
-                <option class="dropdown-list-item" value="courses">Courses</option>
-                <option class="dropdown-list-item" value="students">Students</option>
-                <option class="dropdown-list-item" value="lecturers">Lecturers</option>
-                <option class="dropdown-list-item" value="materials">Materials</option>
-            </select>
-        </div>
-        <div class="search-box">
-            <input type="text" id="search-input" placeholder="Search anything..." required />
-            <button type="submit" id="searchBtn" style="box-shadow: none;">
-                <i class="fa-solid fa-magnifying-glass"></i>
-            </button>
-        </div>
-        <div class="results-container hidden" id="search-results-div">
-            <small id="search-matches">0 matches found</small>
-
-            <ul id="results-ul">
-            </ul>
-        </div>
-        <script>
-            const handleOutsideClick = (event) => {
-                const searchResultsDiv = document.getElementById('search-results-div');
-                if (!searchResultsDiv.contains(event.target)) {
-                    searchResultsDiv.classList.add('hidden');
-                }
-            };
-            document.body.addEventListener('click', handleOutsideClick);
-        </script>
-    </form>
-</section> -->

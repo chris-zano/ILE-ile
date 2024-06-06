@@ -8,13 +8,14 @@ nav#nav-main.closed {
 }
 
 nav#nav-main {
+    position: relative;
     box-shadow: var(--box-shadow-thin);
     margin: 0.3ch;
     padding: 0.3ch;
     border-radius: 1ch;
     display: grid;
     gap: 1ch;
-    height: calc(94% - 1ch);
+    height: 99%;
 }
 
 nav#nav-main>section {
@@ -85,6 +86,7 @@ ul li a {
     padding: 0.5ch 1ch;
     border-radius: 1ch;
     column-gap: 3ch;
+    transition: all ease-in-out 250ms;
 }
 
 ul a[aria-current="page"] {
