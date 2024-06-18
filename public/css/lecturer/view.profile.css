@@ -1,0 +1,199 @@
+@media screen and (max-width: 940px) {
+    section#profile-main-wrapper {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        gap: 1ch;
+    }
+}
+
+@media screen and (min-width: 940px) {
+
+    section#profile-main-wrapper {
+        height: 100vh;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-template-rows: repeat(auto-fit, minmax(200px, 1fr));
+        grid-template-areas:
+            "profile profile notifications"
+            "activities activities notifications"
+            "activities activities notifications"
+        ;
+        /* margin-bottom: 2rem; */
+        gap: 1ch;
+    }
+
+
+    section#profile-main-wrapper>section {
+        border-radius: 0.7rem;
+        padding: 1ch 1.5ch;
+        box-shadow: -15px -15px 15px rgba(255, 255, 255, 0.2),
+            15px 15px 115px rgba(0, 0, 0, 0.1);
+    }
+
+    section.view-admin {
+        grid-area: profile;
+        background-color: #f7f7f7;
+        box-shadow: var(--box-shadow-thin);
+        /* height: fit-content; */
+    }
+
+    section.notifications-area {
+        grid-area: notifications;
+        background-color: blue;
+        /* height: max-content; */
+    }
+
+    section.activities-history {
+        grid-area: activities;
+        background-color: green;
+
+    }
+}
+
+section#profile-main-wrapper>section {
+    border-radius: 0.7rem;
+    padding: 1ch 1.5ch;
+    box-shadow: -15px -15px 15px rgba(255, 255, 255, 0.2),
+        15px 15px 115px rgba(0, 0, 0, 0.1);
+}
+
+section.view-admin {
+    background-color: #f7f7f7;
+    /* box-shadow: var(--box-shadow-thin); */
+    /* height: fit-content; */
+}
+
+section.notifications-area {
+    background-color: #f7f7f7;
+    /* height: max-content; */
+}
+
+section.activities-history {
+    background-color: #f7f7f7;
+
+}
+
+/* view main */
+section.view-admin {
+    width: 100%;
+    display: flex;
+    position: relative;
+}
+
+
+
+.profile-picture-container {
+    width: 80%;
+    height: 100%;
+    display: flex;
+    flex-flow: column;
+    justify-content: center; 
+    align-items: center;
+    padding: 1ch;
+}
+
+.profile-picture-container .image-wrapper {
+    width: 100%;
+    height: calc(100% - (35px + 2ch));
+    border-radius: 1ch;
+    border: 1px solid #f7f7f7;
+    /* z-index: 2; */
+}
+
+.profile-picture-container .image-wrapper img {
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+}
+
+.profile-picture-container .change-picture-button-wrapper {
+    height: 35px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1ch;
+    /* background-color: red; */
+}
+
+.profile-picture-container .change-picture-button-wrapper button {
+    padding: 1ch;
+    font-size: 11px;
+    background-color: var(--primary);
+    color: var(--white);
+    width: 100%;
+    height: 100%;
+    border: 1px solid transparent;
+    border-radius: 1ch;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all ease-in-out 250ms;
+}
+
+.profile-picture-container .change-picture-button-wrapper button:hover {
+    background-color: transparent;
+    border-color: var(--primary);
+    color: var(--text);
+}
+
+article#user-info-main {
+    padding: 1ch;
+    height: 100%;
+    width: 100%;
+}
+
+.article-form-container-main {
+    border: 1px dotted var(--text);
+    border-radius: 0.5ch;
+    padding: 1ch;
+    display: flex;
+    flex-flow: column;
+    gap: 0.4ch;
+}
+
+.article-form-container-main .form-item-pair {
+    display: grid;
+    grid-template-columns: 30% 70%;
+    height: 40px;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 2ch;
+}
+
+.article-form-container-main .form-item-pair .form-item-pair-label {
+    text-align: right;
+    margin-right: 1ch;
+}
+
+.article-form-container-main .form-item-pair .form-item-pair-label p {
+    color: #000;
+}
+
+.article-form-container-main .form-item-pair .form-item-pair-value {
+    text-align: left;
+    margin-left: 1ch;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    border-radius: 0.7ch;
+    text-indent: 1ch;
+    border: 1px solid #000;
+}
+
+@media screen and (max-width: 740px) {
+
+    /* view main */
+    section.view-admin {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        /* height: fit-content; */
+        position: relative;
+    }
+    .profile-picture-container .change-picture-button-wrapper button {
+        width: 60%;
+    }
+}
