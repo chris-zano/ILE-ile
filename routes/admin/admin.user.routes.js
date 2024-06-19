@@ -3,7 +3,7 @@ const router = express.Router();
 const path = require('path');
 const multer = require('multer');
 
-const { authenticateLoginSequence } = require('./router.utils');
+const { checkUsernamePattern } = require('./router.utils');
 const {verifyAdmin} = require('./router.utils');
 const adminController = require('../../controllers/admin/admin.controller');
 const usersController = require('../../controllers/admin/admin.users')
@@ -15,7 +15,7 @@ const userJSONUpload = multer({
 //create new admin
 router.post('/developers/create-new-admin', usersController.createNewAdmin);
 
-router.post('/auth/users/login', authenticateLoginSequence, adminController.loginUser);
+router.post('/auth/users/login', checkUsernamePattern, adminController.loginUser);
 router.post('/admins/imports/students/:id',userJSONUpload.single('file'), verifyAdmin, usersController.importStudentsData);
 router.post('/admins/imports/lecturers/:id',userJSONUpload.single('file'), verifyAdmin, usersController.importLecturersData);
 router.post('/admins/create/students/:id', verifyAdmin, usersController.createStudent)

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/global/root">
+    <link rel="stylesheet" href="/css/global/header">
+    <link rel="stylesheet" href="/css/global/sidenav">
+    <link rel="stylesheet" href="/css/global/search-bar">
+    <% for( let styleUrl of stylesheets) { %>
+    <link rel="stylesheet" href="<%= styleUrl %>">
+    <% } %>
+    <script src="/script/utils/admin/util.auth"></script>
+    <title>ITLE(Student)</title>
+</head>
+<body>
+    <!-- main content wrapper >> [ dictates the width of the application on different devices ] -->
+    <div class="container-max_width" id="container-max_width">
+        <!-- include header -->
+        <%- include('templates/header') %>
+
+        <!-- include side navigation -->
+        <%- include('templates/sidenav') %>
+
+        <!-- include main content -->
+        <main id="wrapper-main">
+            <section id="section-main">
+                <%- include(pageUrl) %>
+            </section>
+        </main>
+    </div>
+
+    <!-- include scripts -->
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/script/utils/admin/util.restful"></script>
+    <script src="/script/scripts/admin/global.search"></script>
+    <% for( let scriptUrl of scripts) { %>
+        <script src="<%= scriptUrl %>"></script>
+    <% } %>
+</body>
+
+
+</html>

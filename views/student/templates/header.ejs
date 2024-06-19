@@ -1,0 +1,68 @@
+<header id="header-top_main">
+    <section id="header-logo">
+        <div class="logo-img">
+            <a href="#">
+                <img width="20px" src="/images/system/school-logo" alt="logo">
+            </a>
+        </div>
+        <div class="logo-name">
+            <a href="#">
+                <h1>GCTU</h1>
+            </a>
+        </div>
+    </section>
+    <section id="header-seach-bar">
+        <form action="#" id="search-form" class="search-bar">
+            <div>
+                <select class="dropdown" name="search-content" id="search-category">
+                    <option class="dropdown-list-item dropdown-text" value="none">categories</option>
+                    <option class="dropdown-list-item" value="courses">My Registered Courses</option>
+                    <option class="dropdown-list-item" value="recordings">My Lecture Recordings</option>
+                    <option class="dropdown-list-item" value="materials">My Course Materials</option>
+                    <option class="dropdown-list-item" value="pastQuestions">Past Questions</option>
+                    <option class="dropdown-list-item" value="textbooks">Text Books</option>
+                </select>
+            </div>
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="Search anything... [ / ]" required />
+                <button type="submit" id="searchBtn" style="box-shadow: none;">
+                    <i class="fa-solid fa-magnifying-glass">
+                        <img src="/images/system/search" alt="">
+                    </i>
+                </button>
+            </div>
+            <div class="results-container hidden" id="search-results-div">
+                <small id="search-matches">0 matches found</small>
+
+                <ul id="results-ul">
+                </ul>
+            </div>
+
+            <script>
+                const handleOutsideClick = (event) => {
+                    const searchResultsDiv = document.getElementById('search-results-div');
+                    if (!searchResultsDiv.contains(event.target)) {
+                        searchResultsDiv.classList.add('hidden');
+                    }
+                };
+                document.body.addEventListener('click', handleOutsideClick);
+            </script>
+        </form>
+    </section>
+    <section id="header-profile">
+        <div class="profile-main notification-header">
+            <img width="20px" src="/images/system/notifications" id="profile-main" alt="profile avatar">
+            <div class="notification-dot">
+                <span>9+</span>
+            </div>
+        </div>
+        <a href="#" id="">
+            <div class="profile-main user_profile-header">
+                <img width="20px" src="/users/admins/get-profile-picture/" id="profile-main" alt="profile avatar">
+                <div class="username">
+                    <p>student_001</p>
+                </div>
+            </div>
+        </a>
+    </section>
+</header>

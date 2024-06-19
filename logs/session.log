@@ -65,3 +65,5 @@ SUCCESS//:: Thursday,6th-June-2024 at 21:32:42 - Username:{AD-495FoE}, IP:= {::1
 SUCCESS//:: Monday,17th-June-2024 at 22:07:42 - Username:{AD-495FoE}, IP:= {::ffff:127.0.0.1}
 SUCCESS//:: Tuesday,18th-June-2024 at 00:28:14 - Username:{AD-495FoE}, IP:= {::ffff:127.0.0.1}
 SUCCESS//:: Tuesday,18th-June-2024 at 00:31:24 - Username:{TU-001FoE}, IP:= {::ffff:127.0.0.1}
+FAILED//:: Wednesday,19th-June-2024 at 09:21:07 - Username:{TU-001FoCIS}, IP:= {::1}
+SUCCESS//:: Wednesday,19th-June-2024 at 09:21:31 - Username:{TU-001FoE}, IP:= {::ffff:127.0.0.1}

@@ -10,6 +10,12 @@
 
 <body>
     <script>
+        /**
+         * Generates a random alphanumeric string of the specified length.
+         * 
+         * @param {number} length - The length of the generated string.
+         * @returns {string} The generated alphanumeric string.
+         */
         function generateSerialString(length) {
             const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
             let result = '';
@@ -18,24 +24,31 @@
             }
             return result;
         }
-        const now = new Date().getTime();
-        const serialString = generateSerialString(12);
+
+        // Current timestamp in milliseconds
+        const currentTimestamp = new Date().getTime();
+
+        // Generate a random serial string of 12 characters
+        const generatedSerialString = generateSerialString(12);
     </script>
 
-    <% if (flush==="true" ) { %>
+    <% if (flush === "true") { %>
         <script>
-            const adTimestamp = `AD-${now}::${serialString}`;
-            localStorage.setItem("x03n8af6", JSON.stringify(adTimestamp))
-            window.location.replace("/login")
-            </script>
+            // Create AD token and store it in localStorage
+            const adToken = `AD-${currentTimestamp}::${generatedSerialString}`;
+            localStorage.setItem("x03n8af6", JSON.stringify(adToken));
+            // Redirect to login
+            window.location.replace("/login");
+        </script>
     <% } else { %>
         <script>
-            const auTimestamp = `AU-${now}::${serialString}`;
-            localStorage.setItem("x03n8af6", JSON.stringify(auTimestamp))
-            window.location.replace("/login")
+            // Create AU token and store it in localStorage
+            const auToken = `AU-${currentTimestamp}::${generatedSerialString}`;
+            localStorage.setItem("x03n8af6", JSON.stringify(auToken));
+            // Redirect to login
+            window.location.replace("/login");
         </script>
     <% } %>
-
 </body>
 
 </html>
