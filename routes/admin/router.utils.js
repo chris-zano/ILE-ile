@@ -135,13 +135,13 @@ module.exports.verifyStudent = async (req, res, next) => {
     }
 
     try {
-        // Find the lecturer document by ID
+        // Find the student document by ID
         const matchedDocument = await student.findById(id);
 
         // Handle case where no document is found
         if (!matchedDocument) return handleDocumentIsNull(res);
 
-        // Attach lecturer data to the request object
+        // Attach student data to the request object
         req.studentData = {
             id: matchedDocument._id,
             studentId: matchedDocument.studentId,

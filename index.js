@@ -43,7 +43,7 @@ const uri = `mongodb+srv://${username}:${password}@${clusterName}.jwscxvu.mongod
     //   server.listen(PORT, () => {
     //       console.log(`App is live at http://localhost:${PORT}`);
     //   });
-    mongoose.wconnect("mongodb://localhost:27017/ileSchool").then(() => {
+    mongoose.connect("mongodb://localhost:27017/ileSchool").then(() => {
           console.log("Connected to local");
 
           require('./requireStack').callAndExecuteRequireStack(app, server);
@@ -55,17 +55,6 @@ const uri = `mongodb+srv://${username}:${password}@${clusterName}.jwscxvu.mongod
       }).catch(console.error);
 
   } catch (error) {
-      console.error('Error connecting to MongoDB Atlas: ');
-
-      mongoose.connect("mongodb://localhost:27017/ileSchool").then(() => {
-          console.log("Connected to local");
-
-          require('./requireStack').callAndExecuteRequireStack(app, server);
-
-          const PORT = process.env.PORT || 8080;
-          server.listen(PORT, () => {
-              console.log(`App is live at http://localhost:${PORT}`);
-          });
-      }).catch(console.error);
+      console.error('Error connecting to Database: ');
   }
 })();

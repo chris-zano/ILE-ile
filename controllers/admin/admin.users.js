@@ -5,40 +5,40 @@ const fs = require('fs');
 const { getCourses, logError, getSystemDate } = require("./admin.utils");
 const { AdminsDB, StudentsDB, CoursesDB, LecturersDB } = require('../../utils/global/db.utils');
 const Files = require('../../models/courses/files.models');
+const { isValidObjectId } = require('mongoose');
 
-const dashboardData = {
-    pageTitle: 'Admin Dashboard',
-    stylesheets: ['/css/admin/dashboard', '/css/admin/users', '/css/admin/courses', '/css/admin/reports', '/css/admin/settings', '/css/admin/import', '/css/admin/main'],
-    utilityScripts: ['/script/utils/admin/util.restful'],
-    headerUrl: 'global/header-admin',
-    bodyUrl: 'admin/main'
-};
+const admin = AdminsDB();
+const lecturer = LecturersDB();
+const student = StudentsDB();
+const course = CoursesDB();
 
+
+/**
+ * Generates a unique admin ID based on the provided faculty.
+ * The ID consists of a prefix ('AD'), a three-digit random number, and a faculty abbreviation.
+ * If the faculty is not recognized, it returns "Faculty Undefined".
+ * 
+ * @param {string} faculty - The faculty name to generate the ID for.
+ * @returns {string} - The generated unique admin ID or "Faculty Undefined" if the faculty is not recognized.
+ */
 const generateUniqueAdminID = (faculty) => {
     const prefix = 'AD';
+    const facultyUndefinedString = "Faculty Undefined";
+    const facultyAbbreviations = { "Engineering": "FoE", "FoCIS": "FoCIS", "Business": "ITB" };
 
     // Generate a three-digit number, padded with leading zeros if necessary
     const number = String(Math.floor(Math.random() * 1000)).padStart(3, '0');
 
-    // Generate a random alphabetic string (length between 0 and 5 for variability)
-    const alphaLength = Math.floor(Math.random() * 6);
-    let alphaString = '';
+    let matchFacultyToAbbreviation = facultyAbbreviations[faculty] || facultyUndefinedString;
 
-    if (faculty === "Engineering") {
-        alphaString = 'FoE';
-    } else if (faculty === "FoCIS") {
-        alphaString = 'FoCIS';
-    }
-    else if (faculty === "Business") {
-        alphaString = 'BuS';
-    }
-    else {
-        return 'Faculty Undefined';
+    if (matchFacultyToAbbreviation === facultyUndefinedString) {
+        return matchFacultyToAbbreviation;
     }
 
     // Combine all parts to form the ID
-    return `${prefix}-${number}${alphaString}`;
+    return `${prefix}-${number}${matchFacultyToAbbreviation}`;
 }
+
 
 const generateAndVerifyAdminIdHasNoMatch = async (faculty) => {
     const Admin = AdminsDB();

@@ -12,4 +12,4 @@ function ClassesDB() { return Classes }
 function CoursesDB() { return Courses }
 function UsersCommonsDB() { return Commons }
 
-module.exports = {AdminsDB,LecturersDB,StudentsDB,ClassesDB,CoursesDB, UsersCommonsDB};
+module.exports = { AdminsDB, LecturersDB, StudentsDB, ClassesDB, CoursesDB, UsersCommonsDB };
