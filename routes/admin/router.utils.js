@@ -193,8 +193,10 @@ module.exports.checkUsernamePattern = (req, res, next) => {
         student: /^\d{10}$/
     };
 
+    console.log(username, username.length)
     // Determine the username format using the regexMap
     const usernameFormat = Object.keys(regexMap).find(key => regexMap[key].test(username)) || "none";
+    console.log(usernameFormat)
 
     req.usernameformat = usernameFormat;
 

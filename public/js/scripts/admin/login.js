@@ -51,6 +51,7 @@ function main() {
 
                 }
                 else {
+                    console.log(response)
                     window.alert('Invalid Id or Password');
                 }
             })
