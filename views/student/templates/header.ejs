@@ -1,12 +1,12 @@
 <header id="header-top_main">
     <section id="header-logo">
         <div class="logo-img">
-            <a href="#">
+            <a href="/students/render/dashboards/<%= student.id %>">
                 <img width="20px" src="/images/system/school-logo" alt="logo">
             </a>
         </div>
         <div class="logo-name">
-            <a href="#">
+            <a href="/students/render/dashboards/<%= student.id %>">
                 <h1>GCTU</h1>
             </a>
         </div>
@@ -56,11 +56,11 @@
                 <span>9+</span>
             </div>
         </div>
-        <a href="#" id="">
+        <a href="/students/render/profile/<%= student.id %>" id="">
             <div class="profile-main user_profile-header">
-                <img width="20px" src="/users/admins/get-profile-picture/" id="profile-main" alt="profile avatar">
+                <img width="20px" src="<%= student.profilePicUrl %>" id="profile-main" alt="profile avatar">
                 <div class="username">
-                    <p>student_001</p>
+                    <p><%= student.firstName.toLowerCase() %></p>
                 </div>
             </div>
         </a>

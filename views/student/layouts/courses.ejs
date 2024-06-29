@@ -1,4 +1,10 @@
-<%= for (let course of data) { %>
-    <%= course.title %>
-    <%= course.courseCode %>
+<% if (data.length === 0) { %>
+ <p>Your courses have not yet been created by your department administrator.</p>
+ <p>Please check with your department for more information. or check the announcements page.</p>
+ <p>The registration code for your courses is:  <%= student.registeredCourses %></p>
+<% } else { %>
+    <% for (let course of data) { %>
+        <%= course.title %>
+        <%= course.courseCode %>
+    <% } %>
 <% } %>

@@ -156,7 +156,7 @@ module.exports.verifyStudent = async (req, res, next) => {
             files: matchedDocument.files,
             repos: matchedDocument.repos,
             classId: matchedDocument.classId,
-            profilePicUrl: matchedDocument.profilePicUrl,
+            profilePicUrl: matchedDocument.profilePicUrl
         }
 
         // Proceed to the next middleware

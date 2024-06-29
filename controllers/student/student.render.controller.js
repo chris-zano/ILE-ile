@@ -11,8 +11,10 @@ const getStudentProfileInfo = (studentData) => { return { message: "Student prof
 
 const getStudentSchedules = async (studentData) => {
     try {
-        const doc = await Classes.findOne({ classId: studentData.classId })
-        return doc.schedule || null;
+        const doc = await Classes.findOne({ classId: studentData.classId });
+        if (!doc) return null;
+
+        return doc.schedule;
     } catch (error) {
         logError(error);
         return null;
@@ -49,10 +51,11 @@ module.exports.renderStudentViews = async (req, res) => {
 
     const urlToMethod = returnUrlsToMethod(pageUrl);
 
-    if (!urlToMethod) return res.status(404).render('global/error', { error: "The requested resource is unavailable", status: 400 });
+    if (!urlToMethod) return res.status(404).render('global/error', { error: "The requested resource is unavailable", status: 404 });
 
     const dataObject = await urlToMethod(studentData);
-    if (!dataObject) return res.status(404).render('global/error', { error: "The requested student page objectData is unavailable", status: 400 });
+    console.log(dataObject)
+    if (!dataObject) return res.status(404).render('global/error', { error: "The requested student page objectData is unavailable", status: 404 });
 
     res.render('student/student-main', {
         student: studentData,
