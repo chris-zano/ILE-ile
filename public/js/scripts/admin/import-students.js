@@ -21,7 +21,7 @@ const main = () => {
         e.preventDefault();
 
         const studentId = document.getElementById("studentId").value;
-        const studentIdRegEexp = /^\d{9}$/;
+        const studentIdRegEexp = /^\d{10}$/;
 
         if (!studentIdRegEexp.test(studentId)) {
             document.getElementById("studentId").style.border = "1px solid var(--red)"

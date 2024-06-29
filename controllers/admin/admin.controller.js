@@ -84,7 +84,7 @@ const studentLogin = async (username, password, ip, res) => {
             v: matchedDocument.__v
         }
         return logSession(username, ip, "success"),
-            res.status(200).json({ message: "Success", userType: "student", user });
+            res.status(200).json({ message: "success", userType: "student", user });
     } catch (error) {
         return logError(error),
             logSession(username, ip, "failed"),

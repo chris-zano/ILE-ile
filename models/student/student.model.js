@@ -78,15 +78,7 @@ const studentSchema = new Schema({
     profilePicUrl:{
         type: String,
         default:"/users/students/get-profile-picture/no-id"
-    },
-    createdAt: {
-        type: dateSchema,
-        required: true,
-    },
-    updatedAt: {
-        type: dateSchema,
-        required: true
-    },
+    }
 }, {
     timestamps: true
 });

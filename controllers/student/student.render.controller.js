@@ -43,7 +43,7 @@ const returnUrlsToMethod = (pageurl = "") => {
 }
 
 
-module.exports.renderDashboard = async (req, res) => {
+module.exports.renderStudentViews = async (req, res) => {
     const { pageUrl } = req.params;
     const { studentData } = req;
 
@@ -59,7 +59,7 @@ module.exports.renderDashboard = async (req, res) => {
         data: dataObject,
         pageTitle: "Dashboard",
         stylesheets: [],
-        pageUrl: 'layouts/dashboard',
+        pageUrl: `layouts/${pageUrl}`,
         currentPage: 'dashboard',
         userType: 'Student',
         scripts: []
