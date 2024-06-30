@@ -181,21 +181,31 @@ module.exports.createLecturer = async (req, res) => {
     }
 };
 
+const isRequestBodyValid = (body = {}) => {
+    if (Object.keys(body).length === 0) return null;
+
+    for (let key of Object.keys(body)) 
+        if (key.length === 0)
+            return null;
+    
+    return true;
+}
 
 //handlers
-module.exports.createStudent = (req, res) => {
-    try {
-        const { studentId, firstName, lastName, program, year, level, session, faculty, registeredCourses } = req.body;
-        const createdAt = getSystemDate();
-        const StudentInstance = StudentsDB();
-        const student = new StudentInstance({ studentId, firstName, lastName, program, year, level, session, faculty, registeredCourses, courses: [], files: [], repos: [], "created-at": createdAt });
-        student.save();
+module.exports.createStudent = async (req, res) => {
+    if (!isRequestBodyValid(req.body)) return res.status(400).render("global/error", { error: "Failed to create new Student because of invalid request body", status: 400 });
 
-        res.status(200).redirect(`/admins/render/imports/students/${req.adminData.id}`)
+    const { studentId, firstName, lastName, program, year, level, session, faculty, registeredCourses } = req.body;
+    try {
+        const StudentInstance = StudentsDB();
+        const student = new StudentInstance({ studentId, firstName, lastName, program, year, level, session, faculty, registeredCourses});
+        await student.save();
+
+        return res.status(200).redirect(`/admins/render/imports/students/${req.adminData.id}`)
     }
     catch (error) {
         logError(error);
-        res.status(500).render("global/error", { error: "Failed to create new Student", status: 500 })
+        return res.status(500).render("global/error", { error: "Failed to create new Student", status: 500 })
     }
 
 }

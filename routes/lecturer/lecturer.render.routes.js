@@ -3,7 +3,7 @@ const router = express.Router();
 
 //application imports
 const {verifyLecturer} = require('../admin/router.utils');
-const lecturerRender = require('../../controllers/lecturer/lecturer.render');
+const lecturerRender = require('../../controllers/lecturer/lecturer.render.controller');
 
 
 
