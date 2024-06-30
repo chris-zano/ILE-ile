@@ -1,6 +1,7 @@
 const { AdminsDB, ClassesDB, CoursesDB } = require('../../utils/global/db.utils');
 const utils = require('./admin.utils');
 
+const Courses = CoursesDB();
 
 module.exports.renderImports = async (req, res) => {
     const { userType, id } = req.params;
@@ -188,6 +189,55 @@ module.exports.renderUpdateCourse = (req, res) => {
     }
 
     return;
+}
+
+const getCoursesBySemester = async (semester = 1) => {
+    try {
+        const courses = await Courses.aggregate([
+            {
+                $match: {
+                    semester: semester
+                }
+            },
+            {
+                $group: {
+                    _id: '$level',
+                    courses: { $push: '$$ROOT' },
+                }
+            },
+            {
+                $sort: {
+                    _id: -1
+                }
+            }
+        ]);
+
+        return courses;
+    }catch(error) {
+        utils.logError(error);
+        return null;
+    }
+}
+
+module.exports.renderOrganiseCourses = async (req, res) => {
+    const { adminData } = req;
+
+    try {
+        const courses = await getCoursesBySemester();
+        return res.render('admin/admin-main', {
+            admin: adminData,
+            pageTitle: `Organize Courses`,
+            stylesheets: ["/css/admin/organize.courses"],
+            pageUrl: 'layouts/view.organize-courses.ejs',
+            currentPage: 'Courses',
+            userType: "Admin",
+            scripts: ["/script/scripts/admin/view.organize-courses"],
+            courseGroups: courses
+        });
+    } catch (error) {
+        utils.logError(error);
+
+    }
 }
 
 module.exports.renderViewAdminProfile = (req, res) => {
