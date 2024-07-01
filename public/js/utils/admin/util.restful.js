@@ -155,16 +155,16 @@ const themeToggleBtn = document.getElementById("toggle");
 const lsThemeValue = JSON.parse(window.localStorage.getItem('toggle-btn-enabled'));
 const root = document.documentElement
 
-if (themeToggleBtn.getAttribute('data-enabled') == "true" && (lsThemeValue) == true) {
-    // console.log(themeToggleBtn.getAttribute('data-enabled') === String(lsThemeValue) === "true");
-    // console.log(themeToggleBtn.getAttribute('data-enabled'), String(lsThemeValue));
+// if (themeToggleBtn.getAttribute('data-enabled') == "true" && (lsThemeValue) == true) {
+//     // console.log(themeToggleBtn.getAttribute('data-enabled') === String(lsThemeValue) === "true");
+//     // console.log(themeToggleBtn.getAttribute('data-enabled'), String(lsThemeValue));
 
-    root.style.setProperty("--text", "#f6eef6")
-    root.style.setProperty("--background", "#292929")
-    root.style.setProperty("--background-main", "#363636")
-    root.style.setProperty("--white", "#131313")
-    root.style.setProperty("--primary", "#3074d9")
-    root.style.setProperty("--secondary", "#742774")
-    root.style.setProperty("--accent", "#4eda51")
-    root.style.setProperty("--red", "#4eda51")
-}
+//     root.style.setProperty("--text", "#f6eef6")
+//     root.style.setProperty("--background", "#292929")
+//     root.style.setProperty("--background-main", "#363636")
+//     root.style.setProperty("--white", "#131313")
+//     root.style.setProperty("--primary", "#3074d9")
+//     root.style.setProperty("--secondary", "#742774")
+//     root.style.setProperty("--accent", "#4eda51")
+//     root.style.setProperty("--red", "#4eda51")
+// }

@@ -56,6 +56,9 @@
     /* input-fields */
     --button-height: 45px;
     --button-width: 100px;
+
+    /* transitions */
+    --transition-default: all ease-in-out 250ms;
 }
 
 ul,
@@ -233,7 +236,7 @@ div#contaier-max_width nav#nav-main {
 div#container-max_width main#wrapper-main {
     width: 100% !important;
     grid-area: main;
-    overflow-y: scroll;
+    overflow-y: auto;
     background-color: var(--background-main);
     border-radius: 1.8ch;
 }
