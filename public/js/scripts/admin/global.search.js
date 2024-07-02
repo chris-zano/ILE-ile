@@ -1,4 +1,3 @@
-const socket = io();
 
 let searchTimer;
 
@@ -19,7 +18,7 @@ const mountcourses = (course) => {
 
 }
 const mountstudents = (student) => {
-    const heading = student.firstName + " "+ student.lastName;
+    const heading = student.firstName + " " + student.lastName;
     const subheading = student.studentId;
     const li = document.createElement("li");
     li.classList.add("results-item");
@@ -36,7 +35,7 @@ const mountstudents = (student) => {
 
 }
 const mounttutors = (tutor) => {
-    const heading = tutor.firstName + " "+ tutor.lastName;
+    const heading = tutor.firstName + " " + tutor.lastName;
     const subheading = tutor.lecturerId;
     const li = document.createElement("li");
     li.classList.add("results-item");
@@ -82,9 +81,9 @@ const renderSearchResults = (searchResults) => {
 
     switch (resultsType) {
         case "courses":
-           results.forEach(course => {
-            mountcourses(course);
-           });
+            results.forEach(course => {
+                mountcourses(course);
+            });
             break;
         case "students":
             results.forEach(student => {
@@ -105,9 +104,10 @@ const renderSearchResults = (searchResults) => {
             break;
     }
 
-    document.getElementById("search-matches").innerText = results.length == 1? results.length + " match found.": results.length + " matches found."
+    document.getElementById("search-matches").innerText = results.length == 1 ? results.length + " match found." : results.length + " matches found."
 }
 const handleSearch = () => {
+    const socket = io();
     const category = document.getElementById("search-category").value;
     const searchInput = document.getElementById("search-input").value;
 
@@ -118,12 +118,12 @@ const handleSearch = () => {
         //do nothing
         document.getElementById("search-results-div").classList.add("hidden");
         return;
-    } 
+    }
     else {
         socket.emit('search', { category, searchInput });
         socket.on('searchResults', (searchResults) => {
             renderSearchResults(searchResults);
-            // socket.disconnect();
+            socket.disconnect();
         });
     }
 };

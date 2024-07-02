@@ -232,7 +232,7 @@ module.exports.renderOrganiseCourses = async (req, res) => {
             currentPage: 'Courses',
             userType: "Admin",
             scripts: ["/script/scripts/admin/view.organize-courses"],
-            courseGroups: courses
+            courseGroups: JSON.stringify(courses)
         });
     } catch (error) {
         utils.logError(error);
