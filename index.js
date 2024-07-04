@@ -1,14 +1,15 @@
 //node.js imports
-const express = require('express');
-const http = require('http');
-const path = require('path');
-const dotenv = require('dotenv');
-const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
+import express from 'express';
+import http from 'http';
+import path from 'path';
+import dotenv from 'dotenv';
+import bodyParser from 'body-parser';
+import mongoose from 'mongoose';
+import callAndExecuteRequireStack from './requireStack';
 
 
 const app = express();
-const server = http.createServer(app); 
+const server = http.createServer(app);
 
 const STATIC_FILES_PATH = path.join(__dirname, 'public');
 const VIEW_ENGINE_PATH = path.join(__dirname, 'views');
@@ -37,24 +38,24 @@ const uri = `mongodb+srv://${username}:${password}@${clusterName}.jwscxvu.mongod
     //   console.log('Connected to MongoDB Atlas');
 
     //   // Call and execute require stack
-    //   require('./requireStack').callAndExecuteRequireStack(app, server);  
+    //   callAndExecuteRequireStack(app, server);  
 
     //   const PORT = process.env.PORT || 8080;
     //   server.listen(PORT, () => {
     //       console.log(`App is live at http://localhost:${PORT}`);
     //   });
     mongoose.connect("mongodb://localhost:27017/ileSchool").then(() => {
-          console.log("Connected to local");
+      console.log("Connected to local");
 
-          require('./requireStack').callAndExecuteRequireStack(app, server);
-          
-          const PORT = process.env.PORT || 8080;
-          server.listen(PORT, () => {
-              console.log(`App is live at http://localhost:${PORT}`);
-          });
-      }).catch(console.error);
+      callAndExecuteRequireStack(app, server);
+
+      const PORT = process.env.PORT || 8080;
+      server.listen(PORT, () => {
+        console.log(`App is live at http://localhost:${PORT}`);
+      });
+    }).catch(console.error);
 
   } catch (error) {
-      console.error('Error connecting to Database: ');
+    console.error('Error connecting to Database: ');
   }
 })();
