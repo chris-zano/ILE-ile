@@ -3,6 +3,7 @@
   "version": "0.1.3",
   "description": "An Integrated Learning environment for an enhanced and interactive educational experience",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",

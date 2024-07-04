@@ -1,21 +1,19 @@
-const { setupWebSocketServer } = require('./utils/global/websocket.util');
+import adminsUserRoutes from './routes/admin/admin.user.routes.js';
+import adminRoutes from './routes/admin/admin.routes';
+import adminFileRoutes from './routes/admin/admin.files.routes.js';
+import adminRenderRoutes from './routes/admin/admin.render.routes';
+import classRoutes from './routes/admin/classes.routes';
+import lecturerRenderRoutes from './routes/lecturer/lecturer.render.routes';
+import lecturerChaptersRoutes from './routes/lecturer/lecturer.chapters.routes';
+import lecturerFilesRoutes from './routes/lecturer/lecturer.files.routes';
+import modelUpdatesRoutes from './routes/admin/models.updates.routes.js';
+import studentRenderRoutes from './routes/student/student.render.routes.js';
+
+import { setupWebSocketServer } from './utils/global/websocket.util';
 
 const callAndExecuteRequireStack = (app, server) => {
   const io = setupWebSocketServer(server);
 
-  //system imports
-  const adminsUserRoutes = require('./routes/admin/admin.user.routes.js');
-  const adminRoutes = require('./routes/admin/admin.routes');
-  const adminFileRoutes = require('./routes/admin/admin.files.routes.js');
-  const adminRenderRoutes = require('./routes/admin/admin.render.routes');
-  const classRoutes = require('./routes/admin/classes.routes');
-  const lecturerRenderRoutes = require('./routes/lecturer/lecturer.render.routes');
-  const lecturerChaptersRoutes = require('./routes/lecturer/lecturer.chapters.routes');
-  const lecturerFilesRoutes = require('./routes/lecturer/lecturer.files.routes');
-  const modelUpdatesRoutes = require('./routes/admin/models.updates.routes.js');
-  const studentRenderRoutes = require('./routes/student/student.render.routes.js');
-
-  //system config
   app.use(adminRoutes);
   app.use(adminsUserRoutes);
   app.use(adminFileRoutes);
@@ -32,4 +30,4 @@ const callAndExecuteRequireStack = (app, server) => {
   });
 }
 
-module.exports = { callAndExecuteRequireStack };
+export default callAndExecuteRequireStack;

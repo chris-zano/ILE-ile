@@ -42,10 +42,4 @@ router.get('/admins/render/updates/course/:courseCode/:id', verifyAdmin, adminRe
 router.get('/admins/render/organise-courses/:id', verifyAdmin, adminRender.renderOrganiseCourses);
 router.get('/admins/render/profiles/admin/:id', verifyAdmin, adminRender.renderViewAdminProfile);
 
-
-//profiles
-
-//get lecturer interfaces
-router.get('/lecturers/render/dashboards/:id', verifyLecturer, )
-
 module.exports = router;
