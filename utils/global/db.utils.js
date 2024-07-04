@@ -4,7 +4,6 @@ import studentModel from '../../models/student/student.model';
 import classesModel from '../../models/student/classes.model';
 import coursesModel from '../../models/courses/courses.model';
 
-
 export const AdminsDB = () => adminModels;
 export const LecturersDB = () => lecturerModel;
 export const StudentsDB = () => studentModel;

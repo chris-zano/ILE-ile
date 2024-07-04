@@ -1,10 +1,9 @@
-const path = require('path');
-const fs = require('fs');
+import path from 'path';
+import fs from 'fs';
+import { AdminsDB } from '../../utils/global/db.utils';
 
-const { UsersCommonsDB } = require("../../utils/global/db.utils");
-const adminModels = require('../../models/admin/admin.models');
-const Commons = UsersCommonsDB();
 const PATH_NOT_FOUND = "path not found";
+const Admins = AdminsDB();
 
 const setFilePath = (mimeType, attribute, authFolder, filename) => {
     var resolvedpath;
@@ -58,7 +57,7 @@ const getAdminProfilePicture = async (callState = "system", user_id = "") => {
         return fs.existsSync(defaultFilePath) ? defaultFilePath : PATH_NOT_FOUND
     }
     else if (copyCallState === "user") {
-        const userObject = await adminModels.findOne({ _id: user_id });
+        const userObject = await Admins.findOne({ _id: user_id });
         const userProfilePath = !userObject ? (fs.existsSync(defaultFilePath) ? defaultFilePath : PATH_NOT_FOUND) : userObject.profilePicUrl;
 
         const resolvedUserProfilePath = path.resolve(__dirname, userProfilePath);
@@ -74,7 +73,7 @@ const getLecturersProfilePicture = async (callState = "system", request_params =
         return fs.existsSync(defaultFilePath) ? defaultFilePath : PATH_NOT_FOUND
     }
     else if (copyCallState === "user") {
-        const userObject = await Commons.findOne({ userId: user_id });
+        const userObject = null;
         const userProfilePath = !userObject ? (fs.existsSync(defaultFilePath) ? defaultFilePath : PATH_NOT_FOUND) : userObject.profilePicUrl;
         const resolvedUserProfilePath = path.resolve(__dirname, userProfilePath);
         (resolvedUserProfilePath);
@@ -90,7 +89,7 @@ const getStudentsProfilePicture = async (callState = "system", request_params = 
         return fs.existsSync(defaultFilePath) ? defaultFilePath : PATH_NOT_FOUND
     }
     else if (copyCallState === "user") {
-        const userObject = await Commons.findOne({ userId: user_id });
+        const userObject = null;
         const userProfilePath = !userObject ? (fs.existsSync(defaultFilePath) ? defaultFilePath : PATH_NOT_FOUND) : userObject.profilePicUrl;
         const resolvedUserProfilePath = path.resolve(__dirname, userProfilePath);
         (resolvedUserProfilePath);
@@ -98,7 +97,7 @@ const getStudentsProfilePicture = async (callState = "system", request_params = 
     }
 }
 
-module.exports.loadScript = (req, res) => {
+export const loadScript = (req, res) => {
     const { auth, filename } = req.params;
     const filePath = getScriptFilePath('scripts', auth, filename);
 
@@ -114,7 +113,7 @@ module.exports.loadScript = (req, res) => {
     }
 }
 
-module.exports.loadUtilityScript = (req, res) => {
+export const loadUtilityScript = (req, res) => {
     const { auth, filename } = req.params;
 
     const filePath = getScriptFilePath('utils', auth, filename);
@@ -131,7 +130,7 @@ module.exports.loadUtilityScript = (req, res) => {
     }
 }
 
-module.exports.getStyleSheet = (req, res) => {
+export const getStyleSheet = (req, res) => {
     const { auth, filename } = req.params;
     const filePath = setFilePath('css', null, auth, filename);
 
@@ -147,35 +146,35 @@ module.exports.getStyleSheet = (req, res) => {
     }
 }
 
-module.exports.getImage = (req, res) => {
+export const getImage = (req, res) => {
     const filePath = path.join(__dirname, '..', '..', 'public', 'assets', 'images', `${req.params.filename}.png`);
     res.type('png');
     res.set('Cache-Control', 'public, max-age=3600');
     fs.createReadStream(filePath).pipe(res);
 }
 
-module.exports.getSystemImage = (req, res) => {
+export const getSystemImage = (req, res) => {
     const filePath = path.join(__dirname, '..', '..', 'public', 'assets', 'images', 'system', `${req.params.filename}.png`);
     res.type('png');
     res.set('Cache-Control', 'public, max-age=3600');
     fs.createReadStream(filePath).pipe(res);
 }
 
-module.exports.getFavicon = (req, res) => {
+export const getFavicon = (req, res) => {
     const filePath = path.join(__dirname, '..', '..', 'public', 'assets', 'favicon', 'favicon.png');
     res.set('Cache-Control', 'public, max-age=86400');
     res.type('image/x-icon');
     fs.createReadStream(filePath).pipe(res);
 }
 
-module.exports.getFonts = (req, res) => {
+export const getFonts = (req, res) => {
     const filePath = path.join(__dirname, '..', '..', 'public', 'assets', 'fonts', `${req.params.filename}.ttf`);
     res.set('Cache-Control', 'public, max-age=86400');
     res.type('font/ttf');
     fs.createReadStream(filePath).pipe(res);
 }
 
-module.exports.getRandomImage = (req, res) => {
+export const getRandomImage = (req, res) => {
     const url = (filename) => {
         return path.join(__dirname, '..', '..', 'public', 'assets', 'random_images', `${filename}.jpg`)
     }
@@ -197,7 +196,7 @@ module.exports.getRandomImage = (req, res) => {
     fs.createReadStream(randomImageUrl).pipe(res);
 }
 
-module.exports.getDefaultProfilePicture = async (req, res) => {
+export const getDefaultProfilePicture = async (req, res) => {
     const { userType, id } = req.params;
     const userTypeMatch = { "admins": getAdminProfilePicture, "lecturers": getLecturersProfilePicture, "students": getStudentsProfilePicture };
     const profilePictureconstReference = userTypeMatch[userType];

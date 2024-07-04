@@ -1,9 +1,10 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
 
 //application imports
-const {verifyAdmin, verifyLecturer} = require('./router.utils');
-const adminRender = require('../../controllers/admin/admin.render');
+import {verifyAdmin} from './router.utils';
+// const adminRender = require('../../controllers/admin/admin.render');
+import * as adminRender from '../../controllers/admin/admin.render';
 
 //get ['/', '/login']
 router.get('/', (req, res) => {
