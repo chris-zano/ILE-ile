@@ -1,5 +1,5 @@
-const socketIo = require('socket.io');
-const { findCourse, findStudent, findTutor, findMaterial } = require('../../controllers/admin/admin.search');
+import socketIo from 'socket.io'
+import { findCourse, findStudent, findTutor, findMaterial } from '../../controllers/admin/admin.search';
 
 function setupWebSocketServer(server) {
     const io = socketIo(server);
@@ -39,4 +39,4 @@ function setupWebSocketServer(server) {
     return io;
 }
 
-module.exports = { setupWebSocketServer };
+export default setupWebSocketServer;

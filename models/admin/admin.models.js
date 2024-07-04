@@ -1,24 +1,5 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 const Schema = mongoose.Schema;
-
-const dateSchema = new Schema({
-    day: {
-        type: String,
-        required: true
-    },
-    date: {
-        type: String,
-        required: true
-    },
-    month: {
-        type: String,
-        required: true
-    },
-    year: {
-        type: String,
-        required: true
-    }
-}, { _id: false });
 
 const adminSchema = new Schema({
     adminId: {
@@ -56,4 +37,4 @@ const adminSchema = new Schema({
 });
 
 
-module.exports = mongoose.model('Admins', adminSchema);
+export default mongoose.model('Admins', adminSchema);

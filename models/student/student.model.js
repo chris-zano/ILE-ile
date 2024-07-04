@@ -1,24 +1,5 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 const Schema = mongoose.Schema;
-
-const dateSchema = new Schema({
-    day: {
-        type: String,
-        required: true
-    },
-    date: {
-        type: String,
-        required: true
-    },
-    month: {
-        type: String,
-        required: true
-    },
-    year: {
-        type: String,
-        required: true
-    }
-}, { _id: false });
 
 const studentSchema = new Schema({
     studentId: {
@@ -83,4 +64,4 @@ const studentSchema = new Schema({
     timestamps: true
 });
 
-module.exports = mongoose.model('Students', studentSchema);
+export default mongoose.model('Students', studentSchema);

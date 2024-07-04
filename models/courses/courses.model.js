@@ -1,24 +1,5 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 const Schema = mongoose.Schema;
-
-const dateSchema = new Schema({
-    day: {
-        type: String,
-        required: true
-    },
-    date: {
-        type: String,
-        required: true
-    },
-    month: {
-        type: String,
-        required: true
-    },
-    year: {
-        type: String,
-        required: true
-    }
-}, { _id: false });
 
 const scheduleSchema = new Schema({
     day: {
@@ -228,4 +209,4 @@ const courseSchema = new Schema({
     timestamps: true
 });
 
-module.exports = mongoose.model('Courses', courseSchema);
+export default mongoose.model('Courses', courseSchema);

@@ -62,7 +62,7 @@ const checkUserAvailabilityStatus = (user_schedules = [], start_time = 8, durati
         }
     }
 
-    
+
     if (user_schedules.length === 2) {
         let first_schd = user_schedules[0];
         let second_schd = user_schedules[1];
@@ -73,18 +73,18 @@ const checkUserAvailabilityStatus = (user_schedules = [], start_time = 8, durati
             schedules[0] = user_schedules[0];
             schedules[1] = { start_time: start_time, duration: duration }
             schedules[2] = user_schedules[1];
-            
+
             return schedules;
         }
-        
+
         else if ((start_time < first_schd.start_time) && ((start_time + duration) <= first_schd.start_time)) {
             schedules[0] = { start_time: start_time, duration: duration }
             schedules[1] = user_schedules[0];
             schedules[2] = user_schedules[1];
-            
+
             return schedules;
         }
-        
+
         else if ((second_schd.start_time + second_schd.duration) <= start_time) {
             schedules[0] = user_schedules[0];
             schedules[1] = user_schedules[1];
@@ -96,7 +96,7 @@ const checkUserAvailabilityStatus = (user_schedules = [], start_time = 8, durati
         else {
             return user_schedules;
         }
-        
+
     }
 
     return user_schedules;
@@ -104,4 +104,4 @@ const checkUserAvailabilityStatus = (user_schedules = [], start_time = 8, durati
 
 
 
-module.exports = checkUserAvailabilityStatus;
+export default checkUserAvailabilityStatus;

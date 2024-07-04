@@ -1,7 +1,4 @@
-const mongoose = require('mongoose');
-
-const { ClassesDB, CoursesDB, LecturersDB } = require('./db.utils');
-const checkUserAvailabilityStatus = require('./scheduler.util');
+import { ClassesDB, CoursesDB, LecturersDB } from './db.utils';
 const Classes = ClassesDB();
 const Courses = CoursesDB();
 const Lecturers = LecturersDB();
@@ -235,4 +232,4 @@ const main = async () => {
     return;
 }
 
-module.exports = main;
+export default main;

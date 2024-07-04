@@ -1,25 +1,5 @@
-const mongoose = require('mongoose');
+import mongoose from "mongoose";
 const Schema = mongoose.Schema;
-
-const dateSchema = new Schema({
-    day: {
-        type: String,
-        required: true
-    },
-    date: {
-        type: String,
-        required: true
-    },
-    month: {
-        type: String,
-        required: true
-    },
-    year: {
-        type: String,
-        required: true
-    }
-}, { _id: false });
-
 
 const classesSchema = new Schema({
     classId: {
@@ -49,17 +29,9 @@ const classesSchema = new Schema({
     session: {
         type: String,
         required: true
-    },
-    createdAt: {
-        type: dateSchema,
-        required: true,
-    },
-    updatedAt: {
-        type: dateSchema,
-        required: true
-    },
+    }
 }, {
     timestamps: true
 });
 
-module.exports = mongoose.model('Classes', classesSchema);
+export default mongoose.model('Classes', classesSchema);
