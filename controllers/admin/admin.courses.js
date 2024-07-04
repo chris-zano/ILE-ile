@@ -1,33 +1,30 @@
-const Files = require('../../models/courses/files.models');
+import {CoursesDB } from '../../utils/global/db.utils';
+import { getSystemDate, logError } from './admin.utils';
 
-const { AdminsDB, StudentsDB, CoursesDB } = require('../../utils/global/db.utils');
+const Courses = CoursesDB();
 
-const fs = require('fs');
-const { getSystemDate, logError } = require('./admin.utils');
-
-module.exports.getCoursesByOffset = async (req, res) => {
+export const getCoursesByOffset = async (req, res) => {
     const { adminData } = req;
     const { key, value, offset } = req.query;
     const limit = 256;
-    const Courses = CoursesDB();
     const query = key === "default" || value === "null" ? {} : { [key]: value };
     // (query);
     try {
         const courses = await Courses.find(query).limit(limit).skip(offset).exec();
 
         if (courses) {
-            res.status(200).json({courses: courses, cursor: Number(offset) + limit});
+            res.status(200).json({ courses: courses, cursor: Number(offset) + limit });
         }
     }
     catch (error) {
         logError(error);
-        res.status(500).json({courses: [], cursor: 0 } );
+        res.status(500).json({ courses: [], cursor: 0 });
     }
 
     return;
 }
 
-module.exports.manageCourses = async (req, res) => {
+export const manageCourses = async (req, res) => {
     const { courseId, id } = req.params;
     const { adminData } = req;
     const course = req.body;
@@ -36,11 +33,9 @@ module.exports.manageCourses = async (req, res) => {
 
     if (courseId === 'new') {
         try {
-            const createdAt = getSystemDate();
-            const Course = CoursesDB();
             const [lecturerId, name] = course.lecturer.split("_");
 
-            const newCourse = new Course({
+            const newCourse = new Courses({
                 courseCode: course.courseCode,
                 title: course.courseTitle,
                 credit: course.creditHours,
@@ -53,7 +48,6 @@ module.exports.manageCourses = async (req, res) => {
                 semester: Number(course.semester),
                 faculty: course.faculty,
                 program: course.program,
-                'created-at': createdAt,
             });
 
             await newCourse.save();

@@ -1,16 +1,14 @@
-const path = require('path');
-const fs = require('fs');
-//user models import
+import path from 'path';
+import fs from 'fs';
+import { getCourses, logError, getSystemDate } from "./admin.utils";
+import { AdminsDB, StudentsDB, CoursesDB, LecturersDB } from '../../utils/global/db.utils';
+import Files from '../../models/courses/files.models';
+import { isValidObjectId } from 'mongoose';
 
-const { getCourses, logError, getSystemDate } = require("./admin.utils");
-const { AdminsDB, StudentsDB, CoursesDB, LecturersDB } = require('../../utils/global/db.utils');
-const Files = require('../../models/courses/files.models');
-const { isValidObjectId } = require('mongoose');
-
-const admin = AdminsDB();
-const lecturer = LecturersDB();
-const student = StudentsDB();
-const course = CoursesDB();
+const Admins = AdminsDB();
+const Tutors = LecturersDB();
+const Students = StudentsDB();
+const Courses = CoursesDB();
 
 
 /**
@@ -41,7 +39,6 @@ const generateUniqueAdminID = (faculty) => {
 
 
 const generateAndVerifyAdminIdHasNoMatch = async (faculty) => {
-    const Admin = AdminsDB();
     const adminRegexp = /^AD-\d{3}[A-Za-z0-9]*$/;
     let verifiedAdminId = ""
     let i = 0;
@@ -54,7 +51,7 @@ const generateAndVerifyAdminIdHasNoMatch = async (faculty) => {
         }
 
         if (adminRegexp.test(adminId)) {
-            const existingUser = await Admin.findOne({ adminId: adminId });
+            const existingUser = await Admins.findOne({ adminId: adminId });
             if (!existingUser) {
                 verifiedAdminId = adminId;
                 break;
@@ -70,97 +67,88 @@ const generateAndVerifyAdminIdHasNoMatch = async (faculty) => {
     return verifiedAdminId;
 }
 
-module.exports.createNewAdmin = async (req, res) => {
-    const Admin = AdminsDB();
+export const createNewAdmin = async (req, res) => {
     const { firstname, lastname, userPassword, role, faculty } = req.body;
 
-    const verifiedAdminId = await generateAndVerifyAdminIdHasNoMatch(faculty);
-
-    if (verifiedAdminId === null) {
-        res.status(500).json({ message: "Create New Admin Failed - Operation Timed Out" });
-        return;
-    }
-
-    const admin = new Admin({ adminId: verifiedAdminId, firstName: firstname, lastName: lastname, faculty, role, password: userPassword });
-    const savedAdmin = await admin.save();
-    const { password, ...rest } = savedAdmin._doc;
-
-    if (savedAdmin) {
-        res.status(200).json({ admin: rest });
-    }
-}
-
-module.exports.getStudentsDataByOffset = async (offset, key, value, limit = 256) => {
-    let end = false;
-    let query = key != 'null' || value != 'null' ? { [key]: value } : {};
-
-    return StudentsDB().find(query)
-        .skip(offset)
-        .limit(limit)
-        .exec()
-        .then((docs) => {
-            if (docs.length < 256) {
-                end = true;
-            }
-            return {
-                status: 200,
-                message: 'success',
-                docs: docs,
-                cursor: Number(offset) + limit,
-                end: end
-            }
-        })
-        .catch((error) => {
-            return {
-                status: 500,
-                message: 'An error occured while fetching',
-                docs: [],
-                cursor: 0,
-                end: end
-            }
-        }
-        )
-}
-
-module.exports.getLecturersDataByOffset = (offset, key, value) => {
-    let end = false;
-    let query = key != 'null' || value != 'null' ? { [key]: value } : {};
-
-    return LecturersDB().find(query)
-        .skip(offset)
-        .limit(256)
-        .exec()
-        .then((docs) => {
-            if (docs.length < 256) {
-                end = true;
-            }
-            return {
-                status: 200,
-                message: 'success',
-                docs: docs,
-                cursor: Number(offset) + 256,
-                end: end
-            }
-        })
-        .catch((error) => {
-            return {
-                status: 500,
-                message: 'An error occured while fetching',
-                docs: [],
-                cursor: 0,
-                end: end
-            }
-        }
-        )
-}
-
-module.exports.createLecturer = async (req, res) => {
     try {
-        const Lecturer = LecturersDB()
+        const verifiedAdminId = await generateAndVerifyAdminIdHasNoMatch(faculty);
+
+        if (verifiedAdminId === null) {
+            res.status(500).json({ message: "Create New Admin Failed - Operation Timed Out" });
+            return;
+        }
+
+        const admin = new Admins({ adminId: verifiedAdminId, firstName: firstname, lastName: lastname, faculty, role, password: userPassword });
+        const savedAdmin = await admin.save();
+        const { password, ...rest } = savedAdmin._doc;
+
+        if (savedAdmin) {
+            return res.status(200).json({ admin: rest });
+        }
+    } catch (error) {
+        logError(error)
+        return null;
+    }
+}
+
+export const getStudentsDataByOffset = async (offset, key, value, limit = 256) => {
+    let query = key != 'null' || value != 'null' ? { [key]: value } : {};
+
+    try {
+        const data = await Students.find(query).skip(offset).limit(limit).exec();
+        if (!data) return null;
+
+        return {
+            status: 200,
+            message: 'success',
+            docs: data,
+            cursor: Number(offset) + limit,
+            end: data.length < limit
+        };
+    } catch (error) {
+        console.log(error);
+        return {
+            status: 500,
+            message: 'An error occurred while fetching',
+            docs: [],
+            cursor: 0,
+            end: false
+        };
+    }
+};
+
+export const getLecturersDataByOffset = async (offset, key, value, limit = 256) => {
+    let query = key != 'null' || value != 'null' ? { [key]: value } : {};
+
+    try {
+        const data = Tutors.find(query).skip(offset).limit(limit).exec();
+        if (!data) return null;
+        return {
+            status: 200,
+            message: 'success',
+            docs: data,
+            cursor: Number(offset) + limit,
+            end: data.length < limit
+        }
+
+    } catch (error) {
+        console.log(error)
+        return {
+            status: 500,
+            message: 'An error occurred while fetching',
+            docs: [],
+            cursor: 0,
+            end: false
+        };
+    }
+}
+
+export const createLecturer = async (req, res) => {
+    try {
         const createdAt = getSystemDate();
         const { lecturerId, firstName, lastName, faculty } = req.body;
 
-        const tutor = new Lecturer({
+        const tutor = new Tutors({
             lecturerId: lecturerId,
             firstName: firstName,
             lastName: lastName,
@@ -184,21 +172,24 @@ module.exports.createLecturer = async (req, res) => {
 const isRequestBodyValid = (body = {}) => {
     if (Object.keys(body).length === 0) return null;
 
-    for (let key of Object.keys(body)) 
+    for (let key of Object.keys(body))
         if (key.length === 0)
             return null;
-    
+
     return true;
 }
 
-//handlers
-module.exports.createStudent = async (req, res) => {
-    if (!isRequestBodyValid(req.body)) return res.status(400).render("global/error", { error: "Failed to create new Student because of invalid request body", status: 400 });
+export const createStudent = async (req, res) => {
+    if (!isRequestBodyValid(req.body))
+        return res.status(400).render("global/error", {
+            error: "Failed to create new Student because of invalid request body",
+            status: 400
+        });
 
     const { studentId, firstName, lastName, program, year, level, session, faculty, registeredCourses } = req.body;
+
     try {
-        const StudentInstance = StudentsDB();
-        const student = new StudentInstance({ studentId, firstName, lastName, program, year, level, session, faculty, registeredCourses});
+        const student = new Students({ studentId, firstName, lastName, program, year, level, session, faculty, registeredCourses });
         await student.save();
 
         return res.status(200).redirect(`/admins/render/imports/students/${req.adminData.id}`)
@@ -210,26 +201,25 @@ module.exports.createStudent = async (req, res) => {
 
 }
 
-module.exports.importLecturersData = async (req, res) => {
+export const importLecturersData = async (req, res) => {
     const { id } = req.params;
-    const { originalname, filename } = req.file;
+    const { filename } = req.file;
     const filePath = path.join(__dirname, '..', '..', 'models/imports', filename);
-    const createdAt = getSystemDate();
 
     try {
         const lecturersArray = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-        let Lecturers = LecturersDB();
-        await Promise.all(lecturersArray.map(async (tutor) => {
-            const newtutor = new Lecturers({
-                lecturerId: tutor.lecturerId,
-                firstName: tutor.firstName,
-                lastName: tutor.lastName,
-                faculty: tutor.faculty,
-                "created-at": createdAt
-            });
-            await newtutor.save();
+
+        if (lecturersArray.length === 0) return res.status(400).redirect(`/admins/render/lecturers/${id}`);
+        const lecturersToInsert = lecturersArray.map((tutor) => ({
+            lecturerId: tutor.lecturerId,
+            firstName: tutor.firstName,
+            lastName: tutor.lastName,
+            faculty: tutor.faculty,
         }));
-        res.status(200).redirect(`/admins/render/lecturers/${id}`);
+
+        await Tutors.insertMany(lecturersToInsert);
+
+        return res.status(200).redirect(`/admins/render/lecturers/${id}`);
     } catch (error) {
         if (error.name === 'ValidationError') {
             const errorMessage = Object.values(error.errors).map(err => err.message).join(', ');
@@ -245,35 +235,30 @@ module.exports.importLecturersData = async (req, res) => {
 
 
 
-module.exports.importStudentsData = async (req, res) => {
+export const importStudentsData = async (req, res) => {
     const { id } = req.params;
-    const { originalname, filename } = req.file;
+    const { filename } = req.file;
     const filePath = path.join(__dirname, '..', '..', 'models/imports', filename);
     const createdAt = getSystemDate();
 
     try {
         const studentsArray = JSON.parse(fs.readFileSync(filePath, 'utf8'));
         (createdAt);
-        await Promise.all(studentsArray.map(async (student) => {
-            const StudentInstance = StudentsDB();
-            const newStudent = new StudentInstance({
-                studentId: student.studentId,
-                firstName: student.firstName,
-                lastName: student.lastName,
-                program: student.program,
-                year: student.year,
-                level: student.level,
-                faculty: student.faculty,
-                session: student.session,
-                registeredCourses: student.registeredCourses,
-                courses: student.courses,
-                files: student.files,
-                repos: student.repos,
-                "created-at": createdAt
-            });
-            await newStudent.save();
+        if (Array.from(studentsArray).length === 0) return res.status(400).redirect(`/admins/render/students/${id}`);
+
+        const studentsToInsert = Array.from(studentsArray).map((student) => ({
+            studentId: student.studentId,
+            firstName: student.firstName,
+            lastName: student.lastName,
+            program: student.program,
+            level: student.level,
+            faculty: student.faculty,
+            session: student.session,
+            registeredCourses: student.registeredCourses,
         }));
-        res.status(200).redirect(`/admins/render/students/${id}`);
+
+        await Students.insertMany(studentsToInsert);
+        return res.status(200).redirect(`/admins/render/students/${id}`);
     } catch (error) {
         if (error.name === 'ValidationError') {
             const errorMessage = Object.values(error.errors).map(err => err.message).join(', ');
@@ -289,94 +274,51 @@ module.exports.importStudentsData = async (req, res) => {
 
 
 
-module.exports.getUserDataByOffset = (req, res) => {
+export const getUserDataByOffset = async (req, res) => {
     const { userType, offset } = req.params;
     const userActionMethods = {
-        students: this.getStudentsDataByOffset,
-        lecturers: this.getLecturersDataByOffset
+        students: getStudentsDataByOffset,
+        lecturers: getLecturersDataByOffset
     };
 
-    const userDataMethod = userActionMethods[userType];
-    if (userDataMethod) {
-        userDataMethod(offset, req.query.key ? req.query.key : 'null', req.query.value ? req.query.value : 'null')
-            .then((r) => {
-                res.status(r.status).json({ data: r.docs, cursor: r.cursor, end: r.end });
-            }).catch((e) => {
-                (e);
-                res.status(e.status).json({ data: e.docs, cursor: e.cursor, end: e.end });
-            })
-    }
-    else {
-        res.status(400).json({ message: 'Invalid userType' });
+    try {
+        const userDataMethod = userActionMethods[userType];
+        if (!userDataMethod) return res.status(400).json({ message: 'Invalid userType' });
+
+        const response = await userDataMethod(offset, req.query.key ? req.query.key : 'null', req.query.value ? req.query.value : 'null');
+
+        if (!response) return res.status(400).json({ data: [], cursor: 0, end: true });
+        if (response.status === 500) return res.status(response.status).json({ data: response.docs, cursor: response.cursor, end: response.end });
+
+        return res.status(response.status).json({ data: response.docs, cursor: response.cursor, end: response.end });
+    } catch (error) {
+        console.log(error);
+        return res.status(400).json({ message: 'An internal Server Error occured' });
     }
 }
 
-module.exports.getStudentData = (req, res) => {
+export const getStudentData = (req, res) => {
     const { action } = req.params;
     const { studentId } = req.query;
+    const actionsMap = {
+        courses: 'courses',
+        repos: 'repos',
+        files: 'files'
+    };
+    return res.status(400).json({ message: 'fail', doc: [] });
 
-    StudentsDB().findOne({ _id: studentId })
-        .then((doc) => {
-            if (doc == null) {
-                return res.status(404).json({ message: 'no such user found', doc: null });
-            }
-
-            const actionsMap = {
-                courses: 'courses',
-                repos: 'repos',
-                files: 'files'
-            };
-
-            const field = actionsMap[action];
-
-            if (field) {
-                return res.status(200).json({ message: 'success', doc: doc[field] });
-            }
-
-            return res.status(403).json({ message: 'action not recognised', doc: null });
-        }).catch((error) => {
-            res.status(500).json({ message: 'Internal server error', error });
-        })
 }
 
-module.exports.getLecturersData = (req, res) => {
-    const { action } = req.params;
-    const { id } = req.query;
-
-    LecturersDB().findOne({ _id: id })
-        .then(async (doc) => {
-            if (doc == null) {
-                return res.status(404).json({ message: 'no such user found', doc: null });
-            }
-
-            const actionsMap = {
-                courses: 'assignedCourses',
-            };
-
-            const field = actionsMap[action];
-
-            if (field) {
-                return res.status(200).json({ message: 'success', doc: await getCourses(doc[field]) });
-            }
-
-            return res.status(403).json({ message: 'action not recognised', doc: null });
-        }).catch((error) => {
-            res.status(500).json({ message: 'Internal server error', error });
-        })
-}
-
-module.exports.getLecturersName = async (req, res) => {
+export const getLecturersName = async (req, res) => {
     const { id } = req.params;
-
-    const Lecturer = LecturersDB();
-
-    const lecturer = await Lecturer.findOne({ lecturerId: id });
-
-    if (lecturer) {
+    try {
+        const lecturer = await Tutors.findOne({ lecturerId: id });
+        if (!lecturer) return res.status(400).json({ data: {} });
+        
         res.set('Cache-Control', 'public, max-age=8600');
-        res.status(200).json({ data: { firstname: lecturer.firstName, lastname: lecturer.lastName } });
-    }
-    else {
-        res.status(400).json({ data: {} });
+        return res.status(200).json({ data: { firstname: lecturer.firstName, lastname: lecturer.lastName } });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ data: {} });
     }
 }

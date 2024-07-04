@@ -40,7 +40,7 @@ const handleCatchError = (error, res) => {
  * @param {Function} next - The next middleware function.
  * @returns {Promise<void>}
  */
-module.exports.verifyAdmin = async (req, res, next) => {
+export const verifyAdmin = async (req, res, next) => {
     const { id } = req.params;
 
     // Validate the provided ID
@@ -84,7 +84,7 @@ module.exports.verifyAdmin = async (req, res, next) => {
  * @param {Function} next - The next middleware function.
  * @returns {Promise<void>}
  */
-module.exports.verifyLecturer = async (req, res, next) => {
+export const verifyLecturer = async (req, res, next) => {
     const { id } = req.params;
 
     // Validate the provided ID
@@ -126,7 +126,7 @@ module.exports.verifyLecturer = async (req, res, next) => {
  * @param {Function} next - The next middleware function.
  * @returns {Promise<void>}
  */
-module.exports.verifyStudent = async (req, res, next) => {
+export const verifyStudent = async (req, res, next) => {
     const { id } = req.params;
 
     // Validate the provided ID
@@ -179,7 +179,7 @@ module.exports.verifyStudent = async (req, res, next) => {
  * @param {Function} next - The next middleware function.
  * @returns {void}
  */
-module.exports.checkUsernamePattern = (req, res, next) => {
+export const checkUsernamePattern = (req, res, next) => {
     const { username } = req.body;
 
     // Check if the username is provided
