@@ -80,7 +80,6 @@ const filterClasses = (classes = [], filter = "") => {
 }
 
 const main = async () => {
-    const Classes = ClassesDB();
     const classes_400 = await getClassesByLevel("400-");
     const classes_300 = await getClassesByLevel("300-");
     const classes_200 = await getClassesByLevel("200-");

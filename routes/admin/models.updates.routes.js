@@ -1,11 +1,13 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
-const multer = require('multer');
-const path = require('path');
-const fs = require('fs');
-const { verifyAdmin } = require('./router.utils');
-const { logError } = require('../../controllers/admin/admin.utils');
-const adminModels = require('../../models/admin/admin.models');
+import multer from 'multer';
+import path from 'path';
+import fs from 'fs';
+import { verifyAdmin } from './router.utils';
+import { logError } from '../../controllers/admin/admin.utils';
+import { AdminsDB } from '../../utils/global/db.utils';
+
+const Admins = AdminsDB();
 
 const adminProfilePictureUploads = multer({
     dest: path.join(__dirname, '..', '..', 'public', 'assets', 'profile_pictures', 'users', 'admin')
@@ -18,7 +20,7 @@ router.post('/admins/profile/update-component/profile-picture/:id', verifyAdmin,
 
     if (fs.existsSync(profilePicPath)) {
         try {
-            const savedData = await adminModels.updateOne({ _id: id }, { $set: { profilePicUrl: profilePicPath } });
+            const savedData = await Admins.updateOne({ _id: id }, { $set: { profilePicUrl: profilePicPath } });
             console.log(savedData);
 
             if (savedData.acknowledged === true && savedData.modifiedCount === 1) {
@@ -34,4 +36,4 @@ router.post('/admins/profile/update-component/profile-picture/:id', verifyAdmin,
     }
 })
 
-module.exports = router;
+export default router;

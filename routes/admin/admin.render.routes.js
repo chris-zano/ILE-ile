@@ -43,4 +43,4 @@ router.get('/admins/render/updates/course/:courseCode/:id', verifyAdmin, adminRe
 router.get('/admins/render/organise-courses/:id', verifyAdmin, adminRender.renderOrganiseCourses);
 router.get('/admins/render/profiles/admin/:id', verifyAdmin, adminRender.renderViewAdminProfile);
 
-module.exports = router;
+export default router;

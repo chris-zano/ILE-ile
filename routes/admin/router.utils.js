@@ -1,11 +1,12 @@
-const { AdminsDB, StudentsDB, CoursesDB, LecturersDB } = require('../../utils/global/db.utils');
-const utils = require('../../controllers/admin/admin.utils');
-const { isValidObjectId } = require('mongoose');
+import { AdminsDB, StudentsDB, CoursesDB, LecturersDB } from '../../utils/global/db.utils';
+import utils from '../../controllers/admin/admin.utils';
+import { isValidObjectId } from 'mongoose';
 
-const admin = AdminsDB();
-const lecturer = LecturersDB();
-const student = StudentsDB();
-const course = CoursesDB();
+const Admins = AdminsDB();
+const Tutors = LecturersDB();
+const Students = StudentsDB();
+const Courses = CoursesDB();
+
 
 /**
  * Handles cases where the document is not found.
@@ -50,7 +51,7 @@ export const verifyAdmin = async (req, res, next) => {
 
     try {
         // Find the admin document by ID
-        const matchedDocument = await admin.findById(id);
+        const matchedDocument = await Admins.findById(id);
 
         // Handle case where no document is found
         if (!matchedDocument) return handleDocumentIsNull(res);
@@ -94,7 +95,7 @@ export const verifyLecturer = async (req, res, next) => {
 
     try {
         // Find the lecturer document by ID
-        const matchedDocument = await lecturer.findById(id);
+        const matchedDocument = await Tutors.findById(id);
 
         // Handle case where no document is found
         if (!matchedDocument) return handleDocumentIsNull(res);
@@ -136,7 +137,7 @@ export const verifyStudent = async (req, res, next) => {
 
     try {
         // Find the student document by ID
-        const matchedDocument = await student.findById(id);
+        const matchedDocument = await Students.findById(id);
 
         // Handle case where no document is found
         if (!matchedDocument) return handleDocumentIsNull(res);

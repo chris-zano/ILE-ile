@@ -94,7 +94,7 @@ const studentLogin = async (username, password, ip, res) => {
 }
 
 
-module.exports.loginUser = (req, res) => {
+export const loginUser = (req, res) => {
     const { usernameformat } = req;
     const { username, password } = req.body;
     const userFormats = {

@@ -15,4 +15,4 @@ router.post("/admin/set/registration-code-courses/:id", verifyAdmin);
 router.get("/admin/get/registration-code-courses/:id", verifyAdmin);
 // router.get('/admin/lecturers/get/:action', adminUsersController.getLecturersData);
 
-module.exports = router;
+export default router;

@@ -1,9 +1,9 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
 
-const classController = require('../../controllers/admin/class.controller');
-const { verifyAdmin } = require('./router.utils');
+import { runCreateClasses } from '../../controllers/admin/class.controller';
+import { verifyAdmin } from './router.utils';
 
-router.get('/admin/classes/create/:id', verifyAdmin, classController.runCreateClasses);
+router.get('/admin/classes/create/:id', verifyAdmin, runCreateClasses);
 
-module.exports = router;
+export default router;
