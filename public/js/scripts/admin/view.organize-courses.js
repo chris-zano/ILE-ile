@@ -1,3 +1,4 @@
+const adminId = JSON.parse(window.sessionStorage.getItem("auth-user")).data.id || undefined
 /**
  * Fetches and returns the coursess for a given registration code.
  * if no courses have been assigned, it loads the available courses to be registered.
@@ -5,7 +6,7 @@
  * @return {Promise<void>} the status and json of the response
  */
 const getCoursesForRegistrationCode = async (code) => {
-    const url = encodeURI(`/admin/get/registration-code-courses?rcode=${code}`);
+    const url = encodeURI(`/admin/get/registration-code-courses/${adminId}?rcode=${code}`);
     console.log(url);
 }
 
@@ -16,7 +17,7 @@ const getCoursesForRegistrationCode = async (code) => {
  * @return {Promise<void>} the status and json of the response
  */
 const setCoursesForRegistrationCode = async (code = "", course_codes = []) => {
-    const url = encodeURI(`/admin/set/registration-code-courses?rcode=${code}`);
+    const url = encodeURI(`/admin/set/registration-code-courses/${adminId}?rcode=${code}`);
     console.log(url);
     console.log(course_codes)
 }

@@ -16,4 +16,7 @@ router.get('/admin/courses/get-courses/:id', verifyAdmin, adminCoursesController
 //post requests
 router.post('/admins/update/course/:courseId/:id', verifyAdmin,adminCoursesController.manageCourses);
 
+router.get("/admin/get/registration-code-courses/:id",verifyAdmin);
+router.post("/admin/set/registration-code-courses/:id",verifyAdmin);
+
 module.exports = router;
