@@ -1,7 +1,8 @@
-import {CoursesDB } from '../../utils/global/db.utils.js';
-import {logError } from './admin.utils.js';
+import { CoursesDB, RegisteredCoursesDB } from '../../utils/global/db.utils.js';
+import { logError } from './admin.utils.js';
 
 const Courses = CoursesDB();
+const RegisteredCourses = RegisteredCoursesDB();
 
 export const getCoursesByOffset = async (req, res) => {
     const { adminData } = req;
@@ -61,7 +62,7 @@ export const manageCourses = async (req, res) => {
     else {
         try {
             const [lecturerId, name] = course.lecturer.split("_");
-            CoursesDB().findByIdAndUpdate({ _id: courseId })
+            Courses.findByIdAndUpdate({ _id: courseId })
                 .then((c) => {
                     if (c.__v === Number(course.v)) {
                         c.courseCode = course.courseCode
@@ -88,3 +89,100 @@ export const manageCourses = async (req, res) => {
     }
 }
 
+
+export const getCoursesByRegistrationCode = async (req, res) => {
+    const { rcode } = req.query;
+
+    try {
+        const documentMatch = await RegisteredCourses.findOne({ registrationCode: rcode })
+            .populate("courseDetails")
+            .exec();
+
+        return res.status(200).json({ doc: documentMatch });
+    } catch (error) {
+        logError(error);
+        return res.status(500).json({ doc: null })
+    }
+}
+
+const validateCourseCode = async (courseCode = "") => {
+    try {
+        const doc = await Courses.findOne({ courseCode: courseCode });
+        if (!doc) return false;
+        return true;
+    } catch (error) {
+        logError(error);
+        return false
+    }
+}
+
+const doesRegCodeExists = async (rcode = "") => {
+    try {
+        const doc = await RegisteredCourses.findOne({ registrationCode: rcode });
+        if (!doc) return false;
+        return true
+    } catch (error) {
+        console.log(error);
+        return false;
+    }
+}
+
+const addNewRegisteredCoursesEntry = async (rcode = "", courses = []) => {
+    if (!rcode || courses.length === 0)
+        return false
+
+    try {
+        const newEntry = new RegisteredCourses({ registrationCode: rcode, courses: courses });
+        await newEntry.save();
+        return true;
+    } catch (error) {
+        logError(error);
+        return false;
+    }
+}
+
+const updateExistingRegisteredCourseEntry = async (rcode = "", courses = []) => {
+    if (!rcode || courses.length === 0)
+        return false
+    try {
+        const updateStatus = await RegisteredCourses.updateOne({ registrationCode: rcode }, {
+            $set: { courses: courses }
+        });
+        return updateStatus.matchedCount === 1 && updateStatus.modifiedCount === 1;
+    } catch (error) {
+        logError(error);
+        return false;
+    }
+}
+
+export const setCoursesToRegistrationCode = async (req, res) => {
+    const { courses } = req.body;
+    const { rcode } = req.query;
+
+    try {
+        const validCourseCodesPromises = courses.map((courseCode) => validateCourseCode(courseCode));
+        const validCourseCodesResults = await Promise.all(validCourseCodesPromises);
+        const validCourseCodes = courses.filter((_, index) => validCourseCodesResults[index]);
+
+        if (validCourseCodes.length === 0) {
+            return res.status(400).json({ message: "Invalid course codes provided" });
+        }
+
+        const doesExist = await doesRegCodeExists(rcode);
+        let opState = false;
+
+        if (!doesExist)
+            opState = await addNewRegisteredCoursesEntry(rcode, validCourseCodes);
+        else
+            opState = await updateExistingRegisteredCourseEntry(rcode, validCourseCodes);
+
+        if (!opState)
+            return res.status(404).json({ message: "operation failed" });
+
+        return res.status(200).json({ message: "success" });
+    }
+    catch (error) {
+        logError(error);
+        return res.status(500).json({ message: "An unxpected error occured" });
+    }
+}

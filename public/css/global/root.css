@@ -180,26 +180,48 @@ button[disabled] {
 
 .toast {
     position: fixed;
-    top: -100px;
+    top: 10px;
     left: 50%;
     transform: translateX(-50%);
-    background-color: var(--primary);
-    padding: 10px 20px;
+    min-width: 250px;
+    padding: 15px;
+    margin-top: 10px;
+    color: #fff;
     border-radius: 5px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    transition: top 0.5s ease-in-out;
-    z-index: 9999;
-    min-width: 150px;
-    min-height: fit-content;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10000;
 }
-
-.toast #toastText {
+.toast span {
     color: var(--white);
 }
-
-.toast.show {
-    top: 70px;
+.toast.error {
+    background-color: #e74c3c;
 }
+
+.toast.warning {
+    background-color: #f39c12;
+}
+
+.toast.info {
+    background-color: #3498db;
+}
+
+.toast.success {
+    background-color: #2ecc71;
+}
+
+.toast .close-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.2em;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
 
 div.container-max_width {
     background-color: var(--background);

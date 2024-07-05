@@ -114,7 +114,6 @@ section.list_main form div.title-and-btn div.section-btn button {
 section.list_main form div.title-and-btn div.section-btn button.btn-disabled {
     cursor: no-drop;
     background-color: #c5c1c1;
-
 }
 
 section.list_main form div.title-and-btn div.section-btn button.btn-enabled {

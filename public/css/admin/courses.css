@@ -1,6 +1,5 @@
 div.section-header {
     display: flex;
-    /* justify-content: space-between; */
     align-items: center;
     padding: 10px;
     width: 100%;
@@ -45,14 +44,11 @@ article.cards {
 
 article.cards a.card {
     background-color: var(--background);
-    /* background-color: green; */
     width: 310px;
     height: 350px;
     color: unset;
     text-decoration: unset;
     cursor: pointer;
-    /* border:1px solid var(--inactive); */
-    backdrop-filter: blur(290px);
     border-radius: 9px;
     box-shadow: -15px -15px 15px rgba(255,255,255, 0.2),
                 15px 15px 115px rgba(0, 0, 0, 0.1);

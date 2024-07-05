@@ -43,12 +43,12 @@ const handleCatchError = (error, res) => {
  */
 export const verifyAdmin = async (req, res, next) => {
     const { id } = req.params;
-
+    
     // Validate the provided ID
-    if (!id || !isValidObjectId(id)) {
+    if(!isValidObjectId(id)) {
         return res.status(400).json({ message: "Invalid userId" });
     }
-
+    
     try {
         // Find the admin document by ID
         const matchedDocument = await Admins.findById(id);
@@ -89,7 +89,7 @@ export const verifyLecturer = async (req, res, next) => {
     const { id } = req.params;
 
     // Validate the provided ID
-    if (!id || !isValidObjectId(id)) {
+    if(!isValidObjectId(id)) {
         return res.status(400).json({ message: "Invalid userId" });
     }
 
@@ -131,7 +131,7 @@ export const verifyStudent = async (req, res, next) => {
     const { id } = req.params;
 
     // Validate the provided ID
-    if (!id || !isValidObjectId(id)) {
+    if(!isValidObjectId(id)) {
         return res.status(400).json({ message: "Invalid userId" });
     }
 
