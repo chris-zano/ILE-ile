@@ -1,11 +1,15 @@
 import express from 'express';
 import multer from 'multer';
 import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 import fs from 'fs';
 import { verifyAdmin } from './router.utils.js';
 import { logError } from '../../controllers/admin/admin.utils.js';
 import { AdminsDB } from '../../utils/global/db.utils.js';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 const router = express.Router();
 const Admins = AdminsDB();
 

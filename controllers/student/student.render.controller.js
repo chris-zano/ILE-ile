@@ -1,5 +1,5 @@
-import { ClassesDB } from '../../utils/global/db.utils';
-import { logError } from '../admin/admin.utils';
+import { ClassesDB } from '../../utils/global/db.utils.js';
+import { logError } from '../admin/admin.utils.js';
 
 const Classes = ClassesDB();
 
@@ -55,7 +55,7 @@ const returnUrlsToMethod = (pageurl = "") => {
 }
 
 
-export default renderStudentViews = async (req, res) => {
+const renderStudentViews = async (req, res) => {
     const { pageUrl } = req.params;
     const { studentData } = req;
 
@@ -83,3 +83,5 @@ export default renderStudentViews = async (req, res) => {
         return res.status(500);
     }
 }
+
+export default renderStudentViews;

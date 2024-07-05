@@ -8,8 +8,7 @@ import lecturerChaptersRoutes from './routes/lecturer/lecturer.chapters.routes.j
 import lecturerFilesRoutes from './routes/lecturer/lecturer.files.routes.js';
 import modelUpdatesRoutes from './routes/admin/models.updates.routes.js';
 import studentRenderRoutes from './routes/student/student.render.routes.js';
-
-import { setupWebSocketServer } from './utils/global/websocket.util.js';
+import  setupWebSocketServer  from './utils/global/websocket.util.js';
 
 const callAndExecuteRequireStack = (app, server) => {
   const io = setupWebSocketServer(server);

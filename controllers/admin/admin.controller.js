@@ -1,6 +1,6 @@
 
-const { AdminsDB, StudentsDB, LecturersDB } = require('../../utils/global/db.utils');
-const { logSession, logError } = require('./admin.utils');
+import { AdminsDB, StudentsDB, LecturersDB } from '../../utils/global/db.utils.js';
+import { logSession, logError } from './admin.utils.js';
 
 const Students = StudentsDB();
 const Admins = AdminsDB();

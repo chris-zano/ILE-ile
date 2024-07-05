@@ -1,8 +1,9 @@
-const Materials = require('../../models/courses/courses.model');
-const { AdminsDB, StudentsDB, CoursesDB, LecturersDB } = require('../../utils/global/db.utils');
-const { logError } = require('./admin.utils');
 
-module.exports.findCourse = (socket, value) => {
+// import Materials from '../../models/courses/courses.model.js';
+import { AdminsDB, StudentsDB, CoursesDB, LecturersDB } from '../../utils/global/db.utils.js';
+import { logError } from './admin.utils.js';
+
+export const findCourse = (socket, value) => {
     const regex = new RegExp(value, 'i');
 
     if (value == "") {
@@ -27,7 +28,7 @@ module.exports.findCourse = (socket, value) => {
         })
 };
 
-module.exports.findStudent = (socket, value) => {
+export const findStudent = (socket, value) => {
     const regex = new RegExp(value, "i");
 
     if (value == "") {
@@ -50,7 +51,7 @@ module.exports.findStudent = (socket, value) => {
         })
 }
 
-module.exports.findTutor = (socket, value) => {
+export const findTutor = (socket, value) => {
     const regex = new RegExp(value, "i");
     if (value == "") {
         return;
@@ -72,7 +73,7 @@ module.exports.findTutor = (socket, value) => {
         })
 }
 
-module.exports.findMaterial = (socket, value) => {
+export const findMaterial = (socket, value) => {
     const regex = new RegExp(value, "i");
 
     if (value == "") {
@@ -93,10 +94,10 @@ module.exports.findMaterial = (socket, value) => {
         ]
     }
 
-    Materials.find(query)
-        .then((docs) => {
-            socket.emit("searchResults", { type: "materials", results: docs })
-        }).catch((error) => {
-            logError(error);
-        })
+    // Materials.find(query)
+    //     .then((docs) => {
+    //         socket.emit("searchResults", { type: "materials", results: docs })
+    //     }).catch((error) => {
+    //         logError(error);
+    //     })
 }

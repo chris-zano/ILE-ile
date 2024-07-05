@@ -1,8 +1,8 @@
-import socketIo from 'socket.io'
-import { findCourse, findStudent, findTutor, findMaterial } from '../../controllers/admin/admin.search';
+import {Server as SocketIoServer} from 'socket.io'
+import { findCourse, findStudent, findTutor, findMaterial } from '../../controllers/admin/admin.search.js';
 
-function setupWebSocketServer(server) {
-    const io = socketIo(server);
+const setupWebSocketServer = (server) => {
+    const io = new SocketIoServer(server);
 
     io.on('connection', (socket) => {
         console.log('Socket.IO client connected');

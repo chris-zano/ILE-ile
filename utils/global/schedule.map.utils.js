@@ -1,7 +1,6 @@
-import { ClassesDB, CoursesDB, LecturersDB } from './db.utils';
+import { ClassesDB, CoursesDB, LecturersDB } from './db.utils.js';
 const Classes = ClassesDB();
 const Courses = CoursesDB();
-const Lecturers = LecturersDB();
 
 const sortLengthsInAscendingOrder = (lengths = []) => {
     return lengths.sort((a, b) => a.length - b.length);

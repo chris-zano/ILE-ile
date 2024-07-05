@@ -1,11 +1,15 @@
 import express from 'express';
 import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 import multer from 'multer';
 import { checkUsernamePattern } from './router.utils.js';
 import { verifyAdmin } from './router.utils.js';
 import * as adminController from '../../controllers/admin/admin.controller.js';
 import * as usersController from '../../controllers/admin/admin.users.js';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 const router = express.Router();
 const userJSONUpload = multer({
     dest: path.join(__dirname, '..', '..', 'models/imports')

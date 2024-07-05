@@ -1,4 +1,4 @@
-import { AdminsDB } from '../global/db.utils';
+import { AdminsDB } from '../global/db.utils.js';
 
 const Admins = AdminsDB();
 

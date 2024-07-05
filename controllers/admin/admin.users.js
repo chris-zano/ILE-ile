@@ -1,10 +1,12 @@
 import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 import fs from 'fs';
-import { getCourses, logError, getSystemDate } from "./admin.utils";
-import { AdminsDB, StudentsDB, CoursesDB, LecturersDB } from '../../utils/global/db.utils';
-import Files from '../../models/courses/files.models';
-import { isValidObjectId } from 'mongoose';
+import { logError, getSystemDate } from './admin.utils.js';
+import { AdminsDB, StudentsDB, CoursesDB, LecturersDB } from '../../utils/global/db.utils.js';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 const Admins = AdminsDB();
 const Tutors = LecturersDB();
 const Students = StudentsDB();
@@ -314,7 +316,7 @@ export const getLecturersName = async (req, res) => {
     try {
         const lecturer = await Tutors.findOne({ lecturerId: id });
         if (!lecturer) return res.status(400).json({ data: {} });
-        
+
         res.set('Cache-Control', 'public, max-age=8600');
         return res.status(200).json({ data: { firstname: lecturer.firstName, lastname: lecturer.lastName } });
     } catch (error) {

@@ -1,9 +1,13 @@
 import express from 'express';
 import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 import multer from 'multer';
-import {verifyLecturer} from '../admin/router.utils';
-import * as chaptersController from '../../controllers/lecturer/chapters.controller';
+import {verifyLecturer} from '../admin/router.utils.js';
+import * as chaptersController from '../../controllers/lecturer/chapters.controller.js';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 const router = express.Router();
 
 const materialsUploads = multer({

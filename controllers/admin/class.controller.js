@@ -1,6 +1,6 @@
-import {  StudentsDB , ClassesDB } from '../../utils/global/db.utils';
-import main from '../../utils/global/schedule.map.utils';
-import { logError, getSystemDate } from './admin.utils';
+import {  StudentsDB , ClassesDB } from '../../utils/global/db.utils.js';
+import main from '../../utils/global/schedule.map.utils.js';
+import { logError, getSystemDate } from './admin.utils.js';
 
 const Students = StudentsDB();
 const Classes = ClassesDB();

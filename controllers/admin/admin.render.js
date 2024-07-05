@@ -1,5 +1,5 @@
-import { ClassesDB, CoursesDB } from '../../utils/global/db.utils';
-import utils from './admin.utils';
+import { ClassesDB, CoursesDB } from '../../utils/global/db.utils.js';
+import * as utils from './admin.utils.js';
 
 const Courses = CoursesDB();
 const Classes = ClassesDB();

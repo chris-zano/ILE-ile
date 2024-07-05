@@ -2,8 +2,8 @@ import express from 'express';
 const router = express.Router();
 
 //application imports
-import {verifyLecturer} from '../admin/router.utils';
-import * as lecturerRender from '../../controllers/lecturer/lecturer.render.controller';
+import {verifyLecturer} from '../admin/router.utils.js';
+import * as lecturerRender from '../../controllers/lecturer/lecturer.render.controller.js';
 
 
 
