@@ -1,6 +1,6 @@
-import { AdminsDB, StudentsDB, CoursesDB, LecturersDB } from '../../utils/global/db.utils';
-import utils from '../../controllers/admin/admin.utils';
 import { isValidObjectId } from 'mongoose';
+import { AdminsDB, StudentsDB, CoursesDB, LecturersDB } from '../../utils/global/db.utils.js';
+import utils from '../../controllers/admin/admin.utils.js';
 
 const Admins = AdminsDB();
 const Tutors = LecturersDB();

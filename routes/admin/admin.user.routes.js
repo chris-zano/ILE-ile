@@ -1,10 +1,10 @@
-import express from 'express'
-import path from 'path'
-import multer from 'multer'
-import { checkUsernamePattern } from './router.utils'
-import { verifyAdmin } from './router.utils'
-import * as adminController from '../../controllers/admin/admin.controller'
-import * as usersController from '../../controllers/admin/admin.users';
+import express from 'express';
+import path from 'path';
+import multer from 'multer';
+import { checkUsernamePattern } from './router.utils.js';
+import { verifyAdmin } from './router.utils.js';
+import * as adminController from '../../controllers/admin/admin.controller.js';
+import * as usersController from '../../controllers/admin/admin.users.js';
 
 const router = express.Router();
 const userJSONUpload = multer({

@@ -1,16 +1,14 @@
-const { CoursesDB } = require('../../utils/global/db.utils');
-const { getSystemDate, logError } = require("../admin/admin.utils");
+import { CoursesDB } from '../../utils/global/db.utils';
+import { logError } from "../admin/admin.utils";
 
-//course material url = "/courses/materials/filename"
+const Courses = CoursesDB();
 
 const newChapter = () => {
-    const createdAt = getSystemDate();
     const newChapter = {
         lessons: [],
         courseMaterials: [],
         courseLectureRecordings: [],
-        submissions: [],
-        'created-at': createdAt
+        submissions: []
     }
 
     return newChapter;
@@ -37,48 +35,38 @@ const isfileType = (originalname) => {
     }
 }
 
-module.exports.addChapter = (req, res) => {
+export const addChapter = async (req, res) => {
     const { lecturerData } = req;
     const { courseId, v } = req.params;
 
     (courseId, v)
 
     try {
-        CoursesDB().findOne({
+        const course = await Courses.findOne({
             $and: [
                 { _id: courseId },
                 { __v: v }
             ]
-        }).then((course) => {
-            if (course == null) {
-                res.render('global/error', { error: "Failed to add chapter - not found", status: 404 })
-                return;
-            }
-            else {
-                const newChpt = newChapter();
-                course.chapters.push(newChpt);
-                course.__v += 1;
-                course.save();
+        });
 
-                res.status(200).json({ message: 'success' })
-            }
+        const newChpt = newChapter();
+        course.chapters.push(newChpt);
+        course.__v += 1;
+        await course.save();
 
-        }).catch((err) => {
-            logError(err)
-            res.render('global/error', { error: "Failed to add chapter - not found", status: 404 })
-        })
+        return res.status(200).json({ message: 'success' });
     } catch (error) {
         logError(error)
-        res.render('global/error', { error: "Failed to add chapter", status: 500 })
+        return res.render('global/error', { error: "Failed to add chapter", status: 500 })
     }
 }
 
-module.exports.addLesson = (req, res) => {
+export const addLesson = (req, res) => {
     const { lecturerData } = req;
     const { lessonName, chapter } = req.body;
     const { courseId, v } = req.params;
 
-    CoursesDB().findByIdAndUpdate(courseId)
+    Courses.findByIdAndUpdate(courseId)
         .then((course) => {
             if (course.__v == v) {
                 if (req.file == undefined) {
@@ -124,8 +112,8 @@ module.exports.addLesson = (req, res) => {
                         course.save();
                     }
                 }
-                res.redirect(`/lecturers/render/course/${courseId}/${lecturerData.id}`)
             }
+            return res.redirect(`/lecturers/render/course/${courseId}/${lecturerData.id}`)
         }).catch((error) => {
             logError(error)
             res.render('global/error', { error: "Failed to add lesson - not found", status: 404 })
@@ -133,11 +121,11 @@ module.exports.addLesson = (req, res) => {
 }
 
 
-module.exports.deleteChapter = (req, res) => {
+export const deleteChapter = (req, res) => {
     const { lecturerData } = req;
     const { courseId, v, chapter } = req.params;
 
-    CoursesDB().findByIdAndUpdate(courseId)
+    Courses.findByIdAndUpdate(courseId)
         .then((course) => {
             if (course == null) {
                 res.redirect(`/lecturers/render/course/${courseId}/${lecturerData.id}`)

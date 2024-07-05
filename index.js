@@ -5,7 +5,7 @@ import path from 'path';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
-import callAndExecuteRequireStack from './requireStack';
+import callAndExecuteRequireStack from './requireStack.js';
 
 
 const app = express();

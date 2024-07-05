@@ -1,13 +1,24 @@
-const { isValidObjectId } = require('mongoose');
-const { ClassesDB } = require('../../utils/global/db.utils');
-const { logError, logSession, getSystemDate } = require('../admin/admin.utils');
+import { ClassesDB } from '../../utils/global/db.utils';
+import { logError } from '../admin/admin.utils';
 
 const Classes = ClassesDB();
-const getStudentDashboard = async (studentData) => { return { message: "This is the student dashboard for " + studentData.firstName }; }
 
-const getStudentCourses = (studentData) => { return studentData.courses || null; }
+const getStudentDashboard = async (studentData) => {
+    return {
+        message: "This is the student dashboard for " + studentData.firstName
+    };
+}
 
-const getStudentProfileInfo = (studentData) => { return { message: "Student profile Information will be updated soon for " + studentData.firstName } };
+const getStudentCourses = (studentData) => {
+    return studentData.courses || null;
+}
+
+const getStudentProfileInfo = (studentData) => {
+    return {
+        message: "Student profile Information will be updated soon for "
+            + studentData.firstName
+    }
+};
 
 const getStudentSchedules = async (studentData) => {
     try {
@@ -40,31 +51,35 @@ const returnUrlsToMethod = (pageurl = "") => {
         "classroom": getStudentClassroom,
         "profile": getStudentProfileInfo
     }
-
     return urlToMethodsObject[pageurl] || undefined;
 }
 
 
-module.exports.renderStudentViews = async (req, res) => {
+export default renderStudentViews = async (req, res) => {
     const { pageUrl } = req.params;
     const { studentData } = req;
 
     const urlToMethod = returnUrlsToMethod(pageUrl);
-
-    if (!urlToMethod) return res.status(404).render('global/error', { error: "The requested resource is unavailable", status: 404 });
+    if (!urlToMethod)
+        return res.status(404).render('global/error', { error: "The requested resource is unavailable", status: 404 });
 
     const dataObject = await urlToMethod(studentData);
-    console.log(dataObject)
-    if (!dataObject) return res.status(404).render('global/error', { error: "The requested student page objectData is unavailable", status: 404 });
+    if (!dataObject)
+        return res.status(404).render('global/error', { error: "The requested student page objectData is unavailable", status: 404 });
 
-    res.render('student/student-main', {
-        student: studentData,
-        data: dataObject,
-        pageTitle: "Dashboard",
-        stylesheets: [],
-        pageUrl: `layouts/${pageUrl}`,
-        currentPage: 'dashboard',
-        userType: 'Student',
-        scripts: []
-    });
+    try {
+        return res.render('student/student-main', {
+            student: studentData,
+            data: dataObject,
+            pageTitle: "Dashboard",
+            stylesheets: [],
+            pageUrl: `layouts/${pageUrl}`,
+            currentPage: 'dashboard',
+            userType: 'Student',
+            scripts: []
+        });
+    } catch (error) {
+        logError(error);
+        return res.status(500);
+    }
 }

@@ -1,12 +1,12 @@
 import express from 'express';
-const router = express.Router();
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
-import { verifyAdmin } from './router.utils';
-import { logError } from '../../controllers/admin/admin.utils';
-import { AdminsDB } from '../../utils/global/db.utils';
+import { verifyAdmin } from './router.utils.js';
+import { logError } from '../../controllers/admin/admin.utils.js';
+import { AdminsDB } from '../../utils/global/db.utils.js';
 
+const router = express.Router();
 const Admins = AdminsDB();
 
 const adminProfilePictureUploads = multer({

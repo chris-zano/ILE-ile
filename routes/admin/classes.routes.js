@@ -1,8 +1,8 @@
 import express from 'express';
 const router = express.Router();
 
-import { runCreateClasses } from '../../controllers/admin/class.controller';
-import { verifyAdmin } from './router.utils';
+import { runCreateClasses } from '../../controllers/admin/class.controller.js';
+import { verifyAdmin } from './router.utils.js';
 
 router.get('/admin/classes/create/:id', verifyAdmin, runCreateClasses);
 

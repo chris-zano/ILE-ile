@@ -1,9 +1,9 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
 
 //application imports
-const {verifyLecturer} = require('../admin/router.utils');
-const lecturerRender = require('../../controllers/lecturer/lecturer.render.controller');
+import {verifyLecturer} from '../admin/router.utils';
+import * as lecturerRender from '../../controllers/lecturer/lecturer.render.controller';
 
 
 
@@ -17,4 +17,4 @@ router.get('/lecturers/render/course/:courseId/:id', verifyLecturer, lecturerRen
 router.get('/lecturers/render/classroom/:id', verifyLecturer, lecturerRender.renderClassroom);
 router.get('/lecturers/render/profiles/lecturer/:id', verifyLecturer, lecturerRender.renderViewLecturerProfile);
 
-module.exports = router;
+export default router;

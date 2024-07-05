@@ -1,7 +1,7 @@
 import express from 'express';
 
 const router = express.Router();
-import * as adminFileHandler  from '../../controllers/admin/admin.files';
+import * as adminFileHandler  from '../../controllers/admin/admin.files.js';
 
 
 router.get('/script/scripts/:auth/:filename', adminFileHandler.loadScript);

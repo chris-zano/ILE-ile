@@ -1,15 +1,15 @@
 import adminsUserRoutes from './routes/admin/admin.user.routes.js';
-import adminRoutes from './routes/admin/admin.routes';
+import adminRoutes from './routes/admin/admin.routes.js';
 import adminFileRoutes from './routes/admin/admin.files.routes.js';
-import adminRenderRoutes from './routes/admin/admin.render.routes';
-import classRoutes from './routes/admin/classes.routes';
-import lecturerRenderRoutes from './routes/lecturer/lecturer.render.routes';
-import lecturerChaptersRoutes from './routes/lecturer/lecturer.chapters.routes';
-import lecturerFilesRoutes from './routes/lecturer/lecturer.files.routes';
+import adminRenderRoutes from './routes/admin/admin.render.routes.js';
+import classRoutes from './routes/admin/classes.routes.js';
+import lecturerRenderRoutes from './routes/lecturer/lecturer.render.routes.js';
+import lecturerChaptersRoutes from './routes/lecturer/lecturer.chapters.routes.js';
+import lecturerFilesRoutes from './routes/lecturer/lecturer.files.routes.js';
 import modelUpdatesRoutes from './routes/admin/models.updates.routes.js';
 import studentRenderRoutes from './routes/student/student.render.routes.js';
 
-import { setupWebSocketServer } from './utils/global/websocket.util';
+import { setupWebSocketServer } from './utils/global/websocket.util.js';
 
 const callAndExecuteRequireStack = (app, server) => {
   const io = setupWebSocketServer(server);

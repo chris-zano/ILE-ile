@@ -1,7 +1,7 @@
 import express from 'express';
-import * as adminUsersController from '../../controllers/admin/admin.users';
-import { verifyAdmin } from './router.utils';
-import * as adminCoursesController from '../../controllers/admin/admin.courses';
+import * as adminUsersController from '../../controllers/admin/admin.users.js';
+import { verifyAdmin } from './router.utils.js';
+import * as adminCoursesController from '../../controllers/admin/admin.courses.js';
 
 const router = express.Router();
 

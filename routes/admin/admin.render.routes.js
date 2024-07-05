@@ -1,11 +1,8 @@
 import express from 'express';
+import {verifyAdmin} from './router.utils.js';
+import * as adminRender from '../../controllers/admin/admin.render.js';
+
 const router = express.Router();
-
-//application imports
-import {verifyAdmin} from './router.utils';
-// const adminRender = require('../../controllers/admin/admin.render');
-import * as adminRender from '../../controllers/admin/admin.render';
-
 //get ['/', '/login']
 router.get('/', (req, res) => {
     console.log("New session: ", req.ip);
