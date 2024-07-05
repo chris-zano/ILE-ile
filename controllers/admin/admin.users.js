@@ -123,7 +123,7 @@ export const getLecturersDataByOffset = async (offset, key, value, limit = 256) 
     let query = key != 'null' || value != 'null' ? { [key]: value } : {};
 
     try {
-        const data = Tutors.find(query).skip(offset).limit(limit).exec();
+        const data = await Tutors.find(query).skip(offset).limit(limit).exec();
         if (!data) return null;
         return {
             status: 200,
@@ -241,11 +241,9 @@ export const importStudentsData = async (req, res) => {
     const { id } = req.params;
     const { filename } = req.file;
     const filePath = path.join(__dirname, '..', '..', 'models/imports', filename);
-    const createdAt = getSystemDate();
 
     try {
         const studentsArray = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-        (createdAt);
         if (Array.from(studentsArray).length === 0) return res.status(400).redirect(`/admins/render/students/${id}`);
 
         const studentsToInsert = Array.from(studentsArray).map((student) => ({
@@ -258,6 +256,7 @@ export const importStudentsData = async (req, res) => {
             session: student.session,
             registeredCourses: student.registeredCourses,
         }));
+
 
         await Students.insertMany(studentsToInsert);
         return res.status(200).redirect(`/admins/render/students/${id}`);

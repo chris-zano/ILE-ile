@@ -96,7 +96,7 @@ async function showView(e) {
 }
 
 const getStudentsByOffset = async (key, value) => {
-    const moffset = localStorage.getItem('tutors-offset') || 0;
+    const moffset = localStorage.getItem('students-offset') || 0;
     const req = await fetch(`/admin/get/students/${moffset}?key=${encodeURIComponent(key)}&value=${encodeURIComponent(value)}`);
     const res = await req.json();
     const status = req.status;
@@ -162,6 +162,7 @@ const createTableRow = (studentObject, parentElement) => {
 const callFetchForStudents = (key, value) => {
     getStudentsByOffset(key, value)
         .then((data) => {
+            console.log(data);
             const studentsArr = [...data.data.data];
 
             if (studentsArr.length == 0) {
@@ -241,14 +242,6 @@ const main = () => {
             callFetchForStudents(query.key, query.value);
         });
     });
-
-
-
-
 }
-
-
-
-
 if (document.readyState == 'loading') document.addEventListener('DOMContentLoaded', main)
 else main();

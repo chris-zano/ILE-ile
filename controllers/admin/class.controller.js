@@ -49,15 +49,12 @@ async function createClassrooms() {
 
         for (const group of studentsByCourses) {
             const classId = generateClassId(group._id.registeredCourses, group._id.session);
-            const createdAt = getSystemDate();
             const classroom = new Classes({
                 classId: classId,
                 students: group.students,
                 faculty: group.faculty,
                 session: group._id.session,
-                courses: [...getRegisteredCourses(group._id.registeredCourses)],
-                createdAt: createdAt,
-                updatedAt: createdAt
+                courses: [...getRegisteredCourses(group._id.registeredCourses)]
             });
             await classroom.save();
 

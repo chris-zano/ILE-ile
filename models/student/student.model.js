@@ -43,7 +43,7 @@ const studentSchema = new Schema({
     registeredCourses: { //eg 100_BCE, 200_BTE...
         type: String,
         default: "100_BCE",
-        enum: ["100_BCE", "100_BTE", "200_BCE", "200_BTE", "300_BCE", "300_BTE", "400_BCE", "400_BTE"]
+        // enum: ["100_BCE", "100_BTE", "200_BCE", "200_BTE", "300_BCE", "300_BTE", "400_BCE", "400_BTE"]
     },
     files: {
         type: Array,
