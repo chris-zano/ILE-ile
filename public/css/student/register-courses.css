@@ -1,0 +1,170 @@
+section.information-header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+section.information-header h2 {
+    font-size: 2ch;
+    color: var(--black);
+}
+
+
+section.list_main {
+    margin-top: 3ch;
+    margin-inline: auto;
+    padding: 1ch;
+    min-height: 150px;
+    display: flex;
+    justify-content: center;
+}
+
+section.list_main form {
+    background-color: var(--white);
+    padding: 1ch 2ch;
+    border-radius: 1ch;
+    width: 87%;
+    height: inherit;
+    display: flex;
+    flex-direction: column;
+}
+
+section.list_main form div.title-and-btn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+section.list_main form div.title-and-btn div.section-title h3 {
+    color: black;
+    font-size: 22px;
+}
+
+section.list_main form div.title-and-btn div.section-btn {
+    display: flex;
+    gap: 1ch;
+    width: fit-content;
+    height: 45px;
+    border-radius: 1ch;
+}
+
+section.list_main form div.title-and-btn div.section-btn button {
+    border: 1px solid transparent;
+    width: 120px;
+    height: 45px;
+    border-radius: 1ch;
+    transition: var(--transition-default);
+}
+
+section.list_main form div.title-and-btn div.section-btn button.btn-disabled {
+    cursor: no-drop;
+    background-color: #c5c1c1;
+}
+
+section.list_main form div.title-and-btn div.section-btn button.btn-enabled {
+    background-color: var(--secondary);
+    cursor: pointer;
+}
+
+section.list_main form div.title-and-btn div.section-btn button.btn-enabled.reset-btn {
+    background-color: var(--accent);
+    cursor: pointer;
+}
+
+section.list_main form div.title-and-btn div.section-btn button.btn-enabled:hover,
+section.list_main form div.title-and-btn div.section-btn button.btn-enabled:focus {
+    border: 1px solid var(--secondary);
+    background-color: transparent;
+    color: var(--text);
+}
+
+section.list_main form div.title-and-btn div.section-btn button.btn-enabled.reset-btn:hover,
+section.list_main form div.title-and-btn div.section-btn button.btn-enabled.reset-btn:focus {
+    border: 1px solid var(--accent);
+    background-color: transparent;
+    color: var(--text);
+}
+
+section.list_main form section.list-ul-wrapper {
+    margin-top: 2ch;
+}
+
+section.list-ul-wrapper div ul {
+    display: grid;
+    grid-auto-flow: row;
+    row-gap: 1ch;
+}
+
+section.list-ul-wrapper div ul li {
+    background-color: #f2f0f0;
+    height: 50px;
+    min-width: max-content;
+    max-width: 80%;
+    padding: 1ch;
+    border-radius: 1ch;
+    display: flex;
+    gap: 1.3ch;
+    align-items: center;
+}
+
+section.list-ul-wrapper div ul li label {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: row;
+    flex-basis: max-content;
+    gap: 1.5ch;
+}
+
+section.list-ul-wrapper div ul li label div.course_code-title {
+    flex-shrink: 0;
+    display: flex;
+    gap: 1ch;
+}
+section.list-ul-wrapper div ul li label div span.tutor_name {
+    color: var(--black);
+    font-weight: bold;
+    font-style: italic;
+    text-transform: uppercase;
+}
+
+.list-ul-wrapper div ul li input[type="checkbox" i] {
+    width: 20px;
+    height: 20px;
+    background-color: #cecece;
+    appearance: unset;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border: 1px solid #070707;
+    cursor: pointer;
+    position: relative;
+}
+
+.list-ul-wrapper div ul li input[type="checkbox" i]:checked {
+    background-color: green;
+}
+
+.list-ul-wrapper div ul li input[type="checkbox" i]::before {
+    content: "";
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(254, 252, 252);
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.list-ul-wrapper div ul li input[type="checkbox" i]:checked::before {
+    content: "\2713";
+    width: 100%;
+    height: 100%;
+    color: var(--white);
+    background-color: var(--secondary);
+}

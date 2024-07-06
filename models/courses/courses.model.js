@@ -26,14 +26,6 @@ const lecturerSchema = new Schema({
     }
 }, { _id: false });
 
-const studentSchema = new Schema({
-    studentId: {
-        type: String,
-        default:"0000000000",
-        match: /^\d{10}$/
-    }
-}, { _id: false });
-
 const dateRecordedSchema = new Schema({
     day: {
         type: String,
@@ -108,7 +100,7 @@ const attendanceSchema = new Schema({
     absentees: [attendeesSchema]
 }, { _id: false });
 
-const recordingsSchema =  new Schema({
+const recordingsSchema = new Schema({
     title: {
         type: String,
         default: ""
@@ -195,8 +187,8 @@ const courseSchema = new Schema({
         required: true
     },
     lecturer: lecturerSchema,
-    students: [studentSchema],
-    chapters:[chapterSchema],
+    students: [String],
+    chapters: [chapterSchema],
     schedule: {
         type: scheduleSchema,
         default: {}

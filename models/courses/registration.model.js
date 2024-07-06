@@ -14,7 +14,9 @@ const registrationSchema = new Schema({
         unique: true,
         required: true,
     },
-    courses: [Array]
+    courses: [String],
+    students: [String]
 }, { timestamps: true });
+
 
 export default mongoose.model("Registration", registrationSchema);

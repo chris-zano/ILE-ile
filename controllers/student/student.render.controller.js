@@ -1,7 +1,9 @@
-import { ClassesDB } from '../../utils/global/db.utils.js';
+import { ClassesDB, CoursesDB, RegisteredCoursesDB } from '../../utils/global/db.utils.js';
 import { logError } from '../admin/admin.utils.js';
 
+const Courses = CoursesDB();
 const Classes = ClassesDB();
+const RegisteredCourses = RegisteredCoursesDB();
 
 const getStudentDashboard = async (studentData) => {
     return {
@@ -41,6 +43,19 @@ const getStudentClassroom = async (studentData) => {
         return null;
     }
 }
+
+const getCourseRegistrationPage = async (studentData) => {
+    try{
+        const data = await RegisteredCourses.findOne({registrationCode: studentData.registeredCourses});
+        const coursesMap = data.courses.map((courseCode) => Courses.findOne({ courseCode: courseCode }));
+        const courses = await Promise.all(coursesMap);
+        return courses;
+    }
+    catch(error) {
+        logError(error);
+        return null;
+    }
+}
 const returnUrlsToMethod = (pageurl = "") => {
     if (!pageurl) return undefined;
 
@@ -49,7 +64,8 @@ const returnUrlsToMethod = (pageurl = "") => {
         "courses": getStudentCourses,
         "schedules": getStudentSchedules,
         "classroom": getStudentClassroom,
-        "profile": getStudentProfileInfo
+        "profile": getStudentProfileInfo,
+        "register-courses": getCourseRegistrationPage
     }
     return urlToMethodsObject[pageurl] || undefined;
 }
@@ -71,12 +87,12 @@ const renderStudentViews = async (req, res) => {
         return res.render('student/student-main', {
             student: studentData,
             data: dataObject,
-            pageTitle: "Dashboard",
-            stylesheets: [],
+            pageTitle: pageUrl,
+            stylesheets: [`/css/student/${pageUrl}`],
             pageUrl: `layouts/${pageUrl}`,
             currentPage: 'dashboard',
             userType: 'Student',
-            scripts: []
+            scripts: [`/script/scripts/student/${pageUrl}`]
         });
     } catch (error) {
         logError(error);

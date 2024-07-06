@@ -37,8 +37,11 @@ const studentSchema = new Schema({
         default: 'pa55@gctu'
     },
     courses: {
-        type: Array,
-        default: []
+        type: [String],
+        default:[],
+        set: (courses) => {
+            return [...new Set(courses)];
+        }
     },
     registeredCourses: { //eg 100_BCE, 200_BTE...
         type: String,

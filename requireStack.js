@@ -8,6 +8,7 @@ import lecturerChaptersRoutes from './routes/lecturer/lecturer.chapters.routes.j
 import lecturerFilesRoutes from './routes/lecturer/lecturer.files.routes.js';
 import modelUpdatesRoutes from './routes/admin/models.updates.routes.js';
 import studentRenderRoutes from './routes/student/student.render.routes.js';
+import studentCoursesRoutes from './routes/student/student.courses.routes.js';
 import  setupWebSocketServer  from './utils/global/websocket.util.js';
 
 const callAndExecuteRequireStack = (app, server) => {
@@ -23,6 +24,7 @@ const callAndExecuteRequireStack = (app, server) => {
   app.use(lecturerChaptersRoutes);
   app.use(modelUpdatesRoutes);
   app.use(studentRenderRoutes);
+  app.use(studentCoursesRoutes);
 
   app.use((req, res) => {
     res.render('global/error', { error: "Page not found", status: 404 });

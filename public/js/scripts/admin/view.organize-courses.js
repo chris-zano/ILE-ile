@@ -156,6 +156,7 @@ const organiseMain = async () => {
     document.getElementById("courses-fetch-and-unmount").innerHTML = ""
 
     form.addEventListener("submit", async (event) => {
+        event.preventDefault();
         if (document.querySelector("#change-selection").classList.contains("btn-disabled")) {
             return event.preventDefault();
         }
