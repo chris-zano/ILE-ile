@@ -95,10 +95,11 @@ export const getCoursesByRegistrationCode = async (req, res) => {
 
     try {
         const documentMatch = await RegisteredCourses.findOne({ registrationCode: rcode })
-            .populate("courseDetails")
-            .exec();
+        if (!documentMatch) return res.status(200).json({ doc: null });
 
-        return res.status(200).json({ doc: documentMatch });
+        const coursesMap = documentMatch.courses.map((courseCode) => Courses.findOne({ courseCode: courseCode }));
+        const courses = await Promise.all(coursesMap);
+        return res.status(200).json({ doc: courses });
     } catch (error) {
         logError(error);
         return res.status(500).json({ doc: null })
@@ -133,8 +134,8 @@ const addNewRegisteredCoursesEntry = async (rcode = "", courses = []) => {
 
     try {
         const newEntry = new RegisteredCourses({ registrationCode: rcode, courses: courses });
-        await newEntry.save();
-        return true;
+        const savedData = await newEntry.save();
+        return savedData;
     } catch (error) {
         logError(error);
         return false;
@@ -145,10 +146,16 @@ const updateExistingRegisteredCourseEntry = async (rcode = "", courses = []) => 
     if (!rcode || courses.length === 0)
         return false
     try {
-        const updateStatus = await RegisteredCourses.updateOne({ registrationCode: rcode }, {
-            $set: { courses: courses }
-        });
-        return updateStatus.matchedCount === 1 && updateStatus.modifiedCount === 1;
+        const updateStatus = await RegisteredCourses.findOneAndUpdate(
+            {
+                registrationCode: rcode
+            },
+            {
+                $set: { courses: courses }
+            },
+            { new: true, useFindAndModify: false }
+        );
+        return updateStatus;
     } catch (error) {
         logError(error);
         return false;
@@ -169,20 +176,43 @@ export const setCoursesToRegistrationCode = async (req, res) => {
         }
 
         const doesExist = await doesRegCodeExists(rcode);
-        let opState = false;
+        let rcObj = false;
 
         if (!doesExist)
-            opState = await addNewRegisteredCoursesEntry(rcode, validCourseCodes);
+            rcObj = await addNewRegisteredCoursesEntry(rcode, validCourseCodes);
         else
-            opState = await updateExistingRegisteredCourseEntry(rcode, validCourseCodes);
+            rcObj = await updateExistingRegisteredCourseEntry(rcode, validCourseCodes);
 
-        if (!opState)
+        if (rcObj === false)
             return res.status(404).json({ message: "operation failed" });
 
-        return res.status(200).json({ message: "success" });
+        const coursesMap = rcObj.courses.map((courseCode) => Courses.findOne({ courseCode: courseCode }));
+        const courseList = await Promise.all(coursesMap);
+        console.log(courses)
+        return res.status(200).json({ doc: courseList });
     }
     catch (error) {
         logError(error);
         return res.status(500).json({ message: "An unxpected error occured" });
+    }
+}
+
+export const resetCoursesForRegistrationCode = async (req, res) => {
+    const { rcode } = req.query;
+
+    try {
+        const doc = await RegisteredCourses.findOneAndUpdate(
+            { registrationCode: rcode },
+            {
+                $set: { courses: [] }
+            },
+            { new: true, useFindAndModify: false }
+        );
+        if (!doc) return res.status(404).json({ message: "Document reset failed" });
+
+        return res.status(200).json({ doc: doc });
+    } catch (error) {
+        logError(error);
+        return res.status(500).json({ message: "An unexpected error occured" });
     }
 }

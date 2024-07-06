@@ -1,29 +1,11 @@
 <nav id="nav-main" class="nav-main open" aria-label="main navigation">
 
-    <section class="side-header">
-
-        <div class="side-header_logo">
-
-            <i class="side-nav_icon">
-                <img src="/images/system/user" alt="application user">
-            </i>
-
-            <p>Administrator</p>
-        </div>
-
-        <div class="side-header_toggle-btn">
-            <i class="side-nav_icon">
-                <img src="/images/system/hamburger" alt="toggle sidenav open">
-                <img src="/images/system/close" class="hidden" alt="toggle sidenav closed">
-            </i>
-        </div>
-    </section>
-
     <section class="side-nav_list">
-        
+
         <ul class="admin-nav_main">
             <li>
-                <a href="/admins/render/dashboards/<%= admin.id %>" <%= currentPage === 'dashboard' ? 'aria-current=page' : '' %> >
+                <a href="/admins/render/dashboards/<%= admin.id %>" <%=currentPage==='dashboard' ? 'aria-current=page'
+                    : '' %> >
                     <i class="side-nav_icon">
                         <img src="/images/system/home" alt="application logo">
                     </i>
@@ -32,7 +14,8 @@
                 <div class="abstract-tooltip">Home</div>
             </li>
             <li>
-                <a href="/admins/render/courses/<%= admin.id %>" <%= currentPage === 'courses' ? 'aria-current=page' : '' %> >
+                <a href="/admins/render/courses/<%= admin.id %>" <%=currentPage==='courses' ? 'aria-current=page' : ''
+                    %> >
                     <i class="side-nav_icon">
                         <img src="/images/system/courses" alt="application logo">
                     </i>
@@ -41,7 +24,8 @@
                 <div class="abstract-tooltip">Courses</div>
             </li>
             <li>
-                <a href="/admins/render/tutors/<%= admin.id %>" <%= currentPage === 'tutors' ? 'aria-current=page' : '' %> >
+                <a href="/admins/render/tutors/<%= admin.id %>" <%=currentPage==='tutors' ? 'aria-current=page' : '' %>
+                    >
                     <i class="side-nav_icon">
                         <img src="/images/system/lecturer" alt="application logo">
                     </i>
@@ -50,7 +34,8 @@
                 <div class="abstract-tooltip">Lecturers</div>
             </li>
             <li>
-                <a href="/admins/render/students/<%= admin.id %>" <%= currentPage === 'students' ? 'aria-current=page' : '' %> >
+                <a href="/admins/render/students/<%= admin.id %>" <%=currentPage==='students' ? 'aria-current=page' : ''
+                    %> >
                     <i class="side-nav_icon">
                         <img src="/images/system/students" alt="application logo">
                     </i>
@@ -59,7 +44,8 @@
                 <div class="abstract-tooltip">Students</div>
             </li>
             <li>
-                <a href="/admins/render/classrooms/<%= admin.id %>" <%= currentPage === 'classrooms' ? 'aria-current=page' : '' %> >
+                <a href="/admins/render/classrooms/<%= admin.id %>" <%=currentPage==='classrooms' ? 'aria-current=page'
+                    : '' %> >
                     <i class="side-nav_icon">
                         <img src="/images/system/classrooms" alt="application logo">
                     </i>
@@ -67,11 +53,6 @@
                 </a>
                 <div class="abstract-tooltip">Classes</div>
             </li>
-        </ul>
-    </section>
-
-    <section class="side-secondary_nav">
-        <ul>
             <li>
                 <a href="#">
                     <i class="side-nav_icon">
@@ -121,6 +102,15 @@
                     <p class="nav_name">Settings</p>
                 </a>
                 <div class="abstract-tooltip">Settings</div>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="side-nav_icon">
+                        <img src="/images/system/logout" alt="application logo">
+                    </i>
+                    <p class="nav_name">Logout</p>
+                </a>
+                <div class="abstract-tooltip">Logout</div>
             </li>
         </ul>
     </section>

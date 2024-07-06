@@ -20,7 +20,6 @@ section.registration-code_carousel div.carousel-wrapper {
 section.registration-code_carousel div.carousel-wrapper div.carousel-card {
     background-color: var(--white);
     display: grid;
-    /* place-content: center; */
     width: 150px;
     height: 100%;
     border-radius: 1ch;
@@ -98,7 +97,9 @@ section.list_main form div.title-and-btn div.section-title h3 {
 }
 
 section.list_main form div.title-and-btn div.section-btn {
-    width: 120px;
+    display: flex;
+    gap: 1ch;
+    width: fit-content;
     height: 45px;
     border-radius: 1ch;
 }
@@ -121,9 +122,21 @@ section.list_main form div.title-and-btn div.section-btn button.btn-enabled {
     cursor: pointer;
 }
 
+section.list_main form div.title-and-btn div.section-btn button.btn-enabled.reset-btn {
+    background-color: var(--accent);
+    cursor: pointer;
+}
+
 section.list_main form div.title-and-btn div.section-btn button.btn-enabled:hover,
 section.list_main form div.title-and-btn div.section-btn button.btn-enabled:focus {
     border: 1px solid var(--secondary);
+    background-color: transparent;
+    color: var(--text);
+}
+
+section.list_main form div.title-and-btn div.section-btn button.btn-enabled.reset-btn:hover,
+section.list_main form div.title-and-btn div.section-btn button.btn-enabled.reset-btn:focus {
+    border: 1px solid var(--accent);
     background-color: transparent;
     color: var(--text);
 }
@@ -141,7 +154,8 @@ section.list-ul-wrapper div ul {
 section.list-ul-wrapper div ul li {
     background-color: #f2f0f0;
     height: 50px;
-    width: 60%;
+    min-width: max-content;
+    max-width: 80%;
     padding: 1ch;
     border-radius: 1ch;
     display: flex;
@@ -150,40 +164,42 @@ section.list-ul-wrapper div ul li {
 }
 
 section.list-ul-wrapper div ul li label {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    place-items: center;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: row;
+    flex-basis: max-content;
+    gap: 1.5ch;
 }
 
 section.list-ul-wrapper div ul li label div.course_code-title {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    flex-shrink: 0;
+    display: flex;
+    gap: 1ch;
+}
+section.list-ul-wrapper div ul li label div span.tutor_name {
+    color: var(--black);
+    font-weight: bold;
+    font-style: italic;
+    text-transform: uppercase;
 }
 
 .list-ul-wrapper div ul li input[type="checkbox" i] {
     width: 20px;
     height: 20px;
-    /* Adjust height as needed */
     background-color: #cecece;
     appearance: unset;
-    /* Remove default styling */
     -webkit-appearance: none;
-    /* For Safari */
     -moz-appearance: none;
-    /* For Firefox */
     border: 1px solid #070707;
-    /* Optional: add a border */
     cursor: pointer;
     position: relative;
 }
 
-/* Custom checked state */
 .list-ul-wrapper div ul li input[type="checkbox" i]:checked {
     background-color: green;
-    /* Change background color when checked */
 }
 
-/* Custom checkbox appearance */
 .list-ul-wrapper div ul li input[type="checkbox" i]::before {
     content: "";
     display: inline-block;
@@ -191,7 +207,6 @@ section.list-ul-wrapper div ul li label div.course_code-title {
     height: 100%;
     background-color: rgb(254, 252, 252);
     border-radius: 3px;
-    /* Optional: add rounded corners */
     border: 1px solid #ccc;
     box-sizing: border-box;
     position: absolute;
@@ -201,5 +216,4 @@ section.list-ul-wrapper div ul li label div.course_code-title {
 
 .list-ul-wrapper div ul li input[type="checkbox" i]:checked::before {
     background-color: green;
-    /* Change background color when checked */
 }

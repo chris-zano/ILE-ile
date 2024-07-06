@@ -1,4 +1,32 @@
 const adminId = JSON.parse(window.sessionStorage.getItem("auth-user")).data.id || undefined
+let courseGroups = [];
+
+const renderDefaultCoursesForyear = (courses, isdefault = false) => {
+    const ulMaster = document.getElementById("list-ul-master");
+    ulMaster.innerHTML = "";
+    Array.from(courses).forEach((course) => {
+        const li = document.createElement("li");
+        li.innerHTML = `
+        <input type="checkbox" name="course" id="course_${course._id}_${course.__v}" value="${course.courseCode}" ${isdefault? "unchecked": "checked"}>
+        <label for="course_${course._id}_${course.__v}">
+            <div class="course_code-title">
+                <span class="course_code">(${course.courseCode})- ${course.credit}credits</span>
+                <h4 class="course_title">${course.title}</h4>
+            </div>
+            <div class="tutor-name">
+                <span class="tutor_name">${course.lecturer.name}</span>
+            </div>
+        </label>
+        `;
+        ulMaster.append(li);
+    });
+}
+
+const loadDefaultCoursesForYear = (code = "") => {
+    const courseGroup = courseGroups.filter((course) => code.includes(course._id));
+    renderDefaultCoursesForyear(courseGroup[0].courses, true);
+}
+
 /**
  * Fetches and returns the coursess for a given registration code.
  * if no courses have been assigned, it loads the available courses to be registered.
@@ -13,7 +41,7 @@ const getCoursesForRegistrationCode = async (code) => {
         const status = response.status;
         const data = await response.json();
 
-        return {status, data}
+        return { status, data }
     }
     catch (error) {
         console.log(error)
@@ -39,8 +67,8 @@ const setCoursesForRegistrationCode = async (code = "", course_codes = []) => {
         });
         const status = response.status;
         const data = await response.json();
-        
-        return {status, data}
+
+        return { status, data }
     } catch (error) {
         console.log(error);
     }
@@ -59,7 +87,7 @@ const setCoursesForRegistrationCode = async (code = "", course_codes = []) => {
  * @param {Event} event 
  */
 const handleCarouselCardClick = async (button) => {
-    const targetBtn = button
+    const targetBtn = button;
     const targetparent = targetBtn.parentElement.parentElement;
     const rCode = targetBtn.getAttribute("data-code");
 
@@ -77,11 +105,10 @@ const handleCarouselCardClick = async (button) => {
         return;
     }
 
-    if (doc === null){
-        Toast_Notification.showInfo("No courses have been registered with this course code.");
-        return;
+    if (doc === null || doc.length === 0) {
+        return loadDefaultCoursesForYear(rCode);
     }
-    console.log(doc);    
+    return renderDefaultCoursesForyear(doc);
 }
 
 const handleCheckFormSubmit = async (event) => {
@@ -93,22 +120,37 @@ const handleCheckFormSubmit = async (event) => {
     const checkedValues = [...(target.querySelectorAll("input[type='checkbox']:checked"))].map((checkbox) => checkbox.value);
 
     const response = await setCoursesForRegistrationCode(activeRegCode, [...checkedValues]);
-
+    const doc = response.data.doc
     if (response.status !== 200) {
-        Toast_Notification.showError(response.data.message);
-        return;
+        return loadDefaultCoursesForYear(activeRegCode);
     }
-
-    Toast_Notification.showSuccess(response.data.message);
-
+    Toast_Notification.showSuccess("saved");
+    renderDefaultCoursesForyear(doc);
 }
 
-const organiseMain = () => {
-    const courseGroups = JSON.parse(document.getElementById("courses-fetch-and-unmount").innerText);
-    // const carouselCodes = [...(document.getElementsByClassName("data-courseCode"))];
-    const form = document.getElementById("check-form");
+const handleReset = async () => {
+    const activeCode = document.querySelector(".carousel-card.active").querySelector("h3").getAttribute("data-code");
+    const url = `/admins/reset/registration-code-courses/${adminId}?rcode=${encodeURIComponent(activeCode)}`;
 
-    console.log(courseGroups)
+    try {
+        const response = await fetch(url);
+        const status = response.status;
+        const data = await response.json();
+
+        return loadDefaultCoursesForYear(activeCode);
+    } catch (error) {
+
+    }
+
+    console.log(url)
+}
+const organiseMain = async () => {
+    courseGroups = JSON.parse(document.getElementById("courses-fetch-and-unmount").innerText);
+    const form = document.getElementById("check-form");
+    const resetBtn = document.getElementById("reset-entries");
+
+    const activeCard = document.querySelector(".carousel-card.active").querySelector("h3")
+    await handleCarouselCardClick(activeCard);
 
     document.getElementById("courses-fetch-and-unmount").innerText = ""
     document.getElementById("courses-fetch-and-unmount").innerHTML = ""
@@ -118,6 +160,10 @@ const organiseMain = () => {
             return event.preventDefault();
         }
         return await handleCheckFormSubmit(event);
+    });
+
+    resetBtn.addEventListener("click", (event) => {
+        handleReset(event)
     })
 
 }

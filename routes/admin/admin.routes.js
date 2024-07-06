@@ -11,5 +11,6 @@ router.get('/admin/courses/get-courses/:id', verifyAdmin, adminCoursesController
 router.post('/admins/update/course/:courseId/:id', verifyAdmin, adminCoursesController.manageCourses);
 router.get("/admins/get/registration-code-courses/:id", verifyAdmin, adminCoursesController.getCoursesByRegistrationCode);
 router.post("/admins/set/registration-code-courses/:id", verifyAdmin, adminCoursesController.setCoursesToRegistrationCode);
+router.get("/admins/reset/registration-code-courses/:id", verifyAdmin, adminCoursesController.resetCoursesForRegistrationCode);
 
 export default router;
