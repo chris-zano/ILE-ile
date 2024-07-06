@@ -1,10 +1,56 @@
-<% if (data.length === 0) { %>
- <p>Your courses have not yet been created by your department administrator.</p>
- <p>Please check with your department for more information. or check the announcements page.</p>
- <p>The registration code for your courses is:  <%= student.registeredCourses %></p>
+<% if (data.length===0) { %>
+    <div class="no-available-courses" style="display: grid; place-items: center;">
+        <p>Your courses have not yet been created by your department administrator.</p>
+        <p>Please check with your department for more information. or check the announcements page.</p>
+        <p>The registration code for your courses is: <%= student.registeredCourses %></p>
+    </div>
 <% } else { %>
-    <% for (let course of data) { %>
-        <%= course.title %>
-        <%= course.courseCode %>
-    <% } %>
+    <section class="courses-main" id="courses-main">
+        <article class="cards">
+            <% for (let course of data) { %>
+                <a href="/students/render/course/<%= course._id %>/<%= student.id %>" class="card" preload>
+                    <section class="card-header">
+                        <img src="/random/image/" alt="course thumbnail" width="150px" height="150px">
+                    </section>
+                    <section class="card-body">
+                        <div class="title">
+                            <h2>
+                                <%= course.title %>
+                            </h2>
+                            <small>
+                                <%= course.courseCode %>
+                            </small>
+                        </div>
+                        <div class="professor">
+                            <img src="/images/system/lecturer" alt="professor">
+                            <% if (course.lecturer.lecturerId=="TU-000FoE" && course.lecturer.name=="unassigned" ) { %>
+                                <p>No lecturer assigned</p>
+                            <% } else { %>
+                                <p>
+                                    <%= course.lecturer.name %>
+                                </p>
+                            <% } %>
+                        </div>
+                        <div class="schedule">
+                            <p>Schedule: <%= course.schedule === "" ? '(Not yet Scheduled)' : course.schedule %></p>
+                        </div>
+                        <div class="footer">
+                            <div class="highlight-footer">
+                                <img src="/images/system/classrooms" alt="course level">
+                                <small>
+                                    <%= course.level %>
+                                </small>
+                            </div>
+                            <div class="highlight-footer">
+                                <img src="/images/system/students" alt="students count">
+                                <small>
+                                    <%= course.students.length %>
+                                </small>
+                            </div>
+                        </div>
+                    </section>
+                </a>
+            <% } %>
+        </article>
+    </section>
 <% } %>

@@ -1,18 +1,6 @@
 import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
-const scheduleSchema = new Schema({
-    day: {
-        type: String
-    },
-    time: {
-        type: String
-    },
-    duration: {
-        type: String
-    }
-}, { _id: false });
-
 const lecturerSchema = new Schema({
     lecturerId: {
         type: String,
@@ -190,8 +178,8 @@ const courseSchema = new Schema({
     students: [String],
     chapters: [chapterSchema],
     schedule: {
-        type: scheduleSchema,
-        default: {}
+        type: String,
+        default: ""
     },
     credit: {
         type: String,

@@ -11,8 +11,17 @@ const getStudentDashboard = async (studentData) => {
     };
 }
 
-const getStudentCourses = (studentData) => {
-    return studentData.courses || null;
+const getStudentCourses = async (studentData) => {
+    try {
+        const courseCodes = studentData.courses;
+        const coursesMaps = courseCodes.map((code) => Courses.findOne({courseCode: code}));
+        const courses = await Promise.all(coursesMaps);
+
+        return courses.filter((course) => course !== null);
+    }catch(error) {
+        logError(error);
+        return null
+    }
 }
 
 const getStudentProfileInfo = (studentData) => {
