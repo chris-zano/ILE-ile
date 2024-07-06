@@ -52,6 +52,7 @@ export const renderCourses = async (req, res) => {
             ]
         });
 
+        console.log(courses)
         return res.render('lecturer/lecturer-main', {
             lecturer: lecturerData,
             pageTitle: "Courses",

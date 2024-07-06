@@ -1,3 +1,4 @@
+import { isValidObjectId } from 'mongoose';
 import { ClassesDB, CoursesDB, RegisteredCoursesDB } from '../../utils/global/db.utils.js';
 import { logError } from '../admin/admin.utils.js';
 
@@ -14,11 +15,11 @@ const getStudentDashboard = async (studentData) => {
 const getStudentCourses = async (studentData) => {
     try {
         const courseCodes = studentData.courses;
-        const coursesMaps = courseCodes.map((code) => Courses.findOne({courseCode: code}));
+        const coursesMaps = courseCodes.map((code) => Courses.findOne({ courseCode: code }));
         const courses = await Promise.all(coursesMaps);
 
         return courses.filter((course) => course !== null);
-    }catch(error) {
+    } catch (error) {
         logError(error);
         return null
     }
@@ -54,13 +55,13 @@ const getStudentClassroom = async (studentData) => {
 }
 
 const getCourseRegistrationPage = async (studentData) => {
-    try{
-        const data = await RegisteredCourses.findOne({registrationCode: studentData.registeredCourses});
+    try {
+        const data = await RegisteredCourses.findOne({ registrationCode: studentData.registeredCourses });
         const coursesMap = data.courses.map((courseCode) => Courses.findOne({ courseCode: courseCode }));
         const courses = await Promise.all(coursesMap);
         return courses;
     }
-    catch(error) {
+    catch (error) {
         logError(error);
         return null;
     }
@@ -80,7 +81,7 @@ const returnUrlsToMethod = (pageurl = "") => {
 }
 
 
-const renderStudentViews = async (req, res) => {
+export const renderStudentViews = async (req, res) => {
     const { pageUrl } = req.params;
     const { studentData } = req;
 
@@ -109,4 +110,28 @@ const renderStudentViews = async (req, res) => {
     }
 }
 
-export default renderStudentViews;
+export const renderCourseView = async (req, res) => {
+    const { studentData } = req;
+    const { courseId } = req.params;
+
+    if (!courseId || !isValidObjectId(courseId)) return res.status(400);
+
+    try {
+        const course = await Courses.findOne({_id: courseId});
+        if (!course) return res.status(404);
+
+        return res.render('student/student-main', {
+            student: studentData,
+            course: course,
+            pageTitle: course.title,
+            stylesheets: [`/css/student/course`],
+            pageUrl: `layouts/course`,
+            currentPage: 'course',
+            userType: 'Student',
+            scripts: [`/script/scripts/student/course`]
+        });
+    }catch(error) {
+        logError(error);
+        return res.status(500);
+    }
+}

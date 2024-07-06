@@ -158,7 +158,7 @@ export const renderUpdateCourse = async (req, res) => {
     }
 
     try {
-        const course = await Courses.find({ _id: courseCode });
+        const course = await Courses.findOne({ _id: courseCode });
         if (!course) return res.render("global/error", { error: "An Error occured", status: 404 });
 
         res.set('Cache-Control', 'public, max-age=30');

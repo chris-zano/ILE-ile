@@ -1,7 +1,8 @@
-import { CoursesDB, RegisteredCoursesDB } from '../../utils/global/db.utils.js';
+import { CoursesDB, LecturersDB, RegisteredCoursesDB } from '../../utils/global/db.utils.js';
 import { logError } from './admin.utils.js';
 
 const Courses = CoursesDB();
+const Lecturers = LecturersDB();
 const RegisteredCourses = RegisteredCoursesDB();
 
 export const getCoursesByOffset = async (req, res) => {
@@ -52,8 +53,13 @@ export const manageCourses = async (req, res) => {
             });
 
             await newCourse.save();
-            res.redirect(`/admins/render/courses/${id}`)
+            
+            await Lecturers.findOneAndUpdate(
+                {lecturerId: lecturerId},
+                {$addToSet: {assignedCourses: course.courseCode}}
+            );
 
+            res.redirect(`/admins/render/courses/${id}`);
         }
         catch (err) {
             logError(err)
@@ -62,27 +68,30 @@ export const manageCourses = async (req, res) => {
     else {
         try {
             const [lecturerId, name] = course.lecturer.split("_");
-            Courses.findByIdAndUpdate({ _id: courseId })
-                .then((c) => {
-                    if (c.__v === Number(course.v)) {
-                        c.courseCode = course.courseCode
-                        c.title = course.courseTitle
-                        c.lecturer.lecturerId = lecturerId;
-                        c.lecturer.name = name;
-                        c.year = course.year
-                        c.level = Number(course.level)
-                        c.semester = Number(course.semester)
-                        c.faculty = course.faculty
-                        c.program = course.program
-                        c.__v = Number(course.v) + 1
-                        c.save();
-                        res.redirect(`/admins/render/courses/${id}`)
+            const updatedCourse = await Courses.findOneAndUpdate(
+                {_id: courseId, __v: course.v},
+                {$set: {
+                    courseCode: course.courseCode,
+                    title: course.courseTitle,
+                    "lecturer.lecturerId": lecturerId,
+                    "lecturer.name": name,
+                    year: course.year,
+                    level: Number(course.level),
+                    semester: Number(course.semester),
+                    faculty: course.faculty,
+                    program: course.program,
+                    __v: Number(course.v) + 1,
+                }},
+                {new: true}
+            );
+            if (!updatedCourse) return res.status(404).redirect(`/admins/render/courses/${id}`);
 
-                    }
-                    else {
-                        res.render('global/error', { error: "Failed to update course - [ Inconsistent Data ]", status: 400 })
-                    }
-                })
+            await Lecturers.findOneAndUpdate(
+                {lecturerId: lecturerId},
+                {$addToSet: {assignedCourses: course.courseCode}}
+            );
+
+            return res.status(200).redirect(`/admins/render/courses/${id}`)
         } catch (err) {
             logError(err);
         }
