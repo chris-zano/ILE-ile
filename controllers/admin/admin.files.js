@@ -45,6 +45,9 @@ const getScriptFilePath = (attribute, authLevel, filename) => {
         case 'student':
             filePath = setFilePath('js', attribute, 'student', filename);
             break;
+        case 'global':
+            filePath = setFilePath('js', attribute, 'global', filename);
+            break;
         default:
             filePath = PATH_NOT_FOUND;
             break;

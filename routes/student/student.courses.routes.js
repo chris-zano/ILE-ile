@@ -4,5 +4,7 @@ import { setCourseRegistration } from "../../controllers/student/student.courses
 
 const router = express.Router();
 router.post('/students/set/registration/:id', verifyStudent, setCourseRegistration)
-
+router.get('/students/join', (req, res) => {
+    res.status(200).render('global/rtc-master')
+})
 export default router;
