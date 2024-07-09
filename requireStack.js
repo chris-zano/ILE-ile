@@ -9,7 +9,10 @@ import lecturerFilesRoutes from './routes/lecturer/lecturer.files.routes.js';
 import modelUpdatesRoutes from './routes/admin/models.updates.routes.js';
 import studentRenderRoutes from './routes/student/student.render.routes.js';
 import studentCoursesRoutes from './routes/student/student.courses.routes.js';
-import  setupWebSocketServer  from './utils/global/websocket.util.js';
+import setupWebSocketServer from './utils/global/websocket.util.js';
+import initialiseFirebaseAndExport from './firebase.config.js';
+
+export const callInitFirebase = () => initialiseFirebaseAndExport();
 
 const callAndExecuteRequireStack = (app, server) => {
   const io = setupWebSocketServer(server);

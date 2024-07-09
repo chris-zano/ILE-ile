@@ -129,6 +129,7 @@ export const verifyLecturer = async (req, res, next) => {
  */
 export const verifyStudent = async (req, res, next) => {
     const { id } = req.params;
+    console.log(id)
 
     // Validate the provided ID
     if(!isValidObjectId(id)) {
