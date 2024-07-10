@@ -1,11 +1,21 @@
 const socket = io();
 
-socket.emit("firebase-store", ("genericDataFromClient"));
-socket.on('firebase-store-complete', (docref) => {
-    console.log(docref)
-})
+function getOrCreateRoom(classId, hostId) {
+    socket.emit("getOrCreateRoom", ({ classId, hostId }));
+}
 
-function emitCreateNewRoom(roomWithOffer, classId) {
-    console.log({roomWithOffer, classId})
-    socket.emit("createRoom", ({roomWithOffer, classId}));
+function updateCallerCandidates(roomref) {
+    socket.emit("updateCallerCandidates", (roomref))
+}
+
+function emitCreateNewRoom(roomWithOffer, roomref) {
+    socket.emit("createRoom", ({ roomWithOffer, roomref }));
+}
+
+function listenForRemoteSessionDescription(roomRef, property) {
+    socket.emit('listenForSDP', ({ roomRef, property }));
+}
+
+function getMeetingRoom(roomId, hostId) {
+    socket.emit(getMeetingRoom, ({ roomId, hostId }));
 }

@@ -1,63 +1,80 @@
-import { addDoc, collection, getDocs, query, updateDoc, where } from "firebase/firestore";
-import { callInitFirebase } from "../../../requireStack.js"
+import { RTCDB } from "../db.utils.js";
+import { watchRtcCollection } from "./socket.rtc.utils.js";
 
+const db = RTCDB();
 /**
  * store
  * read
  * delete
  * add event listener
  */
-export const storeData = async (socket, dataToStore) => {
-    const firestoreDB = callInitFirebase();
-    const genericCollection = collection(firestoreDB, "generics");
-    const docref = await addDoc(genericCollection, {
-        data: "generic data" + dataToStore
-    });
-    console.log("Document written with id: ", docref.id);
-    socket.emit("firebase-store-complete", { docref });
+
+export const getOrCreateRoom = async (socket, classId, hostId) => {
+    try {
+        console.log({ classId, hostId })
+        const doc = await db.findOne({ classId: classId });
+        let roomData = null
+        if (!doc) {
+            const newRoom = new db({ classId: classId, hostId: hostId });
+            roomData = await newRoom.save();
+        }
+        else {
+            roomData = doc;
+        }
+        console.log(roomData);
+        return socket.emit("roomRef", roomData);
+    } catch (error) {
+        console.log(error);
+    }
 }
 
-export const getRoomRef = async (socket, classId) => {
-    const fireStoreDB = callInitFirebase();
-    const roomQuery = query(collection(fireStoreDB, "rooms"), where("classId", "==", classId));
-    const roomSnapshot = await getDocs(roomQuery);
-    let roomData = null
-    if (roomSnapshot.empty) {
-        console.log("No room found with classId: ", classId);
-        const newRoomRef = await addDoc(collection(fireStoreDB, "rooms"), { classId: classId });
-        roomData = { new: true, doc: newRoomRef.data() };
+export const getMeetingRoom = async (roomId, hostId) => {
+    try {
+        console.log({ roomId, hostId })
+        const doc = await db.findOne({ _id: roomId });
+        let roomData = null
+        if (doc !== null) {
+            roomData = doc;
+        }
+        console.log(roomData);
+        return socket.emit("sendMeetingRoom", roomData);
+    } catch (error) {
+        console.log(error);
     }
-    else {
-        console.log("A room as found with the classId: ", classId);
-        roomData = { new: false, doc: roomSnapshot.docs[0].data() };
-    }
+}
+export const updateRTCDocument = async (socket, roomref) => {
+    try {
+        const _filter = { _id: roomref._id, hostId: roomref.hostId, classId: roomref.classId, __v: roomref.__v };
+        const _replacement = { ...roomref };
+        const _options = { new: true };
 
-    return socket.emit("roomRef", roomData);
+        await db.findOneAndReplace(_filter, _replacement, _options);
+        const updatedDoc = await db.findOneAndUpdate(_filter, { $inc: { __v: 1 } }, _options);
+
+        return socket.emit('updatedRTCDocument', updatedDoc);
+    } catch (error) {
+        console.log(error);
+    }
 }
 
-export const createRoomWithOffer = async (socket, roomWithOffer, classId) => {
-    const fireStoreDB = callInitFirebase();
-  
-    console.log({roomWithOffer, classId})
+export const createRoomWithOffer = async (socket, roomWithOffer, roomref) => {
+    try {
+        const _filter = { _id: roomref._id, hostId: roomref.hostId, classId: roomref.classId, __v: roomref.__v };
+        const _options = { new: true };
 
-    const roomQuery = query(collection(fireStoreDB, "rooms"), where("classId", "==", classId));
-  
-
-    const roomSnapshot = await getDocs(roomQuery);
-  
-    if (roomSnapshot.empty) {
-      console.log("No room found with classId:", classId);
-    
-      return; 
+        const updatedDoc = await db.findOneAndUpdate(_filter, { $set: { roomWithOffer: roomWithOffer } }, _options);
+        console.log(updatedDoc);
+        return socket.emit('createdRoom', updatedDoc);
+    } catch (error) {
+        console.log(error);
     }
-  
+};
 
-    const roomRef = roomSnapshot.docs[0].ref;
-    await updateDoc(roomRef, {
-      roomWithOffer
-    }, { merge: true });
-  
-    const updatedRoomDoc = await getDoc(roomRef);
-    const updatedRoomData = updatedRoomDoc.data();
-    return socket.emit("createdRoom", updatedRoomData); 
-  };
+export const addDatabaseListener = async (socket, roomref, property) => {
+    try {
+        const doc = await watchRtcCollection(db)
+        socket.emit("changeEventOccured", doc)
+    } catch (error) {
+        console.log(error)
+    }
+}
