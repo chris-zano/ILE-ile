@@ -1,5 +1,6 @@
 mdc.ripple.MDCRipple.attachTo(document.querySelector('.mdc-button'));
 
+
 const configuration = {
   iceServers: [
     {
@@ -18,6 +19,7 @@ let remoteStream = null;
 let roomDialog = null;
 let roomId = null;
 
+
 function init() {
   document.querySelector('#cameraBtn').addEventListener('click', openUserMedia);
   document.querySelector('#hangupBtn').addEventListener('click', hangUp);
@@ -27,9 +29,9 @@ function init() {
 }
 
 async function createRoom() {
+
   document.querySelector('#createBtn').disabled = true;
   document.querySelector('#joinBtn').disabled = true;
-  const db = firebase.firestore();
   const roomRef = await db.collection('rooms').doc();
 
   console.log('Create PeerConnection with configuration: ', configuration);
@@ -120,7 +122,6 @@ function joinRoom() {
 }
 
 async function joinRoomById(roomId) {
-  const db = firebase.firestore();
   const roomRef = db.collection('rooms').doc(`${roomId}`);
   const roomSnapshot = await roomRef.get();
   console.log('Got room:', roomSnapshot.exists);
@@ -223,7 +224,6 @@ async function hangUp(e) {
 
   // Delete room on hangup
   if (roomId) {
-    const db = firebase.firestore();
     const roomRef = db.collection('rooms').doc(roomId);
     const calleeCandidates = await roomRef.collection('calleeCandidates').get();
     calleeCandidates.forEach(async candidate => {
