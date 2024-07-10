@@ -1,24 +1,5 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 const Schema = mongoose.Schema;
-
-const dateSchema = new Schema({
-    day: {
-        type: String,
-        required: true
-    },
-    date: {
-        type: String,
-        required: true
-    },
-    month: {
-        type: String,
-        required: true
-    },
-    year: {
-        type: String,
-        required: true
-    }
-}, { _id: false });
 
 const CommonsSchema = new Schema({
     userId: {
@@ -34,17 +15,9 @@ const CommonsSchema = new Schema({
     fileUrls: {
         type: [String],
         default: []
-    },
-    createdAt: {
-        type: dateSchema,
-        required: true,
-    },
-    updatedAt: {
-        type: dateSchema,
-        required: true
-    },
+    }
 }, {
     timestamps: true
 });
 
-module.exports = mongoose.model("Commons", CommonsSchema);
+export default mongoose.model("Commons", CommonsSchema);
