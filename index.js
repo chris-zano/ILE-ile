@@ -7,7 +7,7 @@ import { dirname } from 'path';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
-import callAndExecuteRequireStack from './requireStack.js';
+import callAndExecuteRequireStack, { callSetupWebSocket } from './requireStack.js';
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -38,26 +38,16 @@ const uri = `mongodb+srv://${username}:${password}@${clusterName}.jwscxvu.mongod
 //Connect to Database and start server
 (async () => {
   try {
-    //   await mongoose.connect(uri);
-    //   console.log('Connected to MongoDB Atlas');
+    await mongoose.connect("mongodb://localhost:27017/ileSchool")
+    console.log("Connected to local");
 
-    //   // Call and execute require stack
-    //   callAndExecuteRequireStack(app, server);  
+    callAndExecuteRequireStack(app);
+    callSetupWebSocket(server);
 
-    //   const PORT = process.env.PORT || 8080;
-    //   server.listen(PORT, () => {
-    //       console.log(`App is live at http://localhost:${PORT}`);
-    //   });
-    mongoose.connect("mongodb://localhost:27017/ileSchool").then(() => {
-      console.log("Connected to local");
-
-      callAndExecuteRequireStack(app, server);
-
-      const PORT = process.env.PORT || 8080;
-      server.listen(PORT, () => {
-        console.log(`App is live at http://localhost:${PORT}`);
-      });
-    }).catch(console.error);
+    const PORT = process.env.PORT || 8080;
+    server.listen(PORT, () => {
+      console.log(`App is live at http://localhost:${PORT}`);
+    });
 
   } catch (error) {
     console.error('Error connecting to Database: ');

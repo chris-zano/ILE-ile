@@ -20,23 +20,4 @@ const initialiseFirebaseAndExport = () => {
     return db;
 }
 
-// async function getCities() {
-//     const citiesCol = collection(db, 'cities');
-//     const citySnapshot = await getDocs(citiesCol);
-//     const cityList = citySnapshot.docs.map(doc => doc.data());
-//     return cityList;
-// }
-
-// (async() => {
-//     const cities = await getCities();
-//     if (cities.length === 0) {
-//         console.log("no cities found");
-//     }
-//     else {
-//         console.log(cities);
-//     }
-//     return;
-
-// })();
-
 export default initialiseFirebaseAndExport;

@@ -1,5 +1,5 @@
-import {Server as SocketIoServer} from 'socket.io'
-import { findCourse, findStudent, findTutor, findMaterial } from '../../controllers/admin/admin.search.js';
+import { Server as SocketIoServer } from 'socket.io'
+import handleSearch from './socket/socket.search.js';
 
 const setupWebSocketServer = (server) => {
     const io = new SocketIoServer(server);
@@ -7,29 +7,7 @@ const setupWebSocketServer = (server) => {
     io.on('connection', (socket) => {
         console.log('Socket.IO client connected');
 
-        socket.on('search', ({ category, searchInput }) => {
-
-            if (category == "courses") {
-                findCourse(socket, searchInput)
-            }
-
-            switch (category) {
-                case "courses":
-                    findCourse(socket, searchInput);
-                    break;
-                case "students":
-                    findStudent(socket, searchInput);
-                    break;
-                case "lecturers":
-                    findTutor(socket, searchInput);
-                    break;
-                case "materials":
-                    findMaterial(socket, searchInput);
-                    break;
-                default:
-                    break;
-            }
-        });
+        socket.on('search', ({ category, searchInput }) => handleSearch(category, searchInput));
 
         socket.on('disconnect', () => {
             console.log('Client disconnected');

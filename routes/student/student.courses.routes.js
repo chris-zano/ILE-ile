@@ -16,5 +16,7 @@ router.get('/students/join/:id', verifyStudent, async (req, res) => {
     console.log('document written with an id of:', docref.id);
     console.log("docref is ", docref);
     res.status(200).render('global/rtc-master')
-})
+});
+
+
 export default router;

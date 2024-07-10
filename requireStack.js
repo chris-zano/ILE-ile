@@ -14,24 +14,25 @@ import initialiseFirebaseAndExport from './firebase.config.js';
 
 export const callInitFirebase = () => initialiseFirebaseAndExport();
 
-const callAndExecuteRequireStack = (app, server) => {
-  const io = setupWebSocketServer(server);
+export const callSetupWebSocket = (server) => setupWebSocketServer(server);
 
-  app.use(adminRoutes);
-  app.use(adminsUserRoutes);
-  app.use(adminFileRoutes);
-  app.use(adminRenderRoutes);
-  app.use(classRoutes);
-  app.use(lecturerFilesRoutes);
-  app.use(lecturerRenderRoutes);
-  app.use(lecturerChaptersRoutes);
-  app.use(modelUpdatesRoutes);
-  app.use(studentRenderRoutes);
-  app.use(studentCoursesRoutes);
+  const callAndExecuteRequireStack = (app) => {
 
-  app.use((req, res) => {
-    res.render('global/error', { error: "Page not found", status: 404 });
-  });
-}
+    app.use(adminRoutes);
+    app.use(adminsUserRoutes);
+    app.use(adminFileRoutes);
+    app.use(adminRenderRoutes);
+    app.use(classRoutes);
+    app.use(lecturerFilesRoutes);
+    app.use(lecturerRenderRoutes);
+    app.use(lecturerChaptersRoutes);
+    app.use(modelUpdatesRoutes);
+    app.use(studentRenderRoutes);
+    app.use(studentCoursesRoutes);
 
-export default callAndExecuteRequireStack;
+    app.use((req, res) => {
+      res.render('global/error', { error: "Page not found", status: 404 });
+    });
+  }
+
+  export default callAndExecuteRequireStack;
