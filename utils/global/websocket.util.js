@@ -1,6 +1,5 @@
 import { Server as SocketIoServer } from 'socket.io'
 import handleSearch from './socket/socket.search.js';
-import { addDatabaseListener, createRoomWithOffer, getMeetingRoom, getOrCreateRoom, updateRTCDocument } from './socket/socket.firestore.js';
 
 const setupWebSocketServer = (server) => {
     const io = new SocketIoServer(server);
