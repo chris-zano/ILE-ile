@@ -54,17 +54,21 @@ async function createRoom() {
     const callerCandidatesCollection = [];
     console.log("preparing to get candidates")
     peerConnection.addEventListener('icecandidate', event => {
+      console.log("at the start")
       if (!event.candidate) {
         console.log("Got final Candidate")
         return;
       }
-      
+
+      console.log("at the middle")
       if (callerCandidatesCollection.length === 10) {
         console.log("Got all 10 candidates")
         updateCallerCandidates(roomRef);
       }
+      console.log('Got candidate: ', event.candidate);
       callerCandidatesCollection.push(event.candidate.toJSON());
       roomRef['callerCandidates'] = callerCandidatesCollection;
+      console.log("at the end")
     });
     // Code for collecting ICE candidates above
 
@@ -102,7 +106,6 @@ async function createRoom() {
 
 
       // Listening for remote session description below
-      listenForRemoteSessionDescription(roomRef, "sdp");
       socket.on("changeEventOccured", async (responseObject) => {
         if (responseObject.propertyClass === "sdp") {
           const data = document;
@@ -141,40 +144,53 @@ function joinRoom() {
 
 async function joinRoomById(roomId) {
   getMeetingRoom(roomId, "hostId");
+  
   socket.on('sendMeetingRoom', (room) => {
-    console.log("Found a new meeting room", room);
+    const roomInstance = room;
+    if (!roomInstance) return;
+
+    console.log("Found a new meeting room", roomInstance);
+    console.log('Create PeerConnection with configuration: ', configuration);
+    
+    peerConnection = new RTCPeerConnection(configuration);
+    registerPeerConnectionListeners();
+    localStream.getTracks().forEach(track => {
+      peerConnection.addTrack(track, localStream);
+    });
+
+    const calleeCandidatesCollection = roomRef.collection('calleeCandidates');
+    peerConnection.addEventListener('icecandidate', event => {
+      if (!event.candidate) {
+        console.log('Got final candidate!');
+        return;
+      }
+      console.log('Got candidate: ', event.candidate);
+      calleeCandidatesCollection.add(event.candidate.toJSON());
+    });
+
   });
-  // const roomRef = db.collection('rooms').doc(`${roomId}`);
-  // const roomSnapshot = await roomRef.get();
-  // console.log('Got room:', roomSnapshot.exists);
 
   // if (roomSnapshot.exists) {
-  //   console.log('Create PeerConnection with configuration: ', configuration);
-  //   peerConnection = new RTCPeerConnection(configuration);
-  //   registerPeerConnectionListeners();
-  //   localStream.getTracks().forEach(track => {
-  //     peerConnection.addTrack(track, localStream);
-  //   });
 
-  //   // Code for collecting ICE candidates below
-  //   const calleeCandidatesCollection = roomRef.collection('calleeCandidates');
-  //   peerConnection.addEventListener('icecandidate', event => {
-  //     if (!event.candidate) {
-  //       console.log('Got final candidate!');
-  //       return;
-  //     }
-  //     console.log('Got candidate: ', event.candidate);
-  //     calleeCandidatesCollection.add(event.candidate.toJSON());
-  //   });
-  //   // Code for collecting ICE candidates above
+    // Code for collecting ICE candidates below
+    const calleeCandidatesCollection = roomRef.collection('calleeCandidates');
+    peerConnection.addEventListener('icecandidate', event => {
+      if (!event.candidate) {
+        console.log('Got final candidate!');
+        return;
+      }
+      console.log('Got candidate: ', event.candidate);
+      calleeCandidatesCollection.add(event.candidate.toJSON());
+    });
+    // Code for collecting ICE candidates above
 
-  //   peerConnection.addEventListener('track', event => {
-  //     console.log('Got remote track:', event.streams[0]);
-  //     event.streams[0].getTracks().forEach(track => {
-  //       console.log('Add a track to the remoteStream:', track);
-  //       remoteStream.addTrack(track);
-  //     });
-  //   });
+    peerConnection.addEventListener('track', event => {
+      console.log('Got remote track:', event.streams[0]);
+      event.streams[0].getTracks().forEach(track => {
+        console.log('Add a track to the remoteStream:', track);
+        remoteStream.addTrack(track);
+      });
+    });
 
   //   // Code for creating SDP answer below
   //   const offer = roomSnapshot.data().offer;

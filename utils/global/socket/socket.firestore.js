@@ -11,7 +11,6 @@ const db = RTCDB();
 
 export const getOrCreateRoom = async (socket, classId, hostId) => {
     try {
-        console.log({ classId, hostId })
         const doc = await db.findOne({ classId: classId });
         let roomData = null
         if (!doc) {
@@ -21,22 +20,19 @@ export const getOrCreateRoom = async (socket, classId, hostId) => {
         else {
             roomData = doc;
         }
-        console.log(roomData);
         return socket.emit("roomRef", roomData);
     } catch (error) {
         console.log(error);
     }
 }
 
-export const getMeetingRoom = async (roomId, hostId) => {
+export const getMeetingRoom = async (socket,roomId, hostId) => {
     try {
-        console.log({ roomId, hostId })
         const doc = await db.findOne({ _id: roomId });
         let roomData = null
         if (doc !== null) {
             roomData = doc;
         }
-        console.log(roomData);
         return socket.emit("sendMeetingRoom", roomData);
     } catch (error) {
         console.log(error);

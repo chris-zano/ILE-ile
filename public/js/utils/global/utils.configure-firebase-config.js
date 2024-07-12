@@ -17,5 +17,5 @@ function listenForRemoteSessionDescription(roomRef, property) {
 }
 
 function getMeetingRoom(roomId, hostId) {
-    socket.emit(getMeetingRoom, ({ roomId, hostId }));
+    socket.emit("getMeetingRoom", ({ roomId, hostId }));
 }
