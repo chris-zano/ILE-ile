@@ -12,7 +12,7 @@
             </div>
             <div class="add-lesson-chapter">
                 <button type="button" id="join-class">
-                    <a href="/students/join/<%= student.id %>">Join Class</a>
+                    <a href="/students/start-live/<%= student.id %>/<%= course._id %>">Join Class</a>
                 </button>
             </div>
         </article>
@@ -67,7 +67,7 @@
                             </div>
                             <div class="chapter-actions">
                                 <div class="chapter-actions-btns">
-                                    <a href="#" id="live-btn">
+                                    <a href="/students/start-live/<%= student.id %>/<%= course._id %>" id="live-btn">
                                         <p>Join Live</p>
                                     </a>
                                 </div>
