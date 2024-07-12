@@ -12,6 +12,7 @@ import studentCoursesRoutes from './routes/student/student.courses.routes.js';
 import setupWebSocketServer from './utils/global/websocket.util.js';
 import masterRtcRoutes from './routes/rtc/master.rtc.routes.js';
 import initialiseFirebaseAndExport from './firebase.config.js';
+import lecturerRtcRoutes from './routes/lecturer/lecturer.rtc.routes.js';
 
 export const callInitFirebase = () => initialiseFirebaseAndExport();
 
@@ -31,6 +32,7 @@ export const callSetupWebSocket = (server) => setupWebSocketServer(server);
     app.use(studentRenderRoutes);
     app.use(studentCoursesRoutes);
     app.use(masterRtcRoutes);
+    app.use(lecturerRtcRoutes);
 
     app.use((req, res) => {
       res.render('global/error', { error: "Page not found", status: 404 });
