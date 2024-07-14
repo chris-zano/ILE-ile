@@ -1,6 +1,5 @@
 //node.js imports
 import express from 'express';
-import http from 'http';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
@@ -9,11 +8,18 @@ import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import callAndExecuteRequireStack, { callSetupWebSocket } from './requireStack.js';
 
+import { createServer } from 'http'; // creating http server
+import { ExpressPeerServer } from 'peer'; // WebRTC API for real-time media communication
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
 const app = express();
-const server = http.createServer(app);
+const server = createServer(app); // creating http server
+
+const peerServer = ExpressPeerServer(server, {
+  debug: true
+});
 
 const STATIC_FILES_PATH = path.join(__dirname, 'public');
 const VIEW_ENGINE_PATH = path.join(__dirname, 'views');
