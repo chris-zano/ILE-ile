@@ -3,6 +3,7 @@ import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import fs from 'fs';
 import { AdminsDB } from '../../utils/global/db.utils.js';
+import { logError } from './admin.utils.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -35,24 +36,14 @@ const setFilePath = (mimeType, attribute, authFolder, filename) => {
 
 const getScriptFilePath = (attribute, authLevel, filename) => {
     let filePath;
-    switch (authLevel) {
-        case 'admin':
-            filePath = setFilePath('js', attribute, 'admin', filename);
-            break;
-        case 'lecturer':
-            filePath = setFilePath('js', attribute, 'lecturer', filename);
-            break;
-        case 'student':
-            filePath = setFilePath('js', attribute, 'student', filename);
-            break;
-        case 'global':
-            filePath = setFilePath('js', attribute, 'global', filename);
-            break;
-        default:
-            filePath = PATH_NOT_FOUND;
-            break;
+
+    try {
+        return filePath = setFilePath('js', attribute, authLevel, filename);
     }
-    return filePath;
+    catch (error) {
+        logError(error);
+        return filePath = PATH_NOT_FOUND;
+    }
 }
 
 const getAdminProfilePicture = async (callState = "system", user_id = "") => {

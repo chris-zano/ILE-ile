@@ -1,12 +1,14 @@
 import express from "express";
-import { verifyLecturer } from "../admin/router.utils.js";
+import { verifyLecturer, verifyStudent } from "../admin/router.utils.js";
 import { logError } from "../../controllers/admin/admin.utils.js";
 
 const router = express.Router();
 router.get('/lecturers/start-live/:id/:courseId', verifyLecturer, (req, res) => {
     res.redirect(`/${req.params.courseId}`);
 });
-
+router.get('/students/start-live/:id/:courseId', verifyStudent, (req, res) => {
+    res.redirect(`/${req.params.courseId}`);
+});
 router.get('/:room', async (req, res) => {
     try {
         return res.status(200).render('global/rtc-room', { roomId: req.params.room });

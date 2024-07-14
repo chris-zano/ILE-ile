@@ -50,6 +50,7 @@ const uri = `mongodb+srv://${username}:${password}@${clusterName}.jwscxvu.mongod
     });
 
   } catch (error) {
-    console.error('Error connecting to Database: ');
+    
+    console.error('Error connecting to Database: ', error);
   }
 })();
