@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/css/rtc/home_style">
+    <script src="https://kit.fontawesome.com/6f0f83005a.js" crossorigin="anonymous"></script>
+    <title>Meet</title>
+</head>
+
+<body>
+    <div id="root-div">
+        <div id="left-div">
+            <div id="large-message">
+                Premium video meetings.<br />
+                Now for everyone.
+            </div>
+
+            <div id="small-message">
+                We re-engineered the service we built for secure businesse<br />
+                meetings, Google Meet, to make it free and available for all.
+            </div>
+
+            <div class="new-meeting-root">
+                <div class="infoaction">
+                    <div id="msg-to-stds"></div>
+                    <div id="join-button" class="join-disabled" aria-disabled="true">Join Meeting</div>
+                </div>
+                <div class="go-back">
+                    <div id="back-button">Back to Course</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+
+    const classInSession = async (courseId) => {
+        const response = await fetch(`/get/class-in-session/`)
+    }
+
+    const constructCourseViewUrl = (userData, courseId) => {
+        const userType = userData.user;
+        const userId = userData.data.id;
+
+        return `/${userType}s/render/course/${courseId}/${userId}`;
+
+    }
+    const waitingMain = async () => {
+        const socket = io();
+        let userData = window.sessionStorage.getItem("auth-user");
+
+        if (!userData) {
+            return window.location.replace('/login');
+        }
+
+        userData = JSON.parse(userData);
+        const userType = userData.user;
+        const courseId = "<%= courseID %>";
+
+        const joinBtn = document.getElementById("join-button");
+        const msgD = document.getElementById("msg-to-stds");
+        const backBtn = document.getElementById("back-button");
+
+        backBtn.addEventListener("click", () => {
+            const url = constructCourseViewUrl(userData, courseId);
+            window.location.href = url;
+        })
+        const enableJoinButton = (text) => {
+            joinBtn.textContent = text;
+            joinBtn.setAttribute("aria-disabled", "false");
+            joinBtn.classList.remove("join-disabled");
+            joinBtn.classList.add("join-enabled");
+        };
+
+        if (userType === "student") {
+            socket.emit("join meeting", courseId);
+            joinBtn.textContent = "Join Meeting";
+            msgD.innerHTML = `<p>&#9432; Waiting for host to start meeting</p>`;
+
+            await classInSession(courseId);
+
+            socket.on("waiting for host", (courseId) => {
+                console.log('waiting for host')
+            });
+            socket.on("meeting-started", (roomId) => {
+                msgD.innerHTML = "<p>&#9432;Meeting Started. Join meeting<p>";
+                console.log('meeting-started')
+                enableJoinButton("Join Meeting");
+                joinBtn.addEventListener("click", () => {
+                    window.location.href = `/room/${roomId}`;
+                }, { once: true });
+            });
+        } else if (userType === "lecturer") {
+            socket.emit("join meeting", courseId);
+            enableJoinButton("Start Meeting");
+
+            joinBtn.addEventListener("click", () => {
+                socket.emit("starting meeting", courseId);
+                window.location.href = `/room/${courseId}`;
+            }, { once: true });
+        } else {
+            return window.location.replace('/login');
+        }
+    };
+
+    document.addEventListener("DOMContentLoaded", waitingMain);
+
+
+</script>
