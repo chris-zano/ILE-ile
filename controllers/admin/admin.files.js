@@ -2,13 +2,15 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import fs from 'fs';
-import { AdminsDB } from '../../utils/global/db.utils.js';
+import { AdminsDB, LecturersDB, StudentsDB } from '../../utils/global/db.utils.js';
 import { logError } from './admin.utils.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const PATH_NOT_FOUND = "path not found";
 const Admins = AdminsDB();
+const Students = StudentsDB();
+const Lecturers = LecturersDB();
 
 const setFilePath = (mimeType, attribute, authFolder, filename) => {
     var resolvedpath;
@@ -43,55 +45,6 @@ const getScriptFilePath = (attribute, authLevel, filename) => {
     catch (error) {
         logError(error);
         return filePath = PATH_NOT_FOUND;
-    }
-}
-
-const getAdminProfilePicture = async (callState = "system", user_id = "") => {
-    let copyCallState = callState;
-
-    let defaultFilePath = path.join(__dirname, "..", "..", "public", "assets", "profile_pictures", "system", "admin.png");
-
-    if (copyCallState === "system") {
-        return fs.existsSync(defaultFilePath) ? defaultFilePath : PATH_NOT_FOUND
-    }
-    else if (copyCallState === "user") {
-        const userObject = await Admins.findOne({ _id: user_id });
-        const userProfilePath = !userObject ? (fs.existsSync(defaultFilePath) ? defaultFilePath : PATH_NOT_FOUND) : userObject.profilePicUrl;
-
-        const resolvedUserProfilePath = path.resolve(__dirname, userProfilePath);
-        return fs.existsSync(resolvedUserProfilePath) ? resolvedUserProfilePath : PATH_NOT_FOUND
-    }
-}
-
-const getLecturersProfilePicture = async (callState = "system", request_params = {}) => {
-    let copyCallState = callState;
-    let defaultFilePath = path.join(__dirname, "..", "..", "public", "assets", "profile_pictures", "system", "admin.png");
-
-    if (copyCallState === "system") {
-        return fs.existsSync(defaultFilePath) ? defaultFilePath : PATH_NOT_FOUND
-    }
-    else if (copyCallState === "user") {
-        const userObject = null;
-        const userProfilePath = !userObject ? (fs.existsSync(defaultFilePath) ? defaultFilePath : PATH_NOT_FOUND) : userObject.profilePicUrl;
-        const resolvedUserProfilePath = path.resolve(__dirname, userProfilePath);
-        (resolvedUserProfilePath);
-        return fs.existsSync(resolvedUserProfilePath) ? resolvedUserProfilePath : PATH_NOT_FOUND
-    }
-}
-
-const getStudentsProfilePicture = async (callState = "system", request_params = {}) => {
-    let copyCallState = callState;
-    let defaultFilePath = path.join(__dirname, "..", "..", "public", "assets", "profile_pictures", "system", "admin.png");
-
-    if (copyCallState === "system") {
-        return fs.existsSync(defaultFilePath) ? defaultFilePath : PATH_NOT_FOUND
-    }
-    else if (copyCallState === "user") {
-        const userObject = null;
-        const userProfilePath = !userObject ? (fs.existsSync(defaultFilePath) ? defaultFilePath : PATH_NOT_FOUND) : userObject.profilePicUrl;
-        const resolvedUserProfilePath = path.resolve(__dirname, userProfilePath);
-        (resolvedUserProfilePath);
-        return fs.existsSync(resolvedUserProfilePath) ? resolvedUserProfilePath : PATH_NOT_FOUND
     }
 }
 
@@ -194,30 +147,51 @@ export const getRandomImage = (req, res) => {
     fs.createReadStream(randomImageUrl).pipe(res);
 }
 
+const usersToModelMatch = { "admins": Admins, "students": Students, "lecturers": Lecturers }
+const getUserProfilePicture = async (user = "", id = "") => {
+    let filePath = path.join(__dirname, "..", "..", "public", "assets", "profile_pictures", "system", "admin.png");
+
+    if (!user || !id) return filePath = PATH_NOT_FOUND;
+    try {
+        if (!fs.existsSync(filePath)) return filePath = PATH_NOT_FOUND;
+
+        const userModel = usersToModelMatch[user];
+        if (!userModel) return filePath = PATH_NOT_FOUND;
+
+        const doc = await userModel.findOne({ _id: id });
+        const profilePicUrl = doc.profilePicUrl;
+        console.log((profilePicUrl));
+
+        return filePath
+    } catch (error) {
+        console.log(error)
+        return PATH_NOT_FOUND;
+    }
+}
+
 export const getDefaultProfilePicture = async (req, res) => {
     const { userType, id } = req.params;
-    const userTypeMatch = { "admins": getAdminProfilePicture, "lecturers": getLecturersProfilePicture, "students": getStudentsProfilePicture };
-    const profilePictureconstReference = userTypeMatch[userType];
+    if (!userType || !id) return res.status(404).json({ message: "Resource not found" });
 
-    if (profilePictureconstReference) {
+    try {
+        const genericFilePath = path.join(__dirname, '..', '..', 'public', 'assets', 'images', 'user.png');
+        const profilePictureFilePath = getUserProfilePicture(userType, id);
 
-        let profilePictureFilePath = null;
-
-        profilePictureFilePath = id === "no-id" ? await profilePictureconstReference() : await profilePictureconstReference("user", id);
+        if (!fs.existsSync(genericFilePath)) return res.status(404).redirect("/global/error");
 
         if (profilePictureFilePath === PATH_NOT_FOUND) {
-            res.status(404).json({ message: "File not found", path: req.url });
-        }
-
-        else {
             res.type('png');
             res.status(200);
             res.set('Cache-Control', 'public, max-age=8600');
-
-            fs.createReadStream(profilePictureFilePath).pipe(res);
+            return fs.createReadStream().pipe(res);
         }
-    }
-    else {
-        res.status(404).json({ message: "User not found", path: req.url });
+
+        res.type('png');
+        res.status(200);
+        res.set('Cache-Control', 'public, max-age=8600');
+        fs.createReadStream(profilePictureFilePath).pipe(res);
+    } catch (error) {
+        logError(error)
+        return res.status(500).json("Internal Server Error")
     }
 }

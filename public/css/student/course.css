@@ -6,8 +6,8 @@
         margin-inline: auto;
         background-color: #3fffac;
         display: grid;
-        align-items: center;
-        justify-content: center;
+        /* align-items: center;
+        justify-content: center; */
         position: relative;
     }
     section.course-overview {

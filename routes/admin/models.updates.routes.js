@@ -4,7 +4,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import fs from 'fs';
-import { verifyAdmin } from './router.utils.js';
+import { verifyUser } from './router.utils.js';
 import { logError } from '../../controllers/admin/admin.utils.js';
 import { AdminsDB } from '../../utils/global/db.utils.js';
 
@@ -16,28 +16,34 @@ const Admins = AdminsDB();
 const adminProfilePictureUploads = multer({
     dest: path.join(__dirname, '..', '..', 'public', 'assets', 'profile_pictures', 'users', 'admin')
 });
+const userTypes = ["student", "lecturer", "admin"];
 
 //admins profile updates
-router.post('/admins/profile/update-component/profile-picture/:id', verifyAdmin, adminProfilePictureUploads.single("profile_picture"), async (req, res) => {
-    const id = req.adminData.id;
-    const profilePicPath = path.resolve(req.file.path);
+router.post('/:user/profile/update-component/profile-picture/:id',
+    verifyUser,
+    adminProfilePictureUploads.single("profile_picture"), async (req, res) => {
+        const { user } = req.params;
+        if (!userTypes.includes(user) || !filename) return res.status(400).redirect('/global/error');
 
-    if (fs.existsSync(profilePicPath)) {
+        const { file } = req;
+        if (!file) return res.status(400).json("No file uploaded");
+
+        const { filename } = req.file;
         try {
-            const savedData = await Admins.updateOne({ _id: id }, { $set: { profilePicUrl: profilePicPath } });
-            console.log(savedData);
+            const userIDMap = `${user}Data`;
+            const userdata = req[userIDMap] || null;
 
-            if (savedData.acknowledged === true && savedData.modifiedCount === 1) {
-                res.status(200).json("success");
-            }
+            if (!userdata || !userdata.id) return res.status(400).redirect('/global/error');
+            const id = userdata.id;
+            const profilePicRoute = `/users/${user}s/get-profile-picture/${id}/${filename}`;
+            await Admins.findByIdAndUpdate({ _id: id }, { $set: { profilePicUrl: profilePicRoute } });
+
+            return res.status(200).redirect(`/admins/render/profiles/admin/${id}`);
         } catch (err) {
             logError(err);
-            res.status(500).json("Internal Server Error");
+            return res.status(500).json("Internal Server Error");
         }
     }
-    else {
-        res.status(404).json("File not found");
-    }
-})
+)
 
 export default router;

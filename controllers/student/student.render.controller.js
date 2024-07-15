@@ -26,10 +26,7 @@ const getStudentCourses = async (studentData) => {
 }
 
 const getStudentProfileInfo = (studentData) => {
-    return {
-        message: "Student profile Information will be updated soon for "
-            + studentData.firstName
-    }
+    return studentData
 };
 
 const getStudentSchedules = async (studentData) => {

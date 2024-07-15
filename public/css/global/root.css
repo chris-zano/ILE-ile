@@ -51,7 +51,7 @@
 
     /* box shadows */
     --box-shadow-thin: 0px 3px 3px var(--black);
-    --box-shadow-extra-thin: 0px 3px 3px var(--black);
+    --box-shadow-extra-thin: 0px 2px 2px #adadad;
 
     /* input-fields */
     --button-height: 45px;
@@ -223,110 +223,82 @@ button[disabled] {
 }
 
 
-div.container-max_width {
-    background-color: var(--background);
-    overflow-x: hidden;
-    border-left: 1px solid transparent;
-    border-right: 1px solid transparent;
-    height: 100vh;
-    overflow-y: scroll;
-    position: relative;
-}
-
-div#container-max_width {
-    display: grid;
-    grid-template-columns: 200px 1fr;
-    grid-template-areas:
-        "header header"
-        "sidenav main"
-        "footer footer"
-    ;
-    grid-template-rows: auto 1fr auto;
-    height: 100vh;
-    overflow-y: hidden;
-}
-
-div#container-max_width header#header-top_main {
-    grid-area: header;
-}
-
-div#contaier-max_width nav#nav-main {
-    grid-area: sidenav;
-    min-height: 0;
-}
-
-div#container-max_width main#wrapper-main {
-    width: 100% !important;
-    grid-area: main;
-    overflow-y: auto;
-    background-color: var(--background-main);
-    border-radius: 1.8ch;
-}
-
-
-@media screen and (min-width: 310px) {
-    div.container-max_width {
-        width: 100%;
-    }
-
-    button {
-        width: var(--button-width);
-        height: var(--button-height);
-        border-radius: 0.7rem;
-        border: 1px solid transparent;
-        background-color: var(--primary);
-        color: var(--white);
-        transition: all ease-in-out 200ms;
-    }
-
-    .popup {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 90%;
-        /* max-width: 400px; */
-        padding: 20px;
-        box-shadow: 0 5px 30px rgba(0, 0, 0, .30);
-        color: var(--text);
-        background: var(--background);
-        opacity: 1;
-        transition: 0.3s;
-        border-radius: 15px;
-    }
-
-}
-
 @media screen and (min-width: 768px) {
     div.container-max_width {
+        background-color: var(--background);
+        overflow-x: hidden;
+        border-left: 1px solid transparent;
+        border-right: 1px solid transparent;
+        height: 100vh;
+        overflow-y: scroll;
+        position: relative;
+    }
+    
+    div#container-max_width {
+        display: grid;
+        grid-template-columns: 200px 1fr;
+        grid-template-areas:
+            "header header"
+            "sidenav main"
+            "footer footer"
+        ;
+        grid-template-rows: auto 1fr auto;
+        height: 100vh;
+        overflow-y: hidden;
+    }
+    
+    div#container-max_width header#header-top_main {
+        grid-area: header;
+    }
+    
+    div#contaier-max_width nav#nav-main {
+        grid-area: sidenav;
+        min-height: 0;
+    }
+
+    div#contaier-max_width nav#nav-mobile {
+        display: none;
+    }
+    div#contaier-max_width nav#nav-mobile > * {
+        display: none;
+    }
+    
+    div#container-max_width main#wrapper-main {
+        width: 100% !important;
+        grid-area: main;
+        overflow-y: auto;
+        background-color: var(--background-main);
+        border-radius: 1.8ch;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    div.container-max_width {
+        background-color: var(--background);
+        overflow-x: hidden;
+        border-left: 1px solid transparent;
+        border-right: 1px solid transparent;
+        height: 100vh;
+        overflow-y: scroll;
+        position: relative;
+    }
+    
+    div#container-max_width {
+        display: grid;
+    }
+    
+    div#container-max_width header#header-top_main {
+        display: unset;
         width: 100%;
-        max-width: 1880px;
-        /* margin: 0 auto; */
     }
-
-    button {
-        width: var(--button-width);
-        height: var(--button-height);
-        border-radius: 0.7rem;
-        border: 1px solid transparent;
-        background-color: var(--primary);
-        color: var(--white);
-        transition: all ease-in-out 200ms;
+    
+    div#contaier-max_width nav#nav-main {
+        display: unset;
+        width: 100%;
     }
-
-    .popup {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 90%;
-        max-width: 400px;
-        padding: 20px;
-        box-shadow: 0 5px 30px rgba(0, 0, 0, .30);
-        color: var(--text);
-        background: var(--background);
-        opacity: 1;
-        transition: 0.3s;
-        border-radius: 15px;
+    
+    div#container-max_width main#wrapper-main {
+        display: unset;
+        width: 100%;
     }
 }
