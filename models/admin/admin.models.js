@@ -30,7 +30,7 @@ const adminSchema = new Schema({
     },
     profilePicUrl:{
         type: String,
-        default:"/users/admins/get-profile-picture/no-id"
+        default:"/users/admins/get-profile-picture/no-id/0"
     },
 }, {
     timestamps: true

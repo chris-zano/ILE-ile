@@ -23,4 +23,43 @@
             </ul>
         </div>
     </div>
+    <script>
+        const userId = JSON.parse(window.sessionStorage.getItem("auth-user")).data.id;
+
+        if (!userId) {
+            window.sessionStorage.clear();
+            window.localStorage.clear();
+            window.location.href = "/login";
+        } else {
+            const ppBtn = document.getElementById("edit-pp-button");
+            ppBtn.addEventListener("click", () => {
+                console.log("clicked");
+
+                const updatePPForm = document.createElement("form");
+                updatePPForm.method = "post";
+                updatePPForm.action = `/student/profile/update-component/profile-picture/${userId}`;
+                updatePPForm.enctype = "multipart/form-data";
+                updatePPForm.innerHTML = `
+                    <input type="file" name="profile_picture" required="true" id="file-input">
+                `;
+                updatePPForm.style.display = "none";
+                document.getElementById("profile-main-wrapper").append(updatePPForm);
+
+                updatePPForm.querySelector("#file-input").click();
+
+                const fileInput = updatePPForm.querySelector("#file-input")
+                fileInput.addEventListener("change", async (e) => {
+                    const file = e.target.files[0];
+                    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif'];
+
+                    if (file && allowedTypes.includes(file.type)) {
+                        updatePPForm.submit();
+                    } else {
+                        alert('Please upload a valid image file (JPEG, JPG, PNG, GIF)');
+                    }
+                });
+            });
+        }
+
+    </script>
 </section>

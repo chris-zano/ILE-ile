@@ -5,7 +5,6 @@ import * as utils from '../../controllers/admin/admin.utils.js';
 const Admins = AdminsDB();
 const Tutors = LecturersDB();
 const Students = StudentsDB();
-const Courses = CoursesDB();
 
 
 /**
@@ -170,14 +169,22 @@ export const verifyStudent = async (req, res, next) => {
 }
 
 export const verifyUser = async (req, res, next) => {
-    const { user } = req.params;
-    const userMethods = { "admins": verifyAdmin, "lecturer": verifyLecturer, "student": verifyStudent };
+    const usersToModelMatch = { "admin": Admins, "student": Students, "lecturer": Tutors };
+    const { user, id } = req.params;
 
     try {
-        const verifyUserMethod = userMethods[user];
-        if (!verifyUserMethod) return res.status(403).json({ message: "Invalid user" });
+        const userDb = usersToModelMatch[user];
+        if (!userDb) return res.status(403).json({ message: "Invalid user" });
 
-        return verifyUserMethod(req, res, next);
+        if (!id || !isValidObjectId(id)) return res.status(400).json({ message: "Invvalid object id" });
+
+        const matchedDocument = await userDb.findById(id);
+
+        if (!matchedDocument) return res.status(404).json({ message: "user not found" });
+
+        req[`${user}Data`] = { id: matchedDocument._id };
+
+        next();
     } catch (error) {
         return handleCatchError(error, res);
     }
