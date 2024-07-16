@@ -1,111 +1,56 @@
 <section id="profile-main-wrapper">
-    <section class="view-admin">
-        <div class="profile-picture-container">
-            <div class="image-wrapper">
-                <img src="<%= String(admin.profilePicUrl).includes("no-id")? admin.profilePicUrl : "/users/admins/get-profile-picture/" + admin.id %>" alt="admin profile picture">
+    <div class="profile-container">
+        <div class="profile-header">
+            <img src="<%= admin.profilePicUrl %>" alt="Profile Picture" class="profile-picture" id="edit-pp-button">
+            <div class="profile-info">
+                <h1 class="profile-name"><%= admin.firstname %> <%= admin.lastname %></h1>
+                <p class="profile-id"><span>AdminId</span>: <%= admin.adminId %></p>
+                <p class="profile-role"><span>Faculty:</span> <%= admin.faculty %></p>
+                <p class="profile-role"><span>Role:</span><%= admin.role %></p>
             </div>
-            <div class="change-picture-button-wrapper">
-                <button type="button" id="edit-pp-button">Change Picture</button>
-            </div>
-            <script>
-                const userId = JSON.parse(window.sessionStorage.getItem("auth-user")).data.id;
-
-                if (!userId) {
-                    window.sessionStorage.clear();
-                    window.localStorage.clear();
-                    window.location.href = "/login";
-                } else {
-                    const ppBtn = document.getElementById("edit-pp-button");
-                    ppBtn.addEventListener("click", () => {
-                        console.log("clicked");
-
-                        const updatePPForm = document.createElement("form");
-                        updatePPForm.method = "post";
-                        updatePPForm.action = `/admins/profile/update-component/profile-picture/${userId}`;
-                        updatePPForm.enctype = "multipart/form-data";
-                        updatePPForm.innerHTML = `
-                            <input type="file" name="profile_picture" required="true" id="file-input">
-                        `;
-                        updatePPForm.style.display = "none";
-                        document.getElementById("profile-main-wrapper").append(updatePPForm);
-
-                        updatePPForm.querySelector("#file-input").click();
-
-                        const fileInput = updatePPForm.querySelector("#file-input")
-                        fileInput.addEventListener("change", async (e) => {
-                            if ((e.target.value)) {
-                                updatePPForm.submit();
-                            }
-                        });
-                    });
-                }
-
-            </script>
         </div>
-        <article id="user-info-main">
-            <div class="article-form-container-main">
-                <div class="form-item-pair">
-                    <div class="form-item-pair-label">
-                        <p>Admin ID: </p>
-                    </div>
+        <div class="recent-activity">
+            <h2>Recent Activity</h2>
+            <ul class="activity-list">
+                <li>Joined a class</li>
+                <li>Submitted an assignment</li>
+                <li>Completed a project</li>
+                <li>Updated profile information</li>
+            </ul>
+        </div>
+    </div>
+    <script>
+        const userId = JSON.parse(window.sessionStorage.getItem("auth-user")).data.id;
 
-                    <div class="form-item-pair-value">
-                        <p class="diabled">
-                            <%= admin.adminId %>
-                        </p>
-                    </div>
-                </div>
-                <div class="form-item-pair">
-                    <div class="form-item-pair-label">
-                        <p>First name: </p>
-                    </div>
+        if (!userId) {
+            window.sessionStorage.clear();
+            window.localStorage.clear();
+            window.location.href = "/login";
+        } else {
+            const ppBtn = document.getElementById("edit-pp-button");
+            ppBtn.addEventListener("click", () => {
+                console.log("clicked");
 
-                    <div class="form-item-pair-value">
-                        <p class="diabled">
-                            <%= admin.firstname %>
-                        </p>
-                    </div>
-                </div>
+                const updatePPForm = document.createElement("form");
+                updatePPForm.method = "post";
+                updatePPForm.action = `/admins/profile/update-component/profile-picture/${userId}`;
+                updatePPForm.enctype = "multipart/form-data";
+                updatePPForm.innerHTML = `
+                    <input type="file" name="profile_picture" required="true" id="file-input">
+                `;
+                updatePPForm.style.display = "none";
+                document.getElementById("profile-main-wrapper").append(updatePPForm);
 
-                <div class="form-item-pair">
-                    <div class="form-item-pair-label">
-                        <p>Last name: </p>
-                    </div>
+                updatePPForm.querySelector("#file-input").click();
 
-                    <div class="form-item-pair-value">
-                        <p class="diabled">
-                            <%= admin.lastname %>
-                        </p>
-                    </div>
-                </div>
+                const fileInput = updatePPForm.querySelector("#file-input")
+                fileInput.addEventListener("change", async (e) => {
+                    if ((e.target.value)) {
+                        updatePPForm.submit();
+                    }
+                });
+            });
+        }
 
-                <div class="form-item-pair">
-                    <div class="form-item-pair-label">
-                        <p>Role: </p>
-                    </div>
-
-                    <div class="form-item-pair-value">
-                        <p class="diabled">
-                            <%= admin.role %>
-                        </p>
-                    </div>
-                </div>
-
-                <div class="form-item-pair">
-                    <div class="form-item-pair-label">
-                        <p>Faculty: </p>
-                    </div>
-
-                    <div class="form-item-pair-value">
-                        <p class="diabled">
-                            <%= admin.faculty %>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </article>
-    </section>
-
-    <section class="notifications-area">Notifications</section>
-    <section class="activities-history">Activity History</section>
+    </script>
 </section>

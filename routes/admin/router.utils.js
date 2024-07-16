@@ -43,12 +43,12 @@ const handleCatchError = (error, res) => {
  */
 export const verifyAdmin = async (req, res, next) => {
     const { id } = req.params;
-    
+
     // Validate the provided ID
-    if(!isValidObjectId(id)) {
+    if (!isValidObjectId(id)) {
         return res.status(400).json({ message: "Invalid userId" });
     }
-    
+
     try {
         // Find the admin document by ID
         const matchedDocument = await Admins.findById(id);
@@ -89,7 +89,7 @@ export const verifyLecturer = async (req, res, next) => {
     const { id } = req.params;
 
     // Validate the provided ID
-    if(!isValidObjectId(id)) {
+    if (!isValidObjectId(id)) {
         return res.status(400).json({ message: "Invalid userId" });
     }
 
@@ -129,10 +129,9 @@ export const verifyLecturer = async (req, res, next) => {
  */
 export const verifyStudent = async (req, res, next) => {
     const { id } = req.params;
-    console.log(id)
 
     // Validate the provided ID
-    if(!isValidObjectId(id)) {
+    if (!isValidObjectId(id)) {
         return res.status(400).json({ message: "Invalid userId" });
     }
 
@@ -170,6 +169,20 @@ export const verifyStudent = async (req, res, next) => {
     }
 }
 
+export const verifyUser = async (req, res, next) => {
+    const { user } = req.params;
+    const userMethods = { "admins": verifyAdmin, "lecturer": verifyLecturer, "student": verifyStudent };
+
+    try {
+        const verifyUserMethod = userMethods[user];
+        if (!verifyUserMethod) return res.status(403).json({ message: "Invalid user" });
+
+        return verifyUserMethod(req, res, next);
+    } catch (error) {
+        return handleCatchError(error, res);
+    }
+}
+
 /**
  * Checks if the username from a login attempt matches a valid username pattern for various user roles.
  * If the username is not provided, responds with 400 and an error message in JSON format.
@@ -198,7 +211,6 @@ export const checkUsernamePattern = (req, res, next) => {
     console.log(username, username.length)
     // Determine the username format using the regexMap
     const usernameFormat = Object.keys(regexMap).find(key => regexMap[key].test(username)) || "none";
-    console.log(usernameFormat)
 
     req.usernameformat = usernameFormat;
 

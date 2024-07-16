@@ -3,6 +3,15 @@
 
         <ul class="admin-nav_main">
             <li>
+                <a href="/students/render/profile/<%= student.id %>">
+                    <i class="side-nav_icon">
+                        <img src="/images/system/user" alt="application logo">
+                    </i>
+                    <p class="nav_name">Your Profile</p>
+                </a>
+                <div class="abstract-tooltip">Your Profile</div>
+            </li>
+            <li>
                 <a href="/students/render/dashboards/<%= student.id %>">
                     <i class="side-nav_icon">
                         <img src="/images/system/home" alt="application logo">
@@ -109,3 +118,32 @@
         </ul>
     </section>
 </nav>
+
+<script>
+    //get the width of the viewport
+    const deviceWidth = window.innerWidth;
+    const navPane = document.getElementById("nav-main");
+    const profileBtn = document.getElementById("user_profile-header");
+    const profilesName = profileBtn.querySelector(".username");
+
+    if (deviceWidth < 768) {
+        navPane.classList.add("hidden");
+        profilesName.classList.add("hidden");
+
+        profileBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            navPane.classList.toggle("hidden");
+        });
+
+        document.addEventListener("click", (e) => {
+            if (!navPane.contains(e.target) && !profileBtn.contains(e.target)) {
+                navPane.classList.add("hidden");
+            }
+        });
+    } else {
+        navPane.classList.remove("hidden");
+        profilesName.classList.remove("hidden");
+    }
+
+
+</script>

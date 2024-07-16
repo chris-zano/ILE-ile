@@ -39,8 +39,6 @@ export const addChapter = async (req, res) => {
     const { lecturerData } = req;
     const { courseId, v } = req.params;
 
-    (courseId, v)
-
     try {
         const course = await Courses.findOne({
             $and: [

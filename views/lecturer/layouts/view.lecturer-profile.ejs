@@ -1,99 +1,21 @@
 <section id="profile-main-wrapper">
-    <section class="view-admin">
-        <div class="profile-picture-container">
-            <div class="image-wrapper">
-                <img src="<%= String(lecturer.profilePicUrl).includes("no-id")? lecturer.profilePicUrl : "/users/admins/get-profile-picture/" + lecturer.id %>" alt="admin profile picture">
+    <div class="profile-container">
+        <div class="profile-header">
+            <img src="<%= lecturer.profilePicUrl %>" alt="Profile Picture" class="profile-picture">
+            <div class="profile-info">
+                <h1 class="profile-name"><%= lecturer.firstname %> <%= lecturer.lastname %></h1>
+                <p class="profile-id"><span>LecturerID</span>: <%= lecturer.lecturerId %></p>
+                <p class="profile-role"><span>Faculty:</span> <%= lecturer.faculty %></p>
             </div>
-            <div class="change-picture-button-wrapper">
-                <button type="button" id="edit-pp-button">Change Picture</button>
-            </div>
-            <script>
-                const userId = JSON.parse(window.sessionStorage.getItem("auth-user")).data.id;
-
-                if (!userId) {
-                    window.sessionStorage.clear();
-                    window.localStorage.clear();
-                    window.location.href = "/login";
-                } else {
-                    const ppBtn = document.getElementById("edit-pp-button");
-                    ppBtn.addEventListener("click", () => {
-                        console.log("clicked");
-
-                        const updatePPForm = document.createElement("form");
-                        updatePPForm.method = "post";
-                        updatePPForm.action = `/admins/profile/update-component/profile-picture/${userId}`;
-                        updatePPForm.enctype = "multipart/form-data";
-                        updatePPForm.innerHTML = `
-                            <input type="file" name="profile_picture" required="true" id="file-input">
-                        `;
-                        updatePPForm.style.display = "none";
-                        document.getElementById("profile-main-wrapper").append(updatePPForm);
-
-                        updatePPForm.querySelector("#file-input").click();
-
-                        const fileInput = updatePPForm.querySelector("#file-input")
-                        fileInput.addEventListener("change", async (e) => {
-                            if ((e.target.value)) {
-                                updatePPForm.submit();
-                            }
-                        });
-                    });
-                }
-
-            </script>
         </div>
-        <article id="user-info-main">
-            <div class="article-form-container-main">
-                <div class="form-item-pair">
-                    <div class="form-item-pair-label">
-                        <p>Admin ID: </p>
-                    </div>
-
-                    <div class="form-item-pair-value">
-                        <p class="diabled">
-                            <%= lecturer.lecturerId %>
-                        </p>
-                    </div>
-                </div>
-                <div class="form-item-pair">
-                    <div class="form-item-pair-label">
-                        <p>First name: </p>
-                    </div>
-
-                    <div class="form-item-pair-value">
-                        <p class="diabled">
-                            <%= lecturer.firstname %>
-                        </p>
-                    </div>
-                </div>
-
-                <div class="form-item-pair">
-                    <div class="form-item-pair-label">
-                        <p>Last name: </p>
-                    </div>
-
-                    <div class="form-item-pair-value">
-                        <p class="diabled">
-                            <%= lecturer.lastname %>
-                        </p>
-                    </div>
-                </div>
-
-                <div class="form-item-pair">
-                    <div class="form-item-pair-label">
-                        <p>Faculty: </p>
-                    </div>
-
-                    <div class="form-item-pair-value">
-                        <p class="diabled">
-                            <%= lecturer.faculty %>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </article>
-    </section>
-
-    <section class="notifications-area">Notifications</section>
-    <section class="activities-history">Activity History</section>
+        <div class="recent-activity">
+            <h2>Recent Activity</h2>
+            <ul class="activity-list">
+                <li>Joined a class</li>
+                <li>Submitted an assignment</li>
+                <li>Completed a project</li>
+                <li>Updated profile information</li>
+            </ul>
+        </div>
+    </div>
 </section>

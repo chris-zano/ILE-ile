@@ -50,17 +50,25 @@
         </form>
     </section>
     <section id="header-profile">
+
         <div class="profile-main notification-header">
-            <img width="20px" src="/images/system/notifications" id="profile-main" alt="profile avatar">
-            <div class="notification-dot">
-                <span>9+</span>
+            <div class="button-search-activate">
+                <img width="20px" src="/images/system/search" alt="show search bar">
+            </div>
+            <div class="profile-action">
+                <img width="20px" src="/images/system/notifications" id="profile-main" alt="profile avatar">
+                <div class="notification-dot">
+                    <span>9+</span>
+                </div>
             </div>
         </div>
         <a href="/students/render/profile/<%= student.id %>" id="">
-            <div class="profile-main user_profile-header">
+            <div class="profile-main user_profile-header" id="user_profile-header">
                 <img width="20px" src="<%= student.profilePicUrl %>" id="profile-main" alt="profile avatar">
                 <div class="username">
-                    <p><%= student.firstName.toLowerCase() %></p>
+                    <p>
+                        <%= student.firstName.toLowerCase() %>
+                    </p>
                 </div>
             </div>
         </a>

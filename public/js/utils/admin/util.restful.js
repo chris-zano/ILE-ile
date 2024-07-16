@@ -64,7 +64,7 @@ const checkAndRenderImageBackground = () => {
         image.setAttribute("src", "/images/system/logo")
     })
 }
-checkAndRenderImageBackground();
+// checkAndRenderImageBackground();
 
 const navigateToPage = (position = 0) => {
     location.href = document.getElementsByClassName("header_nav-a")[position].getAttribute('href');
