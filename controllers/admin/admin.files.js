@@ -155,10 +155,11 @@ export const getDefaultProfilePicture = async (req, res) => {
     }
 
     try {
-        const genericFilePath = path.join(__dirname, '..', '..', 'public', 'assets', 'images', 'user.png');
-
+        const genericFilePath = path.join(__dirname, '..', '..', 'public', 'assets', 'images', 'system','user.png');
+        console.log(`generic file path is ${genericFilePath}`)
 
         if (!fs.existsSync(genericFilePath)) {
+            console.log(`Generic file does not exist`)
             return res.status(404).redirect("/global/error");
         }
 
@@ -173,6 +174,7 @@ export const getDefaultProfilePicture = async (req, res) => {
         console.log(`Profile picture file path: ${filePath}`);
 
         if (!fs.existsSync(filePath)){
+            console.log(`Cannot find file`)
             res.type('png');
             res.status(200);
             res.set('Cache-Control', 'public, max-age=8600');

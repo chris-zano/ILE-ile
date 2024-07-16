@@ -56,8 +56,7 @@
         </div>
         <a href="/admins/render/profiles/admin/<%= admin.id %>" id="">
             <div class="profile-main user_profile-header">
-                <img width="20px" src="<%= String(admin.profilePicUrl).includes(" no-id")? admin.profilePicUrl
-                    : "/users/admins/get-profile-picture/" + admin.id %>" id="profile-main" alt="profile avatar">
+                <img width="20px" src="<%= admin.profilePicUrl %>" id="profile-main" alt="profile avatar">
                 <div class="username">
                     <p>
                         <%= admin.firstname %>
