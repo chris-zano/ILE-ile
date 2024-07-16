@@ -147,51 +147,46 @@ export const getRandomImage = (req, res) => {
     fs.createReadStream(randomImageUrl).pipe(res);
 }
 
-const usersToModelMatch = { "admins": Admins, "students": Students, "lecturers": Lecturers }
-const getUserProfilePicture = async (user = "", id = "") => {
-    let filePath = path.join(__dirname, "..", "..", "public", "assets", "profile_pictures", "system", "admin.png");
-
-    if (!user || !id) return filePath = PATH_NOT_FOUND;
-    try {
-        if (!fs.existsSync(filePath)) return filePath = PATH_NOT_FOUND;
-
-        const userModel = usersToModelMatch[user];
-        if (!userModel) return filePath = PATH_NOT_FOUND;
-
-        const doc = await userModel.findOne({ _id: id });
-        const profilePicUrl = doc.profilePicUrl;
-        console.log((profilePicUrl));
-
-        return filePath
-    } catch (error) {
-        console.log(error)
-        return PATH_NOT_FOUND;
-    }
-}
-
 export const getDefaultProfilePicture = async (req, res) => {
-    const { userType, id } = req.params;
-    if (!userType || !id) return res.status(404).json({ message: "Resource not found" });
+    const { userType, id, filename } = req.params;
+
+    if (!userType || !id) {
+        return res.status(404).json({ message: "Resource not found" });
+    }
 
     try {
-        const genericFilePath = path.join(__dirname, '..', '..', 'public', 'assets', 'images', 'user.png');
-        const profilePictureFilePath = getUserProfilePicture(userType, id);
+        const genericFilePath = path.join(__dirname, '..', '..', 'public', 'assets', 'images', 'system','user.png');
+        console.log(`generic file path is ${genericFilePath}`)
 
-        if (!fs.existsSync(genericFilePath)) return res.status(404).redirect("/global/error");
+        if (!fs.existsSync(genericFilePath)) {
+            console.log(`Generic file does not exist`)
+            return res.status(404).redirect("/global/error");
+        }
 
-        if (profilePictureFilePath === PATH_NOT_FOUND) {
+        if (id === "no-id") {
             res.type('png');
             res.status(200);
             res.set('Cache-Control', 'public, max-age=8600');
-            return fs.createReadStream().pipe(res);
+            return fs.createReadStream(genericFilePath).pipe(res);
+        }
+
+        const filePath = path.join(__dirname, '..', '..', 'public', 'assets', 'profile_pictures', 'users', filename);
+        console.log(`Profile picture file path: ${filePath}`);
+
+        if (!fs.existsSync(filePath)){
+            console.log(`Cannot find file`)
+            res.type('png');
+            res.status(200);
+            res.set('Cache-Control', 'public, max-age=8600');
+            return fs.createReadStream(genericFilePath).pipe(res);
         }
 
         res.type('png');
         res.status(200);
         res.set('Cache-Control', 'public, max-age=8600');
-        fs.createReadStream(profilePictureFilePath).pipe(res);
+        fs.createReadStream(filePath).pipe(res);
     } catch (error) {
-        logError(error)
-        return res.status(500).json("Internal Server Error")
+        console.log(`Error in getDefaultProfilePicture: ${error}`);
+        return res.status(500).json("Internal Server Error");
     }
 }

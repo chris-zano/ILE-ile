@@ -12,7 +12,7 @@ router.get('/images/:filename', adminFileHandler.getImage);
 router.get('/random/image/', adminFileHandler.getRandomImage);
 router.get('/favicon', adminFileHandler.getFavicon);
 router.get('/fonts/:filename', adminFileHandler.getFonts);
-router.get('/users/:userType/get-profile-picture/:id', adminFileHandler.getDefaultProfilePicture);
+router.get('/users/:userType/get-profile-picture/:id/:filename', adminFileHandler.getDefaultProfilePicture);
 
 //export the router instance
 export default router;

@@ -49,7 +49,7 @@ const lecturerSchema = new Schema({
     },
     profilePicUrl:{
         type: String,
-        default:"/users/lecturers/get-profile-picture/no-id"
+        default:"/users/lecturers/get-profile-picture/no-id/0"
     }
 }, {
     timestamps: true
