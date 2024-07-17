@@ -42,6 +42,8 @@ else {
         alert("session is invalid");
         window.location.replace('/login');
     }
+
+    // participants.push[{ userName, uid, permissionClass, studentId }];
 }
 
 const myVideo = document.createElement('video'); //div which contains the video
@@ -83,32 +85,34 @@ navigator.mediaDevices.getUserMedia({
     console.log("uid to be set: ", uid);
     const tempuid = uid
     myVideoStream = stream; //storing the video stream returned to the myVideoStream variable
-    
+
     addVideoStream(myVideo, stream, userName, tempuid); //appended my stream to 'video-grid' div
     //add participant to list of participants
-    const participant = {name: userName, permissionClass, studentId};
-    addParticipant(participant)
-    
+    const tempParticipants = await addParticipant(ROOM_ID, { userName, uid, permissionClass, studentId });
+
     myPeer.on('call', call => {
         call.answer(stream);
         const { name, userId, cuiid } = call.metadata
-        console.log("caller: ", { name, userId, cuiid })
+        // console.log("caller: ", { name, userId, cuiid })
 
         const video = document.createElement('video');
         let html = '<i class="fas fa-microphone"></i>'
         video.innerHTML = html;
         call.on('stream', userVideoStream => {
-            console.log('video displayed');
+            // console.log('video displayed');
             addVideoStream(video, userVideoStream, name, cuiid)
         })
         currentPeer = call;
     })
     socket.on('user-connected', ({ userId, name, cuid }) => {
-        console.log(`new user connected: ${name}: ${userId}: ${cuid}`)
+        // console.log(`new user connected: ${name}: ${userId}: ${cuid}`)
         setTimeout(connectToNewUser, 1000, userId, name, cuid, stream);
     });
 
-})
+}).catch((err) => {
+    console.error('Error accessing media devices:', err);
+    alert('Error accessing media devices. Please check your permissions.');
+});
 
 socket.on('user-disconnected', userId => {
     if (peers[userId]) {
@@ -121,30 +125,31 @@ socket.on('user-disconnected', userId => {
         delete peers[userId];
     }
     cleanUpUI();
-})
+});
 
 myPeer.on('open', id => {
     socket.emit('join-room', ROOM_ID, id, userName, uid);
-})
+});
 
 function connectToNewUser(userId, name, cuid, stream) {
     const call = myPeer.call(userId, stream, { metadata: { name: userName, userId: myPeer.id, cuiid: cuid } });
     const video = document.createElement('video');
 
-    video.id = `video-${cuid}`; // Set the ID for the video element
+    video.id = `video-${userId}-${cuid}`; // Set the ID for the video element
 
     call.on('stream', userVideoStream => {
         addVideoStream(video, userVideoStream, name, cuid);
     });
 
     call.on('close', () => {
-        console.log(`Call with ${name} (${userId}) closed`);
+        // console.log(`Call with ${name} (${userId}) closed`);
         if (video && video.srcObject) {
             const tracks = video.srcObject.getTracks();
             tracks.forEach(track => track.stop());
         }
         video.srcObject = null;
         video.remove();
+        socket.emit("user_call_closed", (uid));
     });
 
     peers[userId] = call;
@@ -182,13 +187,14 @@ function addVideoStream(video, stream, name, cuid) {
 
 function cleanUpUI() {
     const videoObjects = document.querySelectorAll('div[id^="video-wrapper-"]');
-    console.log(videoObjects);
+    // console.log(videoObjects);
     for (let container of videoObjects) {
         const videoElement = container.querySelector("video");
         console.log("has video: ", videoElement);
         if (!videoElement || !hasActiveVideoFeed(videoElement)) {
             console.log("Removing container due to no active video feed.");
-            videoGrid.removeChild(container);
+            console.log("...", videoElement)
+            // videoGrid.removeChild(container);
         }
     }
 }
@@ -280,44 +286,52 @@ const scrollToBottom = () => {
 scrollToBottom();
 
 
-var screenSharing = false
+var screenSharing = false;
+var screenStream = null;
+
 function startScreenShare() {
     if (screenSharing) {
-        stopScreenSharing()
+        stopScreenSharing();
+        return;
     }
     navigator.mediaDevices.getDisplayMedia({ video: true }).then((stream) => {
         screenStream = stream;
         let videoTrack = screenStream.getVideoTracks()[0];
         videoTrack.onended = () => {
             console.log('Screen sharing stopped!');
-            stopScreenSharing()
-        }
-        if (myPeer) {
+            stopScreenSharing();
+        };
+        if (myPeer && currentPeer) {
             let sender = currentPeer.peerConnection.getSenders().find(function (s) {
                 return s.track.kind == videoTrack.kind;
-            })
-            sender.replaceTrack(videoTrack)
-            screenSharing = true
+            });
+            sender.replaceTrack(videoTrack);
+            screenSharing = true;
         }
-    })
+    }).catch((err) => {
+        console.error('Error starting screen share:', err);
+        alert('Error starting screen share:', err)
+    });
 }
 
 function stopScreenSharing() {
     if (!screenSharing) return;
     let videoTrack = myVideoStream.getVideoTracks()[0];
-    if (myPeer) {
+    if (myPeer && currentPeer) {
         let sender = currentPeer.peerConnection.getSenders().find(function (s) {
             return s.track.kind == videoTrack.kind;
-        })
-        sender.replaceTrack(videoTrack)
+        });
+        sender.replaceTrack(videoTrack);
     }
     screenStream.getTracks().forEach(function (track) {
         track.stop();
     });
-    screenSharing = false
+    screenStream = null;
+    screenSharing = false;
 }
 
 document.getElementById('screen-share-btn').addEventListener('click', startScreenShare);
+
 
 var isExpanded = false;
 document.addEventListener('click', function (e) {

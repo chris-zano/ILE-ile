@@ -184,6 +184,15 @@ const courseSchema = new Schema({
     credit: {
         type: String,
         required: true
+    },
+    meeting_status: {
+        type: String,
+        default: "not in meeting",
+        enum: ["not in meeting", "in meeting"]
+    },
+    attendance: {
+        type: Array,
+        default: []
     }
 }, {
     timestamps: true

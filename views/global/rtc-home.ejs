@@ -6,7 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="/css/rtc/home_style">
-    <script src="https://kit.fontawesome.com/6f0f83005a.js" crossorigin="anonymous"></script>
     <title>Meet</title>
 </head>
 
@@ -41,7 +40,33 @@
 <script>
 
     const classInSession = async (courseId) => {
-        const response = await fetch(`/get/class-in-session/`)
+        const response = await fetch(`/get/class-in-session/${courseId}`);
+        const data = await response.json();
+        const status = response.status;
+
+        if (status === 200) {
+            const doc = data.doc;
+
+            try {
+                const {meeting_status} = doc;
+
+                if (!meeting_status || meeting_status === "not in meeting") {
+                    console.log("no status set. class might not be in session")
+                    return false;
+                }
+
+                if (meeting_status === "in meeting") {
+                    console.log("status is set to 'in meeting', so..class is in session");
+                    return true;
+                }
+
+                return false;
+            }
+            catch(error) {
+                console.log(error);
+                return false;
+            }
+        }
     }
 
     const constructCourseViewUrl = (userData, courseId) => {
@@ -83,19 +108,29 @@
             joinBtn.textContent = "Join Meeting";
             msgD.innerHTML = `<p>&#9432; Waiting for host to start meeting</p>`;
 
-            await classInSession(courseId);
-
-            socket.on("waiting for host", (courseId) => {
-                console.log('waiting for host')
-            });
-            socket.on("meeting-started", (roomId) => {
+            const res = await classInSession(courseId);
+            if (res) {
                 msgD.innerHTML = "<p>&#9432;Meeting Started. Join meeting<p>";
                 console.log('meeting-started')
                 enableJoinButton("Join Meeting");
                 joinBtn.addEventListener("click", () => {
-                    window.location.href = `/room/${roomId}`;
+                    window.location.href = `/room/${courseId}`;
                 }, { once: true });
-            });
+            }
+            else {
+                socket.on("waiting for host", (courseId) => {
+                    console.log('waiting for host')
+                });
+                socket.on("meeting-started", (roomId) => {
+                    msgD.innerHTML = "<p>&#9432;Meeting Started. Join meeting<p>";
+                    console.log('meeting-started')
+                    enableJoinButton("Join Meeting");
+                    joinBtn.addEventListener("click", () => {
+                        window.location.href = `/room/${roomId}`;
+                    }, { once: true });
+                });
+            }
+
         } else if (userType === "lecturer") {
             socket.emit("join meeting", courseId);
             enableJoinButton("Start Meeting");
