@@ -1,22 +1,15 @@
-import { findCourse, findMaterial, findStudent, findTutor } from "../../../controllers/admin/admin.search.js";
+import { findCourse, findStudent, findTutor } from "../../../controllers/admin/admin.search.js";
 
 const handleSearch = (category, searchInput) => {
-    if (category == "courses") {
-        findCourse(socket, searchInput)
-    }
-
     switch (category) {
         case "courses":
-            findCourse(searchInput);
+            findCourse(socket,searchInput);
             break;
         case "students":
-            findStudent(searchInput);
+            findStudent(socket,searchInput);
             break;
         case "lecturers":
-            findTutor(searchInput);
-            break;
-        case "materials":
-            findMaterial(searchInput);
+            findTutor(socket,searchInput);
             break;
         default:
             break;

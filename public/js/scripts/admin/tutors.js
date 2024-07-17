@@ -1,3 +1,10 @@
+let userdata = window.sessionStorage.getItem('auth-user') || undefined;
+
+if (!userdata) window.location.replace('/login');
+
+const adminId = JSON.parse(userdata).data.id;
+
+
 function listen(element, event, callback) {
     return element.addEventListener(event, callback);
 }
@@ -144,7 +151,7 @@ const createTableRow = (studentObject, parentElement) => {
             const lecturerId = e.currentTarget.querySelector('[data-label-Lecturer-id]').getAttribute('data-label-Lecturer-id');
             
             const anchor = document.createElement('a');
-            anchor.href = `/lecturers/view_profile/${lecturerId}`
+            anchor.href = `/admins/render/profile/tutor/${lecturerId}/${adminId}`
             anchor.click();
         }
     })

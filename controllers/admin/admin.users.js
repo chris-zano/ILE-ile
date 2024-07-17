@@ -191,7 +191,7 @@ export const createStudent = async (req, res) => {
     const { studentId, firstName, lastName, program, year, level, session, faculty, registeredCourses } = req.body;
 
     try {
-        const student = new Students({ studentId, firstName, lastName, program, year, level, session, faculty, registeredCourses });
+        const student = new Students({ studentId, firstName, lastName, program, level, session, faculty, registeredCourses });
         await student.save();
 
         return res.status(200).redirect(`/admins/render/imports/students/${req.adminData.id}`)

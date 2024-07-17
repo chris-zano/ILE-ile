@@ -1,3 +1,9 @@
+let userdata = window.sessionStorage.getItem('auth-user') || undefined;
+
+if (!userdata) window.location.replace('/login');
+
+const adminId = JSON.parse(userdata).data.id;
+
 function listen(element, event, callback) {
     return element.addEventListener(event, callback);
 }
@@ -153,7 +159,7 @@ const createTableRow = (studentObject, parentElement) => {
         if (e.target.tagName != 'BUTTON') {
             const studentId = e.currentTarget.querySelector('[data-label-Student-id]').getAttribute('data-label-Student-id');
             const anchor = document.createElement('a');
-            anchor.href = `/students/view_profile/${studentId}`
+            anchor.href = `/admins/render/profile/student/${studentId}/${adminId}`
             anchor.click();
         }
     })

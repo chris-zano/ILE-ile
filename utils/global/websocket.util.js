@@ -12,7 +12,7 @@ const setupWebSocketServer = (server) => {
             console.log('Socket.IO client connected');
 
             //search
-            socket.on('search', ({ category, searchInput }) => handleSearch(category, searchInput));
+            socket.on('search', ({ category, searchInput }) => handleSearch(socket, category, searchInput));
 
             //waiting room
             socket.on('join meeting', (courseId) => {

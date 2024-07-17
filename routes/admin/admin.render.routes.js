@@ -31,8 +31,8 @@ router.get('/admins/render/students/:id', verifyAdmin, adminRender.renderStudent
 router.get('/admins/render/tutors/:id', verifyAdmin, adminRender.renderTutors);
 router.get('/admins/render/courses/:id', verifyAdmin, adminRender.renderCourses);
 router.get('/admins/render/classrooms/:id', verifyAdmin, adminRender.renderClassrooms);
-router.get('/admins/render/profile/student/:studentId/id', verifyAdmin, adminRender.renderViewStudent);
-router.get('/admins/render/profile/tutor/:tutorId/id', verifyAdmin, adminRender.renderViewTutor);
+router.get('/admins/render/profile/student/:studentId/:id', verifyAdmin, adminRender.renderViewStudent);
+router.get('/admins/render/profile/tutor/:tutorId/:id', verifyAdmin, adminRender.renderViewTutor);
 router.get('/admins/render/profile/course/:courseCode/id', verifyAdmin, adminRender.renderViewCourse);
 router.get('/admins/render/updates/student/:studentId/:id', verifyAdmin, adminRender.renderUpdateStudent);
 router.get('/admins/render/updates/tutor/:tutorId/:id', verifyAdmin, adminRender.renderUpdateTutor);
