@@ -31,6 +31,9 @@ const setupWebSocketServer = (server) => {
                 socket.broadcast.to(roomId).emit('user-connected', { userId, name: userName, cuid: uid });
                 socket.on('send-message', (inputMsg, userName) => {
                     io.to(roomId).emit('recieve-message', inputMsg, userName);
+                });
+                socket.on('end-call-for-all', (roomId) =>{
+                    socket.broadcast.to(roomId).emit('call-terminated');
                 })
                 socket.on('disconnect', () => {
                     socket.broadcast.to(roomId).emit('user-disconnected', userId, userName);

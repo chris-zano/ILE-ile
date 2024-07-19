@@ -114,6 +114,12 @@ navigator.mediaDevices.getUserMedia({
     alert('Error accessing media devices. Please check your permissions.');
 });
 
+socket.on("call-terminated", () => {
+    const coursePageUrl = constructCourseViewUrl(userData, ROOM_ID);
+    alert("Host has ended this call");
+    return window.location.replace(coursePageUrl);
+})
+
 socket.on('user-disconnected', userId => {
     if (peers[userId]) {
         peers[userId].close();
@@ -329,46 +335,4 @@ function stopScreenSharing() {
     screenStream = null;
     screenSharing = false;
 }
-
 document.getElementById('screen-share-btn').addEventListener('click', startScreenShare);
-
-
-var isExpanded = false;
-document.addEventListener('click', function (e) {
-    let clickedElem = e.target;
-    let clickedElemId = e.target.id;
-    if (isExpanded == false) {
-        console.log(clickedElem);
-        if (clickedElem.classList.contains('user-video')) {
-            let ele = document.getElementById(clickedElemId);
-            //ele.style.height = "80vh";
-            // ele.style.width = "70vw";
-            ele.firstChild.style.height = "80vh";
-            ele.firstChild.style.width = "70vw";
-            isExpanded = true;
-            let arr = document.getElementsByClassName('user-video');
-            for (let i = 0; i < arr.length; i++) {
-                let elem = arr[i];
-                if (elem.id != clickedElemId) {
-                    elem.style.display = "none";
-                }
-            }
-        }
-
-    } else {
-        if (clickedElem.classList.contains('user-video')) {
-            let ele = document.getElementById(clickedElemId);
-            //ele.style.height = "150px";
-            //ele.style.width = "250px";
-            ele.firstChild.style.height = "150px";
-            ele.firstChild.style.width = "250px";
-            document.getElementById('video-grid').style.display = "flex";
-            isExpanded = false;
-            let arr = document.getElementsByClassName('user-video');
-            for (let i = 0; i < arr.length; i++) {
-                arr[i].style.display = "flex";
-            }
-        }
-    }
-
-})
