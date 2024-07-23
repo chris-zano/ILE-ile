@@ -87,6 +87,7 @@
         userData = JSON.parse(userData);
         const userType = userData.user;
         const courseId = "<%= courseID %>";
+        const chapter = "<%= chapter %>";
 
         const joinBtn = document.getElementById("join-button");
         const msgD = document.getElementById("msg-to-stds");
@@ -114,7 +115,7 @@
                 console.log('meeting-started')
                 enableJoinButton("Join Meeting");
                 joinBtn.addEventListener("click", () => {
-                    window.location.href = `/room/${courseId}`;
+                    window.location.href = `/room/${courseId}/${chapter}`;
                 }, { once: true });
             }
             else {
@@ -126,7 +127,7 @@
                     console.log('meeting-started')
                     enableJoinButton("Join Meeting");
                     joinBtn.addEventListener("click", () => {
-                        window.location.href = `/room/${roomId}`;
+                        window.location.href = `/room/${roomId}/${chapter}`;
                     }, { once: true });
                 });
             }
@@ -137,7 +138,7 @@
 
             joinBtn.addEventListener("click", () => {
                 socket.emit("starting meeting", courseId);
-                window.location.href = `/room/${courseId}`;
+                window.location.href = `/room/${courseId}/${chapter}`;
             }, { once: true });
         } else {
             return window.location.replace('/login');

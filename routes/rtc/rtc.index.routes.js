@@ -6,8 +6,8 @@ import { isValidObjectId } from 'mongoose';
 const router = express.Router();
 const Courses = CoursesDB();
 
-router.get('/start-live/:courseId', renderHome);
-router.get('/room/:courseId', createNewRoom);
+router.get('/start-live/:courseId/:chapter', renderHome);
+router.get('/room/:courseId/:chapter', createNewRoom);
 router.get('/room/end/:room', leaveRoom);
 router.get('/get/class-in-session/:courseId', async (req, res) => {
     const { courseId } = req.params;
@@ -61,8 +61,47 @@ router.post('/rtc/add-participant/:courseId', async (req, res) => {
     }
 });
 
-router.post('/rtc/update-call-info/:callId', async (req, res) => {
-    const { callId } = req.params;
+const generateLectureRecordingData = (chapter, startTime, stopTime, attendees) => {
+    try {
+        const recordedDate = {
+            day: startTime.date.day,
+            date: startTime.date.date,
+            month: startTime.date.month,
+            year: startTime.date.year,
+            startTime: startTime.time.timeStamp,
+            endTime: stopTime.time.timeStamp
+        }
+        const duration = Number(stopTime.time.timeStamp) - Number(startTime.time.timeStamp);
+        const recordingObj = {
+            title: `Chapter ${Number(chapter) + 1}- Lecture Recording`,
+            dateRecorded: recordedDate,
+            duration: duration,
+            fileUrl: "",
+            attendance: attendees
+        }
+
+        return recordingObj;
+    } catch (error) {
+        logError(error);
+        return null;
+    }
+}
+
+const resetCourseCallAttendance = async (courseId) => {
+    if (!isValidObjectId(courseId)) return false;
+
+    try {
+        await Courses.findOneAndUpdate({ _id: courseId }, { $set: { attendance: [] } });
+        return true
+    } catch (error) {
+        logError(error);
+        return false;
+    }
+}
+
+router.post('/rtc/update-call-info/:callId/:chapter', async (req, res) => {
+    const { callId, chapter } = req.params;
+    const { attendees, startTime, stopTime } = req.body;
 
     if (!callId || !isValidObjectId(callId)) return res.status(400).json({
         message: "The request you made is either incomplete or invalid. Check the request again.",
@@ -71,21 +110,29 @@ router.post('/rtc/update-call-info/:callId', async (req, res) => {
     });
 
     try {
-        const course = await Courses.findOne({_id: callId});
-        if (!course) return res.status(404).json({
-            message: "The requested resource is does not exist. Please check your request again.",
-            status: 404,
-            document:{}
-        });
+        // clear attendees section for the course.
+        const attendaceIsReset = await resetCourseCallAttendance(callId);
+        
+        if (!attendaceIsReset) return res.status(404).json({ message: "Resource not found" });
+        
+        const recordingObject = generateLectureRecordingData(chapter, startTime, stopTime, attendees);
 
-        console.log(course);
+        const course = await Courses.findOneAndUpdate(
+            { _id: callId },
+            { $set: { [`chapters.${chapter}.courseLectureRecordings`]: recordingObject } },
+            { new: true }
+        )
+
+        if (!course) return res.status(404).json({ message: "Resource not found" });
+
+        return 
 
         return res.status(200).json({
             message: "Success",
             status: 200,
             document: {}
         })
-        
+
     } catch (error) {
         logError(error);
         return res.status(500).json({

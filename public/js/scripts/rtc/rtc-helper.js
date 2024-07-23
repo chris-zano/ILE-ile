@@ -1,3 +1,31 @@
+const getSystemDate = () => {
+    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const date = new Date();
+
+    return {
+        day: days[date.getDay()],
+        date: date.getDate(),
+        month: months[date.getMonth()],
+        year: date.getFullYear()
+    };
+}
+
+const getSystemTime = () => {
+    const time = new Date();
+
+    const hours = time.getHours();
+    const minutes = time.getMinutes();
+    const seconds = time.getSeconds();
+
+    return {
+        hours: hours < 10 ? "0" + hours : hours,
+        minutes: minutes < 10 ? "0" + minutes : minutes,
+        seconds: seconds < 10 ? "0" + seconds : seconds,
+        timeStamp: time.getTime()
+    }
+}
+
 const addParticipant = async (courseId, participant) => {
     console.log({ courseId, participant })
     const request = await fetch(`/rtc/add-participant/${courseId}`, {
@@ -35,14 +63,24 @@ const getParticipants = async (courseId) => {
 }
 
 const updateCourseMeetingInformation = async () => {
-    const url = `/rtc/update-call-info/${ROOM_ID}`;
+    let startDateTime = window.sessionStorage.getItem("date-Time") || undefined;
+
+    if (startDateTime) startDateTime = JSON.parse(startDateTime);
+    
+    const stopDateTime = {
+        courseId: ROOM_ID,
+        date: getSystemDate(),
+        time: getSystemTime()
+    }
+
+    const url = `/rtc/update-call-info/${ROOM_ID}/${CHAPTER}`;
     const participants = await getParticipants(ROOM_ID);
-    const headers = {"Content-Type": "application/json"};
+    const headers = { "Content-Type": "application/json" };
 
     const request = await fetch(url, {
         method: "POST",
         headers: headers,
-        body: JSON.stringify({attendees: participants})
+        body: JSON.stringify({ attendees: participants, startTime: startDateTime, stopTime: stopDateTime})
     });
 
     const response = await request.json();
@@ -59,6 +97,17 @@ const constructCourseViewUrl = (userData, courseId) => {
 }
 
 const rtcHelperMain = async () => {
+
+    //set start time and date.
+    const dateTime = {
+        courseId: ROOM_ID,
+        date: getSystemDate(),
+        time: getSystemTime()
+    }
+
+    window.sessionStorage.setItem("date-Time", JSON.stringify(dateTime));
+
+
     // get-participants button
     const participantsBtn = document.getElementById("get-participants");
     participantsBtn.addEventListener("click", async () => {
