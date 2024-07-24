@@ -7,33 +7,57 @@ if (adminId === null) {
     console.info("User Authenticated");
 }
 
+const updateCourse = async (courseId) => {
+    const url = `/admins/render/updates/course/${courseId}/${adminId}`;
+    window.location.href = url;
+}
+
+const deleteCourse = async (courseId) => {
+    const confirmState = confirm("Are you sure you want to delete this course?\nThis action is irreversible.");
+
+    if (confirmState) {
+        const url = `/admins/delete/course/${courseId}/${adminId}`;
+        const request = await fetch(url);
+        const response = await request.json();
+
+        if (request.ok) {
+            document.getElementById("courses-cards").innerHTML = "";
+            await makeRequestForCourses();
+        }
+    }
+    else {
+        console.log("you cancelled course deleting")
+    }
+}
+
 const courseCard = (course) => {
-    const card = document.createElement('a');
+    const card = document.createElement('div');
     card.classList.add("card");
-    card.setAttribute("href", `/admins/render/updates/course/${course._id}/${adminId}`);
-    card.innerHTML = `
-        <section class="card-header">
-            <img src="/images/system/ui" alt="course thumbnail" width="150px" height="150px">
-        </section>
+    // card.setAttribute("href", `/admins/render/updates/course/${course._id}/${adminId}`);
+    card.innerHTML = `  
         <section class="card-body">
             <div class="title">
+                <small>[${course.courseCode}]</small>
                 <h2>${course.title}</h2>
-                <small>${course.courseCode}</small>
             </div>
             <div class="professor">
-                <img src="/images/system/lecturer" alt="professor">
-                    <p>${course.lecturer.name == "unassigned" ? "No lecturer assigned" : course.lecturer.name}</p>
+                <img src="/images/system/user" alt="professor">
+                <p>${course.lecturer.name == "unassigned" ? "No lecturer assigned" : course.lecturer.name}</p>
             </div>
             <div class="footer">
-                <div class="highlight-footer">
-                    <img src="/images/system/classrooms" alt="course level">
-                    <small>${course.level}</small>
+                <div class="highlight-footer h-level">
+                    <small>Level: <span
+                    class="${course.level === 100 ? 'one' : course.level === 200 ? 'two' : course.level === 300 ? 'three': 'four'}" 
+                    >${course.level}</span></small>
                 </div>
                 <div class="highlight-footer">
-                    <img src="/images/system/students" alt="students count">
-                    <small>${course.students.length}</small>
+                    <small>Enrolled: <span>${course.students.length}</span></small>
                 </div>
-            </div>
+                </div>
+                <div class="actions">
+                    <button type="button" id="c-update-btn" onclick="updateCourse('${course._id}')" >Update</button>
+                    <button type="button" id="c-delete-btn" onclick="deleteCourse('${course._id}')">Delete</button>
+                </div>
         </section>
     `;
 

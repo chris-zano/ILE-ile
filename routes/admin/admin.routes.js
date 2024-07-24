@@ -9,6 +9,7 @@ router.get('/admin/get/:userType/:offset', adminUsersController.getUserDataByOff
 router.get("/admins/user/get-lecturers-name/:id", adminUsersController.getLecturersName);
 router.get('/admin/courses/get-courses/:id', verifyAdmin, adminCoursesController.getCoursesByOffset);
 router.post('/admins/update/course/:courseId/:id', verifyAdmin, adminCoursesController.manageCourses);
+router.get('/admins/delete/course/:courseId/:id', verifyAdmin, adminCoursesController.deleteCourse)
 router.get("/admins/get/registration-code-courses/:id", verifyAdmin, adminCoursesController.getCoursesByRegistrationCode);
 router.post("/admins/set/registration-code-courses/:id", verifyAdmin, adminCoursesController.setCoursesToRegistrationCode);
 router.get("/admins/reset/registration-code-courses/:id", verifyAdmin, adminCoursesController.resetCoursesForRegistrationCode);

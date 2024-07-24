@@ -279,7 +279,6 @@ export const renderViewTutor = async (req, res) => {
         const tutor = await Tutors.findOne({_id: tutorId});
         if (!tutor) return res.status(404);
 
-        console.log(tutor)
         res.set('Cache-Control', 'public, max-age=30');
         return res.render('admin/admin-main', {
             admin: adminData,
