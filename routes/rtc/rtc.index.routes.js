@@ -106,7 +106,6 @@ router.post('/rtc/update-call-info/:callId/:chapter', async (req, res) => {
     if (!callId || !isValidObjectId(callId)) return res.status(400).json({
         message: "The request you made is either incomplete or invalid. Check the request again.",
         status: 400,
-        document: {}
     });
 
     try {
@@ -125,20 +124,16 @@ router.post('/rtc/update-call-info/:callId/:chapter', async (req, res) => {
 
         if (!course) return res.status(404).json({ message: "Resource not found" });
 
-        return 
-
         return res.status(200).json({
             message: "Success",
             status: 200,
-            document: {}
-        })
+        });
 
     } catch (error) {
         logError(error);
         return res.status(500).json({
             message: "An error occured while processing your request. This might be an internal issue.",
             status: 500,
-            document: {}
         })
     }
 })

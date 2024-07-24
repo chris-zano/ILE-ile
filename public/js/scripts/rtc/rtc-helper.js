@@ -85,7 +85,10 @@ const updateCourseMeetingInformation = async () => {
 
     const response = await request.json();
 
-    console.log(response);
+    if (response.status === 200 && response.message === "Success") {
+        const courseViewUrl = constructCourseViewUrl(userData, ROOM_ID);
+        return window.location.href = courseViewUrl;
+    }
 }
 
 const constructCourseViewUrl = (userData, courseId) => {
