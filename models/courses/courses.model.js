@@ -41,65 +41,21 @@ const dateRecordedSchema = new Schema({
     }
 }, { _id: false });
 
-const durationSchema = new Schema({
-    hours: {
-        type: String,
-        default: ""
-    },
-    minutes: {
-        type: String,
-        default: ""
-    },
-    seconds: {
-        type: String,
-        default: ""
-    }
-}, { _id: false });
-
-const attendeesSchema = new Schema({
-    studentId: {
-        type: String,
-        default: ""
-    },
-    name: {
-        type: String,
-        default: ""
-    },
-    joined: {
-        type: String,
-        default: ""
-    },
-    left: {
-        type: String,
-        default: ""
-    }
-}, { _id: false });
-
-const attendanceSchema = new Schema({
-    count: {
-        type: Number,
-        default: 0
-    },
-    expected: {
-        type: Number,
-        default: 0
-    },
-    attendees: [attendeesSchema],
-    absentees: [attendeesSchema]
-}, { _id: false });
-
-const recordingsSchema = new Schema({
+const  recordingsSchema = new Schema({
     title: {
         type: String,
         default: ""
     },
     dateRecorded: dateRecordedSchema,
-    duration: durationSchema,
+    duration: {
+        type: String,
+        default: ""
+    },
     fileUrl: {
         type: String,
         default: ""
     },
-    attendance: attendanceSchema
+    attendance: []
 }, { _id: false });
 
 const submissionSchema = new Schema({
@@ -184,6 +140,15 @@ const courseSchema = new Schema({
     credit: {
         type: String,
         required: true
+    },
+    meeting_status: {
+        type: String,
+        default: "not in meeting",
+        enum: ["not in meeting", "in meeting"]
+    },
+    attendance: {
+        type: Array,
+        default: []
     }
 }, {
     timestamps: true

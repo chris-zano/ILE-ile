@@ -70,13 +70,13 @@
                             </div>
                             <div class="chapter-actions">
                                 <div class="chapter-actions-btns">
-                                    <a href="/lecturer/courses/deleteChapter/<%= course._id %>/<%= course.__v %>/<%= lecturer.id %>" id="del-btn">
+                                    <a href="/lecturer/courses/deleteChapter/<%= course._id %>/<%= course.__v %>/<%= lecturer.id %>/<%= i %>" id="del-btn">
                                         <!-- <img src="/images/system/delete" alt="delete chapter" width="20px"> -->
                                         <p>Delete</p>
                                     </a>
                                 </div>
                                 <div class="chapter-actions-btns">
-                                    <a href="/start-live/<%= course._id %>" id="live-btn">
+                                    <a href="/start-live/<%= course._id %>/<%= i %>" id="live-btn">
                                         <!-- <img id="live" src="/images/system/live" alt="start live class" width="20px"> -->
                                         <p>Start Live</p>
                                     </a>

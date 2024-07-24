@@ -1,8 +1,10 @@
-import { ClassesDB, CoursesDB } from '../../utils/global/db.utils.js';
+import { ClassesDB, CoursesDB, LecturersDB, StudentsDB } from '../../utils/global/db.utils.js';
 import * as utils from './admin.utils.js';
 
 const Courses = CoursesDB();
 const Classes = ClassesDB();
+const Students = StudentsDB();
+const Tutors = LecturersDB();
 
 export const renderImports = async (req, res) => {
     const { userType, id } = req.params;
@@ -242,36 +244,56 @@ export const renderViewAdminProfile = (req, res) => {
     });
 }
 
-export const renderViewStudent = (req, res) => {
-    const { userType, id } = req.params;
+export const renderViewStudent = async (req, res) => {
+    const { userType, studentId } = req.params;
     const { adminData } = req;
 
-    res.set('Cache-Control', 'public, max-age=30');
-    return res.render('admin/admin-main', {
-        admin: adminData,
-        pageTitle: "Student-Profile",
-        stylesheets: ["/css/admin/view.student"],
-        pageUrl: 'layouts/view.student.ejs',
-        currentPage: 'students',
-        userType: userType,
-        scripts: ["/script/scripts/admin/view.student"]
-    });
+    try {
+        const student = await Students.findOne({_id: studentId});
+
+        if (!student) return res.status(404);
+        res.set('Cache-Control', 'public, max-age=30');
+        return res.render('admin/admin-main', {
+            admin: adminData,
+            pageTitle: "Student-Profile",
+            stylesheets: ["/css/admin/import"],
+            pageUrl: 'layouts/view.student.ejs',
+            currentPage: 'students',
+            userType: userType,
+            scripts: ["/script/scripts/admin/view.student"],
+            student: student
+        });
+
+    } catch (error) {
+        utils.logError(error);
+        return res.status(500);
+    }
+
 }
 
-export const renderViewTutor = (req, res) => {
-    const { userType, id } = req.params;
+export const renderViewTutor = async (req, res) => {
+    const { userType, tutorId } = req.params;
     const { adminData } = req;
 
-    res.set('Cache-Control', 'public, max-age=30');
-    return res.render('admin/admin-main', {
-        admin: adminData,
-        pageTitle: "Tutor-Profile",
-        stylesheets: ["/css/admin/view.tutor"],
-        pageUrl: 'layouts/view.tutor.ejs',
-        currentPage: 'tutor',
-        userType: userType,
-        scripts: ["/script/scripts/admin/view.tutor"]
-    });
+    try {
+        const tutor = await Tutors.findOne({_id: tutorId});
+        if (!tutor) return res.status(404);
+
+        res.set('Cache-Control', 'public, max-age=30');
+        return res.render('admin/admin-main', {
+            admin: adminData,
+            pageTitle: "Tutor-Profile",
+            stylesheets: ["/css/admin/import"],
+            pageUrl: 'layouts/view.tutor.ejs',
+            currentPage: 'tutor',
+            userType: userType,
+            scripts: ["/script/scripts/admin/view.tutor"],
+            tutor: tutor
+        });
+    } catch (error) {
+        utils.logError(error);
+        return res.status(500);
+    }
 }
 
 export const renderViewCourse = (req, res) => {

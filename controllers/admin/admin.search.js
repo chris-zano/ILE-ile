@@ -4,32 +4,37 @@ import { AdminsDB, StudentsDB, CoursesDB, LecturersDB } from '../../utils/global
 import { logError } from './admin.utils.js';
 
 export const findCourse = (socket, value) => {
-    const regex = new RegExp(value, 'i');
+    try {
+        const regex = new RegExp(value, 'i');
 
-    if (value == "") {
-        return;
+        if (value == "") {
+            return;
+        }
+
+        const query = {
+            $or: [
+                { courseCode: { $regex: regex } },
+                { title: { $regex: regex } },
+                { resources: { $in: [value] } },
+                { assignments: { $in: [value] } },
+                { recordings: { $in: [value] } },
+            ],
+        };
+
+        CoursesDB().find(query)
+            .then((docs) => {
+                socket.emit("searchResults", { type: "courses", results: docs });
+            }).catch((error) => {
+                logError(error)
+            })
+    } catch (error) {
+        logError(error);
     }
-
-    const query = {
-        $or: [
-            { courseCode: { $regex: regex } },
-            { title: { $regex: regex } },
-            { resources: { $in: [value] } },
-            { assignments: { $in: [value] } },
-            { recordings: { $in: [value] } },
-        ],
-    };
-
-    CoursesDB().find(query)
-        .then((docs) => {
-            socket.emit("searchResults", { type: "courses", results: docs });
-        }).catch((error) => {
-            logError(error)
-        })
 };
 
 export const findStudent = (socket, value) => {
-    const regex = new RegExp(value, "i");
+    try {
+        const regex = new RegExp(value, "i");
 
     if (value == "") {
         return;
@@ -49,10 +54,14 @@ export const findStudent = (socket, value) => {
         }).catch((error) => {
             logError(error);
         })
+    } catch (error) {
+        logError(error)
+    }
 }
 
 export const findTutor = (socket, value) => {
-    const regex = new RegExp(value, "i");
+    try {
+        const regex = new RegExp(value, "i");
     if (value == "") {
         return;
     }
@@ -71,33 +80,7 @@ export const findTutor = (socket, value) => {
         }).catch((error) => {
             logError(error);
         })
-}
-
-export const findMaterial = (socket, value) => {
-    const regex = new RegExp(value, "i");
-
-    if (value == "") {
-        return;
+    }catch(error) {
+        logError(error)
     }
-
-    const query = {
-        $or: [
-            { originalname: { $regex: regex } },
-            { courseId: { $regex: regex } },
-            {
-                createdAt: {
-                    date: { $regex: regex },
-                    month: { $regex: regex },
-                    year: { $regex: regex }
-                }
-            }
-        ]
-    }
-
-    // Materials.find(query)
-    //     .then((docs) => {
-    //         socket.emit("searchResults", { type: "materials", results: docs })
-    //     }).catch((error) => {
-    //         logError(error);
-    //     })
 }

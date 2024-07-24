@@ -26,6 +26,24 @@ export const getCoursesByOffset = async (req, res) => {
     return;
 }
 
+export const deleteCourse = async (req, res) => {
+    const { courseId } = req.params;
+
+    if (!courseId) return res.status(400).json({ message: "request is invalid" });
+
+    try {
+        const course = await Courses.deleteOne({ _id: courseId });
+
+        console.log("Course deletion state = ", course);
+
+        return res.status(200).json({ message: "deleted successfully" });
+
+    } catch (error) {
+        logError(error);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+}
+
 export const manageCourses = async (req, res) => {
     const { courseId, id } = req.params;
     const { adminData } = req;
@@ -53,10 +71,10 @@ export const manageCourses = async (req, res) => {
             });
 
             await newCourse.save();
-            
+
             await Lecturers.findOneAndUpdate(
-                {lecturerId: lecturerId},
-                {$addToSet: {assignedCourses: course.courseCode}}
+                { lecturerId: lecturerId },
+                { $addToSet: { assignedCourses: course.courseCode } }
             );
 
             res.redirect(`/admins/render/courses/${id}`);
@@ -69,26 +87,28 @@ export const manageCourses = async (req, res) => {
         try {
             const [lecturerId, name] = course.lecturer.split("_");
             const updatedCourse = await Courses.findOneAndUpdate(
-                {_id: courseId, __v: course.v},
-                {$set: {
-                    courseCode: course.courseCode,
-                    title: course.courseTitle,
-                    "lecturer.lecturerId": lecturerId,
-                    "lecturer.name": name,
-                    year: course.year,
-                    level: Number(course.level),
-                    semester: Number(course.semester),
-                    faculty: course.faculty,
-                    program: course.program,
-                    __v: Number(course.v) + 1,
-                }},
-                {new: true}
+                { _id: courseId, __v: course.v },
+                {
+                    $set: {
+                        courseCode: course.courseCode,
+                        title: course.courseTitle,
+                        "lecturer.lecturerId": lecturerId,
+                        "lecturer.name": name,
+                        year: course.year,
+                        level: Number(course.level),
+                        semester: Number(course.semester),
+                        faculty: course.faculty,
+                        program: course.program,
+                        __v: Number(course.v) + 1,
+                    }
+                },
+                { new: true }
             );
             if (!updatedCourse) return res.status(404).redirect(`/admins/render/courses/${id}`);
 
             await Lecturers.findOneAndUpdate(
-                {lecturerId: lecturerId},
-                {$addToSet: {assignedCourses: course.courseCode}}
+                { lecturerId: lecturerId },
+                { $addToSet: { assignedCourses: course.courseCode } }
             );
 
             return res.status(200).redirect(`/admins/render/courses/${id}`)

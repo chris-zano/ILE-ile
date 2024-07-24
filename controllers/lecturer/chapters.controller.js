@@ -122,22 +122,28 @@ export const addLesson = (req, res) => {
 export const deleteChapter = (req, res) => {
     const { lecturerData } = req;
     const { courseId, v, chapter } = req.params;
+    console.log({ courseId, v, chapter })
 
-    Courses.findByIdAndUpdate(courseId)
-        .then((course) => {
-            if (course == null) {
-                res.redirect(`/lecturers/render/course/${courseId}/${lecturerData.id}`)
-                return;
-            }
-            else {
-                if (course.__v == v) {
-                    course.chapters.splice(chapter - 1, 1);
-                    course.save();
+    try {
+        Courses.findByIdAndUpdate(courseId)
+            .then((course) => {
+                if (course == null) {
+                    res.redirect(`/lecturers/render/course/${courseId}/${lecturerData.id}`)
+                    return;
                 }
-                res.redirect(`/lecturers/render/course/${courseId}/${lecturerData.id}`);
-            }
-        }).catch((error) => {
-            logError(error)
-            res.render('global/error', { error: "Failed to add lesson - not found", status: 404 })
-        })
+                else {
+                    if (course.__v == v) {
+                        course.chapters.splice(chapter,1);
+                        course.save();
+                    }
+                    res.redirect(`/lecturers/render/course/${courseId}/${lecturerData.id}`);
+                }
+            }).catch((error) => {
+                logError(error)
+                res.render('global/error', { error: "Failed to add lesson - not found", status: 404 })
+            })
+    } catch (error) {
+        logError(error)
+        res.render('global/error', { error: "Failed to add lesson - not found", status: 500 })
+    }
 }

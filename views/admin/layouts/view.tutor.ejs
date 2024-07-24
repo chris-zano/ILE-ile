@@ -1,3 +1,37 @@
-<section class="view-tutor">
-    A tutor profile instance would be initialised here
+<section class="imports-section">
+    <div class="create-one">
+        <div class="form-container">
+            <form action="/admins/update/<%= userType %>/<%= admin.id %>" method="post" id="add-tutor"
+                class="student-form">
+                <h2>Update Lecturer Information for { <%= tutor.lecturerId %> } %>
+                </h2>
+                <div class="input-field">
+                    <label for="lecturerId">Lecturer ID</label>
+                    <input type="text" id="lecturerId" name="lecturerId" value="<%= tutor.lecturerId %>" required>
+                </div>
+                <div class="input-field">
+                    <label for="firstName">First Name</label>
+                    <input type="text" id="firstName" name="firstName" value="<%= tutor.firstName %>" required>
+                </div>
+                <div class="input-field">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" id="lastName" name="lastName" value="<%= tutor.lastName %>" required>
+                </div>
+                <div class="input-field">
+                    <label for="faculty">Faculty</label>
+                    <select name="faculty" id="faculty">
+                        <option value="<%= tutor.faculty %>">
+                            <%= tutor.faculty %>
+                        </option>
+                        <option value="Engineering">Engineering</option>
+                        <option value="FoCIS">FoCIS</option>
+                        <option value="Business">Business</option>
+                    </select>
+                </div>
+                <div class="button-container">
+                    <button type="submit" class="upload-button">Upload</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </section>

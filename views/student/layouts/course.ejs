@@ -10,11 +10,6 @@
                     <%= course.title %> (<%= course.courseCode %>)
                 </h1>
             </div>
-            <div class="add-lesson-chapter">
-                <button type="button" id="join-class">
-                    <a href="/start-live/<%= course._id %>">Join Class</a>
-                </button>
-            </div>
         </article>
 
         <% if (course.chapters.length==0) { %>
@@ -67,7 +62,7 @@
                             </div>
                             <div class="chapter-actions">
                                 <div class="chapter-actions-btns">
-                                    <a href="/start-live/<%= course._id %>" id="live-btn">
+                                    <a href="/start-live/<%= course._id %>/<%= i %>" id="live-btn">
                                         <p>Join Live</p>
                                     </a>
                                 </div>

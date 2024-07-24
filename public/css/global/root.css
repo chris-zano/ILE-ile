@@ -11,12 +11,13 @@
 :root {
     /* colors */
     --text-title: #051e0e;
-    --text-body: #7e8a9e;
+    --text-body: #1f232a;
     --text: #7e8a9e;
     --white: #ffffff;
     --background: #ffffff;
     --background-main: #e8e8e8;
     --primary: #3074d9;
+    --primary-dark: #043783;
     --secondary: #54b1b3;
     --accent: #57b0e0;
     --red: #ac0000;
@@ -31,7 +32,7 @@
     --font-small: 11px;
     --font-standard: 14px;
     --font-medium: 18px;
-    --font-large: 26px;
+    --font-large: 24px;
     --font-extra: 48px;
 
     /* margins and padding */

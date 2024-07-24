@@ -1,3 +1,88 @@
-<section class="view-student">
-    A student profile instances would be set up here
+<section class="imports-section">
+    <div class="create-one">
+        <div class="form-container">
+            <form action="/admins/update/<%= userType %>/<%= admin.id %>" method="post" id="add-student"
+                class="student-form">
+                <h2>Update Information for { <%= student.studentId %> } %>
+                </h2>
+                <div class="input-field">
+                    <label for="firstName">First Name</label>
+                    <input type="text" id="firstName" name="firstName" value="<%= student.firstName %>" required>
+                </div>
+                <div class="input-field">
+                    <label for="lastName">Last Name</label>
+                    <input type="text" id="lastName" name="lastName" value="<%= student.lastName %>" required>
+                </div>
+                <div class="input-field">
+                    <label for="program">Program</label>
+                    <select name="program" id="program">
+                        <option value="<%= student.program %>">
+                            <%= student.program %>
+                        </option>
+                        <option value="BSc. Computer Engineering">BSc. Computer Engineering</option>
+                        <option value="BSc. Telecom Engineering">BSc. Telecom Engineering</option>
+                        <option value="BSc. Computer Science">BSc. Computer Science</option>
+                        <option value="Bsc. Information Technology">Bsc. Information Technology</option>
+                    </select>
+                </div>
+                <div class="input-field">
+                    <label for="level">Level</label>
+                    <select name="level" id="level">
+                        <option value="<%= student.level %>">
+                            <%= student.level %>
+                        </option>
+                        <option value="100">100</option>
+                        <option value="200">200</option>
+                        <option value="300">300</option>
+                        <option value="400">400</option>
+                        <option value="Top-Up">Top-Up</option>
+                    </select>
+                </div>
+                <div class="input-field">
+                    <label for="session">Session</label>
+                    <select name="session" id="session">
+                        <option value="<%= student.session %>">
+                            <%= student.session %>
+                        </option>
+                        <option value="Morning">Morning</option>
+                        <option value="Evening">Evening</option>
+                        <option value="Weekend">Weekend</option>
+                    </select>
+                </div>
+                <div class="input-field">
+                    <label for="faculty">Faculty</label>
+                    <select name="faculty" id="faculty">
+                        <option value="<%= student.faculty %>">
+                            <%= student.faculty %>
+                        </option>
+                        <option value="Engineering">Engineering</option>
+                        <option value="FoCIS">FoCIS</option>
+                        <option value="Business">Business</option>
+                    </select>
+                </div>
+
+                <div class="input-field">
+                    <label for="registeredCourses">Registered Courses</label>
+                    <select name="registeredCourses" id="registeredCourses">
+                        <option value="<%= student.registeredCourses %>">
+                            <%= student.registeredCourses %> - Required Courses
+                        </option>
+                        <option value="400_BCE">400_BCE - Required Courses</option>
+                        <option value="400_BTE">400_BTE - Required Courses</option>
+                        <option value="300_BCE">300_BCE - Required Courses</option>
+                        <option value="300_BTE">300_BTE - Required Courses</option>
+                        <option value="200_BCE">200_BCE - Required Courses</option>
+                        <option value="200_BTE">200_BTE - Required Courses</option>
+                        <option value="100_BCE">100_BCE - Required Courses</option>
+                        <option value="100_BTE">100_BTE - Required Courses</option>
+                        <option value="100_BCS">100_BCS - Required Courses</option>
+                    </select>
+                </div>
+
+                <div class="button-container">
+                    <button type="submit" class="upload-button">Upload</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </section>
