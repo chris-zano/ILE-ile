@@ -53,9 +53,11 @@ const getStudentClassroom = async (studentData) => {
 
 const getCourseRegistrationPage = async (studentData) => {
     try {
+        console.log(studentData)
         const data = await RegisteredCourses.findOne({ registrationCode: studentData.registeredCourses });
         const coursesMap = data.courses.map((courseCode) => Courses.findOne({ courseCode: courseCode }));
         const courses = await Promise.all(coursesMap);
+        console.log("registered courses are : ", courses);
         return courses;
     }
     catch (error) {

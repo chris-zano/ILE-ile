@@ -56,6 +56,21 @@ const deleteForStudents = async (courseCode) => {
     }
 }
 
+const deleteForSregistrationCodes = async (courseCode) => {
+    if (!courseCode) return false;
+    try {
+        const codesDeleteStatus = await RegisteredCourses.updateMany(
+            { courses: { courseCode } },
+            { $pull: { courses: courseCode } }
+        );
+
+        return codesDeleteStatus.acknowledged
+    } catch (error) {
+        logError(error);
+        return false;
+    }
+}
+
 export const deleteCourse = async (req, res) => {
     const { courseId } = req.params;
 
@@ -63,15 +78,22 @@ export const deleteCourse = async (req, res) => {
 
     try {
         //get course code
-        const courseCode = await Courses.findOne({ _id: courseId });
-        if (!courseCode) return res.status(404).json({ message: "resource not found" });
+        const course = await Courses.findOne({ _id: courseId });
+        if (!course) return res.status(404).json({ message: "resource not found" });
+
+        const courseCode = course.courseCode;
 
         //delete for lecturers
         let deleteOperationResult = await deleteForLecturers(courseCode);
         if (!deleteOperationResult) console.log(`Failed to delete ${courseCode} for Lectuers`);
 
+        //delete for students
         deleteOperationResult = await deleteForStudents(courseCode);
         if (!deleteOperationResult) console.log(`Failed to delete ${courseCode} for Students`);
+        
+        //delete for registeration codes
+        deleteOperationResult = await deleteForSregistrationCodes(courseCode);
+        if (!deleteOperationResult) console.log(`Failed to delete ${courseCode} for Registered courses`);
 
         //delete course itself
         const deleteResult = await Courses.deleteOne({ _id: courseId });
