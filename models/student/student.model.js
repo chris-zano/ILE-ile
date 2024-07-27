@@ -48,11 +48,11 @@ const studentSchema = new Schema({
         default: "100_BCE",
         // enum: ["100_BCE", "100_BTE", "200_BCE", "200_BTE", "300_BCE", "300_BTE", "400_BCE", "400_BTE"]
     },
-    files: {
+    files: { //array of objects
         type: Array,
         default: []
     },
-    repos: {
+    repos: { //array of objects
         type: Array,
         default: []
     },

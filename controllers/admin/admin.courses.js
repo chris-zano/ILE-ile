@@ -52,7 +52,7 @@ const deleteForStudents = async (courseCode) => {
         return students.acknowledged
     } catch (error) {
         logError(error);
-        return false;
+        return false;   
     }
 }
 
