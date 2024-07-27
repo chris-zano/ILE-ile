@@ -1,7 +1,8 @@
-import { CoursesDB, LecturersDB, RegisteredCoursesDB } from '../../utils/global/db.utils.js';
+import { CoursesDB, LecturersDB, RegisteredCoursesDB, StudentsDB } from '../../utils/global/db.utils.js';
 import { logError } from './admin.utils.js';
 
 const Courses = CoursesDB();
+const Students = StudentsDB();
 const Lecturers = LecturersDB();
 const RegisteredCourses = RegisteredCoursesDB();
 
@@ -26,18 +27,60 @@ export const getCoursesByOffset = async (req, res) => {
     return;
 }
 
+const deleteForLecturers = async (courseCode) => {
+    if (!courseCode) return false;
+    try {
+        const lecturers = await Lecturers.updateMany(
+            { assignedCourses: courseCode },
+            { $pull: { assignedCourses: courseCode } }
+        );
+        return lecturers.acknowledged
+    } catch (error) {
+        logError(error);
+        return false;
+    }
+}
+
+const deleteForStudents = async (courseCode) => {
+    if (!courseCode) return false;
+    try {
+        const students = await Students.updateMany(
+            { courses: { courseCode } },
+            { $pull: { courses: courseCode } }
+        );
+
+        return students.acknowledged
+    } catch (error) {
+        logError(error);
+        return false;
+    }
+}
+
 export const deleteCourse = async (req, res) => {
     const { courseId } = req.params;
 
     if (!courseId) return res.status(400).json({ message: "request is invalid" });
 
     try {
-        const course = await Courses.deleteOne({ _id: courseId });
+        //get course code
+        const courseCode = await Courses.findOne({ _id: courseId });
+        if (!courseCode) return res.status(404).json({ message: "resource not found" });
 
-        console.log("Course deletion state = ", course);
+        //delete for lecturers
+        let deleteOperationResult = await deleteForLecturers(courseCode);
+        if (!deleteOperationResult) console.log(`Failed to delete ${courseCode} for Lectuers`);
 
-        return res.status(200).json({ message: "deleted successfully" });
+        deleteOperationResult = await deleteForStudents(courseCode);
+        if (!deleteOperationResult) console.log(`Failed to delete ${courseCode} for Students`);
 
+        //delete course itself
+        const deleteResult = await Courses.deleteOne({ _id: courseId });
+
+        if (deleteResult.deletedCount === 1) {
+            console.log(`Course with id ${courseId} and courseCode ${courseCode} has been deleted.`);
+            return res.status(200).json({ message: "deleted successfully" });
+        }
+        return res.status(404).json({ message: "resource not found" });
     } catch (error) {
         logError(error);
         return res.status(500).json({ message: "Internal Server Error" });
