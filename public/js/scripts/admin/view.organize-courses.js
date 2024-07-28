@@ -24,7 +24,8 @@ const renderDefaultCoursesForyear = (courses, isdefault = false) => {
 
 const loadDefaultCoursesForYear = (code = "") => {
     const courseGroup = courseGroups.filter((course) => code.includes(course._id));
-    renderDefaultCoursesForyear(courseGroup[0].courses, true);
+    
+    courseGroup.length === 0 ? console.log('no available courses for this group'):renderDefaultCoursesForyear(courseGroup[0].courses, true);
 }
 
 /**
@@ -100,6 +101,7 @@ const handleCarouselCardClick = async (button) => {
     //handle fetching data related to course code
     const response = await getCoursesForRegistrationCode(rCode);
     const doc = response.data.doc;
+    console.log({doc})
     if (response.status !== 200) {
         Toast_Notification.showError("Document not found");
         return;
@@ -146,6 +148,7 @@ const handleReset = async () => {
 }
 const organiseMain = async () => {
     courseGroups = JSON.parse(document.getElementById("courses-fetch-and-unmount").innerText);
+    console.log({courseGroups})
     const form = document.getElementById("check-form");
     const resetBtn = document.getElementById("reset-entries");
 

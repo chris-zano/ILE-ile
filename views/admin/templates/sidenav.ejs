@@ -104,13 +104,25 @@
                 <div class="abstract-tooltip">Settings</div>
             </li>
             <li>
-                <a href="#">
+                <a href="#" id="logout">
                     <i class="side-nav_icon">
                         <img src="/images/system/logout" alt="application logo">
                     </i>
                     <p class="nav_name">Logout</p>
                 </a>
                 <div class="abstract-tooltip">Logout</div>
+                <script>
+                    document.getElementById("logout").addEventListener("click", (e) => {
+                        e.preventDefault();
+                        const confirm = window.confirm("You're about to logout. Are you sure you want to continue?");
+
+                        if (confirm) {
+                            window.sessionStorage.clear();
+                            window.localStorage.clear();
+                            window.location.href = '/login';
+                        }
+                    })
+                </script>
             </li>
         </ul>
     </section>

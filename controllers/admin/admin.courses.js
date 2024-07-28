@@ -193,6 +193,7 @@ export const getCoursesByRegistrationCode = async (req, res) => {
 
         const coursesMap = documentMatch.courses.map((courseCode) => Courses.findOne({ courseCode: courseCode }));
         const courses = await Promise.all(coursesMap);
+
         return res.status(200).json({ doc: courses });
     } catch (error) {
         logError(error);

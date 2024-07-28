@@ -106,7 +106,8 @@ export const verifyLecturer = async (req, res, next) => {
             firstname: matchedDocument.firstName,
             lastname: matchedDocument.lastName,
             faculty: matchedDocument.faculty,
-            profilePicUrl: matchedDocument.profilePicUrl
+            profilePicUrl: matchedDocument.profilePicUrl,
+            assignedCourses: matchedDocument.assignedCourses
         }
 
         // Proceed to the next middleware

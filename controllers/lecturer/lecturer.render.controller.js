@@ -25,7 +25,12 @@ const getSchedules = async (lecturerData) => {
 }
 const getSubmissions = async (lecturerData) => {
     try {
-        return [];
+        const courses = lecturerData.assignedCourses || [];
+        const courseMap = courses.length === 0 ? [] : courses.map((courseCode) => Courses.findOne({ courseCode: courseCode }));
+        const courseArray = await Promise.all(courseMap);
+        if (courseArray.length === 0) return { courses: [] };
+
+        return { courses: courseArray.filter(course => course !== null) };
     } catch (error) {
         logError(error);
         return null;
@@ -118,111 +123,6 @@ export const renderLecturerViews = async (req, res) => {
     }
 }
 
-export const renderDashboard = (req, res) => {
-    const { lecturerData } = req;
-
-    try {
-        return res.render('lecturer/lecturer-main', {
-            lecturer: lecturerData,
-            pageTitle: "Dashboard",
-            stylesheets: [],
-            pageUrl: 'layouts/dashboard',
-            currentPage: 'dashboard',
-            userType: 'Lecturer',
-            scripts: []
-        });
-    } catch (error) {
-        logError(error);
-        return res.status(500);
-    }
-}
-
-export const renderSchedules = (req, res) => {
-    const { lecturerData } = req;
-
-    try {
-        return res.render('lecturer/lecturer-main', {
-            lecturer: lecturerData,
-            pageTitle: "Schedules",
-            stylesheets: [],
-            pageUrl: 'layouts/schedules',
-            currentPage: 'schedules',
-            userType: 'Lecturer',
-            scripts: []
-        });
-    } catch (error) {
-        logError(error);
-        return res.status(500);
-    }
-}
-
-export const renderCourses = async (req, res) => {
-    const { lecturerData } = req;
-
-    try {
-        const courses = await Courses.find({
-            $and: [
-                { 'lecturer.lecturerId': lecturerData.lecturerId },
-                { 'lecturer.name': `${lecturerData.firstname} ${lecturerData.lastname}` }
-            ]
-        });
-
-        return res.render('lecturer/lecturer-main', {
-            lecturer: lecturerData,
-            pageTitle: "Courses",
-            stylesheets: ['/css/lecturer/courses'],
-            pageUrl: 'layouts/courses',
-            currentPage: 'courses',
-            userType: 'Lecturer',
-            scripts: [],
-            courses: courses || []
-        });
-    }
-    catch (error) {
-        logError(error);
-        return res.status(500);
-    }
-
-}
-
-export const renderSubmissions = (req, res) => {
-    const { lecturerData } = req;
-
-    try {
-        return res.render('lecturer/lecturer-main', {
-            lecturer: lecturerData,
-            pageTitle: "Submissions",
-            stylesheets: [],
-            pageUrl: 'layouts/submissions',
-            currentPage: 'submissions',
-            userType: 'Lecturer',
-            scripts: []
-        });
-    } catch (error) {
-        logError(error);
-        return res.status(500);
-    }
-}
-
-export const renderNotifications = (req, res) => {
-    const { lecturerData } = req;
-
-    try {
-        return res.render('lecturer/lecturer-main', {
-            lecturer: lecturerData,
-            pageTitle: "Notifications",
-            stylesheets: [],
-            pageUrl: 'layouts/notifications',
-            currentPage: 'notifications',
-            userType: 'Lecturer',
-            scripts: []
-        });
-    } catch (error) {
-        logError(error);
-        return res.status(500);
-    }
-}
-
 export const renderCourse = async (req, res) => {
     const { lecturerData } = req;
     const { courseId } = req.params;
@@ -238,44 +138,6 @@ export const renderCourse = async (req, res) => {
             userType: 'Lecturer',
             course: course || [],
             scripts: ['/script/scripts/lecturer/course.view']
-        });
-    } catch (error) {
-        logError(error);
-        return res.status(500);
-    }
-}
-
-export const renderAnnouncements = (req, res) => {
-    const { lecturerData } = req;
-
-    try {
-        return res.render('lecturer/lecturer-main', {
-            lecturer: lecturerData,
-            pageTitle: "Announcements",
-            stylesheets: ['/css/lecturer/announcement'],
-            pageUrl: 'layouts/announcements',
-            currentPage: 'announcements',
-            userType: 'Lecturer',
-            scripts: []
-        });
-    } catch (error) {
-        logError(error);
-        return res.status(500);
-    }
-}
-
-export const renderViewLecturerProfile = (req, res) => {
-    const { lecturerData } = req;
-
-    try {
-        return res.render('lecturer/lecturer-main', {
-            lecturer: lecturerData,
-            pageTitle: `Profile ~ ${lecturerData.firstname}`,
-            stylesheets: ["/css/lecturer/view.profile"],
-            pageUrl: 'layouts/view.lecturer-profile.ejs',
-            currentPage: '',
-            userType: "lecturer",
-            scripts: ["/script/scripts/lecturer/view.profile"]
         });
     } catch (error) {
         logError(error);

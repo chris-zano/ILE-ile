@@ -1,10 +1,13 @@
+let courses = undefined;
+
+
 function showCourseSubmissions(courseId) {
     // Remove active class from all items
     document.querySelectorAll('.carousel-item').forEach(item => item.classList.remove('active'));
-    
+
     // Add active class to clicked item
     document.querySelector(`[onclick="showCourseSubmissions('${courseId}')"]`).classList.add('active');
-    
+
     // Display submissions for the selected course
     const submissionsDiv = document.getElementById('course-submissions');
     submissionsDiv.innerHTML = ''; // Clear previous submissions
@@ -61,5 +64,53 @@ function getSubmissionsForCourse(courseId) {
     ];
 }
 
-// Initialize the first course as active
-showCourseSubmissions('course1');
+/**
+ * This create the carousel for navigating through different course submissions
+ * @param {Array} courses - collection of course objects
+ */
+const createCarousel = (courses) => {
+    const carousel = document.getElementById("carousel-inner");
+    courses.forEach((c, index) => {
+        const div = document.createElement("div")
+        if (index === 0) {
+            div.innerHTML = `<div class="carousel-item active" onclick="showCourseSubmissions('${c._id}')">${c.courseCode}</div>`
+        } else {
+            div.innerHTML = `<div class="carousel-item" onclick="showCourseSubmissions('${c._id}')">${c.courseCode}</div>`
+        }
+        carousel.append(div);
+    });
+
+    console.log(carousel.querySelector('.active'))
+}
+
+const submissionsMain = async () => {
+    try {
+        courses = JSON.parse(document.getElementById("assigned-courses-hide").textContent).courses;
+
+        if (!courses) {
+            courses = undefined;
+            throw new Error("courses is undefined or null");
+        }
+    } catch (error) {
+        console.error(error);
+    }
+    finally {
+        console.log(courses);
+    }
+
+    if (!courses) return;
+
+    //create carousel
+    createCarousel(courses);
+
+    const coursesWithStudents = courses.filter(c => c.students.length > 0);
+    const coursesWithoutStudents = courses.filter(c => c.students.length === 0);
+
+    //render for courses with students
+
+
+    //render for courses without students
+
+}
+
+document.addEventListener('DOMContentLoaded', submissionsMain);
