@@ -23,12 +23,14 @@
     --red: #ac0000;
     --blue: #4648cf;
     --purple: #905fae;
+    --yellow: #ffff00;
     --inactive: hsl(0, 0%, 43%);
     --black:#292828b6;
 
 
     /* fonts */
     --default-font-face: 'RobotoSlab';
+    --secondary-font-face: 'robotoReg'
     --font-small: 11px;
     --font-standard: 14px;
     --font-medium: 18px;

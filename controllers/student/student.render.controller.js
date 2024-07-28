@@ -44,7 +44,7 @@ const getStudentSchedules = async (studentData) => {
 
 const getStudentSubmissions = async (studentData) => {
     try {
-        const student= await Students.findOne({_id: studentData.id});
+        const student = await Students.findOne({ _id: studentData.id });
 
         if (!student || !student.files) return null;
         return student.files;
@@ -61,7 +61,7 @@ const getCourseRegistrationPage = async (studentData) => {
 
         const coursesMap = data.courses.map((courseCode) => Courses.findOne({ courseCode: courseCode }));
         const courses = await Promise.all(coursesMap);
-   
+
         return courses.filter((c) => c !== null);
     }
     catch (error) {
@@ -69,6 +69,27 @@ const getCourseRegistrationPage = async (studentData) => {
         return null;
     }
 }
+
+const getStudentNotifications = async (studentData) => {
+
+    try {
+        return []
+    } catch (error) {
+        logError(error);
+        return null
+    }
+
+}
+const getStudentAnnouncements = async (studentData) => {
+
+    try {
+        return []
+    } catch (error) {
+        logError(error);
+        return null
+    }
+}
+
 const returnUrlsToMethod = (pageurl = "") => {
     if (!pageurl) return undefined;
 
@@ -78,7 +99,9 @@ const returnUrlsToMethod = (pageurl = "") => {
         "schedules": getStudentSchedules,
         "submissions": getStudentSubmissions,
         "profile": getStudentProfileInfo,
-        "register-courses": getCourseRegistrationPage
+        "register-courses": getCourseRegistrationPage,
+        "notifications": getStudentNotifications,
+        "announcements": getStudentAnnouncements,
     }
     return urlToMethodsObject[pageurl] || undefined;
 }

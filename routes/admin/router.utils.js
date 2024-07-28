@@ -183,6 +183,7 @@ export const verifyUser = async (req, res, next) => {
         if (!matchedDocument) return res.status(404).json({ message: "user not found" });
 
         req[`${user}Data`] = { id: matchedDocument._id };
+        req.userObjectdata = matchedDocument;
 
         next();
     } catch (error) {

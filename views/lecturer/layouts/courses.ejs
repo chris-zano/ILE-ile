@@ -1,10 +1,10 @@
 <section class="courses-main" id="courses-main">
     <article class="cards">
-        <% if (courses.length == 0) { %>
+        <% if (data.length === 0 || !data) { %>
          <div>No courses available for your department</div>
          <div>Create a new course now.</div>
         <% } else { %>
-            <% for( let course of courses ) { %>
+            <% for( let course of data ) { %>
                 <a href="/lecturers/render/course/<%= course._id %>/<%= lecturer.id %>" class="card" preload>
                     <section class="card-header">
                         <img src="/random/image/" alt="course thumbnail" width="150px" height="150px">

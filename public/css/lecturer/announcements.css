@@ -1,0 +1,84 @@
+#announcements {
+    max-width: 800px;
+    margin: 0 auto;
+    border-radius: 2ch;
+    padding: 0.5ch;
+    display: grid;
+    gap: 1ch;
+}
+
+#notifications_main .notification-item {
+    background-color: var(--background);
+    border-radius: 1ch;
+    display: flex;
+    align-items: center;
+    padding: 1ch;
+    border-bottom: 1px solid #ddd;
+}
+
+#notifications_main .notification-details {
+    flex: 1;
+}
+
+#notifications_main .notification-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+
+#notifications_main .annc-title {
+    font-weight: 600;
+    color: black;
+    text-align: center;
+    text-decoration: underline;
+    text-transform: uppercase;
+}
+#notifications_main .pub-date {
+    width: 60%;
+    margin: 1ch auto;
+    padding: 1ch;
+    text-align: right;
+    color: var(--black);
+}
+
+#notifications_main .ann-mnt,
+#notifications_main .attachments {
+    background-color: var(--white);
+    width: 60%;
+    margin: 1ch auto;
+    padding: 1ch;
+    border-radius: 1ch;
+}
+
+#notifications_main .atchs{
+    width: 60%;
+    margin: 1ch auto;
+    border-radius: 1ch;
+    font-weight: 400;
+    text-align: center;
+    text-decoration: underline;    
+    margin: 0 auto;
+    color: black;
+}
+
+#notifications_main .attachments {
+    display: flex;
+    gap: 2ch;
+}
+
+#notifications_main .attachments a {
+    padding: 1ch;
+    border-radius: 2ch;
+    border: 1px solid var(--accent);
+    background-color: transparent;
+    color: var(--text);
+    text-decoration: none;
+    margin: 5px 0;
+}
+
+#notifications_main .attachments a:hover {
+    background-color: var(--accent);
+    color: var(--white);
+}

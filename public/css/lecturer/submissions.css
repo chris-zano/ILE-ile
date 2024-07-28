@@ -1,0 +1,132 @@
+
+.dashboard-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.course-carousel {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.carousel-inner {
+    display: flex;
+    transition: transform 0.3s ease;
+    width: 100%;
+    overflow: hidden;
+}
+
+.carousel-item {
+    padding: 10px 20px;
+    cursor: pointer;
+    flex: none;
+}
+
+.carousel-item.active {
+    font-weight: bold;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 5px;
+}
+
+.carousel-btn {
+    padding: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5em;
+}
+
+#course-submissions {
+    margin-top: 20px;
+}
+
+.submission {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.submission-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.submission-header h2 {
+    margin: 0;
+    font-size: 1.5em;
+}
+
+.course-code {
+    font-size: 0.9em;
+    color: #777;
+}
+
+.submission-details p {
+    margin: 5px 0;
+    font-size: 1em;
+}
+
+.status {
+    padding: 5px 10px;
+    border-radius: 3px;
+    display: inline-block;
+}
+
+.status.pending {
+    background-color: #f0ad4e;
+    color: #fff;
+}
+
+.status.submitted {
+    background-color: #5cb85c;
+    color: #fff;
+}
+
+.status.overdue {
+    background-color: #d9534f;
+    color: #fff;
+}
+
+.status.rejected {
+    background-color: #777;
+    color: #fff;
+}
+
+.add-submission-btn,
+.set-deadline-btn,
+.reject-submission-btn {
+    padding: 10px 20px;
+    font-size: 0.9em;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-right: 10px;
+}
+
+.add-submission-btn:hover,
+.set-deadline-btn:hover,
+.reject-submission-btn:hover {
+    background-color: #0056b3;
+}

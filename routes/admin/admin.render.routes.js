@@ -1,12 +1,12 @@
 import express from 'express';
-import {verifyAdmin} from './router.utils.js';
+import { verifyAdmin, verifyUser } from './router.utils.js';
 import * as adminRender from '../../controllers/admin/admin.render.js';
 
 const router = express.Router();
 //get ['/', '/login']
 router.get('/', (req, res) => {
     console.log("New session: ", req.ip);
-    res.render('index', {flush: "false"});
+    res.render('index', { flush: "false" });
 });
 
 //get ['/admin/developer/new', '/admin/developer/index]
@@ -20,7 +20,14 @@ router.get('/login', (req, res) => {
 });
 
 router.get('/global/error', (req, res) => {
-    res.render('global/error', {error: "An Error occured", status: 404});
+    res.render('global/error', { error: "An Error occured", status: 404 });
+})
+
+router.get('/global/submit-ticket/:user/:id', verifyUser, (req, res) => {
+    const { user } = req.params;
+    const userdata = req.userObjectdata || null
+
+    res.render('global/submit-ticket', { userdata: userdata})
 })
 
 
