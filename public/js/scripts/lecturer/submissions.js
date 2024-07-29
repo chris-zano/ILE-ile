@@ -83,6 +83,10 @@ const createCarousel = (courses) => {
     console.log(carousel.querySelector('.active'))
 }
 
+const addNewSubmission = (button) => {
+    console.log(button)
+}
+
 const submissionsMain = async () => {
     try {
         courses = JSON.parse(document.getElementById("assigned-courses-hide").textContent).courses;

@@ -1,16 +1,38 @@
-
-    <div class="dashboard-container">
-        <div class="course-carousel">
-            <button class="carousel-btn prev">‹</button>
-            <div class="carousel-inner" id="carousel-inner">
-                <!-- Add more courses as needed -->
-            </div>
-            <button class="carousel-btn next">›</button>
-        </div>
-        
-        <div id="assigned-courses-hide"><%= JSON.stringify(data) %></div>
-        <div id="course-submissions">
-            <!-- Submissions for each course will be dynamically inserted here -->
-        </div>
+<div class="dashboard-container">
+  <div class="course-carousel">
+    <button class="carousel-btn prev">‹</button>
+    <div class="carousel-inner" id="carousel-inner">
+      <!-- Add more courses as needed -->
     </div>
+    <button class="carousel-btn next">›</button>
+  </div>
+  <div class="carousel">
+    <div class="button-outer">
+      <button type="button" onclick="addNewSubmission(this)">Add Submission</button>
+    </div>
+  </div>
 
+  <div id="assigned-courses-hide"><%= JSON.stringify(data) %></div>
+  <div class="form-wrapper" id="form-wrapper">
+    <div class="form-inner">
+        <form action="#" method="post">
+            <div class="input-wrap">
+                <label for="title">Title</label>
+                <input type="text" name="title" id="title" required>
+            </div>
+            <div class="input-wrap">
+                <label for="title">Title</label>
+                <input type="text" name="title" id="title" required>
+            </div>
+            <div class="input-wrap">
+                <label for="title">Title</label>
+                <input type="text" name="title" id="title" required>
+            </div>
+
+        </form>
+    </div>
+  </div>
+  <div id="course-submissions">
+    <!-- Submissions for each course will be dynamically inserted here -->
+  </div>
+</div>

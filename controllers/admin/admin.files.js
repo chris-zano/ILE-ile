@@ -155,7 +155,7 @@ export const getDefaultProfilePicture = async (req, res) => {
     }
 
     try {
-        const genericFilePath = path.join(__dirname, '..', '..', 'public', 'assets', 'images', 'system','user.png');
+        const genericFilePath = path.join(__dirname, '..', '..', 'public', 'assets', 'images', 'system', 'user.png');
 
         if (!fs.existsSync(genericFilePath)) {
             return res.status(404).redirect("/global/error");
@@ -170,7 +170,7 @@ export const getDefaultProfilePicture = async (req, res) => {
 
         const filePath = path.join(__dirname, '..', '..', 'public', 'assets', 'profile_pictures', 'users', filename);
 
-        if (!fs.existsSync(filePath)){
+        if (!fs.existsSync(filePath)) {
             console.log(`Cannot find file`)
             res.type('png');
             res.status(200);
@@ -185,5 +185,31 @@ export const getDefaultProfilePicture = async (req, res) => {
     } catch (error) {
         console.log(`Error in getDefaultProfilePicture: ${error}`);
         return res.status(500).json("Internal Server Error");
+    }
+}
+
+export const getSubmissionFile = (req, res) => {
+    const { filename } = req.params;
+
+    if (!filename || filename === 'no-filename') {
+        console.log("(get-submission) => filename not valid: ", filename);
+        return res.status(400).json({ message: "request does not have a valid filename" });
+    }
+    try {
+        const filePath = path.join(__dirname, '..', '..', 'public', 'assets', 'submissions', filename);
+
+        if (!fs.existsSync(filePath)) {
+            console.log(`(get-submission) => filepath does not exist: ${filePath}`);
+            return res.status(404).json({ message: 'resource not found' });
+        }
+
+
+        res.status(200);
+        fs.createReadStream(filePath).pipe(res);
+        return;
+
+    } catch (error) {
+        console.log(`(get-submission) => Error:: an unexpected error occured\n`, error);
+        return res.status(500).json({ message: 'internal server error' });
     }
 }

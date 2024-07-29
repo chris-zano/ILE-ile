@@ -26,7 +26,6 @@
     width: 100%;
     overflow: hidden;
 }
-
 .carousel-item {
     padding: 10px 20px;
     cursor: pointer;
@@ -46,6 +45,35 @@
     border: none;
     cursor: pointer;
     font-size: 1.5em;
+}
+
+.button-outer {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    overflow: hidden;
+    border-radius: 5px;
+    background: #fff;
+    margin-bottom: 20px;
+    padding: 1ch;
+}
+
+.button-outer button {
+    background-color: var(--primary);
+    padding: 1ch;
+    height: 45px;
+    width: max-content;
+    color: var(--white);
+    border: 1px solid transparent;
+    border-radius: 1ch;
+    cursor: pointer;
+}
+
+.button-outer button:hover,
+.button-outer button:focus {
+    background-color: transparent;
+    border: 1px solid var(--primary);
+    color: var(--black);
 }
 
 #course-submissions {

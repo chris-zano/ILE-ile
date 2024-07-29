@@ -31,7 +31,7 @@ const fetchData = async (url) => {
     try {
         const response = await fetch(url);
 
-        return {status: response.status, data: await response.json()};
+        return { status: response.status, data: await response.json() };
     }
     catch (error) {
     }
@@ -49,7 +49,7 @@ const checkAndRenderImageBackground = () => {
     for (let image of images) {
         image.addEventListener("load", () => {
         });
-    
+
         image.addEventListener("error", (e) => {
             image.setAttribute("src", "/images/system/logo");
         });
@@ -126,6 +126,37 @@ document.addEventListener('keydown', (e) => {
         }
     }
 })
+
+const dateComponentsToMilliseconds = ({ year, month, day, hours, minutes, seconds }) => {
+    const monthsArray = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+    const m = monthsArray.indexOf(month) || null;
+
+    if (!m) return null;
+    try {
+        const date = new Date(year, month - 1, day, hours, minutes, seconds);
+        return date.getTime();
+    }
+    catch (error) {
+        console.log(error);
+        return null
+    }
+}
+
+const millisecondsToDateComponents = (milliseconds) => {
+    const time = new Date(milliseconds);
+
+    const hours = time.getHours();
+    const minutes = time.getMinutes();
+    const seconds = time.getSeconds();
+
+    return {
+        hours: hours < 10 ? "0" + hours : hours,
+        minutes: minutes < 10 ? "0" + minutes : minutes,
+        seconds: seconds < 10 ? "0" + seconds : seconds,
+        timeStamp: time.getTime()
+    }
+}
 
 console.log("Util is loaded ");
 
