@@ -4,7 +4,7 @@
 
 import express from 'express';
 import { verifyLecturer } from '../admin/router.utils.js'
-import { createSubmission } from '../../controllers/submission/submission.controller.js';
+import { createSubmission, createSubmissionWithFile, deleteStudentSubmissions, getLecturerSubmissionForCourseCode } from '../../controllers/submission/submission.controller.js';
 import path from 'path';
 import multer from 'multer';
 import { fileURLToPath } from 'url';
@@ -16,7 +16,7 @@ const __dirname = dirname(__filename);
 const router = express.Router();
 
 const submissionsUploads = multer({
-    dest: path.join(__dirname, '..', '..', 'public', 'assets', 'submission'),
+    dest: path.join(__dirname, '..', '..', 'public', 'assets', 'submissions'),
     fileFilter: (req, file, cb) => {
         const filetypes = /pdf|doc|docx|ppt|pptx/;
         const mimetype = filetypes.test(file.mimetype);
@@ -29,10 +29,11 @@ const submissionsUploads = multer({
     }
 });
 
+
 router.post('/submissions/create-with-file/:id',
     verifyLecturer,
     (req, res, next) => {
-        submissionsUploads.single("submission")(req, res, (err) => {
+        submissionsUploads.single("submission-file")(req, res, (err) => {
             if (err instanceof multer.MulterError) {
                 // A Multer error occurred when uploading.
                 return res.status(400).json({ message: err.message });
@@ -43,7 +44,11 @@ router.post('/submissions/create-with-file/:id',
             next();
         });
     },
-    createSubmission);
+    createSubmissionWithFile);
 
 router.post('/submissions/create/:id', verifyLecturer, createSubmission);
+
+router.delete('/submissions/delete/:courseCode/:subId/:id', verifyLecturer, deleteStudentSubmissions)
+router.get('/submissions/get/:courseCode/:id', verifyLecturer, getLecturerSubmissionForCourseCode);
+
 export default router;

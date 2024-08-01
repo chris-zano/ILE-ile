@@ -1,160 +1,269 @@
-
 .dashboard-container {
-    max-width: 1000px;
-    margin: 0 auto;
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 1000px;
+  margin: 0 auto;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .course-carousel {
-    display: flex;
-    align-items: center;
-    overflow: hidden;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
 }
 
 .carousel-inner {
-    display: flex;
-    transition: transform 0.3s ease;
-    width: 100%;
-    overflow: hidden;
+  display: flex;
+  transition: transform 0.3s ease;
+  width: 100%;
+  overflow: hidden;
 }
 .carousel-item {
-    padding: 10px 20px;
-    cursor: pointer;
-    flex: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  flex: none;
+  color: var(--text);
 }
 
 .carousel-item.active {
-    font-weight: bold;
-    background-color: #007bff;
-    color: #fff;
-    border-radius: 5px;
+  font-weight: bold;
+  background-color: var(--primary);
+  color: var(--white);
+  border-radius: 1ch;
 }
 
 .carousel-btn {
-    padding: 10px;
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 1.5em;
+  padding: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5em;
 }
 
 .button-outer {
-    display: flex;
-    align-items: center;
-    justify-content: end;
-    overflow: hidden;
-    border-radius: 5px;
-    background: #fff;
-    margin-bottom: 20px;
-    padding: 1ch;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  overflow: hidden;
+  border-radius: 1ch;
+  background: #fff;
+  margin-bottom: 20px;
+  padding: 1ch;
+  transition: var(--transition-default);
 }
 
 .button-outer button {
-    background-color: var(--primary);
-    padding: 1ch;
-    height: 45px;
-    width: max-content;
-    color: var(--white);
-    border: 1px solid transparent;
-    border-radius: 1ch;
-    cursor: pointer;
+  background-color: var(--primary);
+  padding: 1ch;
+  height: 45px;
+  width: max-content;
+  color: var(--white);
+  border: 1px solid transparent;
+  border-radius: 1ch;
+  cursor: pointer;
 }
 
 .button-outer button:hover,
 .button-outer button:focus {
-    background-color: transparent;
-    border: 1px solid var(--primary);
-    color: var(--black);
+  background-color: transparent;
+  border: 1px solid var(--primary);
+  color: var(--black);
 }
 
 #course-submissions {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 .submission {
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    margin-bottom: 20px;
-    padding: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .submission-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 10px;
-    margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 .submission-header h2 {
-    margin: 0;
-    font-size: 1.5em;
+  margin: 0;
+  font-size: 1.5em;
 }
 
 .course-code {
-    font-size: 0.9em;
-    color: #777;
+  font-size: 0.9em;
+  color: #777;
 }
 
 .submission-details p {
-    margin: 5px 0;
-    font-size: 1em;
+  margin: 5px 0;
+  font-size: 1em;
 }
 
 .status {
-    padding: 5px 10px;
-    border-radius: 3px;
-    display: inline-block;
+  padding: 5px 10px;
+  border-radius: 3px;
+  display: inline-block;
 }
 
 .status.pending {
-    background-color: #f0ad4e;
-    color: #fff;
+  background-color: #f0ad4e;
+  color: #fff;
 }
 
 .status.submitted {
-    background-color: #5cb85c;
-    color: #fff;
+  background-color: #5cb85c;
+  color: #fff;
 }
 
 .status.overdue {
-    background-color: #d9534f;
-    color: #fff;
+  background-color: #d9534f;
+  color: #fff;
 }
 
 .status.rejected {
-    background-color: #777;
-    color: #fff;
+  background-color: #777;
+  color: #fff;
 }
 
-.add-submission-btn,
-.set-deadline-btn,
-.reject-submission-btn {
-    padding: 10px 20px;
-    font-size: 0.9em;
-    color: #fff;
-    background-color: #007bff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-right: 10px;
+.view-submission-btn,
+.del-submission-btn {
+  padding: 10px 20px;
+  font-size: 0.9em;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 10px;
+  transition:  var(--transition-default);
 }
 
-.add-submission-btn:hover,
-.set-deadline-btn:hover,
-.reject-submission-btn:hover {
-    background-color: #0056b3;
+.view-submission-btn {
+  color: var(--black);
+  background-color: transparent;
+  border: 1px solid var(--accent);
+}
+.del-submission-btn {
+  color: var(--white);
+  background-color: var(--red);
+  border: 1px solid var(--red);
+}
+
+.view-submission-btn:hover {
+  background-color: var(--accent);
+  color: var(--white);
+}
+.del-submission-btn:hover {
+  background-color: var(--dark-red);
+  color: var(--white);
+}
+
+/* CSS for styling the form */
+
+.form-wrapper {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  top: 80px;
+  left: 250px;
+}
+
+.form-inner {
+  padding: 20px;
+}
+
+.input-wrap {
+  margin-bottom: 15px;
+}
+
+.input-wrap label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #333;
+}
+
+.input-wrap input[type="text"],
+select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+#course_code {
+  width: 200px; /* Adjust the width as needed */
+}
+
+#course_code option {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.add-file-wrap {
+  margin-bottom: 20px;
+}
+
+.add-file-wrap button {
+  padding: 10px 20px;
+  border: none;
+  background: #007bff;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.add-file-wrap button:hover {
+  background: #0056b3;
+}
+
+.buttons-action-wrap {
+  display: flex;
+  justify-content: space-between;
+}
+
+.buttons-action-wrap input[type="submit"],
+.buttons-action-wrap input[type="reset"] {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#submit-btn {
+  background: #28a745;
+  color: #fff;
+}
+
+#submit-btn:hover {
+  background: #218838;
+}
+
+#cancel-btn {
+  background: #dc3545;
+  color: #fff;
+}
+
+#cancel-btn:hover {
+  background: #c82333;
 }

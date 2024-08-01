@@ -158,6 +158,62 @@ const millisecondsToDateComponents = (milliseconds) => {
     }
 }
 
+const getSystemDate = () => {
+    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const date = new Date();
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const seconds = date.getSeconds();
+
+    return {
+        day: days[date.getDay()],
+        date: date.getDate(),
+        month: months[date.getMonth()],
+        year: date.getFullYear(),
+        hours: hours < 10 ? "0" + hours : hours,
+        minutes: minutes < 10 ? "0" + minutes : minutes,
+        seconds: seconds < 10 ? "0" + seconds : seconds,
+        timeStamp: date.getTime()
+    };
+}
+
+function formatTimestamp(timestamp) {
+    const date = new Date(timestamp);
+
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const months = [
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+
+    const dayOfWeek = days[date.getUTCDay()];
+    const day = date.getUTCDate();
+    const month = months[date.getUTCMonth()];
+    const year = date.getUTCFullYear();
+
+    let hour = date.getUTCHours();
+    const minutes = date.getUTCMinutes().toString().padStart(2, '0');
+    const period = hour >= 12 ? 'pm' : 'am';
+
+    if (hour > 12) {
+        hour -= 12;
+    } else if (hour === 0) {
+        hour = 12;
+    }
+
+    const daySuffix = (day) => {
+        if (day > 3 && day < 21) return 'th'; // special case for 11th-13th
+        switch (day % 10) {
+            case 1: return 'st';
+            case 2: return 'nd';
+            case 3: return 'rd';
+            default: return 'th';
+        }
+    };
+
+    return `${dayOfWeek}, ${day}${daySuffix(day)} ${month}, ${year} : ${hour}:${minutes} ${period}`;
+}
 console.log("Util is loaded ");
 
 const toast = (message) => {

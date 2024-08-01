@@ -1,29 +1,6 @@
 import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
-const dateSchema = new Schema(
-    {
-        day: {
-            type: String,
-            default: ""
-        },
-        date: {
-            type: String,
-            default: ""
-        },
-        month: {
-            type: String,
-            default: ""
-        },
-        year: {
-            type: String,
-            default: ""
-        },
-        timeStamp: Number
-    },
-    { _id: false }
-)
-
 const studentSubmissionSchema = new Schema(
     {
         id: String,//the field ( _id ) of the student document
@@ -31,7 +8,7 @@ const studentSubmissionSchema = new Schema(
         filename: String, // the original name of the file submitted [ 001_BTE_Morning.pdf]
         filetype: String, //the type of file (code, pdf, doc, ppt, docx, pptx, excel, etc)
         fileUrl: String, // the route on which the file is mounted
-        date: { type: dateSchema },
+        date: Object,
         status: {
             type: String,
             enum: ['accepted', 'rejected']
@@ -43,11 +20,11 @@ const lecturerSubmissionSchema = new Schema(
     {
         title: String,
         instructions: String,
-        startDate: dateSchema,
-        endDate: dateSchema,
-        expected: Number,
-        received: Number,
-        fileUrl:String
+        startDate: Object,
+        endDate: Object,
+        expected: String,
+        received: String,
+        fileUrl:Object
     }
 )
 const submissionsSchema = new Schema(
