@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Submit a Ticket</title>
+    <link rel="stylesheet" href="/css/global/tickets">
+</head>
+<body>
+    <div class="ticket-container">
+        <h1>Submit a Ticket</h1>
+        <form id="ticket-form">
+            <label for="ticket-topic">Select Ticket Topic:</label>
+            <select id="ticket-topic" name="ticket-topic">
+                <option value="technical-support">Technical Support</option>
+                <option value="billing-issues">Billing Issues</option>
+                <option value="account-management">Account Management</option>
+                <option value="general-inquiry">General Inquiry</option>
+                <!-- Add more topics as needed -->
+            </select>
+            
+            <label for="problem-description">Describe the Problem:</label>
+            <textarea id="problem-description" name="problem-description" rows="6" placeholder="Describe your issue here..."></textarea>
+            
+            <button type="submit">Submit Ticket</button>
+        </form>
+    </div>
+</body>
+</html>

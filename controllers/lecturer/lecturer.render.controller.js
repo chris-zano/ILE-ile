@@ -1,49 +1,58 @@
-import { CoursesDB } from '../../utils/global/db.utils.js';
+import { isValidObjectId } from 'mongoose';
+import { ClassesDB, CoursesDB, RegisteredCoursesDB, StudentsDB } from '../../utils/global/db.utils.js';
 import { logError } from '../admin/admin.utils.js';
 
 const Courses = CoursesDB();
+const Classes = ClassesDB();
+const Students = StudentsDB()
+const RegisteredCourses = RegisteredCoursesDB();
 
-export const renderDashboard = (req, res) => {
-    const { lecturerData } = req;
-
+const getDashboards = async (lecturerData) => {
     try {
-        return res.render('lecturer/lecturer-main', {
-            lecturer: lecturerData,
-            pageTitle: "Dashboard",
-            stylesheets: [],
-            pageUrl: 'layouts/dashboard',
-            currentPage: 'dashboard',
-            userType: 'Lecturer',
-            scripts: []
-        });
+        return [];
     } catch (error) {
         logError(error);
-        return res.status(500);
+        return null;
     }
 }
-
-export const renderSchedules = (req, res) => {
-    const { lecturerData } = req;
-
+const getSchedules = async (lecturerData) => {
     try {
-        return res.render('lecturer/lecturer-main', {
-            lecturer: lecturerData,
-            pageTitle: "Schedules",
-            stylesheets: [],
-            pageUrl: 'layouts/schedules',
-            currentPage: 'schedules',
-            userType: 'Lecturer',
-            scripts: []
-        });
+        return [];
     } catch (error) {
         logError(error);
-        return res.status(500);
+        return null;
     }
 }
+const getSubmissions = async (lecturerData) => {
+    try {
+        const courses = lecturerData.assignedCourses || [];
+        const courseMap = courses.length === 0 ? [] : courses.map((courseCode) => Courses.findOne({ courseCode: courseCode }));
+        const courseArray = await Promise.all(courseMap);
+        if (courseArray.length === 0) return { courses: [] };
 
-export const renderCourses = async (req, res) => {
-    const { lecturerData } = req;
-
+        return { courses: courseArray.filter(course => course !== null) };
+    } catch (error) {
+        logError(error);
+        return null;
+    }
+}
+const getAnnouncements = async (lecturerData) => {
+    try {
+        return [];
+    } catch (error) {
+        logError(error);
+        return null;
+    }
+}
+const getNotifications = async (lecturerData) => {
+    try {
+        return [];
+    } catch (error) {
+        logError(error);
+        return null;
+    }
+}
+const getCourses = async (lecturerData) => {
     try {
         const courses = await Courses.find({
             $and: [
@@ -51,60 +60,66 @@ export const renderCourses = async (req, res) => {
                 { 'lecturer.name': `${lecturerData.firstname} ${lecturerData.lastname}` }
             ]
         });
-
-        return res.render('lecturer/lecturer-main', {
-            lecturer: lecturerData,
-            pageTitle: "Courses",
-            stylesheets: ['/css/lecturer/courses'],
-            pageUrl: 'layouts/courses',
-            currentPage: 'courses',
-            userType: 'Lecturer',
-            scripts: [],
-            courses: courses || []
-        });
-    }
-    catch (error) {
-        logError(error);
-        return res.status(500);
-    }
-
-}
-
-export const renderClassrooms = (req, res) => {
-    const { lecturerData } = req;
-
-    try {
-        return res.render('lecturer/lecturer-main', {
-            lecturer: lecturerData,
-            pageTitle: "Classrooms",
-            stylesheets: [],
-            pageUrl: 'layouts/classrooms',
-            currentPage: 'classrooms',
-            userType: 'Lecturer',
-            scripts: []
-        });
+        return courses;
     } catch (error) {
         logError(error);
-        return res.status(500);
+        return null;
     }
 }
 
-export const renderClassroom = (req, res) => {
-    const { lecturerData } = req;
-
+const getProfile = async (lecturerData) => {
     try {
-        return res.render('lecturer/lecturer-main', {
-            lecturer: lecturerData,
-            pageTitle: "Classroom",
-            stylesheets: [],
-            pageUrl: 'layouts/classrooms.view.ejs',
-            currentPage: 'classrooms',
-            userType: 'Lecturer',
-            scripts: []
-        });
+        return [];
     } catch (error) {
         logError(error);
-        return res.status(500);
+        return null;
+    }
+}
+const returnUrlsToMethod = (pageurl = "") => {
+    if (!pageurl) return undefined;
+
+    const urlToMethodsObject = {
+        "dashboards": getDashboards,
+        "schedules": getSchedules,
+        "submissions": getSubmissions,
+        "announcements": getAnnouncements,
+        "notifications": getNotifications,
+        "courses": getCourses,
+        "profile": getProfile,
+    }
+    return urlToMethodsObject[pageurl] || undefined;
+}
+
+export const renderLecturerViews = async (req, res) => {
+    const { lecturerData } = req;
+    const { pageUrl } = req.params;
+
+    if (!pageUrl || !lecturerData) return res.status(400).render('global/error', { status: 400, error: "request is invalid" });
+
+    const urlToMethod = returnUrlsToMethod(pageUrl);
+    if (!urlToMethod) return res.status(404).render('global/error', { error: "The requested resource is unavailable", status: 404 });
+
+    const dataObject = await urlToMethod(lecturerData);
+    if (!dataObject) return res.status(404).render('global/error', { error: "The requested student page objectData is unavailable", status: 404 });
+
+    try {
+        res.set("Cache-Control", "public, max-age=60");
+        res.status(200);
+
+        return res.render('lecturer/lecturer-main',
+            {
+                lecturer: lecturerData,
+                pageTitle: pageUrl,
+                stylesheets: [`/css/lecturer/${pageUrl}`],
+                pageUrl: `layouts/${pageUrl}`,
+                currentPage: `${pageUrl}`,
+                userType: 'Lecturer',
+                scripts: [`/script/scripts/lecturer/${pageUrl}`],
+                data: dataObject
+            }
+        )
+    } catch (error) {
+
     }
 }
 
@@ -123,44 +138,6 @@ export const renderCourse = async (req, res) => {
             userType: 'Lecturer',
             course: course || [],
             scripts: ['/script/scripts/lecturer/course.view']
-        });
-    } catch (error) {
-        logError(error);
-        return res.status(500);
-    }
-}
-
-export const renderLive = (req, res) => {
-    const { lecturerData } = req;
-
-    try {
-        return res.render('lecturer/lecturer-main', {
-            lecturer: lecturerData,
-            pageTitle: "Live",
-            stylesheets: [],
-            pageUrl: 'layouts/live',
-            currentPage: 'live',
-            userType: 'Lecturer',
-            scripts: []
-        });
-    } catch (error) {
-        logError(error);
-        return res.status(500);
-    }
-}
-
-export const renderViewLecturerProfile = (req, res) => {
-    const { lecturerData } = req;
-
-    try {
-        return res.render('lecturer/lecturer-main', {
-            lecturer: lecturerData,
-            pageTitle: `Profile ~ ${lecturerData.firstname}`,
-            stylesheets: ["/css/lecturer/view.profile"],
-            pageUrl: 'layouts/view.lecturer-profile.ejs',
-            currentPage: '',
-            userType: "lecturer",
-            scripts: ["/script/scripts/lecturer/view.profile"]
         });
     } catch (error) {
         logError(error);

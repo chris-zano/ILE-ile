@@ -62,27 +62,23 @@ section.list_main form div.title-and-btn div.section-btn button.btn-disabled {
 }
 
 section.list_main form div.title-and-btn div.section-btn button.btn-enabled {
-    background-color: var(--secondary);
+    background-color: var(--primary);
+    color: var(--white);
     cursor: pointer;
 }
 
 section.list_main form div.title-and-btn div.section-btn button.btn-enabled.reset-btn {
-    background-color: var(--accent);
+    background-color: transparent;
+    color: var(--black);
+    border: 1px solid var(--red);
     cursor: pointer;
 }
 
 section.list_main form div.title-and-btn div.section-btn button.btn-enabled:hover,
 section.list_main form div.title-and-btn div.section-btn button.btn-enabled:focus {
-    border: 1px solid var(--secondary);
-    background-color: transparent;
-    color: var(--text);
-}
-
-section.list_main form div.title-and-btn div.section-btn button.btn-enabled.reset-btn:hover,
-section.list_main form div.title-and-btn div.section-btn button.btn-enabled.reset-btn:focus {
-    border: 1px solid var(--accent);
-    background-color: transparent;
-    color: var(--text);
+    border: 1px solid var(--primary);
+    background-color: var(--primary-dark);
+    color: var(--white);
 }
 
 section.list_main form section.list-ul-wrapper {

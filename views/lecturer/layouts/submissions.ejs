@@ -1,0 +1,96 @@
+<div class="dashboard-container" id="dashboard-container">
+  <div class="course-carousel">
+    <button class="carousel-btn prev">‹</button>
+    <div class="carousel-inner" id="carousel-inner">
+      <!-- Add more courses as needed -->
+    </div>
+    <button class="carousel-btn next">›</button>
+  </div>
+  <div class="carousel">
+    <div class="button-outer">
+      <button type="button" onclick="addNewSubmission(this)">
+        Add Submission
+      </button>
+    </div>
+  </div>
+
+  <div id="assigned-courses-hide"><%= JSON.stringify(data) %></div>
+  <div class="form-wrapper hidden" id="form-wrapper">
+    <div class="form-inner" id="form-inner">
+      <input type="hidden" id="lect-id" data-lect-id="<%= lecturer.id %>" />
+      <form
+        action="#"
+        method="post"
+        id="post-submission-form"
+        enctype="multipart/form-data"
+      >
+        <div class="input-wrap">
+          <label for="course_code">Select Course</label>
+          <select name="course_code" id="course_code">
+            <option value="none">----Select a Course----</option>
+          </select>
+        </div>
+        <div class="input-wrap">
+          <label for="title">Title</label>
+          <input type="text" name="title" id="title" required />
+        </div>
+        <div class="input-wrap">
+          <label for="instructions">Instructions</label>
+          <input type="text" name="instructions" id="instructions" />
+        </div>
+
+        <div class="input-wrap">
+          <label for="start-date">Start Date</label>
+          <select name="start-date" id="start-date">
+            <option value="none">----Select Start date----</option>
+            <option value="0">Today</option>
+            <option value="1">Tomorrow, 6:00</option>
+            <option value="2">In two days, 6:00</option>
+          </select>
+        </div>
+        
+        <div class="input-wrap">
+          <label for="end-date">End Date</label>
+          <select name="end-date" id="end-date">
+            <option value="none">----Select End date----</option>
+            <option value="0">Tomorrow, 11:59pm</option>
+            <option value="1">In two days, 11:59pm</option>
+            <option value="2">In one week, 11:59pm</option>
+            <option value="3">In two weeks, 11:59pm</option>
+            <option value="4">In three weeks, 11:59pm</option>
+            <option value="5">In one month, 11:59pm</option>
+            <option value="6">In two months, 11:59pm</option>
+            <option value="7">In three months, 11:59pm</option>
+          </select>
+        </div>
+
+        <input type="hidden" name="received" value="0">
+        <input type="hidden" name="fileUrl" value="none">
+        <input type="hidden" name="expected" id="expectedSubmissions">
+
+        <div class="input-wrap hidden">
+          <label for="submission-file">Upload File</label>
+          <input type="file" name="submission-file" id="submission-file" />
+        </div>
+
+        <div class="add-file-wrap">
+          <button type="button" id="add-file" onclick="showAddFile()">
+            Add a file
+          </button>
+        </div>
+        <div class="buttons-action-wrap">
+          <input type="submit" value="Submit" id="submit-btn" />
+          <input
+            type="reset"
+            value="Cancel"
+            onclick="cancelSubmitForm()"
+            id="cancel-btn"
+          />
+        </div>
+      </form>
+    </div>
+  </div>
+  <div id="course-submissions">
+    <!-- Submissions for each course will be dynamically inserted here -->
+  </div>
+</div>

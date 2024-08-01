@@ -1,43 +1,51 @@
-<section class="information-header">
-    <div class="warning">
-        <h2>Registration is open until ${specify date here}</h2>
+<% if (data.length===0) { %>
+    <div class="no-available-courses" style="display: grid; place-items: center;">
+        <p>Your courses have not yet been created by your department administrator.</p>
+        <p>Please check with your department for more information. or check the announcements page.</p>
+        <p>The registration code for your courses is: <%= student.registeredCourses %></p>
     </div>
-</section>
-<section class="list_main" id="list_main">
-    <form action="#" id="check-form">
-        <div class="title-and-btn">
-            <div class="section-title">
-                <h3>Select Courses for Registration</h3>
-            </div>
-            <div class="section-btn">
-                <button type="submit" id="change-selection" class="btn-disable btn-enabled">Register</button>
-            </div>
+<% } else { %>
+    <section class="information-header">
+        <div class="warning">
+            <h2>Registration is open until ${specify date here}</h2>
         </div>
-        <section class="list-ul-wrapper">
-            <div>
-                <ul id="list-ul-master">
-                    <% for( let course of data ) { %>
-                        <li>
-                            <input type="checkbox" name="course" id="course_<%= course._id%>_<%= course.__v%>"
-                                value="<%= course.courseCode %>">
-                            <label for="course_<%= course._id%>_<%= course.__v%>">
-                                <div class="course_code-title">
-                                    <span class="course_code">(<%= course.courseCode %>)- <%= course.credit %>
-                                                credits</span>
-                                    <h4 class="course_title">
-                                        <%= course.title %>
-                                    </h4>
-                                </div>
-                                <div class="tutor-name">
-                                    <span class="tutor_name">
-                                        <%= course.lecturer.name %>
-                                    </span>
-                                </div>
-                            </label>
-                        </li>
-                        <% } %>
-                </ul>
+    </section>
+    <section class="list_main" id="list_main">
+        <form action="#" id="check-form">
+            <div class="title-and-btn">
+                <div class="section-title">
+                    <h3>Select Courses for Registration</h3>
+                </div>
+                <div class="section-btn">
+                    <button type="submit" id="change-selection" class="btn-disable btn-enabled">Register</button>
+                </div>
             </div>
-        </section>
-    </form>
-</section>
+            <section class="list-ul-wrapper">
+                <div>
+                    <ul id="list-ul-master">
+                        <% for( let course of data ) { %>
+                            <li>
+                                <input type="checkbox" name="course" id="course_<%= course._id%>_<%= course.__v%>"
+                                    value="<%= course.courseCode %>">
+                                <label for="course_<%= course._id%>_<%= course.__v%>">
+                                    <div class="course_code-title">
+                                        <span class="course_code">(<%= course.courseCode %>)- <%= course.credit %>
+                                                    credits</span>
+                                        <h4 class="course_title">
+                                            <%= course.title %>
+                                        </h4>
+                                    </div>
+                                    <div class="tutor-name">
+                                        <span class="tutor_name">
+                                            <%= course.lecturer.name %>
+                                        </span>
+                                    </div>
+                                </label>
+                            </li>
+                            <% } %>
+                    </ul>
+                </div>
+            </section>
+        </form>
+    </section>
+<% } %>

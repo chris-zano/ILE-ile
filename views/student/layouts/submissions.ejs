@@ -1,0 +1,119 @@
+<section class="student-submissions_main">
+    <% if (data.length===0) { %>
+        <div class="no-available-courses" style="display: grid; place-items: center;">
+            <p>Your submissions portals has not yet been activated by your department administrator.</p>
+            <div>you have <%= data.length %> files in your submissions</div>
+        </div>
+        <% } else { %>
+            <div>you have <%= data.length %> files in your submissions</div>
+            <div id="data-files"><%= data %></div>
+            <% for( let submission of data ) { %>
+                <section class="submissions-header">
+                    <div class="btn-wrapper">
+                        <!-- as many buttons can go here as possible (but only as icons) except for the default-->
+
+                        <!-- default buttons -->
+                        <div class="carousel">
+                            <span>Sort By Courses</span>
+                            <button class="carousel-btn prev">‹</button>
+                            <div class="carousel-inner">
+                                <div class="carousel-item active" onclick="showSubmissions(this,'all')">All</div>
+                                <div class="carousel-item" onclick="showSubmissions(this,'1')">course1</div>
+                                <div class="carousel-item" onclick="showSubmissions(this,'course3')">Course 3</div>
+                                <!-- Add more courses as needed -->
+                            </div>
+                            <button class="carousel-btn next">›</button>
+                        </div>
+
+                        <div class="carousel">
+                            <span>Filter By:</span>
+                            <button class="carousel-btn prev">‹</button>
+                            <div class="carousel-inner">
+                                <div class="carousel-item active" onclick="filterSubmissions(this,'recent')">Recent
+                                </div>
+                                <div class="carousel-item" onclick="filterSubmissions(this,'today')">Today</div>
+                                <div class="carousel-item" onclick="filterSubmissions(this,'pending')">Pending</div>
+                                <div class="carousel-item" onclick="filterSubmissions(this,'overdue')">Overdue</div>
+                                <div class="carousel-item" onclick="filterSubmissions(this,'completed')">Completed</div>
+                                <div class="carousel-item" onclick="filterSubmissions(this,'rejected')">Rejected</div>
+                                <!-- Add more courses as needed -->
+                            </div>
+                            <button class="carousel-btn next">›</button>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="submission-body">
+                    <div class="submission">
+                        <div class="submission-header">
+                            <h2>Course Name</h2>
+                            <span class="course-code">Course Code: ABC123</span>
+                            <button class="add-submission-btn">Add Submission</button>
+                        </div>
+                        <div class="submission-details">
+                            <p><strong>Lecturer:</strong> Dr. John Doe</p>
+                            <p><strong>Title:</strong> Assignment 1</p>
+                            <p><strong>Release Date:</strong> 2023-07-01</p>
+                            <p><strong>Due Date:</strong> 2023-07-15</p>
+                            <p class="status pending"><strong>Status:</strong> Pending</p>
+                        </div>
+                    </div>
+                    <div class="submission">
+                        <div class="submission-header">
+                            <h2>Course Name</h2>
+                            <span class="course-code">Course Code: ABC123</span>
+                            <button class="add-submission-btn">Add Submission</button>
+                        </div>
+                        <div class="submission-details">
+                            <p><strong>Lecturer:</strong> Dr. John Doe</p>
+                            <p><strong>Title:</strong> Assignment 1</p>
+                            <p><strong>Release Date:</strong> 2023-07-01</p>
+                            <p><strong>Due Date:</strong> 2023-07-15</p>
+                            <p class="status submitted"><strong>Status:</strong> Submitted</p>
+                        </div>
+                        <div class="submission-file">
+                            <i class="file-icon">📄</i>
+                            <span class="file-name">submitted_file.pdf</span>
+                            <button class="view-submission-btn">View Submission</button>
+                        </div>
+                    </div>
+                    <div class="submission">
+                        <div class="submission-header">
+                            <h2>Course Name</h2>
+                            <span class="course-code">Course Code: ABC123</span>
+                            <button class="add-submission-btn">Add Submission</button>
+                        </div>
+                        <div class="submission-details">
+                            <p><strong>Lecturer:</strong> Dr. John Doe</p>
+                            <p><strong>Title:</strong> Assignment 1</p>
+                            <p><strong>Release Date:</strong> 2023-07-01</p>
+                            <p><strong>Due Date:</strong> 2023-07-15</p>
+                            <p class="status rejected"><strong>Status:</strong> Rejected</p>
+                        </div>
+                        <div class="submission-file">
+                            <i class="file-icon">📄</i>
+                            <span class="file-name">submitted_file.pdf</span>
+                            <button class="view-submission-btn">View Submission</button>
+                        </div>
+                    </div>
+                    <div class="submission">
+                        <div class="submission-header">
+                            <h2>Course Name</h2>
+                            <span class="course-code">Course Code: ABC123</span>
+                            <button class="add-submission-btn">Add Submission</button>
+                        </div>
+                        <div class="submission-details">
+                            <p><strong>Lecturer:</strong> Dr. John Doe</p>
+                            <p><strong>Title:</strong> Assignment 1</p>
+                            <p><strong>Release Date:</strong> 2023-07-01</p>
+                            <p><strong>Due Date:</strong> 2023-07-15</p>
+                            <p class="status overdue"><strong>Status:</strong> Overdue</p>
+                        </div>
+                        <div class="submission-file">
+                            <span class="file-name">no submission</span>
+                        </div>
+                    </div>
+                </section>
+            <% } %>
+                    <% }%>
+</section>

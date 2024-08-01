@@ -1,54 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="/favicon" type="image/x-icon">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="/favicon" type="image/x-icon" />
     <title>ITLE: redirecting to login</title>
-</head>
+  </head>
 
-<body>
+  <body>
     <script>
-        /**
-         * Generates a random alphanumeric string of the specified length.
-         * 
-         * @param {number} length - The length of the generated string.
-         * @returns {string} The generated alphanumeric string.
-         */
-        function generateSerialString(length) {
-            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-            let result = '';
-            for (let i = 0; i < length; i++) {
-                result += characters.charAt(Math.floor(Math.random() * characters.length));
-            }
-            return result;
+      /**
+       * Generates a random alphanumeric string of the specified length.
+       *
+       * @param {number} length - The length of the generated string.
+       * @returns {string} The generated alphanumeric string.
+       */
+      function generateSerialString(length) {
+        const characters =
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        let result = "";
+        for (let i = 0; i < length; i++) {
+          result += characters.charAt(
+            Math.floor(Math.random() * characters.length)
+          );
         }
+        return result;
+      }
 
-        // Current timestamp in milliseconds
-        const currentTimestamp = new Date().getTime();
+      // Current timestamp in milliseconds
+      const currentTimestamp = new Date().getTime();
 
-        // Generate a random serial string of 12 characters
-        const generatedSerialString = generateSerialString(12);
+      // Generate a random serial string of 12 characters
+      const generatedSerialString = generateSerialString(12);
     </script>
 
     <% if (flush === "true") { %>
-        <script>
-            // Create AD token and store it in localStorage
-            const adToken = `AD-${currentTimestamp}::${generatedSerialString}`;
-            localStorage.setItem("x03n8af6", JSON.stringify(adToken));
-            // Redirect to login
-            window.location.replace("/login");
-        </script>
+    <script>
+      // Create AD token and store it in localStorage
+      const adToken = `AD-${currentTimestamp}::${generatedSerialString}`;
+      localStorage.setItem("x03n8af6", JSON.stringify(adToken));
+      // Redirect to login
+      window.location.replace("/login");
+    </script>
     <% } else { %>
-        <script>
-            // Create AU token and store it in localStorage
-            const auToken = `AU-${currentTimestamp}::${generatedSerialString}`;
-            localStorage.setItem("x03n8af6", JSON.stringify(auToken));
-            // Redirect to login
-            window.location.replace("/login");
-        </script>
+    <script>
+      // Create AU token and store it in localStorage
+      const auToken = `AU-${currentTimestamp}::${generatedSerialString}`;
+      localStorage.setItem("x03n8af6", JSON.stringify(auToken));
+      // Redirect to login
+      window.location.replace("/login");
+    </script>
     <% } %>
-</body>
-
+  </body>
 </html>

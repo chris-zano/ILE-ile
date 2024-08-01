@@ -106,7 +106,8 @@ export const verifyLecturer = async (req, res, next) => {
             firstname: matchedDocument.firstName,
             lastname: matchedDocument.lastName,
             faculty: matchedDocument.faculty,
-            profilePicUrl: matchedDocument.profilePicUrl
+            profilePicUrl: matchedDocument.profilePicUrl,
+            assignedCourses: matchedDocument.assignedCourses
         }
 
         // Proceed to the next middleware
@@ -183,6 +184,7 @@ export const verifyUser = async (req, res, next) => {
         if (!matchedDocument) return res.status(404).json({ message: "user not found" });
 
         req[`${user}Data`] = { id: matchedDocument._id };
+        req.userObjectdata = matchedDocument;
 
         next();
     } catch (error) {

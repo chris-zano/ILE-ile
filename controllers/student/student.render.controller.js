@@ -1,9 +1,10 @@
 import { isValidObjectId } from 'mongoose';
-import { ClassesDB, CoursesDB, RegisteredCoursesDB } from '../../utils/global/db.utils.js';
+import { ClassesDB, CoursesDB, RegisteredCoursesDB, StudentsDB } from '../../utils/global/db.utils.js';
 import { logError } from '../admin/admin.utils.js';
 
 const Courses = CoursesDB();
 const Classes = ClassesDB();
+const Students = StudentsDB()
 const RegisteredCourses = RegisteredCoursesDB();
 
 const getStudentDashboard = async (studentData) => {
@@ -41,10 +42,12 @@ const getStudentSchedules = async (studentData) => {
     }
 }
 
-const getStudentClassroom = async (studentData) => {
+const getStudentSubmissions = async (studentData) => {
     try {
-        const doc = await Classes.findOne({ classId: studentData.classId })
-        return doc || null;
+        const student = await Students.findOne({ _id: studentData.id });
+
+        if (!student || !student.files) return null;
+        return student.files;
     } catch (error) {
         logError(error);
         return null;
@@ -54,15 +57,39 @@ const getStudentClassroom = async (studentData) => {
 const getCourseRegistrationPage = async (studentData) => {
     try {
         const data = await RegisteredCourses.findOne({ registrationCode: studentData.registeredCourses });
+        if (!data || !data.courses) return null;
+
         const coursesMap = data.courses.map((courseCode) => Courses.findOne({ courseCode: courseCode }));
         const courses = await Promise.all(coursesMap);
-        return courses;
+
+        return courses.filter((c) => c !== null);
     }
     catch (error) {
         logError(error);
         return null;
     }
 }
+
+const getStudentNotifications = async (studentData) => {
+
+    try {
+        return []
+    } catch (error) {
+        logError(error);
+        return null
+    }
+
+}
+const getStudentAnnouncements = async (studentData) => {
+
+    try {
+        return []
+    } catch (error) {
+        logError(error);
+        return null
+    }
+}
+
 const returnUrlsToMethod = (pageurl = "") => {
     if (!pageurl) return undefined;
 
@@ -70,9 +97,11 @@ const returnUrlsToMethod = (pageurl = "") => {
         "dashboards": getStudentDashboard,
         "courses": getStudentCourses,
         "schedules": getStudentSchedules,
-        "classroom": getStudentClassroom,
+        "submissions": getStudentSubmissions,
         "profile": getStudentProfileInfo,
-        "register-courses": getCourseRegistrationPage
+        "register-courses": getCourseRegistrationPage,
+        "notifications": getStudentNotifications,
+        "announcements": getStudentAnnouncements,
     }
     return urlToMethodsObject[pageurl] || undefined;
 }
@@ -114,7 +143,7 @@ export const renderCourseView = async (req, res) => {
     if (!courseId || !isValidObjectId(courseId)) return res.status(400);
 
     try {
-        const course = await Courses.findOne({_id: courseId});
+        const course = await Courses.findOne({ _id: courseId });
         if (!course) return res.status(404);
 
         return res.render('student/student-main', {
@@ -127,7 +156,7 @@ export const renderCourseView = async (req, res) => {
             userType: 'Student',
             scripts: [`/script/scripts/student/course`]
         });
-    }catch(error) {
+    } catch (error) {
         logError(error);
         return res.status(500);
     }

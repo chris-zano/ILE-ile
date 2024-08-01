@@ -39,31 +39,22 @@
                 <div class="abstract-tooltip">Schedule</div>
             </li>
             <li>
-                <a href="/students/render/classroom/<%= student.id %>">
+                <a href="/students/render/submissions/<%= student.id %>">
                     <i class="side-nav_icon">
-                        <img src="/images/system/classrooms" alt="application logo">
+                        <img src="/images/system/assignments" alt="application logo">
                     </i>
-                    <p class="nav_name">Classroom</p>
+                    <p class="nav_name">Submissions</p>
                 </a>
-                <div class="abstract-tooltip">Classroom</div>
+                <div class="abstract-tooltip">Submissions</div>
             </li>
             <li>
                 <a href="/students/render/register-courses/<%= student.id %>">
                     <i class="side-nav_icon">
-                        <img src="/images/system/notifications" alt="application logo">
+                        <img src="/images/system/projects" alt="application logo">
                     </i>
                     <p class="nav_name">Register Courses</p>
                 </a>
                 <div class="abstract-tooltip">Register Courses</div>
-            </li>
-            <li>
-                <a href="/students/render/notifications/<%= student.id %>">
-                    <i class="side-nav_icon">
-                        <img src="/images/system/notifications" alt="application logo">
-                    </i>
-                    <p class="nav_name">Notifications</p>
-                </a>
-                <div class="abstract-tooltip">Notifications</div>
             </li>
             <li>
                 <a href="/students/render/announcements/<%= student.id %>">
@@ -75,7 +66,7 @@
                 <div class="abstract-tooltip">Announcements</div>
             </li>
             <li>
-                <a href="/students/render/add-ticket/<%= student.id %>">
+                <a href="/global/submit-ticket/student/<%= student.id %>">
                     <i class="side-nav_icon">
                         <img src="/images/system/tickets" alt="application logo">
                     </i>
@@ -107,13 +98,25 @@
                 <div class="abstract-tooltip">Settings</div>
             </li>
             <li>
-                <a href="/students/render/dashboards/<%= student.id %>">
+                <a href="#" id="logout">
                     <i class="side-nav_icon">
                         <img src="/images/system/logout" alt="application logo">
                     </i>
                     <p class="nav_name">Logout</p>
                 </a>
                 <div class="abstract-tooltip">Logout</div>
+                <script>
+                    document.getElementById("logout").addEventListener("click", (e) =>{
+                        e.preventDefault();
+                        const confirm = window.confirm("You're about to logout. Are you sure you want to continue?");
+
+                        if (confirm) {
+                            window.sessionStorage.clear();
+                            window.localStorage.clear();
+                            window.location.href = '/login';
+                        }
+                    })
+                </script>
             </li>
         </ul>
     </section>

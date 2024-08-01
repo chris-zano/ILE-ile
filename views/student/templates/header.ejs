@@ -56,10 +56,12 @@
                 <img width="20px" src="/images/system/search" alt="show search bar">
             </div>
             <div class="profile-action">
-                <img width="20px" src="/images/system/notifications" id="profile-main" alt="profile avatar">
-                <div class="notification-dot">
-                    <span>9+</span>
-                </div>
+                <a href="/students/render/notifications/<%= student.id %>">
+                    <img width="20px" src="/images/system/notifications" id="profile-main" alt="profile avatar">
+                    <div class="notification-dot">
+                        <span>9+</span>
+                    </div>
+                </a>
             </div>
         </div>
         <a href="/students/render/profile/<%= student.id %>" id="">
@@ -67,7 +69,7 @@
                 <img width="20px" src="<%= student.profilePicUrl %>" id="profile-main" alt="profile avatar">
                 <div class="username">
                     <p>
-                        <%= student.firstName.toLowerCase() %>
+                        <%= student.firstName %>
                     </p>
                 </div>
             </div>

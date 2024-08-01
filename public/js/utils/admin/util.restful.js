@@ -31,7 +31,7 @@ const fetchData = async (url) => {
     try {
         const response = await fetch(url);
 
-        return {status: response.status, data: await response.json()};
+        return { status: response.status, data: await response.json() };
     }
     catch (error) {
     }
@@ -49,7 +49,7 @@ const checkAndRenderImageBackground = () => {
     for (let image of images) {
         image.addEventListener("load", () => {
         });
-    
+
         image.addEventListener("error", (e) => {
             image.setAttribute("src", "/images/system/logo");
         });
@@ -127,6 +127,93 @@ document.addEventListener('keydown', (e) => {
     }
 })
 
+const dateComponentsToMilliseconds = ({ year, month, day, hours, minutes, seconds }) => {
+    const monthsArray = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+    const m = monthsArray.indexOf(month) || null;
+
+    if (!m) return null;
+    try {
+        const date = new Date(year, month - 1, day, hours, minutes, seconds);
+        return date.getTime();
+    }
+    catch (error) {
+        console.log(error);
+        return null
+    }
+}
+
+const millisecondsToDateComponents = (milliseconds) => {
+    const time = new Date(milliseconds);
+
+    const hours = time.getHours();
+    const minutes = time.getMinutes();
+    const seconds = time.getSeconds();
+
+    return {
+        hours: hours < 10 ? "0" + hours : hours,
+        minutes: minutes < 10 ? "0" + minutes : minutes,
+        seconds: seconds < 10 ? "0" + seconds : seconds,
+        timeStamp: time.getTime()
+    }
+}
+
+const getSystemDate = () => {
+    const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const date = new Date();
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const seconds = date.getSeconds();
+
+    return {
+        day: days[date.getDay()],
+        date: date.getDate(),
+        month: months[date.getMonth()],
+        year: date.getFullYear(),
+        hours: hours < 10 ? "0" + hours : hours,
+        minutes: minutes < 10 ? "0" + minutes : minutes,
+        seconds: seconds < 10 ? "0" + seconds : seconds,
+        timeStamp: date.getTime()
+    };
+}
+
+function formatTimestamp(timestamp) {
+    const date = new Date(timestamp);
+
+    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const months = [
+        'January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+
+    const dayOfWeek = days[date.getUTCDay()];
+    const day = date.getUTCDate();
+    const month = months[date.getUTCMonth()];
+    const year = date.getUTCFullYear();
+
+    let hour = date.getUTCHours();
+    const minutes = date.getUTCMinutes().toString().padStart(2, '0');
+    const period = hour >= 12 ? 'pm' : 'am';
+
+    if (hour > 12) {
+        hour -= 12;
+    } else if (hour === 0) {
+        hour = 12;
+    }
+
+    const daySuffix = (day) => {
+        if (day > 3 && day < 21) return 'th'; // special case for 11th-13th
+        switch (day % 10) {
+            case 1: return 'st';
+            case 2: return 'nd';
+            case 3: return 'rd';
+            default: return 'th';
+        }
+    };
+
+    return `${dayOfWeek}, ${day}${daySuffix(day)} ${month}, ${year} : ${hour}:${minutes} ${period}`;
+}
 console.log("Util is loaded ");
 
 const toast = (message) => {

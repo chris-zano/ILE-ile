@@ -1,0 +1,154 @@
+.carousel {
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    /* border: 1px solid #ddd; */
+    border-radius: 50px;
+    background: #fff;
+    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+    width: max-content;
+    margin: 1ch auto;
+    padding: 0.2ch 1ch;
+}
+.carousel span {
+    width: fit-content;
+}
+
+.carousel-inner {
+    display: flex;
+    transition: transform 0.3s ease;
+    width: 100%;
+    overflow: hidden;
+}
+
+.carousel-item {
+    padding: 10px 20px;
+    cursor: pointer;
+    flex: none;
+    border-radius: 50px;
+}
+
+.carousel-item.active {
+    font-weight: bold;
+    background-color: var(--accent);
+    color: #fff;
+    border-radius: 50px;
+}
+
+.carousel-btn {
+    padding: 10px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.5em;
+}
+
+.submission {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 2ch;
+    margin-bottom: 20px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.submission-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.submission-header h2 {
+    margin: 0;
+    font-size: 1.5em;
+}
+
+.course-code {
+    font-size: 0.9em;
+    color: #777;
+}
+
+.submission-details p {
+    margin: 5px 0;
+    font-size: 1em;
+}
+
+.status {
+    padding: 5px 10px;
+    border-radius: 3px;
+    display: inline-block;
+}
+
+.status.pending {
+    /* background-color: #f0ad4e; */
+    color: #f0ad4e;
+}
+
+.status.submitted {
+    /* background-color: #5cb85c; */
+    color: #5cb85c;
+}
+
+.status.overdue {
+    /* background-color: #d9534f; */
+    color: #d9534f;
+}
+
+.status.rejected {
+    /* background-color: #777; */
+    color: #777;
+}
+
+.add-submission-btn {
+    padding: 10px 20px;
+    font-size: 0.9em;
+    color: var(--text-body);
+    background-color: transparent;
+    border: none;
+    border: 1px solid var(--primary);
+    border-radius: 50px;
+    cursor: pointer;
+    transition: var(--transition-default);
+}
+
+.add-submission-btn:hover {
+    background-color: var(--primary);
+    color: var(--white);
+}
+
+.submission-file {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.file-icon {
+    font-size: 1.5em;
+    margin-right: 10px;
+}
+
+.file-name {
+    font-size: 1em;
+    margin-right: 20px;
+}
+
+.view-submission-btn {
+    padding: 5px 10px;
+    font-size: 0.9em;
+    color: var(--text-body);
+    background-color: transparent;
+    border: none;
+    border: 1px solid var(--secondary);
+    border-radius: 2ch;
+    cursor: pointer;
+    transition: var(--transition-default);
+    margin-right: 10px;
+}
+
+.view-submission-btn:hover {
+    background-color: var(--secondary);
+    color: var(--white);
+}
