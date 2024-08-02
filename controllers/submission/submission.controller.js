@@ -4,7 +4,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import fs from "fs";
-import { convertToMilliseconds, getStartDate } from './submission.utils.js';
+import { convertToMilliseconds, getEndDate, getStartDate } from './submission.utils.js';
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -15,19 +15,29 @@ const Courses = CoursesDB();
 const Submission = SubmissionsDB();
 
 
-const generateNewSubmissionObject = ({ lecturerId, submissionObject }) => {
+const generateNewSubmissionObject = async ({ lecturerId, submissionObject }) => {
     if (!submissionObject || Object.keys(submissionObject).length === 0) {
         return { status: false, doc: {} }
     }
 
     const { courseCode, title, instructions, startDate, endDate, expected, received, fileUrl } = submissionObject;
+    
+    // Wait for the course name to be fetched
+    let courseName;
+    try {
+        const course = await Courses.findOne({ courseCode: courseCode });
+        courseName = course ? course.title : null;
+    } catch (error) {
+        console.error(error);
+        return { status: false, doc: {} };
+    }
 
-    const submission = { courseCode: courseCode, lecturer: lecturerId, lecturerSubmission: [] };
+    const submission = { courseCode, courseName, lecturer: lecturerId, lecturerSubmission: [] };
     submission.lecturerSubmission.push({ title, instructions, startDate, endDate, expected, received, fileUrl });
-
 
     return { status: true, doc: submission };
 }
+
 
 const updateLecturerSubmission = async ({ courseCode, lecturerSubmissionObject }) => {
 
@@ -75,11 +85,12 @@ export const createSubmission = async (req, res) => {
         const existingSubmission = await Submission.findOne({ courseCode: submissionObject.courseCode });
         if (!existingSubmission) {
             //submission does not exist. Create a new one.
-            submission = generateNewSubmissionObject({ lecturerId: lecturerData.id, submissionObject });
+            submission = await generateNewSubmissionObject({ lecturerId: lecturerData.id, submissionObject });
             if (!submission.status) return res.status(400).json({ message: 'resource could not be created' });
             const { doc } = submission;
             const newSubmission = new Submission({
-                courseCode: submissionObject.course_code,
+                courseCode: doc.courseCode,
+                courseName: doc.courseName,
                 lecturer: doc.lecturer,
                 lecturerSubmission: doc.lecturerSubmission,
                 studentSubmissions: []
@@ -98,8 +109,6 @@ export const createSubmission = async (req, res) => {
 
 }
 
-
-
 export const createSubmissionWithFile = async (req, res) => {
 
     if (!req.body || Object.keys(req.body).length === 0) {
@@ -114,14 +123,14 @@ export const createSubmissionWithFile = async (req, res) => {
     const submissionObject = req.body;
 
     const startDate = getStartDate(submissionObject['start-date']);
-    const endDate = getStartDate(submissionObject['end-date']);
+    const endDate = getEndDate(submissionObject['end-date']);
 
-    submissionObject['start-date'] = {
+    submissionObject['startDate'] = {
         date: startDate,
         timeStamp: convertToMilliseconds(startDate)
     };
 
-    submissionObject['end-date'] = {
+    submissionObject['endDate'] = {
         date: endDate,
         timeStamp: convertToMilliseconds(endDate)
     }
@@ -140,12 +149,14 @@ export const createSubmissionWithFile = async (req, res) => {
         if (!existingSubmission) {
             //submission does not exist. Create a new one.
 
-            submission = generateNewSubmissionObject({ lecturerId: lecturerData.id, submissionObject });
+            submission = await generateNewSubmissionObject({ lecturerId: lecturerData.id, submissionObject });
             if (!submission.status) return res.status(400).redirect(`/lecturers/render/submissions/${req.lecturerData.id}`);
             const { doc } = submission;
 
+            console.log('doc is',doc);
             const newSubmission = new Submission({
-                courseCode: submissionObject.course_code,
+                courseCode: doc.courseCode,
+                courseName: doc.courseName,
                 lecturer: doc.lecturer,
                 lecturerSubmission: doc.lecturerSubmission,
                 studentSubmissions: []
@@ -190,7 +201,7 @@ export const deleteStudentSubmissions = async (req, res) => {
             { new: true }
         );
 
-        return res.status(200).json({ message: 'resource deletion complete', doc: updatedDocument});
+        return res.status(200).json({ message: 'resource deletion complete', doc: updatedDocument });
     } catch (error) {
         logError(error);
         return res.status(500).json({ message: 'failed ot delete. internal server error' });

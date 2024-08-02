@@ -1,11 +1,12 @@
 import { isValidObjectId } from 'mongoose';
-import { ClassesDB, CoursesDB, RegisteredCoursesDB, StudentsDB } from '../../utils/global/db.utils.js';
+import { ClassesDB, CoursesDB, RegisteredCoursesDB, StudentsDB, SubmissionsDB } from '../../utils/global/db.utils.js';
 import { logError } from '../admin/admin.utils.js';
 
 const Courses = CoursesDB();
 const Classes = ClassesDB();
 const Students = StudentsDB()
 const RegisteredCourses = RegisteredCoursesDB();
+const Submissions = SubmissionsDB();
 
 const getStudentDashboard = async (studentData) => {
     return {
@@ -44,10 +45,10 @@ const getStudentSchedules = async (studentData) => {
 
 const getStudentSubmissions = async (studentData) => {
     try {
-        const student = await Students.findOne({ _id: studentData.id });
-
-        if (!student || !student.files) return null;
-        return student.files;
+        const studentsCourseCodes = studentData.courses;
+        const courseSubmissions = studentsCourseCodes.map(c => Submissions.findOne({ courseCode: c }));
+        const submissionsArray = await Promise.all(courseSubmissions);
+        return submissionsArray.filter((c) => c !== null);
     } catch (error) {
         logError(error);
         return null;

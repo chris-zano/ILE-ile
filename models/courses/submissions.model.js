@@ -35,6 +35,7 @@ const submissionsSchema = new Schema(
             unique: true,
             index: true
         },
+        courseName: {type: String, required: true},
         lecturer: {
             type: String, //the field ( _id ) of the lecturer document
             unique: true,
@@ -48,7 +49,8 @@ const submissionsSchema = new Schema(
         studentSubmissions: {
             type: [studentSubmissionSchema],
             default: [],
-        }
+        },
+        status: String
     },
     { timestamps: true }
 )

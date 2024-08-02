@@ -10,10 +10,14 @@ try {
     submissionsMain(false);
 }
 
+
 const showSubmissions = async (button,courseId) => {
     button.parentElement.querySelector('.active').classList.remove('active');
     button.classList.add('active')
-    console.log(courseId)
+    if (courseId === "all") {
+        console.log('showing all courses');
+        //showAllSubmissions()
+    }
 }
 
 const filterSubmissions = async (button, filterId) => {
