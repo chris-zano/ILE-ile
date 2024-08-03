@@ -14,6 +14,21 @@ const Lecturer = LecturersDB();
 const Courses = CoursesDB();
 const Submission = SubmissionsDB();
 
+export const getLecturerName = async (req, res) => {
+    try {
+        const doc = await Submission.findOne({ _id: req.params.subId }, { lecturer: 1 });
+        if (!doc) return res.status(404).json({ message: 'resource not found' });
+
+        const lect = await Lecturer.findById(doc.lecturer, { firstName: 1, lastName: 1 });
+        if (!lect) return res.status(404).json({ message: "lecturer not found" });
+
+        return res.status(200).json({ message: 'success', doc: lect });
+    } catch (error) {
+        logError(error);
+        return res.status(500).json({ message: "an unexpected error occured" });
+    }
+}
+
 
 const generateNewSubmissionObject = async ({ lecturerId, submissionObject }) => {
     if (!submissionObject || Object.keys(submissionObject).length === 0) {
@@ -21,7 +36,7 @@ const generateNewSubmissionObject = async ({ lecturerId, submissionObject }) => 
     }
 
     const { courseCode, title, instructions, startDate, endDate, expected, received, fileUrl } = submissionObject;
-    
+
     // Wait for the course name to be fetched
     let courseName;
     try {
@@ -153,7 +168,7 @@ export const createSubmissionWithFile = async (req, res) => {
             if (!submission.status) return res.status(400).redirect(`/lecturers/render/submissions/${req.lecturerData.id}`);
             const { doc } = submission;
 
-            console.log('doc is',doc);
+            console.log('doc is', doc);
             const newSubmission = new Submission({
                 courseCode: doc.courseCode,
                 courseName: doc.courseName,

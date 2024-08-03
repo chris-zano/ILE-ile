@@ -1,50 +1,40 @@
-<section class="student-submissions_main">
+<section class="student-submissions_main" id="student-submissions_main">
     <% if (data.length===0) { %>
         <div class="no-available-courses" style="display: grid; place-items: center;">
             <p>Your submissions portals has not yet been activated by your department administrator.</p>
             <div>you have <%= data.length %> files in your submissions</div>
         </div>
         <% } else { %>
-            <div>you have <%= data.length %> files in your submissions</div>
-            <div id="data-files"><%= data %></div>
+            <div id="data-files"><%= JSON.stringify(data) %></div>
             <% for( let submission of data ) { %>
                 <section class="submissions-header">
                     <div class="btn-wrapper">
-                        <!-- as many buttons can go here as possible (but only as icons) except for the default-->
-
-                        <!-- default buttons -->
-                        <div class="carousel">
-                            <span>Sort By Courses</span>
-                            <button class="carousel-btn prev">‹</button>
-                            <div class="carousel-inner">
-                                <div class="carousel-item active" onclick="showSubmissions(this,'all')">All</div>
-                                <div class="carousel-item" onclick="showSubmissions(this,'1')">course1</div>
-                                <div class="carousel-item" onclick="showSubmissions(this,'course3')">Course 3</div>
-                                <!-- Add more courses as needed -->
-                            </div>
-                            <button class="carousel-btn next">›</button>
+                        <div class="dropdown">
+                            <label for="course-select">Sort By Courses:</label>
+                            <select id="course-select" onchange="showSubmissions(this.value)">
+                                <option value="all" selected>All</option>
+                                <% for(let course of data) { %>
+                                    <option value="<%= course._id %>"><%= course['courseName'] %></option>
+                                <% } %>
+                            </select>
                         </div>
-
-                        <div class="carousel">
-                            <span>Filter By:</span>
-                            <button class="carousel-btn prev">‹</button>
-                            <div class="carousel-inner">
-                                <div class="carousel-item active" onclick="filterSubmissions(this,'recent')">Recent
-                                </div>
-                                <div class="carousel-item" onclick="filterSubmissions(this,'today')">Today</div>
-                                <div class="carousel-item" onclick="filterSubmissions(this,'pending')">Pending</div>
-                                <div class="carousel-item" onclick="filterSubmissions(this,'overdue')">Overdue</div>
-                                <div class="carousel-item" onclick="filterSubmissions(this,'completed')">Completed</div>
-                                <div class="carousel-item" onclick="filterSubmissions(this,'rejected')">Rejected</div>
-                                <!-- Add more courses as needed -->
-                            </div>
-                            <button class="carousel-btn next">›</button>
-                        </div>
+                        
+                        <!-- <div class="dropdown">
+                            <label for="filter-select">Filter By:</label>
+                            <select id="filter-select" onchange="filterSubmissions(this.value)">
+                                <option value="recent" selected>Recent</option>
+                                <option value="today">Today</option>
+                                <option value="pending">Pending</option>
+                                <option value="overdue">Overdue</option>
+                                <option value="completed">Completed</option>
+                                <option value="rejected">Rejected</option>
+                            </select>
+                        </div> -->
                     </div>
                 </section>
 
-                <section class="submission-body">
-                    <div class="submission">
+                <section class="submission-body" id="submission-body">
+                    <!-- <div class="submission">
                         <div class="submission-header">
                             <h2>Course Name</h2>
                             <span class="course-code">Course Code: ABC123</span>
@@ -98,7 +88,7 @@
                         <div class="submission-file">
                             <span class="file-name">no submission</span>
                         </div>
-                    </div>
+                    </div> -->
                 </section>
             <% } %>
                     <% }%>
