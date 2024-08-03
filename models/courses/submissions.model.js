@@ -4,14 +4,14 @@ const Schema = mongoose.Schema;
 const studentSubmissionSchema = new Schema(
     {
         id: String,//the field ( _id ) of the student document
+        subId: String, //the field ( _id ) of the lecturer submission document
         studentId: String, // the field ( studentId ) of the student document
         filename: String, // the original name of the file submitted [ 001_BTE_Morning.pdf]
-        filetype: String, //the type of file (code, pdf, doc, ppt, docx, pptx, excel, etc)
         fileUrl: String, // the route on which the file is mounted
         date: Object,
         status: {
             type: String,
-            enum: ['accepted', 'rejected']
+            enum: ['accepted', 'rejected', 'pending']
         }
     }
 );
@@ -24,7 +24,7 @@ const lecturerSubmissionSchema = new Schema(
         endDate: Object,
         expected: String,
         received: String,
-        fileUrl:Object
+        fileUrl: Object
     }
 )
 const submissionsSchema = new Schema(
@@ -35,6 +35,7 @@ const submissionsSchema = new Schema(
             unique: true,
             index: true
         },
+        courseName: { type: String, required: true },
         lecturer: {
             type: String, //the field ( _id ) of the lecturer document
             unique: true,
@@ -48,7 +49,8 @@ const submissionsSchema = new Schema(
         studentSubmissions: {
             type: [studentSubmissionSchema],
             default: [],
-        }
+        },
+        status: String
     },
     { timestamps: true }
 )
