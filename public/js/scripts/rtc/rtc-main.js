@@ -1,9 +1,11 @@
 const socket = io();
-const videoGrid = document.getElementById('video-grid'); //div where our video will be loaded
-
+const videoGrid = document.getElementById('video-grid');
+const participantGrid = document.getElementById('participants-grid');
 var myPeer = new Peer();
 let count = 0;
 let myVideoStream; //the video stram is stored in this variable
+
+let lecturerStreamSet = false
 
 let currentPeer = null;
 const peers = {};
@@ -82,10 +84,11 @@ navigator.mediaDevices.getUserMedia({
     video: true, //we want video
     audio: true //we want audio
 }).then(async (stream) => {
-    console.log("uid to be set: ", uid);
+    // console.log("uid to be set: ", uid);
     const tempuid = uid
     myVideoStream = stream; //storing the video stream returned to the myVideoStream variable
 
+    console.log('adding my video stream', userName, permissionClass)
     addVideoStream(myVideo, stream, userName, tempuid); //appended my stream to 'video-grid' div
     //add participant to list of participants
     const tempParticipants = await addParticipant(ROOM_ID, { userName, uid, permissionClass, studentId });
@@ -93,19 +96,19 @@ navigator.mediaDevices.getUserMedia({
     myPeer.on('call', call => {
         call.answer(stream);
         const { name, userId, cuiid } = call.metadata
-        // console.log("caller: ", { name, userId, cuiid })
+        console.log("caller: ", { name, userId, cuiid})
 
         const video = document.createElement('video');
         let html = '<i class="fas fa-microphone"></i>'
         video.innerHTML = html;
         call.on('stream', userVideoStream => {
-            // console.log('video displayed');
+            console.log('on stream video displayed', {name, cuiid});
             addVideoStream(video, userVideoStream, name, cuiid)
         })
         currentPeer = call;
     })
-    socket.on('user-connected', ({ userId, name, cuid }) => {
-        // console.log(`new user connected: ${name}: ${userId}: ${cuid}`)
+    socket.on('user-connected', ({ userId, name, cuid}) => {
+        console.log(`new user connected: `, { userId, name, cuid })
         setTimeout(connectToNewUser, 1000, userId, name, cuid, stream);
     });
 
@@ -124,7 +127,7 @@ socket.on('user-disconnected', userId => {
     if (peers[userId]) {
         peers[userId].close();
         const videoElement = document.getElementById(`video-${userId}`);
-        console.log("disconnected user's video is: ", videoElement)
+        // console.log("disconnected user's video is: ", videoElement)
         if (videoElement) {
             videoElement.remove();
         }
@@ -134,12 +137,12 @@ socket.on('user-disconnected', userId => {
 });
 
 myPeer.on('open', id => {
-    socket.emit('join-room', ROOM_ID, id, userName, uid);
+    socket.emit('join-room', ROOM_ID, id, userName, uid, permissionClass);
 });
 
 
 function connectToNewUser(userId, name, cuid, stream) {
-    const call = myPeer.call(userId, stream, { metadata: { name: userName, userId: myPeer.id, cuiid: cuid } });
+    const call = myPeer.call(userId, stream, { metadata: { name: userName, userId: myPeer.id, cuiid: cuid} });
     const video = document.createElement('video');
 
     video.id = `video-${userId}-${cuid}`; // Set the ID for the video element
@@ -175,25 +178,33 @@ function addVideoStream(video, stream, name, cuid) {
 
         let outerDiv = document.createElement('div');
         outerDiv.classList.add('user-video');
+        if (permissionClass === 'lecturer' && lecturerStreamSet === false) {
+            outerDiv.classList.add('media-main-w')
+            lecturerStreamSet = true
+        }
+        else {
+            outerDiv.classList.add('participant-media-n')
+        }
         outerDiv.id = `video-wrapper-${cuid}`;
 
         outerDiv.appendChild(video);
 
         let nameDiv = document.createElement('div');
         let pinDiv = document.createElement('div');
+
         nameDiv.classList.add('user-name');
         nameDiv.innerHTML = name;
         nameDiv.id = `${name}_${cuid}`;
         outerDiv.appendChild(nameDiv);
 
-        videoGrid.appendChild(outerDiv); //appending to 'video-grid' div
+        videoGrid.appendChild(outerDiv);
     } else {
         console.log(`Stream for ${name} is undefined or null.`);
     }
 }
 
 function cleanUpUI() {
-    setTimeout(() => {
+    const intervalId = setInterval(() => {
         const videoObjects = document.querySelectorAll('div[id^="video-wrapper-"]');
         for (let container of videoObjects) {
             const videoElement = container.querySelector("video");
@@ -202,26 +213,30 @@ function cleanUpUI() {
                 videoGrid.removeChild(container);
             }
         }
-    }, 1000); // Wait for 1 second before cleaning up
+    }, 2000); // Cleanup every 2 seconds
+
+    // Clear the interval after 20 seconds
+    setTimeout(() => {
+        clearInterval(intervalId);
+        console.log('Cleanup interval cleared');
+    }, 20000);
 }
 
 function hasActiveVideoFeed(videoElement) {
     if (videoElement && videoElement.srcObject instanceof MediaStream) {
         const stream = videoElement.srcObject;
         if (!stream.active) return false;
-        
+
         const videoTracks = stream.getVideoTracks();
         const audioTracks = stream.getAudioTracks();
-        
+
         const hasActiveVideo = videoTracks.some(track => track.readyState === 'live' && track.enabled);
         const hasActiveAudio = audioTracks.some(track => track.readyState === 'live' && track.enabled);
-        
+
         return hasActiveVideo || hasActiveAudio;
     }
     return false;
 }
-
-setInterval(cleanUpUI, 5000);
 
 function muteUnmuteUser() {
     let enabled = myVideoStream.getAudioTracks()[0].enabled;

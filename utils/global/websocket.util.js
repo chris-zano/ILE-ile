@@ -16,25 +16,34 @@ const setupWebSocketServer = (server) => {
 
             //waiting room
             socket.on('join meeting', (courseId) => {
+
                 socket.join(courseId);
+
                 socket.broadcast.to(courseId).emit("waiting for host", (courseId));
 
                 socket.on('starting meeting', async (courseId) => {
+
                     socket.broadcast.to(courseId).emit("meeting-started", (courseId));
+
                     await Courses.findOneAndUpdate({ _id: courseId }, { $set: { meeting_status: "in meeting", call_start: new Date().getTime() }, $inc: { __v: 1 } }, { new: true });
                 })
             });
 
             //request for joining room
             socket.on('join-room', (roomId, userId, userName, uid) => {
+
                 socket.join(roomId);
+
                 socket.broadcast.to(roomId).emit('user-connected', { userId, name: userName, cuid: uid });
+
                 socket.on('send-message', (inputMsg, userName) => {
                     io.to(roomId).emit('recieve-message', inputMsg, userName);
                 });
-                socket.on('end-call-for-all', (roomId) =>{
+
+                socket.on('end-call-for-all', (roomId) => {
                     socket.broadcast.to(roomId).emit('call-terminated');
                 })
+
                 socket.on('disconnect', () => {
                     socket.broadcast.to(roomId).emit('user-disconnected', userId, userName);
                 })
