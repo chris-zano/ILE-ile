@@ -109,8 +109,6 @@ navigator.mediaDevices.getUserMedia({
         setTimeout(connectToNewUser, 1000, userId, name, cuid, stream);
     });
 
-    recordScreen()
-
 }).catch((err) => {
     console.error('Error accessing media devices:', err);
     alert('Error accessing media devices. Please check your permissions.');
@@ -139,9 +137,6 @@ myPeer.on('open', id => {
     socket.emit('join-room', ROOM_ID, id, userName, uid);
 });
 
-function recordScreen() {
-    
-}
 
 function connectToNewUser(userId, name, cuid, stream) {
     const call = myPeer.call(userId, stream, { metadata: { name: userName, userId: myPeer.id, cuiid: cuid } });
@@ -198,27 +193,35 @@ function addVideoStream(video, stream, name, cuid) {
 }
 
 function cleanUpUI() {
-    const videoObjects = document.querySelectorAll('div[id^="video-wrapper-"]');
-    // console.log(videoObjects);
-    for (let container of videoObjects) {
-        const videoElement = container.querySelector("video");
-        console.log("has video: ", videoElement);
-        if (!videoElement || !hasActiveVideoFeed(videoElement)) {
-            console.log("Removing container due to no active video feed.");
-            console.log("...", videoElement)
-            // videoGrid.removeChild(container);
+    setTimeout(() => {
+        const videoObjects = document.querySelectorAll('div[id^="video-wrapper-"]');
+        for (let container of videoObjects) {
+            const videoElement = container.querySelector("video");
+            if (!videoElement || !hasActiveVideoFeed(videoElement)) {
+                console.log("Removing container due to no active video feed.");
+                videoGrid.removeChild(container);
+            }
         }
-    }
+    }, 1000); // Wait for 1 second before cleaning up
 }
 
 function hasActiveVideoFeed(videoElement) {
     if (videoElement && videoElement.srcObject instanceof MediaStream) {
-        const videoTracks = videoElement.srcObject.getVideoTracks();
-        return videoTracks.some(track => track.readyState === 'live' && track.enabled);
+        const stream = videoElement.srcObject;
+        if (!stream.active) return false;
+        
+        const videoTracks = stream.getVideoTracks();
+        const audioTracks = stream.getAudioTracks();
+        
+        const hasActiveVideo = videoTracks.some(track => track.readyState === 'live' && track.enabled);
+        const hasActiveAudio = audioTracks.some(track => track.readyState === 'live' && track.enabled);
+        
+        return hasActiveVideo || hasActiveAudio;
     }
     return false;
 }
 
+setInterval(cleanUpUI, 5000);
 
 function muteUnmuteUser() {
     let enabled = myVideoStream.getAudioTracks()[0].enabled;

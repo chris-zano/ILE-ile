@@ -8,14 +8,14 @@ import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import callAndExecuteRequireStack, { callSetupWebSocket } from './requireStack.js';
 
-import { createServer } from 'http'; // creating http server
-import { ExpressPeerServer } from 'peer'; // WebRTC API for real-time media communication
+import { createServer } from 'http';
+import { ExpressPeerServer } from 'peer';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
-const server = createServer(app); // creating http server
+const server = createServer(app);
 
 const peerServer = ExpressPeerServer(server, {
   debug: true
@@ -24,7 +24,6 @@ const peerServer = ExpressPeerServer(server, {
 const STATIC_FILES_PATH = path.join(__dirname, 'public');
 const VIEW_ENGINE_PATH = path.join(__dirname, 'views');
 
-//express.js config
 dotenv.config();
 
 app.use(bodyParser.json());
