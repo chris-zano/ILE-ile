@@ -15,22 +15,6 @@ const lecturerSchema = new Schema({
 }, { _id: false });
 
 const dateRecordedSchema = new Schema({
-    day: {
-        type: String,
-        default: ""
-    },
-    date: {
-        type: String,
-        default: ""
-    },
-    month: {
-        type: String,
-        default: ""
-    },
-    year: {
-        type: String,
-        default: ""
-    },
     startTime: {
         type: String,
         default: ""
@@ -149,6 +133,10 @@ const courseSchema = new Schema({
     attendance: {
         type: Array,
         default: []
+    },
+    call_start: {
+        type: String,
+        default:''
     }
 }, {
     timestamps: true

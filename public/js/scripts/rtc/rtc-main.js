@@ -109,6 +109,8 @@ navigator.mediaDevices.getUserMedia({
         setTimeout(connectToNewUser, 1000, userId, name, cuid, stream);
     });
 
+    recordScreen()
+
 }).catch((err) => {
     console.error('Error accessing media devices:', err);
     alert('Error accessing media devices. Please check your permissions.');
@@ -136,6 +138,10 @@ socket.on('user-disconnected', userId => {
 myPeer.on('open', id => {
     socket.emit('join-room', ROOM_ID, id, userName, uid);
 });
+
+function recordScreen() {
+    
+}
 
 function connectToNewUser(userId, name, cuid, stream) {
     const call = myPeer.call(userId, stream, { metadata: { name: userName, userId: myPeer.id, cuiid: cuid } });

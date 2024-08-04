@@ -8,7 +8,7 @@ const Courses = CoursesDB();
 
 router.get('/start-live/:courseId/:chapter', renderHome);
 router.get('/room/:courseId/:chapter', createNewRoom);
-router.get('/room/end/:room', leaveRoom);
+router.get('/call/end/:room/:chapter', leaveRoom);
 router.get('/get/class-in-session/:courseId', async (req, res) => {
     const { courseId } = req.params;
 
@@ -64,14 +64,10 @@ router.post('/rtc/add-participant/:courseId', async (req, res) => {
 const generateLectureRecordingData = (chapter, startTime, stopTime, attendees) => {
     try {
         const recordedDate = {
-            day: startTime.date.day,
-            date: startTime.date.date,
-            month: startTime.date.month,
-            year: startTime.date.year,
-            startTime: startTime.time.timeStamp,
-            endTime: stopTime.time.timeStamp
+            startTime: startTime,
+            endTime: stopTime
         }
-        const duration = Number(stopTime.time.timeStamp) - Number(startTime.time.timeStamp);
+        const duration = startTime ? Number(stopTime) - Number(startTime) : null;
         const recordingObj = {
             title: `Chapter ${Number(chapter) + 1}- Lecture Recording`,
             dateRecorded: recordedDate,
@@ -101,7 +97,7 @@ const resetCourseCallAttendance = async (courseId) => {
 
 router.post('/rtc/update-call-info/:callId/:chapter', async (req, res) => {
     const { callId, chapter } = req.params;
-    const { attendees, startTime, stopTime } = req.body;
+    const { attendees } = req.body;
 
     if (!callId || !isValidObjectId(callId)) return res.status(400).json({
         message: "The request you made is either incomplete or invalid. Check the request again.",
@@ -111,16 +107,23 @@ router.post('/rtc/update-call-info/:callId/:chapter', async (req, res) => {
     try {
         // clear attendees section for the course.
         const attendaceIsReset = await resetCourseCallAttendance(callId);
-        
+
         if (!attendaceIsReset) return res.status(404).json({ message: "Resource not found" });
-        
-        const recordingObject = generateLectureRecordingData(chapter, startTime, stopTime, attendees);
+        let startTime = await Courses.findOne({ _id: callId }, { call_start: 1 });
+        if (!startTime) startTime = null;
+        const recordingObject = generateLectureRecordingData(chapter, startTime ? startTime.call_start : null, new Date().getTime(), attendees);
 
         const course = await Courses.findOneAndUpdate(
             { _id: callId },
-            { $set: { [`chapters.${chapter}.courseLectureRecordings`]: recordingObject } },
-            { new: true }
-        )
+            {
+                $addToSet: { [`chapters.${chapter}.courseLectureRecordings`]: recordingObject },
+                $set: {
+                    meeting_status: "not in meeting",
+                    call_start: 0
+                },
+                $inc: { v: 1 }
+            },
+            { new: true });
 
         if (!course) return res.status(404).json({ message: "Resource not found" });
 

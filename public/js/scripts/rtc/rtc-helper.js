@@ -65,14 +65,6 @@ const getParticipants = async (courseId) => {
 const updateCourseMeetingInformation = async () => {
     let startDateTime = window.sessionStorage.getItem("date-Time") || undefined;
 
-    if (startDateTime) startDateTime = JSON.parse(startDateTime);
-    
-    const stopDateTime = {
-        courseId: ROOM_ID,
-        date: getSystemDate(),
-        time: getSystemTime()
-    }
-
     const url = `/rtc/update-call-info/${ROOM_ID}/${CHAPTER}`;
     const participants = await getParticipants(ROOM_ID);
     const headers = { "Content-Type": "application/json" };
@@ -80,7 +72,7 @@ const updateCourseMeetingInformation = async () => {
     const request = await fetch(url, {
         method: "POST",
         headers: headers,
-        body: JSON.stringify({ attendees: participants, startTime: startDateTime, stopTime: stopDateTime})
+        body: JSON.stringify({ attendees: participants})
     });
 
     const response = await request.json();
@@ -125,7 +117,7 @@ const rtcHelperMain = async () => {
         console.log(permissionClass);
 
         if (permissionClass === "student") {
-            return window.location.href = `/room/end/${ROOM_ID}`;
+            return window.location.href = `/call/end/${ROOM_ID}/${CHAPTER}`;
         }
 
         if (permissionClass === "lecturer") {
@@ -140,7 +132,9 @@ const rtcHelperMain = async () => {
 
             // clear the attendees array of the course.
         }
-    })
+    });
+
+    
 }
 
 document.addEventListener("DOMContentLoaded", rtcHelperMain);

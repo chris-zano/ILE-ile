@@ -46,15 +46,15 @@
                                         <div>
                                             <img src="/images/system/timer" alt="class duration" width="35px">
                                             <div class="class-duration">
-                                                <p>50 Min</p>
+                                                <p><%= course.credit %> credit hrs</p>
                                                 <small>Class Duration</small>
                                             </div>
                                         </div>
                                         <div>
                                             <img src="/images/system/courses" alt="number of lessons" width="35px">
                                             <div class="course-lessons">
-                                                <p>5 Lessons</p>
-                                                <small>Class Outline</small>
+                                                <p><%= course.chapters[i].lessons.length %> Lessons</p>
+                                                <small>Chapter Outline</small>
                                             </div>
                                         </div>
                                     </div>

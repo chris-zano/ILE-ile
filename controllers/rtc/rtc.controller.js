@@ -52,5 +52,5 @@ export const createNewRoom = async (req, res) => {
 };
 
 export const leaveRoom = (req, res) => {
-    return res.render('global/meeting_end', { roomId: req.params.room });
+    return res.render('global/meeting_end', { roomId: req.params.room, chapter:req.params.chapter });
 }

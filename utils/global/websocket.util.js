@@ -21,7 +21,7 @@ const setupWebSocketServer = (server) => {
 
                 socket.on('starting meeting', async (courseId) => {
                     socket.broadcast.to(courseId).emit("meeting-started", (courseId));
-                    await Courses.findOneAndUpdate({ _id: courseId }, { $set: { meeting_status: "in meeting" }, $inc: { __v: 1 } }, { new: true });
+                    await Courses.findOneAndUpdate({ _id: courseId }, { $set: { meeting_status: "in meeting", call_start: new Date().getTime() }, $inc: { __v: 1 } }, { new: true });
                 })
             });
 
