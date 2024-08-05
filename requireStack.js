@@ -17,6 +17,12 @@ import submissionsRouter from './routes/submissions/submissions.routes.js';
 export const callSetupWebSocket = (server) => setupWebSocketServer(server);
 
   const callAndExecuteRequireStack = (app) => {
+    app.use((req, res, next) => {
+      res.header('Access-Control-Allow-Origin', '*'); // Allow all origins
+      res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE'); // Allow specific methods
+      res.header('Access-Control-Allow-Headers', 'Content-Type'); // Allow specific headers
+      next();
+    });
 
     app.use(adminRoutes);
     app.use(adminsUserRoutes);

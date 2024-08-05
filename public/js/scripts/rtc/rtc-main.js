@@ -91,7 +91,7 @@ navigator.mediaDevices.getUserMedia({
     console.log('adding my video stream', userName, permissionClass)
     addVideoStream(myVideo, stream, userName, tempuid); //appended my stream to 'video-grid' div
     //add participant to list of participants
-    const tempParticipants = await addParticipant(ROOM_ID, { userName, uid, permissionClass, studentId });
+    const tempParticipants = await addParticipant(ROOM_ID,  { userName, uid, permissionClass, studentId });
 
     myPeer.on('call', call => {
         call.answer(stream);
