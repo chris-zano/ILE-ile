@@ -18,25 +18,46 @@ body{
 
 #video-grid {
     height: 90vh;
-    width: 1000px;
-    display: flex;
-    justify-content: start;
-    flex-wrap: wrap;
-    align-content: flex-start;
-    margin: 1px solid black;
+    width: 100%;
+    display: grid;
+    grid-template-areas: 
+    "main"
+    "participant";
+    grid-template-columns: 100%;
+    grid-template-rows: 80% 20%;
+
+}
+video {
+    object-fit: cover;
+    border-radius: .5rem;
+    margin: .5rem;
+    cursor: pointer;
 }
 
-#screen-share-grid {
-    display: hidden;
-    height: 90vh;
-    width: 1000px;
+.user-video:hover {
+    opacity: .6;
+    transition: opacity .5s ease-in-out;
 }
 
-#screen-share-grid video {
-    display: hidden;
-    height: 80vh;
-    width: 900px;
-    object-fit: contain;
+#video-grid .media-main-w {
+    grid-area: main;
+
+}
+
+#video-grid .media-main-w video {
+    width: 100%;
+    height: 100%;
+}
+
+#video-grid .participant-media-n {
+    background-color: red;
+    grid-area: participant;
+    display: grid;
+}
+
+#video-grid .participant-media-n video{
+    width: 250px;
+    height: 150px;
 }
 
 #chat-box {
@@ -115,19 +136,7 @@ button {
     cursor: pointer;
 }
 
-video {
-    width: 250px;
-    height: 150px;
-    object-fit: cover;
-    border-radius: .5rem;
-    margin: .5rem;
-    cursor: pointer;
-}
 
-.user-video:hover {
-    opacity: .6;
-    transition: opacity .5s ease-in-out;
-}
 #controls-tab {
     background-color: #202124;
     width: 100%;

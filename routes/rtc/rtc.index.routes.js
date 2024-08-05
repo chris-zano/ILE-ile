@@ -1,10 +1,12 @@
 import express from 'express';
 import { createNewRoom, leaveRoom, renderHome } from '../../controllers/rtc/rtc.controller.js';
-import { CoursesDB } from '../../utils/global/db.utils.js';
+import { CoursesDB, LecturersDB, StudentsDB } from '../../utils/global/db.utils.js';
 import { logError } from '../../controllers/admin/admin.utils.js';
 import { isValidObjectId } from 'mongoose';
 const router = express.Router();
 const Courses = CoursesDB();
+const Lecturers = LecturersDB()
+const Students = StudentsDB()
 
 router.get('/start-live/:courseId/:chapter', renderHome);
 router.get('/room/:courseId/:chapter', createNewRoom);
@@ -138,6 +140,64 @@ router.post('/rtc/update-call-info/:callId/:chapter', async (req, res) => {
             message: "An error occured while processing your request. This might be an internal issue.",
             status: 500,
         })
+    }
+});
+
+router.get('/rtc/course/info', async (req, res) => {
+    if (!req.query || Object.keys(req.query).length === 0) {
+        console.log("No query parameters found", req.query);
+        return res.status(400).json({ message: 'query parameters are required for this operation', doc: {} });
+    }
+
+    const courseId = req.query.id;
+    try {
+
+        const course = await Courses.findOne({ _id: courseId }, { title: 1, courseCode: 1, attendance: 1, meeting_status: 1, credit: 1 });
+
+        if (!course) return res.status(404).json({ message: 'resource not found', doc: {} });
+
+        return res.status(200).json({ message: 'success', doc: course });
+
+    } catch (error) {
+        console.log("and error occured while fethcing course info [courseId] = ", courseId);
+        logError(error);
+        return res.status(500).json({ message: 'an unexpected error occured while fetching course information', doc: {} });
+    }
+})
+
+router.get('/rtc/user/info', async (req, res) => {
+    if (!req.query || Object.keys(req.query).length === 0) {
+        console.log("No query parameters found", req.query);
+        return res.status(400).json({ message: 'query parameters are required for this operation', doc: {} });
+    }
+
+    const { id, type } = req.query;
+
+    console.log({id, type})
+
+    try {
+        let userData = null;
+
+        if (type === 'lecturer') {
+            userData = await Lecturers.findOne({ _id: id }, { firstName: 1, lastName: 1, profilePicUrl: 1 });
+        }
+        else if (type === 'student') {
+            userData = await Students.findOne({ _id: id }, { firstName: 1, lastName: 1, studentId: 1, profilePicUrl: 1, session: 1 });
+        }
+        else {
+            return res.status(400).json({ message: 'query parameters are required for this operation', doc: {} });
+        }
+
+        if (!userData) return res.status(404).json({ message: 'resource not found', doc: {} });
+
+        console.log(userData)
+
+        return res.status(200).json({ message: 'success', doc: {...userData._doc, type} });
+
+    } catch (error) {
+        console.log("and error occured while fethcing course info [courseId] = ", id);
+        logError(error);
+        return res.status(500).json({ message: 'an unexpected error occured while fetching course information', doc: {} });
     }
 })
 
