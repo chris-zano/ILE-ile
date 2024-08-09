@@ -102,7 +102,7 @@
                                 </summary>
                                 <% for( let j=0; j < course.chapters[i].courseMaterials.length; j++ ) { %>
                                     <div>
-                                        <img src="/random/image/" alt="video file" width="20px">
+                                        <img src="/random/image/" alt="video file" width="20px" style="margin-right: 20px;">
                                         <a href="<%= course.chapters[i].courseMaterials[j].url %>"
                                             download="<%= course.chapters[i].courseMaterials[j].title %>">
                                             <%= course.chapters[i].courseMaterials[j].title %>
@@ -129,9 +129,9 @@
                                     <summary>Chapter <%= i + 1 %>
                                     </summary>
                                     <div>
-                                        <img src="/random/image/" alt="video file" width="20px">
-                                        <a href="<%=rec.fileUrl %>" download="<%=rec.title %>.mp4">
-                                            <%= rec.title %>
+                                        <img src="/random/image/" alt="video file" width="20px" style="margin-right: 20px;">
+                                        <a href="/courses/rtc/attendance?id=<%= course._id %>&chapter=<%= i %>" rel="noreferrer" style="margin-left: 20px;">
+                                            <%= rec.title %> - No video file available yet
                                         </a>
                                     </div>
                                 </details>

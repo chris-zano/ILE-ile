@@ -48,7 +48,7 @@
             const doc = data.doc;
 
             try {
-                const {meeting_status} = doc;
+                const { meeting_status } = doc;
 
                 if (!meeting_status || meeting_status === "not in meeting") {
                     console.log("no status set. class might not be in session")
@@ -62,7 +62,7 @@
 
                 return false;
             }
-            catch(error) {
+            catch (error) {
                 console.log(error);
                 return false;
             }
@@ -108,34 +108,23 @@
             socket.emit("join meeting", courseId);
             joinBtn.textContent = "Join Meeting";
             msgD.innerHTML = `<p>&#9432; Waiting for host to start meeting</p>`;
+    
+            socket.on("waiting for host", (courseId) => {
+                console.log('waiting for host')
+            });
 
-            const res = await classInSession(courseId);
-            if (res) {
+            socket.on("meeting-started", (roomId) => {
                 msgD.innerHTML = "<p>&#9432;Meeting Started. Join meeting<p>";
                 console.log('meeting-started')
                 enableJoinButton("Join Meeting");
                 joinBtn.addEventListener("click", () => {
-                    // window.location.href = `/room/${courseId}/${chapter}`;
+                    // window.location.href = `/room/${roomId}/${chapter}`;
                     window.location.href = `http://localhost:8080/meeting?courseId=${courseId}&chapter=${chapter}&userId=${userData.data.id}&userType=${userType}`;
                 }, { once: true });
-            }
-            else {
-                socket.on("waiting for host", (courseId) => {
-                    console.log('waiting for host')
-                });
-                socket.on("meeting-started", (roomId) => {
-                    msgD.innerHTML = "<p>&#9432;Meeting Started. Join meeting<p>";
-                    console.log('meeting-started')
-                    enableJoinButton("Join Meeting");
-                    joinBtn.addEventListener("click", () => {
-                        // window.location.href = `/room/${roomId}/${chapter}`;
-                        window.location.href = `http://localhost:8080/meeting?courseId=${courseId}&chapter=${chapter}&userId=${userData.data.id}&userType=${userType}`;
-                    }, { once: true });
-                });
-            }
+            });
+
 
         } else if (userType === "lecturer") {
-            socket.emit("join meeting", courseId);
             enableJoinButton("Start Meeting");
 
             joinBtn.addEventListener("click", () => {

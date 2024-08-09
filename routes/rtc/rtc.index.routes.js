@@ -89,7 +89,7 @@ const resetCourseCallAttendance = async (courseId) => {
     if (!isValidObjectId(courseId)) return false;
 
     try {
-        await Courses.findOneAndUpdate({ _id: courseId }, { $set: { attendance: [] } });
+        await Courses.findOneAndUpdate({ _id: courseId }, { $set: { attendance: [], meeting_status: 'not in meeting', call_start: 0 } });
         return true
     } catch (error) {
         logError(error);
@@ -107,12 +107,15 @@ router.post('/rtc/update-call-info/:callId/:chapter', async (req, res) => {
     });
 
     try {
-        // clear attendees section for the course.
-        const attendaceIsReset = await resetCourseCallAttendance(callId);
 
-        if (!attendaceIsReset) return res.status(404).json({ message: "Resource not found" });
+        
         let startTime = await Courses.findOne({ _id: callId }, { call_start: 1 });
         if (!startTime) startTime = null;
+        
+        // clear attendees section for the course.
+        const attendaceIsReset = await resetCourseCallAttendance(callId);
+        if (!attendaceIsReset) return res.status(404).json({ message: "Resource not found" });
+
         const recordingObject = generateLectureRecordingData(chapter, startTime ? startTime.call_start : null, new Date().getTime(), attendees);
 
         const course = await Courses.findOneAndUpdate(
@@ -148,14 +151,12 @@ router.get('/rtc/course/info', async (req, res) => {
         console.log("No query parameters found", req.query);
         return res.status(400).json({ message: 'query parameters are required for this operation', doc: {} });
     }
-
     const courseId = req.query.id;
     try {
 
         const course = await Courses.findOne({ _id: courseId }, { title: 1, courseCode: 1, attendance: 1, meeting_status: 1, credit: 1 });
 
         if (!course) return res.status(404).json({ message: 'resource not found', doc: {} });
-
         return res.status(200).json({ message: 'success', doc: course });
 
     } catch (error) {
@@ -170,11 +171,7 @@ router.get('/rtc/user/info', async (req, res) => {
         console.log("No query parameters found", req.query);
         return res.status(400).json({ message: 'query parameters are required for this operation', doc: {} });
     }
-
     const { id, type } = req.query;
-
-    console.log({id, type})
-
     try {
         let userData = null;
 
@@ -187,18 +184,33 @@ router.get('/rtc/user/info', async (req, res) => {
         else {
             return res.status(400).json({ message: 'query parameters are required for this operation', doc: {} });
         }
-
         if (!userData) return res.status(404).json({ message: 'resource not found', doc: {} });
 
-        console.log(userData)
-
-        return res.status(200).json({ message: 'success', doc: {...userData._doc, type} });
+        return res.status(200).json({ message: 'success', doc: { ...userData._doc, type } });
 
     } catch (error) {
         console.log("and error occured while fethcing course info [courseId] = ", id);
         logError(error);
         return res.status(500).json({ message: 'an unexpected error occured while fetching course information', doc: {} });
     }
-})
+});
+
+router.get('/courses/rtc/attendance', async (req, res) => {
+    if (!req.query || Object.keys(req.query).length === 0) return res.status(400);
+
+    const { id, chapter } = req.query;
+
+    if (!id || !isValidObjectId(id) || !chapter) return res.status(400);
+
+    try {
+        const course = await Courses.findOne({ _id: id }, { chapters: 1 });
+        const data = course.chapters[chapter] ? course.chapters[chapter].courseLectureRecordings : [];
+
+        return res.status(200).render('global/attendance', { data });
+    } catch (error) {
+        logError(error)
+        return res.status(500);
+    }
+});
 
 export default router;

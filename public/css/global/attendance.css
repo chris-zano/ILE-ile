@@ -1,0 +1,90 @@
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: #F5F5F7;
+    color: #1D1D1F;
+    margin: 0;
+    padding: 20px;
+    display: grid;
+    grid-auto-flow: row;
+    gap: 1ch;
+    justify-content: center;
+
+}
+
+h2 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #333333;
+    margin-bottom: 10px;
+}
+
+.recorded-session {
+    background-color: rgba(255, 255, 255, 0.663);
+    box-shadow: 0px 3px 3px #11111155;
+    padding: 1ch;
+    border-radius: 1ch;
+    width: 400px;
+}
+
+.recording-title {
+    background-color: #FFFFFF;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.data-recorded p,
+.duration small,
+.only-lecturer p {
+    font-size: 1rem;
+    margin: 10px 0;
+}
+
+.data-recorded strong {
+    color: #0071E3;
+}
+
+.duration {
+    background-color: #F0F0F5;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 15px;
+}
+
+.duration span {
+    color: #0071E3;
+    font-weight: 500;
+}
+
+.only-lecturer {
+    background-color: #FF2D55;
+    border-radius: 8px;
+    padding: 10px;
+    color: #FFFFFF;
+    margin-bottom: 15px;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+}
+
+ul li {
+    background-color: #FFFFFF;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    margin-bottom: 5px;
+    color: #1D1D1F;
+}
+
+ul li:first-child {
+    font-weight: bold;
+    color: #0071E3;
+}
+
+ul li:last-child {
+    margin-bottom: 0;
+}
