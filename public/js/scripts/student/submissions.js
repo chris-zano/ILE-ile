@@ -127,7 +127,7 @@ const renderSubmissionsByCourse = async (submissions = []) => {
                     <span class="course-code">Course Code: ${courseSubmission.courseCode}</span>
                     <button 
                         class="add-submission-btn disabled" 
-                        style = "display: ${isSubmitted ? 'none' : 'block'};"
+                        style = "display: ${isSubmitted ? 'none' : new Date().getTime() >= new Date(lectSub.endDate.timeStamp) ? 'none' : ''};"
                         onclick="renderAddSubmissionModal(
                             '${courseSubmission._id}',
                             '${lectSub._id}')
@@ -140,14 +140,29 @@ const renderSubmissionsByCourse = async (submissions = []) => {
                     <p><strong>Instruction:</strong> ${lectSub.instructions}</p>
                     <p><strong>Release Date:</strong> ${formatTimestamp(lectSub.startDate.date)}</p>
                     <p><strong>Due Date:</strong> ${formatTimestamp(lectSub.endDate.date)}</p>
-                    <p class="status submitted"><strong>Status:</strong> ${isSubmitted ? 'Submitted' : 'No submission added'} <span style="color: var(--purple);">${isSubmitted ? formatTimestamp(studentSub.date) : ''}</span> <span>${isSubmitted ? "( " + studentSub.status + " )" : ''}</span></p>
+                    <p class="status submitted">
+                        <strong>Status:</strong> 
+                        ${isSubmitted ? 'Submitted' : 'No submission added'} 
+                        <span style="color: var(--purple);">
+                            ${isSubmitted ? formatTimestamp(studentSub.date) : ''}
+                        </span>
+                        <span>
+                            ${isSubmitted ? "( " + studentSub.status + " )" : ''}
+                        </span>
+                        <span style = "color: ${ new Date().getTime() >= new Date(lectSub.endDate.timeStamp) ? 'var(--red)' : ''};">
+                            ${ new Date().getTime() >= new Date(lectSub.endDate.timeStamp) ? 'Overdue' : 'Pending'}
+                        </span>
+                    </p>
                 </div>
 
                 <div class="submission-file" style="display: ${isSubmitted ? 'block' : 'none'};">
                     <i class="file-icon">📄</i>
                     <span class="file-name">${isSubmitted ? studentSub.filename : ''}</span>
                     <button class="view-submission-btn download-sub"><a href="${isSubmitted ? studentSub.fileUrl : ''}">Download</a></button>
-                    <button class="view-submission-btn delete-sub" style = "display: ${lectSub.endDate.timeStamp > lectSub.startDate.timeStamp ? '' : 'none'};"><a href="/submissions/student/delete/${studentData.data.id}?subId=${courseSubmission._id}&lectSubId=${lectSub._id}">Delete</a></button>
+                    <button 
+                        class="view-submission-btn delete-sub" 
+                        style = "display: ${ new Date().getTime() >= new Date(lectSub.endDate.timeStamp) ? 'none' : ''};
+                        "><a href="/submissions/student/delete/${studentData.data.id}?subId=${courseSubmission._id}&lectSubId=${lectSub._id}">Delete</a></button>
                 </div>
             `;
 

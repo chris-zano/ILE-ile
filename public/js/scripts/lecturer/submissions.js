@@ -9,8 +9,71 @@ let userdata = window.sessionStorage.getItem('auth-user') || undefined;
 if (!userdata) window.location.replace('/login');
 else userdata = JSON.parse(userdata);
 
+const downloadAll = (button) => {
+    const collection = button.parentElement.parentElement.querySelectorAll('.dl-link');
+    const files = [];
+
+    if (Array.from(collection).length === 0) {
+        Toast_Notification.showInfo("No files to download")
+        return null
+    };
+
+    Array.from(collection).forEach(link => {
+        const url = link.getAttribute('href');
+        const name = link.getAttribute('download');
+
+        files.push({ name, url });
+    })
+
+    let zip = new JSZip();
+    let folder = zip.folder("downloads");
+
+    let downloadPromises = files.map(function (file) {
+        return fetch(file.url)
+            .then(response => response.blob())
+            .then(blob => {
+                folder.file(file.name, blob);
+            });
+    });
+
+    Promise.all(downloadPromises).then(function () {
+        zip.generateAsync({ type: "blob" }).then(function (content) {
+            let link = document.createElement('a');
+            link.href = URL.createObjectURL(content);
+            link.download = "all-files.zip";
+            link.click();
+        });
+    });
+
+}
+
+const closeOverlay = (button) => {
+    document.getElementById('studSub-overlay').querySelector('#collection-subs').innerHTML = ""
+    document.getElementById('studSub-overlay').setAttribute('hidden', 'true')
+}
+
 const viewStudentSubmissions = async (courseCode, submissionId) => {
-    console.log({ courseCode, submissionId })
+    document.getElementById('studSub-overlay').querySelector('#collection-subs').innerHTML = ""
+    document.getElementById('studSub-overlay').removeAttribute('hidden')
+    const submissions = await getSubmissionsForCourse(courseCode);
+    const { studentSubmissions } = submissions;
+
+    for (let sub of studentSubmissions) {
+        const wrapper = document.createElement("div");
+        wrapper.classList.add("stud-submission");
+        wrapper.id = `${sub._id}`;
+
+        wrapper.innerHTML = `
+
+            <div class="submission-file">
+                <i class="file-icon">📄</i>
+                <span class="file-name">${sub.filename}</span>
+                <button class="view-submission-btn download-sub"><a href="${sub.fileUrl}" class="dl-link" download="${sub.filename}">Download</a></button>
+            </div>
+        `;
+
+        document.getElementById('collection-subs').append(wrapper)
+    }
 }
 
 const deleteStudentSubmissions = async (courseCode, submissionId) => {
@@ -55,7 +118,6 @@ const showCourseSubmissions = async (courseCode) => {
 
     // Fetch submissions data (this is just a placeholder; replace with actual data fetching)
     const submissions = await getSubmissionsForCourse(courseCode);
-    console.log('fetched submissions are: ', submissions)
 
     if (!submissions || Object.keys(submissions).length === 0) {
         alert(('No submissions for this course. Create One'));
@@ -69,17 +131,20 @@ const showCourseSubmissions = async (courseCode) => {
         }
         const submissionDiv = document.createElement('div');
         submissionDiv.className = 'submission';
+
         submissionDiv.innerHTML = `
             <div class="submission-header">
                 <button class="view-submission-btn" onclick="viewStudentSubmissions('${courseCode}', '${submission._id}')">View Submissions</button>
-                <button class="del-submission-btn"onclick="deleteStudentSubmissions('${courseCode}', '${submission._id}')">Delete</button>
+                <button class="del-submission-btn"onclick="deleteStudentSubmissions('${courseCode}', '${submission._id}')"
+                style="display: ${new Date().getTime() >= new Date(submission.endDate.date) ? 'none': ''}"
+                >Delete</button>
             </div>
             <div class="submission-details">
                 <p><strong>Title:</strong> ${submission.title}</p>
                 <p><strong>Instructions:</strong> ${submission.instructions}</p>
                 <p><strong>Release Date:</strong> ${formatTimestamp(submission.startDate.date)}</p>
                 <p><strong>Due Date:</strong> ${formatTimestamp(submission.endDate.date)}</p>
-                <p class="status pending"><strong>Status:</strong> Pending</p>
+                <p class="status ${new Date().getTime() >= new Date(submission.endDate.date) ? 'overdue': 'pending'}"><strong>Status:</strong> ${new Date().getTime() >= new Date(submission.endDate.date) ? 'Overdue': 'Pending'}</p>
             </div>
         `;
         submissionsDiv.appendChild(submissionDiv);

@@ -25,6 +25,7 @@
   width: 100%;
   overflow: hidden;
 }
+
 .carousel-item {
   padding: 10px 20px;
   cursor: pointer;
@@ -147,7 +148,7 @@
   border-radius: 5px;
   cursor: pointer;
   margin-right: 10px;
-  transition:  var(--transition-default);
+  transition: var(--transition-default);
 }
 
 .view-submission-btn {
@@ -155,6 +156,7 @@
   background-color: transparent;
   border: 1px solid var(--accent);
 }
+
 .del-submission-btn {
   color: var(--white);
   background-color: var(--red);
@@ -165,6 +167,7 @@
   background-color: var(--accent);
   color: var(--white);
 }
+
 .del-submission-btn:hover {
   background-color: var(--dark-red);
   color: var(--white);
@@ -210,7 +213,8 @@ select {
 }
 
 #course_code {
-  width: 200px; /* Adjust the width as needed */
+  width: 200px;
+  /* Adjust the width as needed */
 }
 
 #course_code option {
@@ -266,4 +270,80 @@ select {
 
 #cancel-btn:hover {
   background: #c82333;
+}
+
+
+div#studSub-overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 50%;
+  height: 90%;
+  margin: auto;
+  background-color: rgb(255, 255, 255);
+  border-radius: 2ch;
+  padding: 1ch;
+  box-shadow: var(--box-shadow-thin);
+  overflow-y: scroll;
+}
+
+div#studSub-overlay div.dl-all-btn {
+  padding: 1ch;
+  width: fit-content;
+  height: fit-content;
+  float: inline-end;
+}
+
+div#studSub-overlay div.dl-all-btn button {
+  width: 120px;
+  height: 45px;
+  border: 1px solid var(--accent);
+  background-color: var(--accent);
+  border-radius: 1ch;
+  color: var(--white);
+  cursor: pointer;
+  transition: var(--transition-default);
+}
+
+div#studSub-overlay div.dl-all-btn button:hover,
+div#studSub-overlay div.dl-all-btn button:focus {
+  transition: var(--transition-default);
+  border: 1px solid var(--accent);
+  background-color: transparent;
+  border-radius: 1ch;
+  color: var(--text-body);
+}
+
+div#studSub-overlay div.dl-all-btn button#close-btn {
+  border: 1px solid var(--red);
+  background-color: var(--red);
+  border-radius: 1ch;
+  color: var(--white);
+}
+
+div#studSub-overlay div.dl-all-btn button#close-btn:hover,
+div#studSub-overlay div.dl-all-btn button#close-btn:focus {
+  border: 1px solid var(--dark-red);
+  background-color: var(--dark-red);
+  border-radius: 1ch;
+  color: var(--white);
+}
+
+div#studSub-overlay div.stud-submission {
+  padding: 0.5ch;
+  border-radius: 1ch;
+  margin: 1ch 0 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2ch;
+}
+
+div#studSub-overlay div.stud-submission button {
+  margin-top: 2ch;
+}
+
+#collection-subs {
+  margin-top: 70px;
 }
