@@ -1,7 +1,7 @@
-import {  StudentsDB , ClassesDB } from '../../utils/global/db.utils.js';
+import { StudentsDB, ClassesDB, CoursesDB } from '../../utils/global/db.utils.js';
 import main from '../../utils/global/schedule.map.utils.js';
 import { logError, getSystemDate } from './admin.utils.js';
-
+const Courses = CoursesDB();
 const Students = StudentsDB();
 const Classes = ClassesDB();
 
@@ -10,23 +10,36 @@ const generateClassId = (groupId, session) => {
 };
 
 
-const getRegisteredCourses = (groupId) => {
-    const registeredCoursesObjectMap = {
-        '400_BCE': ["ENCE 131", "ENGE 235", "ENTE 341", "ENEE 311", "CS 131", "IT 235", "SCTE 341"],
-        '400_BTE': ["ENCE 131", "ENGE 235", "ENTE 341", "ENEE 311", "CS 131", "IT 235", "SCTE 341", "ENTE 421", "ENCE 311"],
-        '400_BCS': ["ENCE 131", "ENGE 235", "ENTE 341", "CS 121", "IT 235", "CS 421", "CS 101", "SCCS 341", "CS 311"],
-        '300_BCE': ["ENCE 131", "ENGE 235", "IT 235", "CS 421", "CS 101", "SCCS 341", "CS 311"],
-        '300_BTE': ["ENCE 121", "ENCE 131", "ENGE 235", "ENTE 421", "ENTE 101", "ENTE 341", "ENEE 311", "ENCE 311", "CS 121", "CS 131", "IT 235"],
-        '300_BCS': ["ENGE 235", "ENTE 421", "ENTE 101", "ENTE 341", "ENEE 311", "ENCE 311", "CS 121", "CS 131", "IT 235"],
-        '200_BCE': ["ENCE 121", "ENCE 131", "ENGE 235", "ENTE 421", "ENTE 101", "ENTE 341", "ENEE 311", "ENCE 311", "CS 121", "CS 131", "IT 235"],
-        '200_BTE': ["ENCE 121", "ENCE 131", "ENGE 235", "ENTE 101", "ENTE 341", "ENEE 311", "ENCE 311", "CS 121", "CS 131", "IT 235"],
-        '200_BCS': ["ENCE 121", "ENCE 131", "ENGE 235", "ENTE 421", "ENTE 101", "ENTE 341", "ENEE 311", "ENCE 311", "CS 121", "CS 131", "IT 235"],
-        '100_BCE': ["ENCE 121", "ENCE 131", "ENGE 235", "ENEE 311", "ENCE 311", "CS 121", "CS 131", "IT 235"],
-        '100_BTE': ["ENCE 121", "ENCE 131", "ENGE 235", "ENTE 421", "ENTE 101", "ENTE 341", "ENEE 311", "ENCE 311", "CS 121"],
-        '100_BCS': ["ENCE 131", "ENGE 235", "ENTE 421", "ENTE 101", "ENTE 341", "ENEE 311", "ENCE 311", "CS 121", "CS 131", "IT 235"],
-    }
+const getRegisteredCourses = async (groupId) => {
+    try {
+        if (typeof groupId !== 'string') {
+            throw new Error('groupId must be a string');
+        }
 
-    return registeredCoursesObjectMap[groupId];
+        const groupIdString = groupId.toString();
+
+        // Split the string using '_' as the separator
+        const [year, program] = groupIdString.split('_');
+        const programs = { 'BCE': "BSc. Computer Engineering", 'BTE': "BSc. Telecom Engineering" };
+
+        if (!(programs[program])) {
+            throw new Error('Invalid Program');
+        }
+
+        console.log({year, program})
+        console.log({programcounter: programs[program]})
+        const doc = await Courses.find({ level: year, program: programs[program] }, { courseCode: 1, _id: 0 });
+        console.log(doc);
+        const courses = [];
+        doc.forEach((course) => courses.push(course.courseCode));
+
+        console.log(courses)
+        return courses;
+    } catch (error) {
+        console.log(error);
+        console.log(`No courses for ${groupId}`)
+        return [];
+    }
 }
 
 async function createClassrooms() {
@@ -49,12 +62,19 @@ async function createClassrooms() {
 
         for (const group of studentsByCourses) {
             const classId = generateClassId(group._id.registeredCourses, group._id.session);
+            console.log(classId)
+            const courses = await getRegisteredCourses(group._id.registeredCourses);
+
+            if (courses.length === 0) {
+                continue;
+            }
+
             const classroom = new Classes({
                 classId: classId,
                 students: group.students,
                 faculty: group.faculty,
                 session: group._id.session,
-                courses: [...getRegisteredCourses(group._id.registeredCourses)]
+                courses: courses
             });
             await classroom.save();
 
@@ -77,25 +97,25 @@ async function createClassrooms() {
 
 }
 
-export const runCreateClasses = (req, res) => {
+export const runCreateClasses = async (req, res) => {
     const { adminData } = req;
-    const classes = ClassesDB();
 
-    classes.find()
-        .then(async (classes) => {
-            const exitStatusOfFunction = await createClassrooms();
-            if (exitStatusOfFunction == 0) {
-                res.redirect(`/admins/render/classrooms/${adminData.id}`);
-            }
+    try {
+        console.log("hello - 1")
+        const exitStatusOfFunction = await createClassrooms();
+        console.log("hello - 2")
+        if (exitStatusOfFunction == 0) {
+            console.log("hello - 3")
+            res.status(200).redirect(`/admins/render/classrooms/${adminData.id}`);
+        }
+        
+        else {
+            console.log("hello - 4")
+            res.status(404).redirect(`/admins/render/classrooms/${adminData.id}`);
+        }
+    } catch (error) {
+        logError(error)
+        res.render('global/error', { error: "Failed to get classes", status: 500 })
 
-            else {
-                res.render('global/error', { error: "Failed to get classes", status: 500 })
-            }
-        })
-        .catch((error) => {
-            if (error) {
-                logError(error)
-            }
-            res.render('global/error', { error: "Failed to get classes", status: 500 })
-        })
+    }
 }

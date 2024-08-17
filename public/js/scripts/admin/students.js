@@ -4,103 +4,6 @@ if (!userdata) window.location.replace('/login');
 
 const adminId = JSON.parse(userdata).data.id;
 
-function listen(element, event, callback) {
-    return element.addEventListener(event, callback);
-}
-
-const modalWrite = (message) => {
-    const overlay = document.createElement('div');
-    overlay.classList.add('overlay')
-    const modalContent = document.createElement('div');
-    modalContent.classList.add('popup');
-
-    modalContent.style.display = 'block';
-    modalContent.innerHTML = `
-        <div id="close">&#10060;</div>
-    `;
-
-    const closeBtn = modalContent.querySelector('#close');
-    closeBtn.classList.add('close');
-    closeBtn.addEventListener('click', () => {
-        modalContent.style.display = 'none';
-        document.getElementById('wrapper-main').classList.remove('blur');
-        document.getElementById('wrapper-main').style.pointerEvents = 'inherit';
-    })
-
-    const paragraph = document.createElement('p');
-    paragraph.textContent = message;
-
-    modalContent.appendChild(paragraph);
-    document.getElementById('wrapper-main').classList.add('blur');
-    document.getElementById('wrapper-main').style.pointerEvents = 'none';
-
-    document.body.appendChild(modalContent);
-
-    return;
-};
-
-const modalRender = (array) => {
-    // TODO: render the students data here (courrses, repos, files etc);
-    const overlay = document.createElement('div');
-    overlay.classList.add('overlay')
-    const modalContent = document.createElement('div');
-    modalContent.classList.add('popup');
-
-    modalContent.style.display = 'block';
-    modalContent.innerHTML = `
-        <div id="close">&#10060;</div>
-    `;
-
-    const closeBtn = modalContent.querySelector('#close');
-    closeBtn.classList.add('close');
-    closeBtn.addEventListener('click', () => {
-        modalContent.style.display = 'none';
-        document.getElementById('wrapper-main').classList.remove('blur');
-        document.getElementById('wrapper-main').style.pointerEvents = 'inherit';
-    })
-
-    for (let object of array) {
-        for (const key in object) {
-            if (Object.hasOwnProperty.call(object, key)) {
-                const value = object[key];
-
-                const paragraph = document.createElement('p');
-                paragraph.textContent = `${key}: ${value}`;
-
-                modalContent.appendChild(paragraph);
-            }
-        }
-    }
-    document.getElementById('wrapper-main').classList.add('blur');
-    document.getElementById('wrapper-main').style.pointerEvents = 'none';
-
-    document.body.appendChild(modalContent);
-
-};
-
-async function showView(e) {
-    const studentId = e.target.getAttribute('data-label-student-id');
-    const action = e.target.getAttribute('data-label-type');
-
-    const req = await fetch(`/admin/students/get/${action}?studentId=${studentId.trim()}`)
-    const res = await req.json();
-    const status = req.status;
-
-    if (status == 403 || status == 500) {
-        ('An error occured.\nPlease Try again');
-        return;
-    }
-
-    if (res.doc.length == 0) {
-        return modalWrite('No data available for this student');
-    }
-
-    for (let item of res.docs) {
-        (item);
-    }
-    return;
-}
-
 const getStudentsByOffset = async (key, value) => {
     const moffset = localStorage.getItem('students-offset') || 0;
     const req = await fetch(`/admin/get/students/${moffset}?key=${encodeURIComponent(key)}&value=${encodeURIComponent(value)}`);
@@ -134,15 +37,15 @@ const createTableRow = (studentObject, parentElement) => {
     }
     tr.style.cursor = 'pointer';
     tr.innerHTML = `
-        <td>${count}</td>
-        <td>${studentObject.studentId}</td>
-        <td>${studentObject.firstName}</td>
-        <td>${studentObject.lastName}</td>
-        <td>${studentObject.level}</td>
-        <td>${studentObject.program}</td>
-        <td>${studentObject.faculty}</td>
-        <td>${studentObject.session}</td>
-        <td>${studentObject.registeredCourses}</td>
+        <td data-label-Student-id="${studentObject._id}" >${count}</td>
+        <td data-label-Student-id="${studentObject._id}" >${studentObject.studentId}</td>
+        <td data-label-Student-id="${studentObject._id}" >${studentObject.firstName}</td>
+        <td data-label-Student-id="${studentObject._id}" >${studentObject.lastName}</td>
+        <td data-label-Student-id="${studentObject._id}" >${studentObject.level}</td>
+        <td data-label-Student-id="${studentObject._id}" >${studentObject.program}</td>
+        <td data-label-Student-id="${studentObject._id}" >${studentObject.faculty}</td>
+        <td data-label-Student-id="${studentObject._id}" >${studentObject.session}</td>
+        <td data-label-Student-id="${studentObject._id}" >${studentObject.registeredCourses}</td>
     `;
 
     count += 1;
@@ -152,12 +55,10 @@ const createTableRow = (studentObject, parentElement) => {
 
 
     tr.addEventListener('click', (e) => {
-        if (e.target.tagName != 'BUTTON') {
-            const studentId = e.currentTarget.querySelector('[data-label-Student-id]').getAttribute('data-label-Student-id');
-            const anchor = document.createElement('a');
-            anchor.href = `/admins/render/profile/student/${studentId}/${adminId}`
-            anchor.click();
-        }
+        const studentId = e.target.getAttribute('data-label-Student-id');
+        const anchor = document.createElement('a');
+        anchor.href = `/admins/render/profile/student/${studentId}/${adminId}`
+        anchor.click();
     })
 }
 
@@ -173,9 +74,6 @@ const callFetchForStudents = (key, value) => {
             studentsArr.forEach((student) => {
                 createTableRow(student, 'students-list')
             });
-
-            const actionButtons = document.getElementsByClassName('actionButton');
-            [...actionButtons].forEach((actionButton) => listen(actionButton, 'click', showView));
 
             localStorage.setItem('students-offset', JSON.stringify(data.data.cursor));
         }).catch((error) => {
