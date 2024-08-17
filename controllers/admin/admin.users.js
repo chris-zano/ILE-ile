@@ -166,7 +166,7 @@ export const createLecturer = async (req, res) => {
             res.status(400).render("global/error", { error: `Lecturer with ID ${error.keyValue.lecturerId} already exists`, status: 400 });
         } else {
             logError(error);
-            res.status(500).render("global/error", { error: "Failed to create new Lecturer", status: 500 });
+            res.status(500).redirect(`/admins/render/imports/lecturers/${req.adminData.id}?error=true`);
         }
     }
 };
@@ -194,11 +194,11 @@ export const createStudent = async (req, res) => {
         const student = new Students({ studentId, firstName, lastName, program, level, session, faculty, registeredCourses });
         await student.save();
 
-        return res.status(200).redirect(`/admins/render/imports/students/${req.adminData.id}`)
+        return res.status(200).redirect(`/admins/render/imports/students/${req.adminData.id}`);
     }
     catch (error) {
         logError(error);
-        return res.status(500).render("global/error", { error: "Failed to create new Student", status: 500 })
+        return res.status(500).redirect(`/admins/render/imports/students/${req.adminData.id}?error=true`)
     }
 
 }
@@ -223,15 +223,17 @@ export const importLecturersData = async (req, res) => {
 
         return res.status(200).redirect(`/admins/render/lecturers/${id}`);
     } catch (error) {
+        logError(error);
         if (error.name === 'ValidationError') {
             const errorMessage = Object.values(error.errors).map(err => err.message).join(', ');
-            res.status(400).render("global/error", { error: errorMessage, status: 400 });
+            console.log(errorMessage)
+            res.status(400).redirect(`/admins/render/lecturers/${id}?error=true`);
         } else if (error.code === 11000 && error.keyValue && error.keyPattern) {
-            res.status(400).render("global/error", { error: `Lecturer with ID ${error.keyValue.lecturerId} already exists`, status: 400 });
+            res.status(500).redirect(`/admins/render/lecturers/${id}?error=true`);
         } else {
-            logError(error);
-            res.status(400).render("global/error", { error: "Failed to import new lecturer", status: 400 });
+            res.status(500).redirect(`/admins/render/lecturers/${id}?error=true`);
         }
+        return;
     }
 };
 
@@ -257,19 +259,20 @@ export const importStudentsData = async (req, res) => {
             registeredCourses: student.registeredCourses,
         }));
 
-
         await Students.insertMany(studentsToInsert);
         return res.status(200).redirect(`/admins/render/students/${id}`);
     } catch (error) {
+        logError(error);
         if (error.name === 'ValidationError') {
             const errorMessage = Object.values(error.errors).map(err => err.message).join(', ');
-            res.status(400).render("global/error", { error: errorMessage, status: 400 });
+            console.log(errorMessage)
+            res.status(400).redirect(`/admins/render/students/${id}?error=validationError`);
         } else if (error.code === 11000 && error.keyValue && error.keyPattern) {
-            res.status(400).render("global/error", { error: `Student with ID ${error.keyValue.studentId} already exists`, status: 400 });
+            res.status(500).redirect(`/admins/render/students/${id}?error=11000`);
         } else {
-            logError(error);
-            res.status(400).render("global/error", { error: "Failed to import new students", status: 400 });
+            res.status(500).redirect(`/admins/render/students/${id}?error=500`);
         }
+        return;
     }
 };
 
