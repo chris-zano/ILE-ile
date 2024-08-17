@@ -68,7 +68,7 @@ router.post('/:user/profile/update-component/profile-picture/:id',
             const profilePicRoute = `/users/${user}s/get-profile-picture/${id}/${filename}`;
             await userDb.findByIdAndUpdate({ _id: id }, { $set: { profilePicUrl: profilePicRoute } });
 
-            if (user === "student") {
+            if (user === "student" || user === "lecturer") {
                 return res.status(200).redirect(`/${user}s/render/profile/${id}`);
             }
             return res.status(200).redirect(`/${user}s/render/profiles/${user}/${id}`);
