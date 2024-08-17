@@ -24,6 +24,11 @@ const adminSchema = new Schema({
         type: String,
         required: true
     },
+    email: {
+        type: String,
+        default: '',
+        unique: true
+    },
     faculty: {
         type: String,
         required: true
