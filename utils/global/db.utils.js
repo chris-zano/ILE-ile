@@ -6,6 +6,7 @@ import coursesModel from '../../models/courses/courses.model.js';
 import registrationModel from '../../models/courses/registration.model.js';
 import rtcModel from '../../models/rtc/rtc.model.js';
 import submissionsModel from '../../models/courses/submissions.model.js';
+import announcementModel from '../../models/announcement/announcement.model.js';
 
 export const AdminsDB = () => adminModels;
 export const LecturersDB = () => lecturerModel;
@@ -15,3 +16,4 @@ export const CoursesDB = () => coursesModel;
 export const RegisteredCoursesDB = () => registrationModel;
 export const RTCDB = () => rtcModel;
 export const SubmissionsDB = () => submissionsModel;
+export const AnnouncementsDB = () => announcementModel;

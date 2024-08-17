@@ -213,3 +213,30 @@ export const getSubmissionFile = (req, res) => {
         return res.status(500).json({ message: 'internal server error' });
     }
 }
+
+export const getAnnouncementFile = (req, res) => {
+    const { filename } = req.query;
+
+    if (!filename) {
+        console.log("(get-announcements) => filename not valid: ", filename);
+        return res.status(400).json({ message: "request does not have a valid filename" });
+    }
+
+    try {
+        const filePath = path.join(__dirname, '..', '..', 'public', 'assets', 'announcements', filename);
+
+        if (!fs.existsSync(filePath)) {
+            console.log(`(get-announcements) => filepath does not exist: ${filePath}`);
+            return res.status(404).json({ message: 'resource not found' });
+        }
+
+
+        res.status(200);
+        fs.createReadStream(filePath).pipe(res);
+        return;
+
+    } catch (error) {
+        console.log(`(get-announcements) => Error:: an unexpected error occured\n`, error);
+        return res.status(500).json({ message: 'internal server error' });
+    }
+}

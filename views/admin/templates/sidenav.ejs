@@ -4,16 +4,6 @@
 
         <ul class="admin-nav_main">
             <li>
-                <a href="/admins/render/dashboards/<%= admin.id %>" <%=currentPage==='dashboard' ? 'aria-current=page'
-                    : '' %> >
-                    <i class="side-nav_icon">
-                        <img src="/images/system/home" alt="application logo">
-                    </i>
-                    <p class="nav_name">Home</p>
-                </a>
-                <div class="abstract-tooltip">Home</div>
-            </li>
-            <li>
                 <a href="/admins/render/courses/<%= admin.id %>" <%=currentPage==='courses' ? 'aria-current=page' : ''
                     %> >
                     <i class="side-nav_icon">
@@ -54,16 +44,8 @@
                 <div class="abstract-tooltip">Classes</div>
             </li>
             <li>
-                <a href="#">
-                    <i class="side-nav_icon">
-                        <img src="/images/system/notifications" alt="application logo">
-                    </i>
-                    <p class="nav_name">Notifications</p>
-                </a>
-                <div class="abstract-tooltip">Notifications</div>
-            </li>
-            <li>
-                <a href="#">
+                <a href="/admins/render/announcements/<%= admin.id %>" <%=currentPage==='announcements' ? 'aria-current=page'
+                    : '' %>">
                     <i class="side-nav_icon">
                         <img src="/images/system/announcements" alt="application logo">
                     </i>
@@ -71,14 +53,6 @@
                 </a>
                 <div class="abstract-tooltip">Announcements</div>
             </li>
-            <li>
-                <a href="#">
-                    <i class="side-nav_icon">
-                        <img src="/images/system/tickets" alt="application logo">
-                    </i>
-                    <p class="nav_name">Tickets</p>
-                </a>
-                <div class="abstract-tooltip">Tickets</div>
             </li>
         </ul>
     </section>
@@ -104,7 +78,7 @@
                 <div class="abstract-tooltip">Settings</div>
             </li>
             <li>
-                <a href="#" id="logout">
+                <a href="/login" id="logout">
                     <i class="side-nav_icon">
                         <img src="/images/system/logout" alt="application logo">
                     </i>

@@ -12,6 +12,7 @@ import studentCoursesRoutes from './routes/student/student.courses.routes.js';
 import setupWebSocketServer from './utils/global/websocket.util.js';
 import rtcRouter from './routes/rtc/rtc.index.routes.js';
 import submissionsRouter from './routes/submissions/submissions.routes.js';
+import adminBroadcastRouter from './routes/admin/admin.broadcasts.routes.js';
 
 
 export const callSetupWebSocket = (server) => setupWebSocketServer(server);
@@ -37,6 +38,7 @@ export const callSetupWebSocket = (server) => setupWebSocketServer(server);
     app.use(studentCoursesRoutes);
     app.use(rtcRouter);
     app.use(submissionsRouter);
+    app.use(adminBroadcastRouter);
 
 
     app.use((req, res) => {

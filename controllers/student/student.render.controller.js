@@ -1,5 +1,5 @@
 import { isValidObjectId } from 'mongoose';
-import { ClassesDB, CoursesDB, RegisteredCoursesDB, StudentsDB, SubmissionsDB } from '../../utils/global/db.utils.js';
+import { AnnouncementsDB, ClassesDB, CoursesDB, RegisteredCoursesDB, StudentsDB, SubmissionsDB } from '../../utils/global/db.utils.js';
 import { logError } from '../admin/admin.utils.js';
 
 const Courses = CoursesDB();
@@ -7,6 +7,7 @@ const Classes = ClassesDB();
 const Students = StudentsDB()
 const RegisteredCourses = RegisteredCoursesDB();
 const Submissions = SubmissionsDB();
+const Announcement = AnnouncementsDB();
 
 const getStudentDashboard = async (studentData) => {
     return {
@@ -84,7 +85,8 @@ const getStudentNotifications = async (studentData) => {
 const getStudentAnnouncements = async (studentData) => {
 
     try {
-        return []
+        const data = await Announcement.find({ to: { $in: ['all', 'students'] } })
+        return !data ? [] : data;
     } catch (error) {
         logError(error);
         return null
