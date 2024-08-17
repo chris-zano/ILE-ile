@@ -127,8 +127,6 @@ const createTableRow = (studentObject, parentElement) => {
         <td>Import</td>
         <td>data</td>
         <td></td>
-        <td></td>
-        <td></td>
         `;
         document.getElementById(parentElement).append(tr);
         document.getElementById('nextPage').style.display = "none"
@@ -145,8 +143,6 @@ const createTableRow = (studentObject, parentElement) => {
         <td>${studentObject.faculty}</td>
         <td>${studentObject.session}</td>
         <td>${studentObject.registeredCourses}</td>
-        <td><button type="button" class="actionButton btn-repos" data-label-type="repos" data-label-Student-id="${studentObject._id}">Repos</button></td>
-        <td><button type="button" class="actionButton btn-files" data-label-type="files" data-label-Student-id="${studentObject._id}">Files</button></td>
     `;
 
     count += 1;

@@ -44,20 +44,24 @@ h2 {
 }
 
 .imports-section .upload-button {
+    width: 120px;
+    height: 45px;
     padding: 10px 20px;
     border: none;
-    border-radius: 4px;
+    border-radius: 1ch;
     cursor: pointer;
-    transition: background-color 0.3s;
+    background-color: var(--primary);
+    color: var(--white);
+    margin-inline: auto;
 }
 
 .imports-section .upload-button:hover {
-    background-color: var(--primary);
     color: var(--white);
+    background-color: var(--primary-dark);
 }
 
 .imports-section option {
-    color: var(--text);
+    color: var(--text-title);
 }
 
 /* create one form */
@@ -94,21 +98,4 @@ h2 {
     color: var(--eye-dark);
     font-size: var(--font-standard);
     background-color: var(--background);
-}
-
-.imports-section section.imports-section button {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid var(--primary);
-    background-color: var(--background);
-    color: var(--text);
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.imports-section section.imports-section button:hover {
-    border: 1px solid transparent;
-    background-color: var(--primary);
-    color: var(--white);
 }

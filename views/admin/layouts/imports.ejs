@@ -87,7 +87,7 @@
                         </select>
                     </div>
                     
-                    <button type="submit" class="submit-button">Submit</button>
+                    <button type="submit" class="upload-button">Upload</button>
                 </form>
             <% } else if (userType == "lecturers") { %>
                 <form action="/admins/create/<%= userType %>/<%= admin.id %>" method="post" id="add-tutor" class="student-form">
@@ -113,7 +113,7 @@
                             <option value="Business">Business</option>
                         </select>
                     </div>
-                    <button type="submit" class="submit-button">Submit</button>
+                    <button type="submit" class="upload-button">Upload</button>
                 </form>
             <% } else { %>
                 <div>No usertype set</div>
