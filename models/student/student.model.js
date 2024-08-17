@@ -16,6 +16,11 @@ const studentSchema = new Schema({
         type: String,
         required: true
     },
+    email: {
+        type: String,
+        default: '',
+        unique: true
+    },
     program: {
         type: String,
         required: true

@@ -1,21 +1,26 @@
 button#nextPage {
-    background-color: var(--blue);
+    background-color: var(--accent);
+    border-radius: 1ch;
     color: var(--white);
-    transition: all 0.3s ease-in-out;
     border: 1px solid transparent;
+    width: 120px;
+    height: 45px;
 }
 
 button#nextPage:hover {
-    border: 1px solid var(--primary);
-    background-color: var(--white);
-    color: var(--text);
+    border: 1px solid var(--accent-dark);
+    background-color: var(--accent-dark);
+    color: var(--white);
 }
 
 button#resetBtn {
     border: 1px solid var(--red);
+    border-radius: 1ch;
     background-color: var(--white);
-    color: var(--text);
+    color: var(--text-title);
     transition: all 0.3s ease-in-out;
+    width: 120px;
+    height: 45px;
 }
 
 button#resetBtn:hover {
@@ -25,14 +30,15 @@ button#resetBtn:hover {
 }
 
 div.section-header-nav>a {
+    border-radius: 1ch;
     margin: 0 .5rem;
     padding: 1rem 2rem;
-    border-radius: var(--border-radius);
+    background-color: var(--primary);
+    color: var(--white);
 }
 
 div.section-header-nav>a:hover {
-    color: var(--white);
-    background-color: var(--accent);
+    background-color: var(--primary-dark);
 }
 
 section.main-section {
@@ -110,7 +116,7 @@ section.main-section {
     }
 
     select option {
-        color: var(--white);
+        color: var(--text-title);
         font-family: var(--default-font-face);
     }
 

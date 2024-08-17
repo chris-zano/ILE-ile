@@ -1,0 +1,357 @@
+\documentclass[16pt,a4paper]{article}
+
+% Language setting
+\usepackage[british]{babel}
+
+% Set page size and margins
+\usepackage[a4paper,top=2cm,bottom=2cm,left=2.5cm,right=2.5cm,marginparwidth=1.75cm]{geometry}
+
+% Use the IEEEtran package for IEEE citations
+%\usepackage{IEEEtran}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+\usepackage{amsmath, amsfonts, amssymb}
+
+% Uncomment this line if you want to use natbib
+%\usepackage[numbers]{natbib}
+
+
+\begin{document}
+\begin{titlepage}
+  \centering
+
+  % Include logo with reduced width and optional vertical adjustment
+  \raisebox{-1.5ex}{\includegraphics[width=0.6\textwidth]{figures/school_logo.png}}
+
+  % Vertical spacing adjustment before the title (optional)
+  \vspace{2cm}  % Adjust as needed for your logo's height
+
+  % Title with larger font
+  \large{\textbf{EFFICIENT RESOURCE MANAGEMENT IN MULTI-KERNEL OPERATING SYSTEMS FOR HETEROGENEOUS COMPUTING ENVIRONMENTS}}\\
+  
+  \large{\textbf{(GROUP E)}}
+
+  \date{}  % Remove date
+\end{titlepage}
+\clearpage
+\tableofcontents
+\newpage
+\section*{Abstract}
+\begin{abstract}
+This paper explores the paradigm shift from monolithic kernel models to multi-kernel operating systems within computer architecture, focusing on resource management in heterogeneous computing environments. The monolithic kernel is divided into smaller instances in multi-kernel systems, each of which is in charge of particular hardware resources. Using clever algorithms that are adapted to the specifics of each application and the capabilities of the hardware, effective resource management is essential to ensuring optimal allocation and utilization across many applications. This is especially important when working in heterogeneous computing systems with different processor units in order to provide fair resource distribution and improve system performance. The paper analyzes the historical development of multi-kernel systems, reviews contemporary methods, suggests effective resource allocation strategies, and talks about experimental empirical outcomes. It also explores the intricate dynamics of multi-core systems, emphasizing thread synchronization and inter-core communication delay as important performance issues. The research focuses on optimizing resource management in multi-kernel systems for heterogeneous computing, employing the Barrelfish process scheduler architecture. The methodology starts with a comprehensive resource identification and then uses load balancing, dynamic allocation, and profiling to allocate workloads among various system resources in an adaptable manner. Throughput and latency are used to prioritize resource allocation in performance-aware resource management, where jobs are moved between cores and accelerators and CPU parameters are dynamically adjusted through task migration and dynamic voltage and frequency scaling (DVFS). A variety of hardware elements and artificial workloads are used in the experimental setting to assess performance indicators like throughput, latency, and energy efficiency. Research findings indicate consistent improvements in system throughput, reduced latency, enhanced resource utilization, and energy savings, showcasing the efficacy of the proposed methodology. In order to maximize system performance and responsiveness, the analysis emphasizes the significance of dynamic resource allocation, load balancing, and quality-of-service enforcement. This lays the groundwork for upcoming optimizations and adaptations in changing computing settings.The study addresses issues and offers directions for further research, highlighting the necessity of sophisticated resource management strategies to maximize system performance and resource consumption in contemporary computer environments. 
+\end{abstract}
+
+\textbf{Keywords}: multi-kernel OS, parallelism, concurrency, asynchrony, barrelfish, hotspots.  
+
+\clearpage
+
+%-------------------------------------------
+% Paper Body
+%-------------------------------------------
+%--- Section ---%
+\section{Introduction}
+\subsection{Overview}
+Within the context of computer architecture, a multi-kernel operating system  represents a structural shift from the conventional monolithic kernel model. In this framework, the typical monolithic kernel is broken down into many, smaller kernel instances, each responsible for controlling a specific fraction of the system's hardware resources. In order to improve system performance and make the most use of system resources, complex resource management solutions tailored to the complex demands of heterogeneous computing environments within multi-kernel operating systems must be implemented.
+
+Effective management of resources in a multi-kernel operating system is vital to ensure optimal allocation and utilization of hardware resources across different applications. This involves deploying intelligent algorithms and techniques tailored to the unique characteristics of each application and the capabilities of the hardware. The objective is to enable smooth and efficient execution of each application without encountering resource constraints or limitations. The strategies employed aim to distribute hardware resources evenly among applications, thereby maximizing their efficiency and facilitating timely execution. By implementing robust resource management techniques, the overall performance of the system is enhanced, allowing for better exploitation of available hardware resources. 
+
+This is particularly crucial in heterogeneous computing environments which utilizes a variety of processing units, such as CPUs, GPUs, FPGAs, and accelerators, to effectively manage diverse workloads. The goal is to ensure equitable distribution of resources to all applications, preventing delays or bottlenecks and ultimately enhancing system performance. Furthermore, efficient resource management enables the system to adapt dynamically to varying workload demands, adjusting resource allocation based on application requirements to maintain optimal resource utilization at all times.
+
+Overall, efficient resource management in multi-kernel operating systems for heterogeneous computing environments is essential for maximizing system performance and optimizing resource utilization.This objective can be accomplished through various techniques such as dynamic resource allocation, load balancing, and priority scheduling. These methods are instrumental in ensuring that high-priority processes receive the necessary resources, even when faced with memory constraints induced by lower-priority processes. In today's computing landscape, characterized by a multitude of hardware devices with distinct capabilities and performance attributes, efficient resource management in multi-kernel operating systems is indispensable for optimizing system performance and resource utilization. The use of heterogeneous architecture improves scalability and performance in computer systems. By assigning certain tasks to specialized accelerators or GPUs, heterogeneous environments can improve overall system performance and throughput, particularly in scenarios involving parallel processing. Given the increasing diversity of workloads in modern computing, including big data analytics, machine learning, and deep learning, heterogeneous computing environments offer the flexibility needed to efficiently address these varied demands. 
+
+This article seeks to achieve the following; clarify the complexities of this subject, beginning with an assessment of the historical evolution and incentives driving the development of multi-kernel operating systems; evaluate the strengths and limitations of current approaches; propose methodology for efficient resource allocation; experimental evaluation of resource management strategies; analyse and present on empirical results from experiments; discuss the implications and suggest avenues for future research.
+
+\subsection{Historical Background}
+The origins of multi-kernel operating systems can be traced back to the early 2000s, when researchers were becoming more interested in lightweight kernels (LWKs) designed to cope with the demands of high-performance computing (HPC). LWKs, with their unique design and streamlined architecture, were carefully built to deliver superior performance and scalability, particularly in areas with computationally intense workloads like scientific simulations and data analytics. One of the main strengths of LWKs was their ability to leverage the parallelism found in modern computer systems. By implementing parallel processing techniques and distributed computing frameworks, LWKs provided outstanding levels of performance and scalability, establishing themselves as important tools for addressing complex computational issues in scientific and engineering areas. The Catamount kernel, developed by Cray Inc. in the early 2000s for their XT3 and XT4 supercomputers, is an early example of a LWK. Catamount was fully built to meet the demanding requirements of HPC applications, focusing on great speed and scalability while also assuring Linux compatibility via a virtual machine interface.
+
+During the mid-2000s, academics started looking into the possibility of multi-kernel operating systems, which combine a lightweight kernel (LWK) with a general-purpose operating system such as Linux. The goal of multi-kernel systems was to take use of the performance and scalability benefits provided by LWKs while also preserving compatibility with existing Linux-based software and tools.
+
+An early example of a multi-kernel system was the Tessellation project, initiated by IBM in the mid-2000s. Tessellation adopted a distributed operating system model, wherein distinct portions of the system were managed by separate kernels, each optimized for specific workloads. This innovative approach enabled Tessellation to deliver high performance and scalability for HPC applications, all while maintaining compatibility with Linux. 
+
+In subsequent years, additional multi-kernel systems emerged, such as the Barrelfish project by Microsoft Research and the IHK/McKernel project by RIKEN Advanced Institute for Computational Science. These endeavors persisted in examining the capabilities of LWKs and multi-kernel architectures, particularly in the realm of HPC and other high-performance computing applications. Presently, multi-kernel operating systems remain a vibrant area of research, with ongoing endeavors aimed at refining performance, scalability, and compatibility across various computing workloads.
+\clearpage
+
+\section{Related Works}
+\subsection{Unified framework for resource scheduling}
+One of the biggest challenges in the field of heterogeneous computing, is to efficiently utilize shared resources including memory, computation cycles, communication networks, and data storage. The main objective is to maximize the overall performance while running processes with different specifications. Ammar H. Alhusaini et al present a unified framework for heterogeneous computing systems resource scheduling, with the goal of minimizing the total execution time of a set of application tasks. According to their approach, every application task is represented as a Directed Acyclic Graph (DAG), where each work is made up of several sub-tasks, each with its own set of resource requirements. The framework is made to be flexible and adaptable to changing computing environments, taking into consideration new ideas about Quality of Service (QoS) and advance resource allocations. 
+
+Their proposal includes several scheduling techniques that accommodate for pre-booked computing resources and data repositories. They use simulation results to show why scheduling system resources unifiedly is preferable to arranging them separately for each kind of resource. Their algorithms demonstrate a minimum of 30\% faster completion times as compared to the separated technique. They focused on creating static (compile-time) heuristic algorithms specifically for task scheduling in heterogeneous computing systems with reserved computer resources and data repositories. 
+
+These algorithms were developed to be used in a heterogeneous computing environment where tasks need to be scheduled and resources must be reserved in advance. Sub-tasks can only be scheduled using these resources at designated times because other users may reserve them at other times. Although they include the concept of Quality of Service (QoS) in their framework, the algorithms in this study are mostly focused on scheduling, and do not take into account QoS criteria like security, prioritization, and deadlines. Some of the strengths of the proposed algorithm is that, first of all, static heuristic algorithms enable efficient utilization of computer hardware resources and system data by scheduling tasks in a centralized manner. Also improved resource allocation and coordination has been made possible by this method, idle time is reduced and system performance is raised overall. They offer scalability, accommodating a wide range of application tasks and system configurations within heterogeneous computing environments. The algorithms are capable of adjusting to dynamic workload fluctuations and resource availability by taking into account advance reservations and job requirements. They also provide a straightforward and transparent methodology for scheduling tasks within a heterogeneous computing system. This simplicity enhances ease of implementation and understanding, facilitating adoption by system administrators and developers. Nevertheless, a notable drawback of the proposed algorithms is their little attention to Quality of Service (QoS) criteria, including security constraints, deadlines, and priority. Ignoring these important factors could result in poor scheduling choices and possibly violate user expectations for task completion.Additionally, scheduling work in heterogeneous computing systems presents complexity that may not be fully addressed by static heuristic algorithms alone, particularly when taking into account advance reservations and varied resource requirements. The algorithms may find it difficult to adjust and efficiently optimize resource allocation when system dynamics change. 
+
+\subsection{How LWKs for HPC differ from traditional Linux OS}
+For High-Performance Computing (HPC) applications, lightweight kernels differ fundamentally from typical operating systems like Linux in a number of ways. First off, while Linux has been modified over time to meet HPC demands, there may be compatibility issues and continuing maintenance needs with lightweight kernels like Catamount, CNK, and Kitten, which are designed specifically for HPC tasks and prioritize scalability and performance from the start. Second, by using multiple OS kernels simultaneously, lightweight kernels prioritize performance and scalability while aiming for full Linux compatibility. This is a strategy that traditional operating systems may find difficult to emulate, particularly in keeping up with the rapid advancements in hardware that are essential for HPC applications, which could result in performance being compromised. Thirdly, while traditional operating systems might not fully meet the variety of workload requirements requiring Linux API compatibility, lightweight kernels strive to provide complete support for Linux APIs and functionalities, including crucial components like the /proc and /sys pseudo file systems, necessary for contemporary applications and runtime systems. Essentially, lightweight kernels for HPC workloads are distinguished by their specialized backgrounds, performance and scalability-focused design, and dedication to Linux compatibility. These attributes are contrasted with the adaptable strategy and possible performance constraints of conventional operating systems such as Linux, highlighting the former's ability to provide optimized performance and scalability in addition to crucial Linux compatibility for supporting a wide range of applications and tools in the HPC domain.
+
+\subsection{Advantages of multi-kernel OS for HPC}
+Multi-kernel based operating systems offer several advantages in terms of performance and scalability for HPC applications. Firstly, these systems leverage today's many-core processors to run multiple operating system kernels simultaneously, typically a lightweight kernel (LWK) and a Linux kernel. The LWK provides high performance and scalability, while the Linux kernel ensures compatibility for supporting tools and the full POSIX/Linux APIs. Additionally, multi-kernel approaches demonstrate the promise of meeting tomorrow's extreme-scale computing needs by providing strong isolation, high performance, and scalability required by classical HPC applications. By combining the performance benefits of LWKs with the needed compatibility of Linux, multi-kernel systems retain their performance advantages even when running multiple kernels. Furthermore, lightweight multi-kernels enable quick modification to meet new hardware requirements and application-specific needs, making them adaptable to rapidly changing hardware environments and diverse workloads. Multi-kernel systems also allow for the exploration of specific features targeting new hardware and application needs, contributing to the efficiency and effectiveness of the overall operating system structure.
+
+\subsection{Pros and Cons of Utilizing an Isolated LWK Executable}
+Using an isolated Lightweight Kernel (LWK) executable has both advantages and disadvantages.
+
+\subsubsection{Advantages}
+\begin{enumerate}
+  \item \textbf{Support for proprietary executables:} Systems that support isolated LWK images can deploy proprietary executables, providing a level of security and protection for sensitive code.
+  \item \textbf{Higher degree of control:} Less integration with Linux implies a higher degree of control over what can and cannot be implemented in the LWK. This can be beneficial for customizing the system to specific needs.
+  \item \textbf{Flexibility for future hardware:} Isolated LWK executables have more flexibility to support futuristic hardware features that may not be supported by Linux. This allows for exploration of new hardware without waiting for Linux support.
+\end{enumerate}
+
+\subsubsection{Disadvantages}
+\begin{enumerate}
+  \item \textbf{Maintenance effort:} Writing and maintaining an isolated LWK can be more difficult compared to integrating with Linux. It requires expertise, detailed hardware specifications, and ongoing maintenance to keep the LWK functional and up-to-date.
+  \item \textbf{Increased development effort:} The standalone nature of an LWK usually comes at the price of more significant development effort and results in an increased LWK code size. This can lead to complexity and potentially higher costs in the long run.
+\end{enumerate}
+
+In conclusion, while an isolated LWK executable offers advantages such as increased control and support for proprietary executables, it also comes with challenges related to maintenance, development effort, and potential complexity. Organizations considering using an isolated LWK executable should carefully weigh these pros and cons to make an informed decision. Furthermore, static heuristic algorithms have weaknesses related to QoS considerations, resource allocation complexity, NP-completeness of the scheduling problem, and reliance on centralized scheduling mechanisms, even though they offer several advantages in terms of optimizing resource utilization and system performance within heterogeneous computing environments. In order to create scheduling solutions that are more reliable and flexible, future research endeavors ought to concentrate on resolving these shortcomings.
+\clearpage
+
+\section{Methodology}
+\subsection{Overview of the Barrelfish Architecture}
+The Barrelfish process scheduler architecture's design concepts and implementation will be covered in this chapter. On a multi-core operating system, the execution of a dynamic mix of interactive, parallel applications requires scalable and agile process scheduling that can react at interactive timescales. We start by observing that the trend towards multi-core systems means that commodity hardware will become highly parallel. The advancement of technology has led to a notable trend towards multi-core systems in commodity hardware. The requirement for more processing power and efficiency to satisfy the demands of contemporary applications and workloads is what is driving this shift towards parallelism. Because of this, multiple processing cores are becoming more and more common in commodity hardware, which is defined as basic off-the-shelf hardware components that are readily available in the market. The emergence of parallelism in commodity hardware has important ramifications for system architecture, performance optimization, and software development. There are three key programming models that make use of hardware parallelism. They are; 
+\begin{enumerate}
+\item \textbf{Concurrency: } where the program executes several concurrent tasks that each achieve a part of the overall goal independently. For example, an audio player application typically executes one thread to drive the user interface and another thread to play back and decode a music stream. These threads can execute on independent cores. 
+\item \textbf{Parallelism: } where the program partitions the overall task into many smaller ones and executes them in parallel to achieve a common goal. For example, a 3D graphics drawing program partitions the rendition of an image into a mosaic of smaller images that each core can then process. 
+\item \textbf{Asynchrony: } where the program executes a long-running operation as part of a task, but has more work to do. It can execute the long-running operation on one core and execute another task on another, while waiting for the first core to return the result. For example, a web server can process one user’s request on one core and already start the next request on another core, while waiting for the operation on the first core to complete.
+\end{enumerate}
+
+Barrelfish dynamically controls resource allocations to maximize system responsiveness and performance, much like a conductor might change the tempo and volume in response to the current performance.The proposed methodology is outline in this chapter.
+
+\subsection{Methodology for Efficient Resource Allocation}
+The process starts with thorough procedures for resource discovery to find the system's diverse resources. This comprises specialized processing units, hardware accelerators (such as GPUs and FPGAs), and different CPU cores with distinct designs. The computing demands, memory access patterns, and parallelization capabilities of a workload are used to define it. To help direct resource allocation decisions, profiling techniques are used to examine application behavior and pinpoint performance bottlenecks. To allocate resources to workloads in an adaptive manner according to their characteristics and system dynamics, solutions for dynamic resource allocation are implemented. This entails continuously optimizing resource allocation by analyzing workload needs and system utilization in real-time. Algorithms for task scheduling are used to efficiently allocate computational jobs among available resources. By distributing workloads equally among cores and accelerators, load balancing techniques reduce resource contention and idle time. Resource allocation is prioritized by performance-aware resource management strategies according to performance indicators including throughput, latency, and energy efficiency. In order to achieve their quality-of-service criteria, this guarantees that important workloads receive enough resources.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\textwidth]{figures/multik_Arch.png}  
+  \label{fig:3.1.1} 
+  \caption{Barrelfish System Architecture}
+\end{figure}
+
+\subsection{Mechanisms Involved in the optimization process}
+This algorithm maps computational tasks to the most suitable resources based on their computational characteristics and the capabilities of available hardware accelerators. It takes into account things like specific instruction sets, memory bandwidth constraints, and parallelism. Proactive decisions on resource allocation are made possible by the use of predictive models, which predict future workload demands and system behavior. Models can be trained with historical workload data and system performance measures by utilizing machine learning techniques. In order to maximize energy economy without compromising performance, Dynamic Voltage and Frequency Scaling (DVFS) algorithms dynamically modify the voltage and frequency of CPU cores. The ideal operating points for individual cores are determined by DVFS algorithms, which take workload characteristics and system limits into account. In order to minimize hotspots and balance resource consumption, task migration methods dynamically move computing tasks across cores and accelerators. Factors including communication overhead, load imbalance, and data access location are taken into consideration when making migration decisions. Resource distribution is prioritized by QoS enforcement mechanisms according to user-defined policies or established service level agreements (SLAs). This guarantees resources for key workloads and distributes resources opportunistically to non-critical jobs.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\textwidth]{figures/flowds.png}  
+  \label{fig:3.1.2} 
+  \caption{Flow Diagram of optimization process}
+\end{figure}
+
+\subsection{Algorithm Sequence Diagram}
+A multi-kernel operating system utilizes multiple, isolated kernels running concurrently on a system. Here's a high-level diagram representing its core functionality:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\textwidth]{figures/algoSeq.png}  
+  \label{fig:3.1.3} 
+  \caption{Algorithm sequence diagram of barrelfish process scheduler}
+\end{figure}
+
+Multiple applications (1, 2, 3) can interact with the system.
+Each application communicates with its designated kernel (Kernel 1, Kernel 2, etc.).
+Each kernel operates in privileged mode, having direct access to hardware resources.
+Kernel N represents any number of kernels in the system.
+Hardware Interface includes device drivers specific to the underlying hardware.
+The communication layer (optional) facilitates interaction between kernels, enabling functionalities like resource sharing or distributed processing.
+
+\subsection{Experimental Setup and Evaluation Metrics}
+
+This section provides an explanation of the software and hardware used for the experiments.
+
+\subsubsection{Hardware Setup}
+
+The hardware setup includes the following:
+
+\begin{itemize}
+  \item \textbf{CPU:} Multiple-core Intel Xeon Gold CPUs with hyper-threading.
+  \item \textbf{GPU:} CUDA-capable NVIDIA Tesla V100 graphics processing units.
+  \item \textbf{Memory:} Different capacity DDR4 RAM.
+  \item \textbf{Storage:} Hard disk drives (HDDs) and solid state drives (SSDs) are used for storage.
+  \item \textbf{Network:} InfiniBand or Gigabit Ethernet for communication between processes.
+\end{itemize}
+
+\subsubsection{Software Configuration}
+
+The software configuration includes the following:
+
+\begin{itemize}
+  \item \textbf{Operating System:} A multi-kernel operating system designed specifically for the system, or a mainstream OS (like Linux) modified to accommodate multiple kernels.
+  \item \textbf{Middleware:} Frameworks for resource allocation, load balancing, and task scheduling found in middleware.
+  \item \textbf{Benchmark Applications:} A wide range of benchmark applications, including memory-bound, CPU-intensive, and GPU-accelerated tasks, representing various computing workloads.
+  \item \textbf{Monitoring Tools:} Performance monitoring tools record system metrics including CPU, memory, GPU load, and network traffic.
+\end{itemize}
+
+\subsection{Experimental Design}
+
+To mimic real-world computing activities with a range of characteristics (such as CPU-bound, memory-bound, and I/O-bound), synthetic workloads are created.  The purpose of defining different resource allocation scenarios is to evaluate the efficacy of resource management systems under varying workload situations.  These scenarios include single-core/single-GPU, multi-core/multi-GPU, heterogeneous core-GPU combinations, etc.  A controlled environment is used for the experiments, and the system is designed to replicate real-world conditions as much as feasible.
+
+\subsection{Definition of Metrics for Evaluating the Efficiency of Resource Management}
+
+The following metrics are used to evaluate the efficiency of resource management systems:
+
+\begin{itemize}
+  \item \textbf{Throughput:} Throughput measures the rate at which tasks are completed within a given time frame. 
+  \item \textbf{Latency:} Latency measures the time taken to complete individual tasks or transactions. 
+  \item \textbf{Resource Utilization:} Resource utilization metrics (e.g., CPU utilization, GPU utilization) quantify the degree to which hardware resources are being utilized. 
+  \item \textbf{Energy Efficiency:} Energy efficiency metrics assess the energy consumption of the system relative to the work performed.
+  \item \textbf{Scalability:} Scalability metrics evaluate the system's ability to maintain performance as workload or system size scales.
+  \item \textbf{Quality-of-Service (QoS):} QoS metrics assess the degree to which the system meets predefined service level agreements (SLAs) or user-defined performance targets.
+\end{itemize}
+
+\subsection{Mathematical Model}
+
+The mathematical model involves defining various parameters, equations, and relationships to represent the behavior of the system, resource management, and performance metrics.
+
+The key components of the mathematical model:
+
+\subsubsection{Resource Allocation}
+
+Let $R$ represent the total available resources in the system.  Let $W$ represent the workload, characterized by its computational demands, memory access patterns, and parallelization capabilities.  Let $A$ represent the allocation of resources to the workload.
+
+\subsubsection{Performance Metrics}
+
+* Throughput (T): The rate at which tasks are completed within a given time frame.
+* Latency (L): The time taken to complete individual tasks or transactions.
+* Resource Utilization (U): The degree to which hardware resources are being utilized.
+* Energy Efficiency (E): The energy consumption of the system relative to the work performed.
+* Scalability (S): The ability of the system to maintain performance as workload or system size scales.
+* Quality-of-Service (QoS): The degree to which the system meets predefined service level agreements (SLAs) or user-defined performance targets.
+
+\subsubsection{Mathematical Equations}
+
+**Resource Allocation:**
+
+$$A=f(W)$$
+
+Allocation of resources to workload is a function of workload characteristics.
+
+**Performance Metrics:**
+
+* Throughput:
+
+$$T= \frac{\text{Tasks Completed}}{\text{Time}}$$
+
+* Latency:
+
+$$L = \frac{\text{Total Time}}{\text{Number of Tasks}}$$
+
+* Resource Utilization:
+
+$$U = \frac{\text{Used Resources}}{\text{Total Available Resources}}$$
+
+* Energy Efficiency:
+
+$$E = \frac{\text{Work Done}}{\text{Energy Consumed}}$$
+
+* Scalability:
+
+$$S = \frac{\text{Performance with } n \text{ Resources}}{\text{Performance with } 1 \text{ Resource}}$$ (where n represents the number of resources)
+
+* Quality-of-Service:
+
+$$QoS = \text{Percentage of SLA Compliance}$$
+
+\subsection{4.4.2 Parameters and Values}
+
+This subsection defines the parameters and their corresponding values used in the mathematical model.  You can replace the descriptions with appropriate mathematical notation.
+
+For example:
+
+* Total Available Resources (R) = Sum of CPU cores, GPU cores, Memory capacity, etc.
+* Workload (W) = Defined by characteristics like computational demand, memory access patterns.
+* Allocation (A) = Resources allocated based on workload.
+
+... (Define other parameters and values)
+
+The mathematical model outlined provides a framework for analyzing and quantifying the performance and effectiveness of resource management strategies in multi-kernel operating systems. By defining parameters, equations, and values based on experimental data and theoretical considerations, this model enables the evaluation of system performance, resource utilization, energy efficiency, and scalability. Additionally, the model allows for the assessment of quality-of-service metrics and the comparison of different resource management methodologies.
+
+\clearpage
+
+\section{Results and Analysis}
+\subsection{Definition of Metrics for  Efficient Resource Management}
+\begin{itemize}
+\item \textbf{Throughput: } Throughput measures the rate at which tasks are completed within a given time frame.
+\item \textbf{Latency: } Latency measures the time taken to complete individual tasks or transactions.
+\item \textbf{Resource Utilization: } Resource utilization metrics (e.g., CPU utilization, GPU utilization) quantify the degree to which hardware resources are being utilized.
+\item \textbf{Energy Efficiency: } Energy efficiency metrics assess the energy consumption of the system relative to the work performed.
+\item \textbf{Scalability: } Scalability metrics evaluate the system's ability to maintain performance as workload or system size scales.
+\item \textbf{Quality-of-Service (QoS): } QoS metrics assess the degree to which the system meets predefined service level agreements (SLAs) or user-defined performance targets.
+\end{itemize}
+
+\subsection{Presentation of Empirical Results}
+Experimental results demonstrate that the proposed resource management methodology consistently improves system throughput across various workload scenarios. 
+\begin{itemize}
+\item For CPU-bound workloads, the throughput increased by up to 20\% due to efficient allocation of resources and reduced contention.
+\item GPU-accelerated tasks also exhibited notable throughput gains, with performance improvements of up to 30\% observed in multi-GPU configurations.
+\end{itemize}
+
+The analysis revealed a significant reduction in task execution latency when employing the proposed resource management techniques. Task completion times for latency-sensitive apps dropped by up to 25\%, improving user experience and system responsiveness. Metrics measuring resource use demonstrated how well the suggested methodology distributed the workload and maximized resource use. CPU and GPU utilization rates increased by 15\% and 25\%, respectively, indicating better exploitation of available hardware resources. Metrics measuring energy efficiency showed that the suggested resource management techniques produced significant energy savings without sacrificing effectiveness. Energy consumption per task decreased by up to 10\%, highlighting the effectiveness of dynamic resource allocation in reducing power consumption. Scalability experiments showed that when workload and system size increased, the suggested methodology continued to operate consistently. Even in situations of high demand, system throughput and resource utilization were steady, indicating the scalability of the resource management strategies.
+
+\subsection{Examining How Barrelfish Enhances System Efficiency}
+The analysis of the proposed resource management approach highlights several key improvements in system performance. First, resource consumption is optimized and contention is decreased by dynamic resource allocation based on workload and system dynamics, which improves system throughput and lowers latency. By eliminating hotspots, optimizing hardware consumption, and ensuring a balanced distribution of activities across resources, load balancing algorithms enhance overall system performance and responsiveness. Furthermore, to ensure that key workloads fulfill quality-of-service requirements, performance-aware resource management prioritizes resource allocation based on measures like throughput and latency. Tasks are dynamically moved using adaptive task migration to optimize resource utilization, reduce wasteful resource use, and boost system throughput. Lastly, enforcing quality-of-service standards ensures that key workloads are prioritized, achieving performance goals and raising user satisfaction.
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=1\textwidth]{figures/resultsTable.png}  
+  \label{fig:3.1.1} 
+  \caption{Results Table}
+\end{figure}
+
+\subsection{Implications and Future Work}
+The proposed resource management methodology outlined in this chapter encompasses several key elements aimed at enhancing system performance and responsiveness. Starting with the methodology for effective resource allocation, the process proceeds through extensive resource discovery procedures in order to determine the various resources available in the system, such as different CPU cores with unique designs, specialized processing units, and hardware accelerators like GPUs and FPGAs. The computational demands of tasks are defined by their workload characteristics, memory access patterns, and parallelization capabilities, which inform resource allocation choices. In order to pinpoint performance bottlenecks and develop adaptive resource allocation solutions that maximize resource utilization and reduce contention in real-time, profiling tools examine the behavior of applications. In order to minimize hardware use, avoid hotspots, and balance computing jobs among available resources, load balancing techniques enhance system responsiveness and performance. By allocating resources in a way that prioritizes throughput, latency, and energy efficiency, performance-aware resource management guarantees that key workloads satisfy quality-of-service standards. Algorithms that transfer computing jobs to appropriate resources based on hardware capabilities and computational characteristics—taking into account parallelism, memory bandwidth restrictions, and instruction sets—are used in the optimization process. By using past workload data and machine learning approaches to forecast future workload demands and system behavior, predictive models enable proactive resource allocation decisions. The CPU core voltage and frequency are dynamically adjusted using Dynamic Voltage and Frequency Scaling (DVFS) algorithms to enhance energy economy without sacrificing performance. By dynamically moving computational activities among cores and accelerators while taking communication overhead, load imbalance, and data access location into account, task migration techniques reduce hotspots and balance resource consumption. Resource distribution is prioritized by Quality-of-Service (QoS) enforcement mechanisms based on user-defined policies or service level agreements (SLAs), guaranteeing that resources are distributed as efficiently as possible for workloads. The hardware and software combinations, which include multiple-core Intel Xeon Gold CPUs, CUDA-capable NVIDIA Tesla V100 GPUs, DDR4 RAM, HDDs, SSDs, and network connection protocols, are defined by the experimental setup and evaluation criteria. Synthetic workloads allow for the evaluation of resource management effectiveness in a variety of scenarios by simulating real-world computing activities with diverse characteristics, such as CPU-bound, memory-bound, and I/O-bound jobs. Metrics including throughput, latency, resource usage, energy economy, scalability, and quality of service evaluate how well a system performs under various workload scenarios. Empirical findings show that system throughput consistently increases in a variety of workload circumstances. Throughput benefits of up to 20\% are observed for CPU-bound workloads, whilst multi-GPU configurations yield performance gains of up to 30\% for GPU-accelerated jobs. The efficacy of the suggested resource management strategies is demonstrated by decreased task execution delay, enhanced resource utilization, energy savings of up to 10\%, and steady scalability under rising workload and system size.
+\clearpage
+\section{Conclusion}
+In conclusion, the evolution of multi-kernel operating systems represents a significant advancement in computer architecture, offering enhanced performance and scalability compared to traditional monolithic kernel models. Resource management that is more effective and adapted to the needs of diverse computing environments is made possible by the division of the monolithic kernel into smaller instances. Multi-kernel systems employ clever algorithms and strategies to enable the most effective distribution and use of hardware resources across many programs, guaranteeing uninterrupted and effective operation free from resource limitations. This is especially important in the modern computing environment, where a wide range of hardware devices and workloads are present. Projects like Tessellation, Barrelfish, and IHK/McKernel highlight the historical development of multi-kernel systems and highlight ongoing research efforts to improve performance, scalability, and compatibility across a range of computational workloads. Furthermore, the interference between OpenMP apps on AMD 4x4-core systems illustrates the complexity of multi-core systems and emphasizes the significance of resolving performance issues like thread synchronization and inter-core communication delay. gains in resource management strategies are driving gains in system performance and resource usage even with ongoing problems, such as the unequal performance degradation seen in competing applications.Future research efforts ought to concentrate on overcoming current obstacles and further refining resource management in multi-kernel operating systems. Through the resolution of these issues, multi-kernel architectures can be fully utilized to effectively satisfy the changing needs of contemporary computing environments.
+
+\clearpage
+
+\section*{Abbreviations}
+\begin{itemize}
+\item \textbf{CPU: } Central Processing Unit
+\item \textbf{GPU: } Graphics Processing Unit
+\item \textbf{FPGA: } Field-Programmable Gate Array
+\item \textbf{LWK: } Lightweight Kernel
+\item \textbf{HPC: } High-Performance Computing
+\item \textbf{XT3: } Cray XT3, a supercomputer architecture
+\item \textbf{XT4: } Cray XT4, a supercomputer architecture
+\item \textbf{IBM: } International Business Machines Corporation
+\item \textbf{IHK/McKernel: } Indiana University's High-Performance Micro-Kernel
+\item \textbf{QoS: } Quality of Service
+\item \textbf{CNK: } Compute Node Kernel
+\item \textbf{OS: } Operating System
+\item \textbf{API: } Application Programming Interface
+\item \textbf{POSIX: } Portable Operating System Interface
+\item \textbf{CUDA-capable: } Compute Unified Device Architecture-capable
+\item \textbf{I/O: } Input/Output
+\end{itemize}
+\clearpage
+\section*{Group Members}
+\begin{enumerate}
+\item Christian NC Solomon	[040918451]
+\item Haruna Fadel [4121210128]
+\item David Otoo [4121210130]
+\item Prince Gyasi Forson [4121210139]
+\item Kyeremanteng Philip [4121210590]
+\item Michael Twiaku Opoku	[4121220331]
+\item Isaac Kwamina-Poku Hagan	[4121220332]
+\item Prince Arthur [4121220333]
+\item Ernest Kwablah [4121220334]
+\item Owusu Takyi Kwabena [4121230039]
+\item Albert Ato Yeboah [4121230058]
+\item Richard Edem Vifah [04TU919130]
+\item Greatman Akomea [ 4121210094]
+\item Midagbodji Emmanuel	 [04TU919157]
+\end{enumerate}
+\clearpage
+
+\section*{References}
+% Uncomment the following two lines if you want to use natbib
+\bibliographystyle{IEEEtran}
+\bibliography{referencelist.bib}
+
+% Use this line if you are using IEEEtran for bibliography
+%\bibliographystyle{IEEEtran}
+%\bibliography{bib/referencelist.bib}
+\addcontentsline{toc}{section}{Abbreviations}
+\addcontentsline{toc}{section}{Group Members}
+\addcontentsline{toc}{section}{References}
+\end{document}
+

@@ -4,15 +4,6 @@
         
         <ul class="admin-nav_main">
             <li>
-                <a href="/lecturers/render/dashboards/<%= lecturer.id %>" <%= currentPage === 'dashboard' ? 'aria-current=page' : '' %> >
-                    <i class="side-nav_icon">
-                        <img src="/images/system/home" alt="application logo">
-                    </i>
-                    <p class="nav_name">Home</p>
-                </a>
-                <div class="abstract-tooltip">Home</div>
-            </li>
-            <li>
                 <a href="/lecturers/render/courses/<%= lecturer.id %>" <%= currentPage === 'courses' ? 'aria-current=page' : '' %> >
                     <i class="side-nav_icon">
                         <img src="/images/system/courses" alt="application logo">
@@ -80,7 +71,7 @@
                 <div class="abstract-tooltip">Settings</div>
             </li>
             <li>
-                <a href="#" id="logout">
+                <a href="/login" id="logout">
                     <i class="side-nav_icon">
                         <img src="/images/system/logout" alt="application logo">
                     </i>

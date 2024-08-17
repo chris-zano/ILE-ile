@@ -1,10 +1,11 @@
-import { ClassesDB, CoursesDB, LecturersDB, StudentsDB } from '../../utils/global/db.utils.js';
+import { AnnouncementsDB, ClassesDB, CoursesDB, LecturersDB, StudentsDB } from '../../utils/global/db.utils.js';
 import * as utils from './admin.utils.js';
 
 const Courses = CoursesDB();
 const Classes = ClassesDB();
 const Students = StudentsDB();
 const Tutors = LecturersDB();
+const Announcement = AnnouncementsDB();
 
 export const renderImports = async (req, res) => {
     const { userType, id } = req.params;
@@ -102,6 +103,30 @@ export const renderClassrooms = async (req, res) => {
             userType: userType,
             scripts: ["/script/scripts/admin/classes"],
             classes: classes
+        });
+    } catch (error) {
+        utils.logError(error);
+        return res.render('global/error', { error: "An Error occured", status: 500 });
+    }
+}
+
+export const renderAnnouncements = async (req, res) => {
+    const { userType, id } = req.params;
+    const { adminData } = req;
+
+    
+    try {
+        const data = await Announcement.find();
+        res.set('Cache-Control', 'public, max-age=30');
+        return res.render('admin/admin-main', {
+            admin: adminData,
+            pageTitle: "Announcements",
+            stylesheets: ["/css/admin/announcements"],
+            pageUrl: 'layouts/announcements',
+            currentPage: 'announcements',
+            userType: userType,
+            scripts: ["/script/scripts/admin/announcements"],
+            data: data
         });
     } catch (error) {
         utils.logError(error);

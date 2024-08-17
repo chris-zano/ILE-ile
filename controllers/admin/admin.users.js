@@ -166,7 +166,7 @@ export const createLecturer = async (req, res) => {
             res.status(400).render("global/error", { error: `Lecturer with ID ${error.keyValue.lecturerId} already exists`, status: 400 });
         } else {
             logError(error);
-            res.status(500).render("global/error", { error: "Failed to create new Lecturer", status: 500 });
+            res.status(500).redirect(`/admins/render/imports/lecturers/${req.adminData.id}`);
         }
     }
 };
@@ -194,11 +194,11 @@ export const createStudent = async (req, res) => {
         const student = new Students({ studentId, firstName, lastName, program, level, session, faculty, registeredCourses });
         await student.save();
 
-        return res.status(200).redirect(`/admins/render/imports/students/${req.adminData.id}`)
+        return res.status(200).redirect(`/admins/render/imports/students/${req.adminData.id}`);
     }
     catch (error) {
         logError(error);
-        return res.status(500).render("global/error", { error: "Failed to create new Student", status: 500 })
+        return res.status(500).redirect(`/admins/render/imports/students/${req.adminData.id}`)
     }
 
 }
@@ -211,27 +211,45 @@ export const importLecturersData = async (req, res) => {
     try {
         const lecturersArray = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
-        if (lecturersArray.length === 0) return res.status(400).redirect(`/admins/render/lecturers/${id}`);
+        if (lecturersArray.length === 0) return res.status(400).redirect(`/admins/render/tutors/${id}`);
         const lecturersToInsert = lecturersArray.map((tutor) => ({
             lecturerId: tutor.lecturerId,
             firstName: tutor.firstName,
             lastName: tutor.lastName,
             faculty: tutor.faculty,
+            email: `${tutor.lecturerId}@gctu.edu.gh`
         }));
 
-        await Tutors.insertMany(lecturersToInsert);
+        const saveResults = await Promise.all(lecturersToInsert.map(async (tutor) => {
+            try {
+                const newTutor = new Tutors(tutor);
+                await newTutor.save();
+                return { success: true, lecturerId: tutor.lecturerId };
+            } catch (error) {
+                logError(error);
+                return { success: false, lecturerId: tutor.lecturerId, error };
+            }
+        }));
 
-        return res.status(200).redirect(`/admins/render/lecturers/${id}`);
+        const failedSaves = saveResults.filter(result => !result.success);
+        if (failedSaves.length > 0) {
+            console.log('Failed to save the following tutors:', failedSaves);
+            return res.status(500).redirect(`/admins/render/tutors/${id}`);
+        }
+
+        return res.status(200).redirect(`/admins/render/tutors/${id}`);
     } catch (error) {
+        logError(error);
         if (error.name === 'ValidationError') {
             const errorMessage = Object.values(error.errors).map(err => err.message).join(', ');
-            res.status(400).render("global/error", { error: errorMessage, status: 400 });
+            console.log(errorMessage)
+            res.status(400).redirect(`/admins/render/tutors/${id}`);
         } else if (error.code === 11000 && error.keyValue && error.keyPattern) {
-            res.status(400).render("global/error", { error: `Lecturer with ID ${error.keyValue.lecturerId} already exists`, status: 400 });
+            res.status(500).redirect(`/admins/render/tutors/${id}`);
         } else {
-            logError(error);
-            res.status(400).render("global/error", { error: "Failed to import new lecturer", status: 400 });
+            res.status(500).redirect(`/admins/render/tutors/${id}`);
         }
+        return;
     }
 };
 
@@ -255,21 +273,39 @@ export const importStudentsData = async (req, res) => {
             faculty: student.faculty,
             session: student.session,
             registeredCourses: student.registeredCourses,
+            email: `${student.studentId}@gctu.edu.gh`
         }));
 
+        const saveResults = await Promise.all(studentsToInsert.map(async (student) => {
+            try {
+                const newStudent = new Students(student);
+                await newStudent.save();
+                return { success: true, studentId: student.studentId };
+            } catch (error) {
+                logError(error);
+                return { success: false, studentId: student.studentId, error };
+            }
+        }));
 
-        await Students.insertMany(studentsToInsert);
+        const failedSaves = saveResults.filter(result => !result.success);
+        if (failedSaves.length > 0) {
+            console.log('Failed to save the following students:', failedSaves);
+            return res.status(500).redirect(`/admins/render/students/${id}?error=partialFailure`);
+        }
+
         return res.status(200).redirect(`/admins/render/students/${id}`);
     } catch (error) {
+        logError(error);
         if (error.name === 'ValidationError') {
             const errorMessage = Object.values(error.errors).map(err => err.message).join(', ');
-            res.status(400).render("global/error", { error: errorMessage, status: 400 });
+            console.log(errorMessage)
+            res.status(400).redirect(`/admins/render/students/${id}?error=validationError`);
         } else if (error.code === 11000 && error.keyValue && error.keyPattern) {
-            res.status(400).render("global/error", { error: `Student with ID ${error.keyValue.studentId} already exists`, status: 400 });
+            res.status(500).redirect(`/admins/render/students/${id}?error=11000`);
         } else {
-            logError(error);
-            res.status(400).render("global/error", { error: "Failed to import new students", status: 400 });
+            res.status(500).redirect(`/admins/render/students/${id}?error=500`);
         }
+        return;
     }
 };
 

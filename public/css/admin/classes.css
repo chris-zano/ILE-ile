@@ -1,245 +1,151 @@
+/* Tooltip */
 .classes-btn-tooltip {
     visibility: hidden;
-    width: fit-content;
+    width: max-content;
     position: absolute;
-    bottom: -25px;
-    background-color: aliceblue;
-    padding: 3px 7px;
-    border-radius: 5px;
-    box-shadow: 0px 3px 10px #d8d8d8;
-    transition: all ease-in-out 250ms;
+    bottom: -35px;
+    background-color: #f0f0f0;
+    padding: 5px 10px;
+    border-radius: 8px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    transition: visibility 0.25s ease-in-out;
+    font-size: 12px;
+    color: #333;
 }
 
+/* Section Container */
 section#classes-parent_container {
-    height: 100%;
     display: flex;
-    flex-flow: column;
-    padding: 10px 5px;
+    flex-direction: column;
+    padding: 15px;
 }
 
-
+/* Header and Button Styling */
+section#classes-parent_container article.header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 20px;
+}
 
 section#classes-parent_container article.header div.button-wrapper {
     position: relative;
-    background-color: #000;
 }
 
 article.header a {
-    width: fit-content;
-    padding: 10px 7px;
-    border-radius: 7px;
-    float: right;
+    padding: 10px 15px;
+    border-radius: 8px;
     cursor: pointer;
-    transition: all ease-in-out 250ms;
-    margin: 0 10px;
-}
-
-article.header a#manual {
-    border: 1px solid var(--primary);
-    background-color: var(--primary);
-    color: var(--white);
-
-}
-
-article.header a#manual:hover {
-    border-color: var(--accent);
-    background-color: transparent;
-    color: var(--text);
+    transition: background-color 0.3s ease, color 0.3s ease;
+    margin-left: 10px;
+    text-decoration: none;
 }
 
 article.header a#script {
-    border: 1px solid var(--secondary);
-    background-color: var(--secondary);
+    border: 1px solid var(--primary);
+    background-color: var(--primary);
     color: var(--white);
-
 }
 
 article.header a#script:hover {
-    border-color: var(--secondary);
-    background-color: transparent;
-    color: var(--text);
+    background-color: var(--primary-dark);
+    color: var(--white);
 }
 
-article.header a#script:hover~.classes-btn-tooltip#run-script {
+article.header a#script:hover ~ .classes-btn-tooltip#run-script {
     visibility: visible;
 }
 
-article.header a#manual:hover~.classes-btn-tooltip#run-manual {
-    visibility: visible;
-}
-
+/* Classes List Styling */
 article.classes-list {
-    height: 100%;
-    overflow-y: hidden;
-    padding: 4px 10px;
+    flex-grow: 1;
+    padding: 20px;
+    background-color: var(--white);
+    border-radius: 12px;
 }
 
 article.classes-list div.classes-list-right {
-    height: 100%;
-    overflow-y: scroll;
-    width: 60%;
+    overflow-y: auto;
+    width: 100%;
+    max-height: 400px;
     display: flex;
-    flex-flow: column;
-    gap: 10px;
-    float: left;
-    box-shadow: 0px 3px 5px #4e4e4e4c;
-    border-radius: 10px;
+    flex-direction: column;
+    gap: 15px;
+    padding: 10px;
 }
 
- h3 {
-    font-size: 20px;
-    font-weight: 400;
-    text-align: left;
-    text-indent: 20px;
+h3 {
+    font-size: 22px;
+    font-weight: 500;
+    margin-bottom: 15px;
+    color: #333;
 }
 
+/* Admin Class List Styling */
 article.classes-list ul#admin-class-list-ul {
-    background-color: rgba(255, 255, 255, 0.689);
-    min-height: 150px;
-    padding: 10px 20px;
+    padding: 10px;
     border-radius: 12px;
     display: grid;
-    grid-auto-flow: row;
-    gap: 10px;
+    grid-template-columns: 1fr;
+    gap: 12px;
 }
 
 article.classes-list ul#admin-class-list-ul li.admin-class-list-li {
-    background-color: var(--background);
-    backdrop-filter: blur(4px);
-    border: 1px solid;
-    border-color: var(--background);
+    border: 1px solid #e6e6e6;
     border-radius: 12px;
-    width: 99%;
-    height: fit-content;
-    padding: 10px 20px;
-}
-article.classes-list ul#admin-class-list-ul li.admin-class-list-li:hover {
-    background-color: rgba(0, 0, 0, 0.046);
+    padding: 15px;
 }
 
 article.classes-list ul#admin-class-list-ul li.admin-class-list-li a {
-    width: 100%;
-    height: 100%;
     display: grid;
-    grid-template-columns: 10% 40% 20% 30%;
-    gap: 5px;
+    grid-template-columns: 15% 35% 20% 30%;
+    gap: 10px;
     align-items: center;
-    padding: 3px 6px;
-    border-radius: 16px;
-}
-
-li.admin-class-list-li a div.class-profile-image img {
-    border-radius: 12px;
+    text-decoration: none;
+    color: inherit;
+    padding: 5px 10px;
+    border-radius: 8px;
 }
 
 li.admin-class-list-li a div.class-info {
     display: flex;
-    flex-flow: column;
+    flex-direction: column;
     justify-content: center;
 }
 
-li.admin-class-list-li a div.class-info div.class-id p{
+li.admin-class-list-li a div.class-info div.class-id p {
     font-size: 16px;
     font-weight: 600;
 }
 
-li.admin-class-list-li a div.class-info div.class-count p{
-    font-size: 11px;
-    color: grey;
+li.admin-class-list-li a div.class-info div.class-count p {
+    font-size: 12px;
+    color: #777;
 }
-
-li.admin-class-list-li a div.courses-info {
-    height: 100%;
-    width: 100%;
-}
-
 
 li.admin-class-list-li a div.courses-info span {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: all ease-in-out 150ms;
-}
-
-li.admin-class-list-li a div.courses-info span:hover {
-    text-decoration: underline;
-    color: grey;
+    font-size: 14px;
+    color: #555;
+    text-align: center;
 }
 
 div.schedule-btn {
-    height: 100%;
-    width: 100%;
-    display: grid;
-    align-items: center;
-    justify-content: right;
+    display: flex;
+    justify-content: flex-end;
 }
 
 div.schedule-btn button {
     cursor: pointer;
-    border: 1px solid var(--purple);
-    background-color: var(--purple);
-    float: right;
+    width: 120px;
+    height: 45px;
+    border: 1px solid #6f42c1;
+    background-color: #6f42c1;
+    color: var(--white);
+    border-radius: 6px;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 div.schedule-btn button:hover {
-    border-color: var(--purple);
     background-color: var(--white);
-    color: var(--text);
+    color: #6f42c1;
 }
-
-div.classes-list-left {
-    float: right;
-    height: 100%;
-    overflow-y: scroll;
-    min-height: 150px;
-    padding: 0 20px 10px 20px;
-    border-radius: 12px;
-    display: grid;
-    grid-auto-flow: row;
-    gap: 10px;
-    /* background-color: rgba(255, 255, 255, 0.689); */
-    /* box-shadow: 0px 3px 3px #82828259; */
-}
-
-div.classes-list-left h3 {
-    height: 100%;
-    background-color: var(--white);
-    position: sticky;
-    top: 0;
-}
-
-div.classes-list-left .student-li  {
-    width: 290px;
-    border-radius: 16px;
-}
-
-ul#students-unassigned {
-    display: flex;
-    gap: 10px;
-    flex-flow: column
-}
-
-div.classes-list-left .student-lidiv.classes-list-left .student-li {
-    height: fit-content;
-}
-
-div.classes-list-left .student-li a {
-    border-radius: 4px;
-    padding: 10px 20px;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    box-shadow: 0px 3px 5px #4e4e4e4c;
-    gap: 10px;
-}
-
-div.classes-list-left .student-li a .student-profile-image img {
-    border-radius: 10px;
-}
-
-div.classes-list-left .student-li a div.student-info div.student-name p {
-    font-weight: bold;
-}
-

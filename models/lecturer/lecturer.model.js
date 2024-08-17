@@ -39,6 +39,11 @@ const lecturerSchema = new Schema({
         type: String,
         default: 'lect&1@gctu.edu'
     },
+    email: {
+        type: String,
+        default: '',
+        unique: true
+    },
     assignedCourses: {
         type: Array,
         default: []

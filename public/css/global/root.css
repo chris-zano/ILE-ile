@@ -10,7 +10,7 @@
 
 :root {
     /* colors */
-    --text-title: #051e0e;
+    --text-title: #000000;
     --text-body: #1f232a;
     --text: #7e8a9e;
     --white: #ffffff;
@@ -20,6 +20,7 @@
     --primary-dark: #043783;
     --secondary: #54b1b3;
     --accent: #57b0e0;
+    --accent-dark: #065a87;
     --red: #ac0000;
     --dark-red: #410000f0;
     --blue: #4648cf;

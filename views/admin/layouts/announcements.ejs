@@ -1,0 +1,82 @@
+<section class="notifications-main" id="notifications_main">
+    <article>
+        <nav>
+            <button type="button" id="show-form" style="width: 150px; height: 45px; float: right;">Create New</button>
+        </nav>
+    </article>
+    <div class="form-container hidden" id="form-container">
+        <form action="/admins/announcements/create?id=<%= admin.id %>" method="POST" id="notification-form"
+            enctype="multipart/form-data">
+            <h1 style="color: var(--text-body);">Create New Broadcast Announcement</h1>
+
+            <label for="title">Announcement Title</label>
+            <input type="text" id="title" name="title" required>
+
+            <label for="date">Publication Date</label>
+            <input type="date" id="date" name="date" required>
+
+            <label for="greetings">Greetings</label>
+            <select name="greetings" id="greetings">
+                <option value="Dear Students,">Dear Students,</option>
+                <option value="Dear Tutors,">Dear Tutors,</option>
+                <option value="Dear All,">Dear All,</option>
+            </select>
+
+            <label for="content">Content</label>
+            <textarea id="content" name="content" rows="5" required></textarea>
+
+            <label for="closing">Closing Remarks</label>
+            <select name="closing" id="closing">
+                <option value="Yours Sincerely,">Yours Sincerely,</option>
+                <option value="Thank You,">Thank You,</option>
+                <option value="Yours Faithfully,">Yours Faithfully,</option>
+            </select>
+
+            <label for="attachments">Attachments (Optional)</label>
+            <input type="file" id="attachments" name="attachments" multiple>
+
+            <button type="submit" id="submit">Create Notification</button>
+        </form>
+    </div>
+    <div class="notifications-container" id="notifications-container">
+        <div id="announcements" class="tab-content">
+            <div style="display: flex; width: 100%;  align-items: center; padding: 1ch;">
+                <h3 style="color: var(--text-body); font-size: 2.7ch; width: 100%; text-align: center;">History</h3>
+            </div>
+            <!-- Announcements content here -->
+            <% if (data.length === 0) { %>
+            <div class="notification-item">No announcements</div>
+            <% } else { %>
+                <% for( let announcement of data ) { %>
+                    <div class="notification-item">
+                        <div class="notification-details">
+                            <p class="annc-title"><%= announcement.title %></p>
+                            <p class="pub-date"><%= new Date(announcement.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+
+                            <div class="ann-mnt">
+                                <p class="greetings"><%= announcement.greetings %></p>
+                                <br>
+                                <p class="paragraph"><%= announcement.content %></p>
+                                <br>
+                                <p class="closing-remarks"><%= announcement.closing %></p>
+                                <p class="author"><%= announcement.userName %></p>
+                            </div>
+                            <% if (announcement.files.length > 0) { %>
+                                <div class="atchs">Attachments</div>
+                                <div class="attachments">
+                                    <br>
+                                    <% for( let file of announcement.files ) { %>
+                                            <a href="/announcements/files/get?filename=<%= file.filename %>" download="<%= file.originalname %>"><i class="file-icon">📄</i><%= file.originalname %></a>
+                                    <% } %>
+                                </div>
+                            <% } %>
+                            <div class="actions" style=" width: 100%; display: flex; justify-content: center; align-items: center;">
+                                    <button type="button" class="del-btn" onclick="deletePost(this, 'id')">Delete</a>
+                            </div>
+                        </div>
+                    </div>
+                <% } %>
+            <% } %>
+        </div>
+    </div>
+</section>
