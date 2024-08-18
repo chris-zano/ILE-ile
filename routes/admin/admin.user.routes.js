@@ -26,6 +26,8 @@ router.post('/admins/imports/students/:id', userJSONUpload.single('file'), verif
 router.post('/admins/imports/lecturers/:id', userJSONUpload.single('file'), verifyAdmin, usersController.importLecturersData);
 router.post('/admins/create/students/:id', verifyAdmin, usersController.createStudent)
 router.post('/admins/create/lecturers/:id', verifyAdmin, usersController.createLecturer);
+router.post('/admins/update/students/:id', verifyAdmin, usersController.updateStudent)
+router.post('/admins/update/tutors/:id', verifyAdmin, usersController.updateLecturer);
 
 
 export default router;

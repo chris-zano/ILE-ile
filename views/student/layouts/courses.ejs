@@ -31,20 +31,17 @@
                                 </p>
                             <% } %>
                         </div>
-                        <div class="schedule">
-                            <p>Schedule: <%= course.schedule === "" ? '(Not yet Scheduled)' : course.schedule %></p>
-                        </div>
                         <div class="footer">
                             <div class="highlight-footer">
                                 <img src="/images/system/classrooms" alt="course level">
                                 <small>
-                                    <%= course.level %>
+                                    Level: <%= course.level %>
                                 </small>
                             </div>
                             <div class="highlight-footer">
                                 <img src="/images/system/students" alt="students count">
                                 <small>
-                                    <%= course.students.length %>
+                                    Enrolled: <%= course.students.length %>
                                 </small>
                             </div>
                         </div>

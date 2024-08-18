@@ -612,12 +612,13 @@ details div {
     grid-template-columns: 20px 1fr;
     justify-content: left;
     align-items: center;
-    gap: 10px;
+    gap: 1ch;
 }
 
-details div small {
-    float: right;
+details div a {
+    margin-left: 2ch;
 }
+
 
 details div:hover > * {
     color: var(--red);

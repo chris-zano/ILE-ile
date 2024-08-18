@@ -21,7 +21,7 @@ if (cluster.isPrimary) {
   console.log(`The primary process of pid ${process.pid} ha started.`);
   console.log(`The total amount of cpus is ${cpuCount}`);
 
-  for (let i = 0; i < cpuCount; i++) {
+  for (let i = 0; i < 1/*cpuCount*/; i++) {
     cluster.fork();
   }
 

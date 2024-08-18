@@ -283,7 +283,6 @@ export const setCoursesToRegistrationCode = async (req, res) => {
 
         const coursesMap = rcObj.courses.map((courseCode) => Courses.findOne({ courseCode: courseCode }));
         const courseList = await Promise.all(coursesMap);
-        console.log(courses)
         return res.status(200).json({ doc: courseList });
     }
     catch (error) {

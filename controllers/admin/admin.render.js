@@ -134,37 +134,7 @@ export const renderAnnouncements = async (req, res) => {
     }
 }
 
-export const renderUpdateStudent = (req, res) => {
-    const { userType, id } = req.params;
-    const { adminData } = req;
 
-    res.set('Cache-Control', 'public, max-age=30');
-    return res.render('admin/admin-main', {
-        admin: adminData,
-        pageTitle: "Update-Student",
-        stylesheets: ["/css/admin/update.student"],
-        pageUrl: 'layouts/update.student.ejs',
-        currentPage: 'students',
-        userType: userType,
-        scripts: ["/script/scripts/admin/update.student"]
-    });
-}
-
-export const renderUpdateTutor = (req, res) => {
-    const { userType, id } = req.params;
-    const { adminData } = req;
-
-    res.set('Cache-Control', 'public, max-age=30');
-    return res.render('admin/admin-main', {
-        admin: adminData,
-        pageTitle: "Update-Tutor",
-        stylesheets: ["/css/admin/update.tutor"],
-        pageUrl: 'layouts/update.tutor..ejs',
-        currentPage: 'tutor',
-        userType: userType,
-        scripts: ["/script/scripts/admin/update.tutor"]
-    });
-}
 
 export const renderUpdateCourse = async (req, res) => {
     const { courseCode, id } = req.params;
@@ -273,6 +243,9 @@ export const renderViewStudent = async (req, res) => {
     const { userType, studentId } = req.params;
     const { adminData } = req;
 
+    if (userType === 'student') {
+        console.log("student")
+    }
     try {
         const student = await Students.findOne({_id: studentId});
 
@@ -300,6 +273,7 @@ export const renderViewTutor = async (req, res) => {
     const { userType, tutorId } = req.params;
     const { adminData } = req;
 
+    console.log({ userType, tutorId })
     try {
         const tutor = await Tutors.findOne({_id: tutorId});
         if (!tutor) return res.status(404);
