@@ -160,16 +160,44 @@ export const createLecturer = async (req, res) => {
 
         await tutor.save();
 
-        res.status(200).redirect(`/admins/render/imports/lecturers/${req.adminData.id}`);
+        res.status(200).redirect(`/admins/render/tutors/${req.adminData.id}`);
     } catch (error) {
         if (error.code === 11000 && error.keyValue && error.keyPattern) {
             res.status(400).render("global/error", { error: `Lecturer with ID ${error.keyValue.lecturerId} already exists`, status: 400 });
         } else {
             logError(error);
-            res.status(500).redirect(`/admins/render/imports/lecturers/${req.adminData.id}`);
+            res.status(500).redirect(`/admins/render/tutors/${req.adminData.id}`);
         }
     }
 };
+
+export const updateLecturer = async (req, res) => {
+    if (!isRequestBodyValid(req.body))
+        return res.status(400).render("global/error", {
+            error: "Failed to update lecturer because of invalid request body",
+            status: 400
+        });
+
+    const { id, firstName, lastName, faculty } = req.body;
+    console.log({ id, firstName, lastName, faculty } )
+
+    try {
+       await Tutors.findOneAndUpdate({ _id: id }, {
+            $set: {
+                firstName: firstName,
+                lastName: lastName,
+                faculty: faculty
+            }
+
+        })
+
+        return res.status(200).redirect(`/admins/render/tutors/${req.adminData.id}`);
+    }
+    catch (error) {
+        logError(error);
+        return res.status(500).redirect(`/admins/render/tutors/${req.adminData.id}`)
+    }
+}
 
 const isRequestBodyValid = (body = {}) => {
     if (Object.keys(body).length === 0) return null;
@@ -194,11 +222,40 @@ export const createStudent = async (req, res) => {
         const student = new Students({ studentId, firstName, lastName, program, level, session, faculty, registeredCourses });
         await student.save();
 
-        return res.status(200).redirect(`/admins/render/imports/students/${req.adminData.id}`);
+        return res.status(200).redirect(`/admins/render/students/${req.adminData.id}`);
     }
     catch (error) {
         logError(error);
-        return res.status(500).redirect(`/admins/render/imports/students/${req.adminData.id}`)
+        return res.status(500).redirect(`/admins/render/students/${req.adminData.id}`)
+    }
+
+}
+
+export const updateStudent = async (req, res) => {
+    if (!isRequestBodyValid(req.body))
+        return res.status(400).render("global/error", {
+            error: "Failed to create new Student because of invalid request body",
+            status: 400
+        });
+
+    const { id, program, year, level, session, faculty } = req.body;
+
+    try {
+        await Students.findOneAndUpdate({ _id: id }, {
+            $set: {
+                program: program,
+                year: year,
+                level: level,
+                session: session,
+                faculty: faculty,
+            }
+        })
+
+        return res.status(200).redirect(`/admins/render/students/${req.adminData.id}`);
+    }
+    catch (error) {
+        logError(error);
+        return res.status(500).redirect(`/admins/render/students/${req.adminData.id}`)
     }
 
 }

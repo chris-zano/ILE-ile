@@ -1,10 +1,11 @@
 <section class="imports-section">
     <div class="create-one">
         <div class="form-container">
-            <form action="/admins/update/<%= userType %>/<%= admin.id %>" method="post" id="add-tutor"
+            <form action="/admins/update/tutors/<%= admin.id %>" method="post" id="add-tutor"
                 class="student-form">
                 <h2>Update Lecturer Information for { <%= tutor.lecturerId %> } %>
                 </h2>
+                <input type="hidden" name="id" value="<%= tutor._id %>">
                 <div class="input-field">
                     <label for="lecturerId">Lecturer ID</label>
                     <input type="text" id="lecturerId" name="lecturerId" value="<%= tutor.lecturerId %>" required>

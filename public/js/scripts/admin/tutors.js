@@ -130,11 +130,11 @@ const createTableRow = (studentObject, parentElement) => {
     }
     tr.style.cursor = 'pointer';
     tr.innerHTML = `
-        <td>${count}</td>
-        <td>${studentObject.lecturerId}</td>
-        <td>${studentObject.firstName}</td>
-        <td>${studentObject.lastName}</td>
-        <td>${studentObject.faculty}</td>
+        <td data-label-Lecturer-id="${studentObject._id}">${count}</td>
+        <td data-label-Lecturer-id="${studentObject._id}">${studentObject.lecturerId}</td>
+        <td data-label-Lecturer-id="${studentObject._id}">${studentObject.firstName}</td>
+        <td data-label-Lecturer-id="${studentObject._id}">${studentObject.lastName}</td>
+        <td data-label-Lecturer-id="${studentObject._id}">${studentObject.faculty}</td>
     `;
 
     count += 1;
@@ -142,16 +142,11 @@ const createTableRow = (studentObject, parentElement) => {
 
     document.getElementById(parentElement).append(tr);
 
-
     tr.addEventListener('click', (e) => {
-        if (e.target.tagName != 'BUTTON') {
-            
-            const lecturerId = e.currentTarget.querySelector('[data-label-Lecturer-id]').getAttribute('data-label-Lecturer-id');
-            
-            const anchor = document.createElement('a');
-            anchor.href = `/admins/render/profile/tutor/${lecturerId}/${adminId}`
-            anchor.click();
-        }
+        const lecturerId = e.target.getAttribute('data-label-Lecturer-id');
+        const anchor = document.createElement('a');
+        anchor.href = `/admins/render/profile/tutor/${lecturerId}/${adminId}`
+        anchor.click();
     })
 }
 

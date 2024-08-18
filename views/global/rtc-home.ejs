@@ -13,13 +13,11 @@
     <div id="root-div">
         <div id="left-div">
             <div id="large-message">
-                Premium video meetings.<br />
-                Now for everyone.
+                Preparing for Your Learning Session.
             </div>
 
             <div id="small-message">
-                We re-engineered the service we built for secure businesse<br />
-                meetings, to make it free and available for all.
+                This secure and accessible video conferencing platform has been optimized to support effective learning and teaching experiences. Please wait while we finalize the connection.
             </div>
 
             <div class="new-meeting-root">
@@ -118,7 +116,6 @@
                 console.log('meeting-started')
                 enableJoinButton("Join Meeting");
                 joinBtn.addEventListener("click", () => {
-                    // window.location.href = `/room/${roomId}/${chapter}`;
                     window.location.href = `http://localhost:8080/meeting?courseId=${courseId}&chapter=${chapter}&userId=${userData.data.id}&userType=${userType}`;
                 }, { once: true });
             });

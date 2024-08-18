@@ -577,7 +577,7 @@ div.course-overview {
 
 
 section.course-materials, section.course-recordings {
-    width: 100%;
+    width: 70%;
     margin: 10px 0;
     border: 1px solid #ddd;
     background-color: var(--white);
@@ -612,12 +612,13 @@ details div {
     grid-template-columns: 20px 1fr;
     justify-content: left;
     align-items: center;
-    gap: 10px;
+    gap: 1ch;
 }
 
-details div small {
-    float: right;
+details div a {
+    margin-left: 2ch;
 }
+
 
 details div:hover > * {
     color: var(--red);

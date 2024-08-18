@@ -43,7 +43,7 @@ article.cards a.card {
     background-color: var(--background);
     /* background-color: green; */
     width: 310px;
-    height: 350px;
+    height: fit-content;
     color: unset;
     text-decoration: unset;
     cursor: pointer;
@@ -117,17 +117,14 @@ a.card section.card-body div.professor p {
 }
 
 a.card section.card-body div.footer {
-    position: absolute;
-    bottom: 15px;
-    right: 15px;
+    margin-top: 3ch;
     display: flex;
-    align-items: center;
+    flex-flow: column;
     float: right;
     gap: 15px;
 }
 
 a.card section.card-body div.footer div {
-    border: 1px solid #4e4eff;
     padding: 3px 5px;
     border-radius: 0.4rem;
     display: flex;

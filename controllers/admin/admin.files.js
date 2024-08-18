@@ -140,7 +140,7 @@ export const getRandomImage = (req, res) => {
     ]
 
     const randomIndex = Math.floor(Math.random() * imageurls.length);
-    const randomImageUrl = url("oceanscolorful");
+    const randomImageUrl = url("computer architecture");
 
     res.set('Cache-Control', 'public, max-age=1200');
     res.type('jpg');

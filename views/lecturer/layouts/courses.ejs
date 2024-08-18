@@ -14,22 +14,15 @@
                             <h2><%= course.title %></h2>
                             <small><%= course.courseCode %></small>
                         </div>
-                        <div class="professor">
-                            <img src="/images/system/lecturer" alt="professor">
-                            <% if (course.lecturer.lecturerId == "TU-000FoE" && course.lecturer.name == "unassigned") { %>
-                                <p>No lecturer assigned</p>
-                            <% } else { %>
-                                <p><%= course.lecturer.name %></p>
-                            <% } %>
-                        </div>
+                       
                         <div class="footer">
                             <div class="highlight-footer">
                                 <img src="/images/system/classrooms" alt="course level">
-                                <small><%= course.level %></small>
+                                <small>Level: <%= course.level %></small>
                             </div>
                             <div class="highlight-footer">
                                 <img src="/images/system/students" alt="students count">
-                                <small><%= course.students.length %></small>
+                                <small>Enrolled<%= course.students.length %></small>
                             </div>
                         </div>
                     </section>

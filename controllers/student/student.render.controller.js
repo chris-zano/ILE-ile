@@ -57,9 +57,10 @@ const getStudentSubmissions = async (studentData) => {
 }
 
 const getCourseRegistrationPage = async (studentData) => {
+    console.log(studentData)
     try {
         const data = await RegisteredCourses.findOne({ registrationCode: studentData.registeredCourses });
-        if (!data || !data.courses) return null;
+        if (!data) return [];
 
         const coursesMap = data.courses.map((courseCode) => Courses.findOne({ courseCode: courseCode }));
         const courses = await Promise.all(coursesMap);
@@ -119,6 +120,7 @@ export const renderStudentViews = async (req, res) => {
         return res.status(404).render('global/error', { error: "The requested resource is unavailable", status: 404 });
 
     const dataObject = await urlToMethod(studentData);
+    console.log(dataObject)
     if (!dataObject)
         return res.status(404).render('global/error', { error: "The requested student page objectData is unavailable", status: 404 });
 
