@@ -103,11 +103,22 @@
         };
 
         if (userType === "student") {
+            
             socket.emit("join meeting", courseId);
             joinBtn.textContent = "Join Meeting";
             msgD.innerHTML = `<p>&#9432; Waiting for host to start meeting</p>`;
     
-            socket.on("waiting for host", (courseId) => {
+            const res = await classInSession(courseId);
+            if (res) {
+                msgD.innerHTML = "<p>&#9432;Meeting Started. Join meeting<p>";
+                console.log('meeting-started')
+                enableJoinButton("Join Meeting");
+                joinBtn.addEventListener("click", () => {
+                    window.location.href = `http://localhost:8080/meeting?courseId=${courseId}&chapter=${chapter}&userId=${userData.data.id}&userType=${userType}`;
+                }, { once: true });
+            }
+            else {
+                socket.on("waiting for host", (courseId) => {
                 console.log('waiting for host')
             });
 
@@ -119,6 +130,8 @@
                     window.location.href = `http://localhost:8080/meeting?courseId=${courseId}&chapter=${chapter}&userId=${userData.data.id}&userType=${userType}`;
                 }, { once: true });
             });
+            }
+            
 
 
         } else if (userType === "lecturer") {
