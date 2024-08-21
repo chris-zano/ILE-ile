@@ -112,7 +112,7 @@ const handleSearch = () => {
     const searchInput = document.getElementById("search-input").value;
 
     if (category == "none") {
-        toast("Please Choose a Category");
+        Toast_Notification.showInfo('Please choose a category')
     }
     else if (searchInput == "") {
         //do nothing
