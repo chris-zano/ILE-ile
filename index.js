@@ -58,14 +58,15 @@ else {
   const password = encodeURIComponent(process.env.MONGO_DB_PASSWORD);
   const clusterName = encodeURIComponent(process.env.CLUSTER_NAME);
   const appName = encodeURIComponent(process.env.APP_NAME);
-  const databasename = encodeURIComponent(process.env.DATABASE_NAME);
+  const databasename = encodeURIComponent(process.env.DATABASE_NAME); 
 
   const uri = `mongodb+srv://${username}:${password}@${clusterName}.jwscxvu.mongodb.net/${databasename}?retryWrites=true&w=majority&appName=${appName}`;
 
   //Connect to Database and start server
   (async () => {
     try {
-      await mongoose.connect("mongodb://localhost:27017/ileSchool")
+      // await mongoose.connect("mongodb://localhost:27017/ileSchool")
+      await mongoose.connect(uri);
       console.log("Connected to local");
 
       callAndExecuteRequireStack(app);
