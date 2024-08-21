@@ -49,7 +49,17 @@ const getStudentSubmissions = async (studentData) => {
         const studentsCourseCodes = studentData.courses;
         const courseSubmissions = studentsCourseCodes.map(c => Submissions.findOne({ courseCode: c }));
         const submissionsArray = await Promise.all(courseSubmissions);
-        return submissionsArray.filter((c) => c !== null);
+        const filteredSubmissions = submissionsArray.filter((c) => c !== null);
+        const timeNow = new Date().getTime();
+
+        filteredSubmissions.forEach(sub => {
+            for (let i = 0; i < sub.lecturerSubmission.length; i++) {
+                if (sub.lecturerSubmission[i].startDate.timeStamp > timeNow) {
+                    sub.lecturerSubmission.splice(i,1);
+                }
+            }
+        });
+        return filteredSubmissions
     } catch (error) {
         logError(error);
         return null;
@@ -120,7 +130,6 @@ export const renderStudentViews = async (req, res) => {
         return res.status(404).render('global/error', { error: "The requested resource is unavailable", status: 404 });
 
     const dataObject = await urlToMethod(studentData);
-    console.log(dataObject)
     if (!dataObject)
         return res.status(404).render('global/error', { error: "The requested student page objectData is unavailable", status: 404 });
 

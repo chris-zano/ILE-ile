@@ -158,7 +158,7 @@ const renderSubmissionsByCourse = async (submissions = []) => {
                 <div class="submission-file" style="display: ${isSubmitted ? 'block' : 'none'};">
                     <i class="file-icon">📄</i>
                     <span class="file-name">${isSubmitted ? studentSub.filename : ''}</span>
-                    <button class="view-submission-btn download-sub"><a href="${isSubmitted ? studentSub.fileUrl : ''}">Download</a></button>
+                    <button class="view-submission-btn download-sub"><a href="${isSubmitted ? studentSub.fileUrl : ''}" download="${studentSub.filename}">Download</a></button>
                     <button 
                         class="view-submission-btn delete-sub" 
                         style = "display: ${ new Date().getTime() >= new Date(lectSub.endDate.timeStamp) ? 'none' : ''};
