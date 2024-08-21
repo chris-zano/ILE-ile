@@ -35,9 +35,10 @@ const generateNewSubmissionObject = async ({ lecturerId, submissionObject }) => 
         return { status: false, doc: {} }
     }
 
-    const { courseCode, title, instructions, startDate, endDate, expected, received, fileUrl } = submissionObject;
+    const { title, instructions, startDate, endDate, expected, received, fileUrl } = submissionObject;
+    const courseCode = submissionObject.courseCode || submissionObject.course_code
 
-    // Wait for the course name to be fetched
+        // Wait for the course name to be fetched
     let courseName;
     try {
         const course = await Courses.findOne({ courseCode: courseCode });
@@ -136,6 +137,7 @@ export const createSubmissionWithFile = async (req, res) => {
     const { lecturerData } = req;
     const { filename, originalname } = req.file;
     const submissionObject = req.body;
+    console.log(submissionObject);
 
     const startDate = getStartDate(submissionObject['start-date']);
     const endDate = getEndDate(submissionObject['end-date']);

@@ -67,7 +67,7 @@ else {
     try {
       // await mongoose.connect("mongodb://localhost:27017/ileSchool")
       await mongoose.connect(uri);
-      console.log("Connected to local");
+      console.log("Connected to local");  
 
       callAndExecuteRequireStack(app);
       callSetupWebSocket(server);
