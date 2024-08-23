@@ -96,10 +96,10 @@ div.results-container ul li.results-item {
     padding: 5px;
 }
 
-div.results-container ul li.results-item:hover,
+/* div.results-container ul li.results-item:hover,
 div.results-container ul li.results-item:focus {
     background-color: var(--accent);
-}
+} */
 
 li.results-item a h2 {
     font-size: 14px;
