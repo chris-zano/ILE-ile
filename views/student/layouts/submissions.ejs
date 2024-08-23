@@ -5,26 +5,28 @@
             <div>you have <%= data.length %> files in your submissions</div>
         </div>
         <% } else { %>
-            <div id="data-files"><%= JSON.stringify(data) %></div>
-            <% for( let submission of data ) { %>
-                <section class="submissions-header">
-                    <div class="btn-wrapper">
-                        <div class="dropdown">
-                            <label for="course-select">Sort By Courses:</label>
-                            <select id="course-select" onchange="showSubmissions(this.value)">
-                                <option value="all" selected>All</option>
+            <div id="data-files">
+                <%= JSON.stringify(data) %>
+            </div>
+            <section class="submissions-header">
+                <div class="btn-wrapper">
+                    <div class="dropdown">
+                        <label for="course-select">Sort By Courses:</label>
+                        <select id="course-select" onchange="showSubmissions(this.value)">
+                            <option value="all" selected>All</option>
                                 <% for(let course of data) { %>
-                                    <option value="<%= course._id %>"><%= course['courseName'] %></option>
+                                    <option value="<%= course._id %>">
+                                        <%= course['courseName'] %>
+                                    </option>
                                 <% } %>
-                            </select>
-                        </div>
-                        
-                        
+                        </select>
                     </div>
-                </section>
 
-                <section class="submission-body" id="submission-body">
-                   </section>
-            <% } %>
-                    <% }%>
+
+                </div>
+            </section>
+
+            <section class="submission-body" id="submission-body">
+            </section>
+            <% }%>
 </section>

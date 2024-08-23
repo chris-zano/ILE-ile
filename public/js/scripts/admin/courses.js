@@ -36,28 +36,31 @@ const courseCard = (course) => {
     // card.setAttribute("href", `/admins/render/updates/course/${course._id}/${adminId}`);
     card.innerHTML = `  
         <section class="card-body">
+            <div class="thumbnail">
+                <img src="/random/image"/>
+            </div>
             <div class="title">
                 <small>[${course.courseCode}]</small>
                 <h2>${course.title}</h2>
+                <div class="professor">
+                    <img src="/images/system/user" alt="professor">
+                    <p>${course.lecturer.name == "unassigned" ? "No lecturer assigned" : course.lecturer.name}</p>
+                </div>
+                <div class="footer">
+                    <div class="highlight-footer h-level">
+                        <small>Level: <span
+                        class="${course.level === 100 ? 'one' : course.level === 200 ? 'two' : course.level === 300 ? 'three': 'four'}" 
+                        >${course.level}</span></small>
+                    </div>
+                    <div class="highlight-footer">
+                        <small>Enrolled: <span>${course.students.length}</span></small>
+                    </div>
+                </div>
             </div>
-            <div class="professor">
-                <img src="/images/system/user" alt="professor">
-                <p>${course.lecturer.name == "unassigned" ? "No lecturer assigned" : course.lecturer.name}</p>
+            <div class="actions">
+                <button type="button" id="c-update-btn" onclick="updateCourse('${course._id}')" >Update</button>
+                <button type="button" id="c-delete-btn" onclick="deleteCourse('${course._id}')">Delete</button>
             </div>
-            <div class="footer">
-                <div class="highlight-footer h-level">
-                    <small>Level: <span
-                    class="${course.level === 100 ? 'one' : course.level === 200 ? 'two' : course.level === 300 ? 'three': 'four'}" 
-                    >${course.level}</span></small>
-                </div>
-                <div class="highlight-footer">
-                    <small>Enrolled: <span>${course.students.length}</span></small>
-                </div>
-                </div>
-                <div class="actions">
-                    <button type="button" id="c-update-btn" onclick="updateCourse('${course._id}')" >Update</button>
-                    <button type="button" id="c-delete-btn" onclick="deleteCourse('${course._id}')">Delete</button>
-                </div>
         </section>
     `;
 
@@ -111,7 +114,7 @@ const main = async () => {
         const courses = coursesCache.courses;
         const timeStamp = coursesCache.timeStamp;
 
-        if ((new Date().getTime() - timeStamp) >= (60 * 1000)) {
+        if ((new Date().getTime() - timeStamp) >= (10 * 1000)) {
             await makeRequestForCourses();
         }
         else {

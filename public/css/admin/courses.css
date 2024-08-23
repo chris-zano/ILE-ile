@@ -1,3 +1,9 @@
+section.courses-main {
+    background-color: var(--background);
+    width: 100%;
+    padding: 1ch;
+    border-radius: 1ch;
+}
 div.section-header {
     display: flex;
     align-items: center;
@@ -6,23 +12,29 @@ div.section-header {
 }
 div.section-header-nav>a {
     margin: 0 .5rem;
-    padding: 1rem 2rem;
-    border-radius: var(--border-radius);
+    height: 45px;
+    width: 120px;
+    border-radius: 1ch;
+    display: grid;
+    place-items: center;
     float: right;
     color: var(--white);
-    background-color: var(--secondary);
+    background-color: var(--primary);
     border: 1px solid transparent;
     transition: all ease-in-out 250ms;
 }
 
 div.section-header-nav>a#organise-courses-btn {
-    background-color: var(--primary);
+    background-color: transparent;
+    width: 150px;
+    color: var(--text-body);
+    border: 1px solid var(--secondary);
 }
 
 div.section-header-nav>a:hover {
-    background-color: transparent;
-    color: var(--text);
-    border: 1px solid var(--secondary);
+    background-color: var(--primary-dark);
+    color: var(--white);
+    border: 1px solid var(--primary-dark);
 }
 div.section-header-nav>a#organise-courses-btn:hover {
     background-color: transparent;
@@ -38,32 +50,52 @@ article.cards {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: center;
     row-gap: 10px;
     column-gap: 7px;
 }
 
 article.cards div.card {
     background-color: var(--background);
-    padding: 1ch;
-    width: 350px;
-    /* height: 300px; */
-    box-shadow: var(--box-shadow-extra-thin);
     border-radius: 1ch;
+    border: 1px solid var(--text);
     cursor: pointer;
+    width: 90%;
+    transition: var(--transition-default);
+}
+
+article.cards div.card:hover,
+article.cards div.card:focus {
+    border-radius: 1ch;
+    border: 1px solid transparent;
+    box-shadow: var(--box-shadow-extra-thin);
 }
 
 div.card section.card-body {
     width: 100%;
     height: 100%;
-    display: flex;
-    flex-flow: column;
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
     gap: 1ch;
+}
+
+div.card section.card-body div.thumbnail {
+    height: 150px;
+    display: block;
+}
+
+div.card section.card-body div.thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-top-left-radius: 1ch;
+    border-bottom-left-radius: 1ch;
+
 }
 
 div.card section.card-body div.title {
     height: 100px;
     display: block;
+    padding: 1ch;
 }
 
 div.card section.card-body div.title small {
@@ -81,6 +113,7 @@ div.card section.card-body div.professor {
     display: flex;
     align-items: center;
     gap: 1ch;
+    padding: 1ch;
 }
 
 div.card section.card-body div.professor img {
@@ -93,8 +126,9 @@ div.card section.card-body div.professor p {
 }
 
 div.card section.card-body div.footer {
+    padding: 1ch;
     display: flex;
-    flex-flow: column;
+    flex-flow: row;
     gap: 1ch;
 }
 
@@ -124,8 +158,8 @@ div.card section.card-body div.actions {
 }
 
 div.card section.card-body div.actions button {
-    height: 37px;
-    width: 80px;
+    height: 45px;
+    width: 120px;
     border: 1px solid transparent;
     outline: 1px solid transparent;
     border-radius: 1ch;
@@ -134,16 +168,16 @@ div.card section.card-body div.actions button {
 }
 
 div.card section.card-body div.actions button#c-update-btn {
-    background-color: var(--primary);
+    background-color: var(--accent);
     color: var(--white);
-    border-color: var(--primary);
+    border-color: var(--accent);
 }
 
 div.card section.card-body div.actions button#c-update-btn:hover,
 div.card section.card-body div.actions button#c-update-btn:focus {
-    background-color: var(--primary-dark);
+    background-color: var(--accent-dark);
     color: var(--white);
-    border-color: var(--primary-dark); 
+    border-color: var(--accent-dark); 
 }
 
 div.card section.card-body div.actions button#c-delete-btn {

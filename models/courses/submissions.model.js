@@ -38,8 +38,6 @@ const submissionsSchema = new Schema(
         courseName: { type: String, required: true },
         lecturer: {
             type: String, //the field ( _id ) of the lecturer document
-            unique: true,
-            index: true,
             required: true
         },
         lecturerSubmission: {
@@ -54,5 +52,6 @@ const submissionsSchema = new Schema(
     },
     { timestamps: true }
 )
+submissionsSchema.index({ courseCode: 1, lecturer: 1 }, { unique: true });
 
 export default mongoose.model('Submissions', submissionsSchema);

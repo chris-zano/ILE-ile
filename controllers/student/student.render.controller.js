@@ -55,7 +55,10 @@ const getStudentSubmissions = async (studentData) => {
         filteredSubmissions.forEach(sub => {
             for (let i = 0; i < sub.lecturerSubmission.length; i++) {
                 if (sub.lecturerSubmission[i].startDate.timeStamp > timeNow) {
+                    console.log('starts later on', new Date(Number(sub.lecturerSubmission[i].startDate.timeStamp)).toLocaleDateString())
                     sub.lecturerSubmission.splice(i,1);
+                }else {
+                    continue;
                 }
             }
         });
