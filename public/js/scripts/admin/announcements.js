@@ -1,5 +1,9 @@
 const deletePost = async (button, id) => {
-    console.log(id)
+    const url = `/admins/announcements/delete?id=${id}`;
+    const response = await fetch(url, {method: "DELETE"});
+    const data = await response.json();
+
+    window.location.reload();
 }
 
 const announcemetMain = async () => {

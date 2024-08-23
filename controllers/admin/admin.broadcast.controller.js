@@ -22,7 +22,7 @@ export const createNewAnnouncement = async (req, res) => {
             console.log('no files uploaded with data');
         }
         else {
-            console.log(files)
+            // console.log(files)
         }
         const getGroup = { "Dear Students,": 'students', "Dear Tutors,": 'tutors', "Dear All,": 'all' }
         const document = await Admin.findOne({ _id: id }, { firstName: 1, lastName: 1, _id: 0 });
@@ -34,7 +34,7 @@ export const createNewAnnouncement = async (req, res) => {
         let announce_to = getGroup[greetings] || null;
         if (!announce_to) announce_to = 'all';
 
-        const announcement = { title, date, greetings, content, closing, userName, files , to: announce_to};
+        const announcement = { title, date, greetings, content, closing, userName, files, to: announce_to };
         const newAnnouncement = new Announcement(announcement);
         await newAnnouncement.save();
 
@@ -42,5 +42,25 @@ export const createNewAnnouncement = async (req, res) => {
     } catch (error) {
         logError(error);
         return res.status(500).redirect(`/admins/render/announcements/${id}`);
+    }
+}
+
+export const deleteAnnouncement = async (req, res) => {
+    if (!req.query || Object.keys(req.query).length === 0) {
+        return res.status(400).json({ message: "bad request" });
+    }
+    try {
+        const { id } = req.query;
+        const deleteStatus = await Announcement.deleteOne({ _id: id });
+
+        if (deleteStatus && (deleteStatus.acknowledged && deleteStatus.deletedCount === 1)) {
+            return res.status(200).json({ message: 'deleted successfully' });
+        }
+        console.log('could not delete');
+        return res.status(404).json({ message: 'could not delete' });
+
+    } catch (error) {
+        logError(error);
+        return res.status(500).json({ message: "failed to delete" });
     }
 }
