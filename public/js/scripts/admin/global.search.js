@@ -1,14 +1,26 @@
 
 let searchTimer;
+let user = sessionStorage.getItem('auth-user');
+
+let user_id = user ? JSON.parse(user).data.id : undefined;
+if (!user_id) window.location.replace('/login');
+const userType = JSON.parse(user).user
 
 const mountcourses = (course) => {
     const heading = course.title;
     const subheading = course.courseCode;
+    const courseId = course._id;
     const li = document.createElement("li");
     li.classList.add("results-item");
 
+
+    
+    const url = userType === "admin"
+     ?`/admins/render/updates/course/${courseId}/${user_id}`
+     : `/${userType}s/render/course/${courseId}/${user_id}`
+
     li.innerHTML = `
-        <a href="#">
+        <a href="${url}">
             <h2>${heading}</h2>
             <p>${subheading}</p>
         </a>
@@ -20,11 +32,12 @@ const mountcourses = (course) => {
 const mountstudents = (student) => {
     const heading = student.firstName + " " + student.lastName;
     const subheading = student.studentId;
+    const student_id = student._id
     const li = document.createElement("li");
     li.classList.add("results-item");
 
     li.innerHTML = `
-        <a href="#">
+        <a href="/admins/render/profile/student/${student_id}/${user_id}">
             <h2>${heading}</h2>
             <p>${subheading}</p>
         </a>
@@ -37,11 +50,12 @@ const mountstudents = (student) => {
 const mounttutors = (tutor) => {
     const heading = tutor.firstName + " " + tutor.lastName;
     const subheading = tutor.lecturerId;
+    const tutor_id = tutor._id;
     const li = document.createElement("li");
     li.classList.add("results-item");
 
     li.innerHTML = `
-        <a href="#">
+        <a href="/admins/render/profile/tutor/${tutor_id}/${user_id}">
             <h2>${heading}</h2>
             <p>${subheading}</p>
         </a>
@@ -49,25 +63,6 @@ const mounttutors = (tutor) => {
 
     document.getElementById("results-ul").append(li)
 }
-const mountmaterials = (material) => {
-    const heading = material.originalname;
-    const subheading = material.courseId;
-    const li = document.createElement("li");
-    li.classList.add("results-item");
-
-    li.innerHTML = `
-        <a href="#">
-            <h2>${heading}</h2>
-            <p>${subheading}</p>
-        </a>
-    `;
-
-    document.getElementById("results-ul").append(li)
-}
-
-
-
-
 
 const renderSearchResults = (searchResults) => {
     const resultsType = searchResults.type;
@@ -93,11 +88,6 @@ const renderSearchResults = (searchResults) => {
         case "tutors":
             results.forEach(tutor => {
                 mounttutors(tutor)
-            })
-            break;
-        case "materials":
-            results.forEach(material => {
-                mountmaterials(material);
             })
             break;
         default:

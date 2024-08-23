@@ -1,3 +1,9 @@
+section.section-tutors-main {
+    background-color: var(--background);
+    padding: 1.5ch;
+    border-radius: 1ch;
+}
+
 button#nextPage {
     background-color: var(--accent);
     border-radius: 1ch;

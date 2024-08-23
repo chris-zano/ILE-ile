@@ -22,13 +22,10 @@ const setupWebSocketServer = (server) => {
                 const meetingStatus = await Courses.findOne({ _id: courseId }, { meeting_status: 1 });
                 if (!meetingStatus || meetingStatus.meeting_status === 'in meeting') {
                     socket.broadcast.to(courseId).emit("meeting started", (courseId));
-                    console.log('herer',{meetingStatus})
                 }
                 else {
-                    console.log({meetingStatus})
                     socket.broadcast.to(courseId).emit("waiting for host", (courseId));
                 }
-
 
             });
 

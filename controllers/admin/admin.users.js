@@ -155,7 +155,7 @@ export const createLecturer = async (req, res) => {
             firstName: firstName,
             lastName: lastName,
             faculty: faculty,
-            "created-at": createdAt
+            email: `${lecturerId}@live.gctu.edu.gh`
         });
 
         await tutor.save();
@@ -219,7 +219,7 @@ export const createStudent = async (req, res) => {
     const { studentId, firstName, lastName, program, year, level, session, faculty, registeredCourses } = req.body;
 
     try {
-        const student = new Students({ studentId, firstName, lastName, program, level, session, faculty, registeredCourses });
+        const student = new Students({ studentId, firstName, lastName, program, level, session, faculty, registeredCourses, email: `${studentId}@live.gctu.edu.gh` });
         await student.save();
 
         return res.status(200).redirect(`/admins/render/students/${req.adminData.id}`);
@@ -274,7 +274,7 @@ export const importLecturersData = async (req, res) => {
             firstName: tutor.firstName,
             lastName: tutor.lastName,
             faculty: tutor.faculty,
-            email: `${tutor.lecturerId}@gctu.edu.gh`
+            email: `${tutor.lecturerId}@live.gctu.edu.gh`
         }));
 
         const saveResults = await Promise.all(lecturersToInsert.map(async (tutor) => {
@@ -330,7 +330,7 @@ export const importStudentsData = async (req, res) => {
             faculty: student.faculty,
             session: student.session,
             registeredCourses: student.registeredCourses,
-            email: `${student.studentId}@gctu.edu.gh`
+            email: `${student.studentId}@live.gctu.edu.gh`
         }));
 
         const saveResults = await Promise.all(studentsToInsert.map(async (student) => {

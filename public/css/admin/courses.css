@@ -60,6 +60,7 @@ article.cards div.card {
     border: 1px solid var(--text);
     cursor: pointer;
     width: 90%;
+    height: 150px;
     transition: var(--transition-default);
 }
 
@@ -105,7 +106,7 @@ div.card section.card-body div.title small {
 }
 
 div.card section.card-body div.title h2 {
-    font-size: var(--font-large);
+    font-size: var(--font-medium);
     color: var(--text-body);
 }
 
@@ -126,7 +127,6 @@ div.card section.card-body div.professor p {
 }
 
 div.card section.card-body div.footer {
-    padding: 1ch;
     display: flex;
     flex-flow: row;
     gap: 1ch;
