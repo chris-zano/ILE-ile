@@ -47,6 +47,10 @@ const downloadAll = (button) => {
 
 }
 
+const addNewQuiz = async (button) => {
+    console.log(button  )
+}
+
 const closeOverlay = (button) => {
     document.getElementById('studSub-overlay').querySelector('#collection-subs').innerHTML = ""
     document.getElementById('studSub-overlay').setAttribute('hidden', 'true')
