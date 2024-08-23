@@ -114,7 +114,7 @@
                 console.log('meeting-started')
                 enableJoinButton("Join Meeting");
                 joinBtn.addEventListener("click", () => {
-                    window.location.href = `https://ile-rtc.onrender.com/meeting?courseId=${courseId}&chapter=${chapter}&userId=${userData.data.id}&userType=${userType}`;
+                    window.location.href = `http://localhost:8080/meeting?courseId=${courseId}&chapter=${chapter}&userId=${userData.data.id}&userType=${userType}`;
                 }, { once: true });
             }
             else {
@@ -127,7 +127,7 @@
                 console.log('meeting-started')
                 enableJoinButton("Join Meeting");
                 joinBtn.addEventListener("click", () => {
-                    window.location.href = `https://ile-rtc.onrender.com/meeting?courseId=${courseId}&chapter=${chapter}&userId=${userData.data.id}&userType=${userType}`;
+                    window.location.href = `http://localhost:8080/meeting?courseId=${courseId}&chapter=${chapter}&userId=${userData.data.id}&userType=${userType}`;
                 }, { once: true });
             });
             }
@@ -140,7 +140,7 @@
             joinBtn.addEventListener("click", () => {
                 socket.emit("starting meeting", courseId);
                 // window.location.href = `/room/${courseId}/${chapter}`;
-                window.location.href = `https://ile-rtc.onrender.com/meeting?courseId=${courseId}&chapter=${chapter}&userId=${userData.data.id}&userType=${userType}`;
+                window.location.href = `http://localhost:8080/meeting?courseId=${courseId}&chapter=${chapter}&userId=${userData.data.id}&userType=${userType}`;
             }, { once: true });
         } else {
             return window.location.replace('/login');
