@@ -1,0 +1,108 @@
+section.quizzes-main#quizzes-main {
+    max-width: 100%;
+    background-color: var(--white);
+    padding: 1ch;
+    border-radius: 1ch;
+    font-family: Arial, sans-serif;
+}
+
+section.quizzes-main#quizzes-main div.no-data {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 1.2em;
+    margin-top: 2ch;
+}
+
+section.quizzes-main#quizzes-main div#quiz-list {
+    width: 100%;
+}
+
+section.quizzes-main#quizzes-main div#quiz-list ul {
+    width: 100%;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+
+}
+
+section.quizzes-main#quizzes-main div#quiz-list li {
+    width: 100%;
+    background-color: var(--light-gray);
+    padding: 1.5ch;
+    border-radius: 1ch;
+    margin-bottom: 1ch;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+}
+
+section.quizzes-main#quizzes-main div#quiz-list li article.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1ch;
+    border-bottom: 1px solid var(--inactive);
+    margin-bottom: 1ch;
+}
+
+section.quizzes-main#quizzes-main div#quiz-list li article.header .title {
+    font-weight: bold;
+    font-size: 1.2em;
+    color: var(--primary-dark);
+}
+
+section.quizzes-main#quizzes-main div#quiz-list li article.header .lecturer {
+    font-size: 1em;
+    color: var(--text);
+}
+
+section.quizzes-main#quizzes-main div#quiz-list li div.q-count {
+    font-size: 1em;
+    color: var(--text-muted);
+    margin-bottom: 1ch;
+}
+
+section.quizzes-main#quizzes-main div#quiz-list li div.q-list {
+    max-width: 100%;
+}
+
+section.quizzes-main#quizzes-main div#quiz-list li div.q-list ul {
+    overflow-x: scroll;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-flow: row;
+    flex-wrap: wrap;
+}
+
+section.quizzes-main#quizzes-main div#quiz-list li div.q-list ul li {
+    border: 1px solid var(--inactive);
+    display: grid;
+    place-items: center;
+    width: 150px;
+    height: 150px;
+    padding: 0.5ch 0;
+}
+
+section.quizzes-main#quizzes-main div#quiz-list li div.q-list ul li a {
+    text-decoration: none;
+    color: var(--primary);
+    font-weight: bold;
+}
+
+section.quizzes-main#quizzes-main div#quiz-list li div.q-list ul li a:hover {
+    text-decoration: underline;
+}
+
+section.quizzes-main#quizzes-main div#quiz-list li div.q-list ul li span.taken-status {
+    font-size: 0.9em;
+    color: var(--warning);
+    font-weight: bold;
+}
+
+section.quizzes-main#quizzes-main div#quiz-list li div.q-list ul li span {
+    font-size: 0.9em;
+    color: var(--text-muted);
+    text-align: center;
+}

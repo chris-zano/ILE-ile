@@ -1,5 +1,5 @@
 import { isValidObjectId } from 'mongoose';
-import { AnnouncementsDB, ClassesDB, CoursesDB, RegisteredCoursesDB, StudentsDB, SubmissionsDB } from '../../utils/global/db.utils.js';
+import { AnnouncementsDB, ClassesDB, CoursesDB, QuizDB, RegisteredCoursesDB, StudentsDB, SubmissionsDB } from '../../utils/global/db.utils.js';
 import { logError } from '../admin/admin.utils.js';
 
 const Courses = CoursesDB();
@@ -8,6 +8,7 @@ const Students = StudentsDB()
 const RegisteredCourses = RegisteredCoursesDB();
 const Submissions = SubmissionsDB();
 const Announcement = AnnouncementsDB();
+const Quiz = QuizDB()
 
 const getStudentDashboard = async (studentData) => {
     return {
@@ -56,8 +57,8 @@ const getStudentSubmissions = async (studentData) => {
             for (let i = 0; i < sub.lecturerSubmission.length; i++) {
                 if (sub.lecturerSubmission[i].startDate.timeStamp > timeNow) {
                     console.log('starts later on', new Date(Number(sub.lecturerSubmission[i].startDate.timeStamp)).toLocaleDateString())
-                    sub.lecturerSubmission.splice(i,1);
-                }else {
+                    sub.lecturerSubmission.splice(i, 1);
+                } else {
                     continue;
                 }
             }
@@ -107,6 +108,35 @@ const getStudentAnnouncements = async (studentData) => {
     }
 }
 
+const getStudentsAvailableQuizzes = async (studentData) => {
+    try {
+        const courseCodes = studentData.courses;
+        const codes = Array.from(courseCodes);
+        
+        if (codes.length === 0) return [];
+        
+        const quizzes = codes.map(async (code) => {
+            const course = await Courses.findOne({courseCode: code}, {title: 1, _id: 1, lecturer: 1});
+            const quizdata = await Quiz.findOne({ courseCode: code });
+            if (!quizdata || quizdata.questions.length === 0) return;
+            return  {
+                title: course.title,
+                id: course._id,
+                lecturer: course.lecturer.name,
+                questions: quizdata
+            }
+        });
+        
+        let data = await Promise.all(quizzes);
+        data = data.filter(c => c !== null);
+        console.log(data)
+        return data.filter(data => !!data);
+    } catch (error) {
+        logError(error);
+        return null;
+    }
+}
+
 const returnUrlsToMethod = (pageurl = "") => {
     if (!pageurl) return undefined;
 
@@ -119,6 +149,7 @@ const returnUrlsToMethod = (pageurl = "") => {
         "register-courses": getCourseRegistrationPage,
         "notifications": getStudentNotifications,
         "announcements": getStudentAnnouncements,
+        "quizzes": getStudentsAvailableQuizzes,
     }
     return urlToMethodsObject[pageurl] || undefined;
 }
