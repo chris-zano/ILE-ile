@@ -1,4 +1,4 @@
-import { CoursesDB, LecturersDB, StudentsDB, SubmissionsDB } from '../../utils/global/db.utils.js'
+import { CoursesDB, LecturersDB, QuizDB, StudentsDB, SubmissionsDB } from '../../utils/global/db.utils.js'
 import { logError } from '../admin/admin.utils.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -13,6 +13,7 @@ const Student = StudentsDB();
 const Lecturer = LecturersDB();
 const Courses = CoursesDB();
 const Submission = SubmissionsDB();
+const Quiz = QuizDB();
 
 
 export const addStudentSubmission = async (req, res) => {

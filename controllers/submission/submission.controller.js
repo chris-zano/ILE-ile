@@ -1,4 +1,4 @@
-import { CoursesDB, LecturersDB, StudentsDB, SubmissionsDB } from '../../utils/global/db.utils.js'
+import { CoursesDB, LecturersDB, QuizDB, StudentsDB, SubmissionsDB } from '../../utils/global/db.utils.js'
 import { logError } from '../admin/admin.utils.js';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -13,6 +13,7 @@ const Student = StudentsDB();
 const Lecturer = LecturersDB();
 const Courses = CoursesDB();
 const Submission = SubmissionsDB();
+const Quiz = QuizDB()
 
 export const getLecturerName = async (req, res) => {
     try {
@@ -222,4 +223,46 @@ export const deleteStudentSubmissions = async (req, res) => {
         logError(error);
         return res.status(500).json({ message: 'failed ot delete. internal server error' });
     }
+}
+
+export const createQuiz = async (req, res) => {
+    if (!req.body || Object.keys(req.body).length === 0) {
+        console.log('Request has no `body`');
+        return res.status(400).json({ message: 'bad request' });
+    }
+
+    try {
+        const { courseCode, questions } = req.body;
+        let courseId = await Courses.findOne({ courseCode: courseCode }, { _id: 1 }) ;
+        if (!courseId) {
+            console.log('courseId was not found for courseCode ', courseCode)
+        }
+        courseId = courseId._id.toString()
+        const doc = await Quiz.findOne({ courseCode: courseCode, courseId: courseId}, { _id: 1 });
+        if (!doc) {
+            //create new quiz entry
+            const newQuiz = new Quiz({
+                courseCode: courseCode,
+                courseId: courseId,
+                questions: [{
+                    title: "Quiz 1",
+                    questions: questions
+                }]
+            });
+
+            const data = await newQuiz.save();
+            return res.status(200).json({ message: "saved" });
+        }
+        const update = await Quiz.updateOne({ courseCode: courseCode, courseId: courseId }, {
+            $push: {
+                questions: { title: "Quiz", questions: questions }
+            }
+        });
+
+        return res.status(200).json({ message: "updated" })
+    } catch (error) {
+        logError(error);
+        return res.status(500).json({ message: "internal server error" });
+    }
+
 }

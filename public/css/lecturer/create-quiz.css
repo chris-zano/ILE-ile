@@ -1,0 +1,352 @@
+@media screen and (min-width: 768px) {
+  div.create-quiz-wrapper-main {
+    width: 100%;
+    overflow-x: scroll;
+    height: 100%;
+    background-color: var(--white);
+    border-radius: 1ch;
+  }
+
+  .quiz-main-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1ch 2ch;
+  }
+
+  .quiz-main-nav .title-of-course {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--text-title);
+  }
+
+  .quiz-main-nav .quiz-nav button {
+    width: 120px;
+    height: 40px;
+    cursor: pointer;
+    border-radius: 1ch;
+    transition: var(--transition-default);
+  }
+  .quiz-main-nav .quiz-nav button#clear-memory {
+    color: var(--text);
+    background-color: transparent;
+    border: 1px solid var(--red);
+    
+  }
+  .quiz-main-nav .quiz-nav button#clear-memory:focus,
+  .quiz-main-nav .quiz-nav button#clear-memory:hover {
+    background-color: var(--dark-red);
+    border: 1px solid var(--dark-red);
+    color: var(--white);
+    
+  }
+  .quiz-main-nav .quiz-nav button#save-all{
+    background-color: var(--accent);
+    border: 1px solid var(--accent);
+    color: var(--white);
+  } 
+
+  .quiz-main-nav .quiz-nav button#save-all:focus,
+  .quiz-main-nav .quiz-nav button#save-all:hover {
+    background-color: var(--accent-dark);
+    border: 1px solid var(--accent-dark);
+    color: var(--white);
+    
+  }
+  .quiz-main-nav .quiz-nav button#quiz-nav {
+    background-color: var(--primary);
+    border: 1px solid var(--primary);
+    color: var(--white);
+  }
+  .quiz-main-nav .quiz-nav button#quiz-nav:focus,
+  .quiz-main-nav .quiz-nav button#quiz-nav:hover {
+    background-color: var(--primary-dark);
+    border: 1px solid var(--primary-dark);
+    color: var(--white);
+    
+  }
+
+  section.create-quiz-main {
+    display: grid;
+    height: calc(100vh - 180px);
+    overflow-y: scroll;
+    grid-template-columns: 68% 32%;
+    padding: 1ch;
+  }
+
+  .quiz-view {
+    height: 100%;
+    overflow-y: scroll;
+    background-color: var(--white);
+    padding: 1ch;
+    border-top-left-radius: 1ch;
+    border-bottom-left-radius: 1ch;
+    border-right: 1px solid var(--inactive);
+  }
+
+  .create-section {
+    border-top-right-radius: 1ch;
+    border-bottom-right-radius: 1ch;
+    height: 100%;
+    background-color: var(--white);
+    padding: 1ch;
+  }
+
+  .create-section h2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-title);
+  }
+
+
+  .create-section label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+    color: var(--text);
+  }
+
+  .create-section textarea,
+  .create-section input[type="text"],
+  .create-section select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  .create-section button[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  .create-section button[type="submit"]:hover {
+    background-color: #0056b3;
+  }
+
+  ol#ol-questions {
+    display: grid;
+    grid-auto-flow: row;
+    grid-auto-rows: max-content;
+    gap: 1ch;
+    padding-left: 1.5ch;
+    /* Adjust padding to make the list numbers visible */
+    margin: 0;
+    /* Ensure there's no unwanted margin that pushes the list off-screen */
+  }
+
+  li.ol-list-item {
+    list-style: decimal;
+    border: 1px solid #dcd1d1db;
+    border-radius: 1ch;
+    padding: 1ch;
+    margin-left: 1ch;
+    /* Add a slight margin to keep the item inside the container */
+  }
+
+  li.ol-list-item p {
+    padding: 1ch;
+    color: var(--text-title);
+  }
+
+  li.ol-list-item label {
+    padding: 2ch;
+    color: var(--text);
+  }
+
+  *[aria-hidden='true'] {
+    display: none;
+  }
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+  *[aria-hidden='true'] {
+    display: none;
+  }
+
+  div.create-quiz-wrapper-main {
+    width: 100%;
+    overflow-x: scroll;
+    height: 100%;
+    background-color: var(--white);
+    border-radius: 1ch;
+  }
+
+  .quiz-main-nav {
+    display: grid;
+    gap: 1ch;
+    align-items: center;
+    justify-content: center;
+    padding: 1ch 2ch;
+  }
+
+  .quiz-main-nav .title-of-course {
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--text-title);
+  }
+
+  .quiz-main-nav .quiz-nav button {
+    width: 120px;
+    height: 40px;
+    cursor: pointer;
+    border-radius: 1ch;
+    transition: var(--transition-default);
+  }
+  .quiz-main-nav .quiz-nav button#clear-memory {
+    color: var(--text);
+    background-color: transparent;
+    border: 1px solid var(--red);
+    
+  }
+  .quiz-main-nav .quiz-nav button#clear-memory:focus,
+  .quiz-main-nav .quiz-nav button#clear-memory:hover {
+    background-color: var(--dark-red);
+    border: 1px solid var(--dark-red);
+    color: var(--white);
+    
+  }
+  .quiz-main-nav .quiz-nav button#save-all{
+    background-color: var(--accent);
+    border: 1px solid var(--accent);
+    color: var(--white);
+  } 
+
+  .quiz-main-nav .quiz-nav button#save-all:focus,
+  .quiz-main-nav .quiz-nav button#save-all:hover {
+    background-color: var(--accent-dark);
+    border: 1px solid var(--accent-dark);
+    color: var(--white);
+    
+  }
+  .quiz-main-nav .quiz-nav button#quiz-nav {
+    background-color: var(--primary);
+    border: 1px solid var(--primary);
+    color: var(--white);
+  }
+  .quiz-main-nav .quiz-nav button#quiz-nav:focus,
+  .quiz-main-nav .quiz-nav button#quiz-nav:hover {
+    background-color: var(--primary-dark);
+    border: 1px solid var(--primary-dark);
+    color: var(--white);
+    
+  }
+
+  section.create-quiz-main {
+    display: grid;
+    height: 80vh;
+    overflow-y: scroll;
+    grid-template-columns: 1fr;
+    padding: 1ch;
+  }
+
+  .quiz-view {
+    height: 100%;
+    overflow-y: scroll;
+    background-color: var(--white);
+    padding: 1ch;
+    border-radius: 1ch;
+  }
+
+  .create-section {
+    display: none;
+    height: 100%;
+    overflow-y: scroll;
+    background-color: var(--white);
+    padding: 1ch;
+    border-radius: 1ch;
+  }
+
+  .create-section h2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-title);
+  }
+
+  .create-section h2 button {
+    background-color: #ff4c4c;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    padding: 5px 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 100%;
+    
+}
+
+  .create-section label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+    color: var(--text);
+  }
+
+  .create-section textarea,
+  .create-section input[type="text"],
+  .create-section select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  .create-section button[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  .create-section button[type="submit"]:hover {
+    background-color: #0056b3;
+  }
+
+  ol#ol-questions {
+    display: grid;
+    grid-auto-flow: row;
+    grid-auto-rows: max-content;
+    gap: 1ch;
+    padding-left: 1.5ch;
+    margin: 0;
+  }
+
+  li.ol-list-item {
+    list-style: decimal;
+    border: 1px solid #dcd1d1db;
+    border-radius: 1ch;
+    padding: 1ch;
+    margin-left: 1ch;
+  }
+
+  li.ol-list-item p {
+    padding: 1ch;
+    color: var(--text-title);
+  }
+
+  li.ol-list-item label {
+    padding: 2ch;
+    color: var(--text);
+  }
+}
