@@ -7,26 +7,27 @@
     <% } else { %>
         <div id="quiz-list">
             <ul>
-                <% for( let quiz of data) { %>
+               <% for( let quiz of data ) { %>
                     <li>
-                        <article class="header" data-id="<%= quiz.id %>">
-                            <div class="title"><%= quiz.title %></div>
-                            <div class="lecturer"><%= quiz.lecturer %></div>
+                        <article class="info">
+                            <div class="title"><%= quiz.info.title %></div>
+                            <div class="lecturer"><%= quiz.info.lecturer.name %></div>
                         </article>
-                        <div class="q-count"><%= quiz.questions.questions.length %> Quizzes</div>
-                        <div class="q-list">
-                            <ul>
-                                <% for( let question of quiz.questions.questions ) { %>
-                                    <li>
-                                        <a href="#"><%= question.title %> (<%= question.questions.length %>)</a>
-                                        <span class="taken-status">Pending</span>
-                                        <span>Due: <strong><%= new Date().toLocaleString() %></strong></span>
+                        <ul>
+                            <% for( let i = 0; i < quiz.docs.length; i++ ) { %>
+                                <li>
+                                        <a href="/quiz/onboard?id=<%= encodeURIComponent(quiz.docs[i]._id) %>">
+                                            <span>title: <strong><%= quiz.docs[i].title  %></strong></span><br>
+                                            <span>start: <strong><%= new Date(quiz.docs[i].start).toLocaleString()  %></strong></span><br>
+                                            <span>end: <strong><%= new Date(quiz.docs[i].end).toLocaleString()  %></strong></span><br>
+                                            <span>duration: <strong><%= quiz.docs[i].duration  %> minutes</strong></span><br>
+                                            <span>questions: <strong><%= quiz.docs[i].questions.length  %></strong></span><br>
+                                        </a>
                                     </li>
                                 <% } %>
                             </ul>
-                        </div>
                     </li>
-                <% } %>
+               <% } %>
             </ul>
         </div>
     <% } %>

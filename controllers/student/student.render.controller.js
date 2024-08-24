@@ -111,26 +111,29 @@ const getStudentAnnouncements = async (studentData) => {
 const getStudentsAvailableQuizzes = async (studentData) => {
     try {
         const courseCodes = studentData.courses;
-        const codes = Array.from(courseCodes);
-        
-        if (codes.length === 0) return [];
-        
-        const quizzes = codes.map(async (code) => {
-            const course = await Courses.findOne({courseCode: code}, {title: 1, _id: 1, lecturer: 1});
-            const quizdata = await Quiz.findOne({ courseCode: code });
-            if (!quizdata || quizdata.questions.length === 0) return;
-            return  {
-                title: course.title,
-                id: course._id,
-                lecturer: course.lecturer.name,
-                questions: quizdata
+        if (!courseCodes || courseCodes.length ===0) {
+            return []
+        }
+
+        let quizzes = [];
+        const currentDate = new Date();
+
+        for (let code of courseCodes) {
+            const docs = await Quiz.find({
+                courseCode: code,
+                // startDate: { $lte: currentDate },
+                // endDate: { $gte: currentDate }
+            });
+
+            if (!docs || docs.length === 0) {
+                continue;
             }
-        });
-        
-        let data = await Promise.all(quizzes);
-        data = data.filter(c => c !== null);
-        console.log(data)
-        return data.filter(data => !!data);
+
+            const courseInfo = await Courses.findOne({courseCode: code}, {title:1, lecturer:1, courseCode: 1, _id: 0});
+
+            quizzes.push({info: courseInfo, docs: [...docs]});
+        }
+        return quizzes;
     } catch (error) {
         logError(error);
         return null;

@@ -1,108 +1,85 @@
 section.quizzes-main#quizzes-main {
-    max-width: 100%;
     background-color: var(--white);
     padding: 1ch;
     border-radius: 1ch;
-    font-family: Arial, sans-serif;
 }
 
-section.quizzes-main#quizzes-main div.no-data {
+.quizzes-main .no-data {
     text-align: center;
     color: var(--text-muted);
-    font-size: 1.2em;
+    font-style: italic;
     margin-top: 2ch;
 }
 
-section.quizzes-main#quizzes-main div#quiz-list {
-    width: 100%;
-}
-
-section.quizzes-main#quizzes-main div#quiz-list ul {
-    width: 100%;
-    list-style-type: none;
+.quizzes-main #quiz-list ul {
+    list-style: none;
     padding: 0;
     margin: 0;
-
 }
 
-section.quizzes-main#quizzes-main div#quiz-list li {
-    width: 100%;
-    background-color: var(--light-gray);
-    padding: 1.5ch;
+section.quizzes-main > #quiz-list > ul > li {
+    display: block;
+    margin-bottom: 2ch;
+    border: 1px solid var(--inactive);
     border-radius: 1ch;
-    margin-bottom: 1ch;
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: auto;
+    background-color: var(--light-gray);
+    overflow: hidden;
 }
 
-section.quizzes-main#quizzes-main div#quiz-list li article.header {
+.quizzes-main #quiz-list ul li .info {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-bottom: 1ch;
+    padding: 1ch;
     border-bottom: 1px solid var(--inactive);
-    margin-bottom: 1ch;
+    background-color: var(--primary-light);
 }
 
-section.quizzes-main#quizzes-main div#quiz-list li article.header .title {
+.quizzes-main #quiz-list ul li .info .title {
+    font-size: 18px;
     font-weight: bold;
-    font-size: 1.2em;
-    color: var(--primary-dark);
+    color: var(--text-title);
 }
 
-section.quizzes-main#quizzes-main div#quiz-list li article.header .lecturer {
-    font-size: 1em;
-    color: var(--text);
-}
-
-section.quizzes-main#quizzes-main div#quiz-list li div.q-count {
-    font-size: 1em;
+.quizzes-main #quiz-list ul li .info .lecturer {
+    font-size: 14px;
     color: var(--text-muted);
-    margin-bottom: 1ch;
+    text-align: right;
 }
 
-section.quizzes-main#quizzes-main div#quiz-list li div.q-list {
-    max-width: 100%;
+.quizzes-main #quiz-list ul li ul {
+    padding: 1ch;
+    background-color: var(--white);
 }
 
-section.quizzes-main#quizzes-main div#quiz-list li div.q-list ul {
-    overflow-x: scroll;
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-flow: row;
-    flex-wrap: wrap;
+.quizzes-main #quiz-list ul li ul li {
+    border-bottom: 1px solid var(--inactive);
+    padding: 1ch 0;
 }
 
-section.quizzes-main#quizzes-main div#quiz-list li div.q-list ul li {
-    border: 1px solid var(--inactive);
-    display: grid;
-    place-items: center;
-    width: 150px;
-    height: 150px;
-    padding: 0.5ch 0;
+.quizzes-main #quiz-list ul li ul li:last-child {
+    border-bottom: none;
 }
 
-section.quizzes-main#quizzes-main div#quiz-list li div.q-list ul li a {
+.quizzes-main #quiz-list ul li ul li a {
     text-decoration: none;
-    color: var(--primary);
-    font-weight: bold;
+    color: var(--text);
+    display: block;
+    padding: 0.5ch 1ch;
+    transition: background-color var(--transition-default);
 }
 
-section.quizzes-main#quizzes-main div#quiz-list li div.q-list ul li a:hover {
-    text-decoration: underline;
+.quizzes-main #quiz-list ul li ul li a:hover {
+    background-color: var(--light-hover);
 }
 
-section.quizzes-main#quizzes-main div#quiz-list li div.q-list ul li span.taken-status {
-    font-size: 0.9em;
-    color: var(--warning);
-    font-weight: bold;
+.quizzes-main #quiz-list ul li ul li a span {
+    display: block;
+    font-size: 14px;
+    color: var(--text);
+    margin-bottom: 0.5ch;
 }
 
-section.quizzes-main#quizzes-main div#quiz-list li div.q-list ul li span {
-    font-size: 0.9em;
-    color: var(--text-muted);
-    text-align: center;
+.quizzes-main #quiz-list ul li ul li a span strong {
+    color: var(--text-title);
 }
