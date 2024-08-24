@@ -39,7 +39,7 @@ const generateNewSubmissionObject = async ({ lecturerId, submissionObject }) => 
     const { title, instructions, startDate, endDate, expected, received, fileUrl } = submissionObject;
     const courseCode = submissionObject.courseCode || submissionObject.course_code
 
-        // Wait for the course name to be fetched
+    // Wait for the course name to be fetched
     let courseName;
     try {
         const course = await Courses.findOne({ courseCode: courseCode });
@@ -226,43 +226,54 @@ export const deleteStudentSubmissions = async (req, res) => {
 }
 
 export const createQuiz = async (req, res) => {
-    if (!req.body || Object.keys(req.body).length === 0) {
-        console.log('Request has no `body`');
+    if (!req.body || Object.keys(req.body).length < 3) {
+        console.log('Request has no `body` or some values are missing');
         return res.status(400).json({ message: 'bad request' });
     }
 
     try {
-        const { courseCode, questions } = req.body;
-        let courseId = await Courses.findOne({ courseCode: courseCode }, { _id: 1 }) ;
-        if (!courseId) {
-            console.log('courseId was not found for courseCode ', courseCode)
+        const { courseCode, questions, details } = req.body;
+        if (!courseCode ||
+            Object.values(details).some(value => value === '') ||
+            Object.values(questions).some(value => value === '')) {
+            console.log('not all values were provided.')
+            return res.status(400).json({ message: 'request body contains missing data' });
         }
-        courseId = courseId._id.toString()
-        const doc = await Quiz.findOne({ courseCode: courseCode, courseId: courseId}, { _id: 1 });
-        if (!doc) {
-            //create new quiz entry
-            const newQuiz = new Quiz({
-                courseCode: courseCode,
-                courseId: courseId,
-                questions: [{
-                    title: "Quiz 1",
-                    questions: questions
-                }]
-            });
 
-            const data = await newQuiz.save();
-            return res.status(200).json({ message: "saved" });
-        }
-        const update = await Quiz.updateOne({ courseCode: courseCode, courseId: courseId }, {
-            $push: {
-                questions: { title: "Quiz", questions: questions }
-            }
-        });
+        const newQuiz = new Quiz({
+            courseCode: courseCode,
+            title: details.title,
+            start: details.start,
+            end: details.end,
+            duration: details.duration,
+            questions: questions
+        })
 
-        return res.status(200).json({ message: "updated" })
+        await newQuiz.save();
+
+        console.log('New quiz saved')
+        return res.status(200).json({ message: 'saved' });
     } catch (error) {
         logError(error);
         return res.status(500).json({ message: "internal server error" });
     }
 
+}
+
+export const getQuizzes = async (req, res) => {
+    if (!req.query || Object.keys(req.query).length === 0) {
+        console.logg("course code was nott given to getQuizzes");
+        return res.status(400).json({ message: "request is missing some required data." });
+    }
+    try {
+        const docs = await Quiz.find({ courseCode: req.query.code });
+        if (!docs) {
+            console.log("No documents matched", docs);
+            return res.status(404).json({ message: 'no such quizzes were found' });
+        }
+        return res.status(200).json({ message: 'success', docs: docs });
+    } catch (error) {
+        logError(error);
+        return res.status(500).json({ message: "internal server error" })
+    }
 }

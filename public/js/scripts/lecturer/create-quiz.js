@@ -5,6 +5,15 @@ let form = null;
 let _width = window.innerWidth;
 let _form = document.getElementById("container_form");
 let _questions = document.getElementById("quiz-view");
+let _enterDetails = document.getElementById("q-enter-details");
+
+let _saveAllBtn = document.getElementById("save-all");
+let _addQuestionBtn = document.getElementById("quiz-nav");
+let _clearMemoryBtn = document.getElementById("clear-memory");
+
+const toggleAttribute = (element, attributeName, value = "") => {
+    element.setAttribute(attributeName, value);
+};
 
 const toggleForm = () => {
     try {
@@ -24,18 +33,18 @@ const closeForm = () => {
     }
 }
 
-const saveQuestionsToDatabase = async (code, qst) => {
+const saveQuestionsToDatabase = async (code, qst, det) => {
     const url = `/quiz/create`;
-    const body = {courseCode: code, questions: qst};
+    const body = { courseCode: code, questions: qst, details: det };
     const response = await fetch(url, {
-        method: 'POST', 
-        headers:{"Content-Type": "application/json"},
+        method: 'POST',
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body)
     });
 
     const data = await response.data;
 
-    console.log({status: response.status, data});
+    console.log({ status: response.status, data });
 
     if (response.ok) {
         clearMemory();
@@ -49,19 +58,25 @@ const saveAll = async () => {
 
     if (Array.from(questions).length === 0) {
         Toast_Notification.showWarning('Failed to save all. No questions added.');
-        console.log({courseCode: _courseCode, questions: questions});
-        return null;
-    }
-    
-    if (Array.from(questions).length < 10) {
-        Toast_Notification.showWarning('Failed to save. At least 10 questions needed.');
-        console.log({courseCode: _courseCode, questions: questions});
+        console.log({ courseCode: _courseCode, questions: questions });
         return null;
     }
 
-    //valid with at least 10 questions
-    console.log({courseCode: _courseCode, questions: questions});
-    await saveQuestionsToDatabase(_courseCode, questions);
+    if (Array.from(questions).length < 10) {
+        Toast_Notification.showWarning('Failed to save. At least 10 questions needed.');
+        console.log({ courseCode: _courseCode, questions: questions });
+        return null;
+    }
+
+    const _details = localStorage.getItem('q-details') ? JSON.parse(localStorage.getItem('q-details')) : null;
+
+    try { 
+        await saveQuestionsToDatabase(_courseCode, questions, _details); 
+    }
+    catch(error) {
+        console.log(error);
+        Toast_Notification.showInfo('Failed to save');
+    }
     return true;
 }
 
@@ -83,15 +98,64 @@ const renderNewQuestion = (question) => {
     }
 }
 
-const clearMemory = ()  => {
+const clearMemory = () => {
     localStorage.removeItem('quiz-data');
+    localStorage.removeItem('q-details');
     if (document.getElementById('clear-memory').getAttribute('aria-hidden') === 'false') {
         document.getElementById('clear-memory').setAttribute('aria-hidden', "true");
     }
     location.reload();
 }
 
+const getQDetails = () => {
+
+    if (localStorage.getItem("q-details")) {
+        _enterDetails.innerHTML = "";
+        _enterDetails.style.display = 'none'
+
+        toggleAttribute(_form, "aria-hidden", "false")
+        toggleAttribute(_saveAllBtn, "aria-hidden", "false")
+        toggleAttribute(_clearMemoryBtn, "aria-hidden", "false")
+        toggleAttribute(_addQuestionBtn, "aria-hidden", "true")
+
+        return false;
+    }
+
+    toggleAttribute(_form, "aria-hidden", "true")
+    toggleAttribute(_saveAllBtn, "aria-hidden", "true")
+    toggleAttribute(_clearMemoryBtn, "aria-hidden", "true")
+    toggleAttribute(_addQuestionBtn, "aria-hidden", "true")
+
+    document.getElementById("q-save-title").addEventListener("click", (event) => {
+        event.preventDefault();
+        const _title = document.getElementById("q-title").value;
+        const _start = document.getElementById("q-start").value;
+        const _end = document.getElementById("q-end").value;
+        const _duration = document.getElementById("q-duration").value;
+
+        const details = {
+            title: _title,
+            start: _start,
+            end: _end,
+            duration: _duration
+        }
+
+        console.log("Details: ", details);
+        window.localStorage.setItem("q-details", JSON.stringify(details));
+        _enterDetails.innerHTML = "";
+        _enterDetails.style.display = 'none'
+
+        toggleAttribute(_form, "aria-hidden", "false")
+        toggleAttribute(_saveAllBtn, "aria-hidden", "false")
+        toggleAttribute(_clearMemoryBtn, "aria-hidden", "false")
+        toggleAttribute(_addQuestionBtn, "aria-hidden", "true")
+    });
+    return true
+}
+
 const quizMain = () => {
+    getQDetails();
+
     const localdata = localStorage.getItem('quiz-data') ? JSON.parse(localStorage.getItem('quiz-data')) : null;
     console.log('local data', localdata)
     if (!localdata) {
@@ -127,7 +191,6 @@ const quizMain = () => {
         const _correctAnswer = document.getElementById("correctAnswer").value;
 
         const questionObj = {
-            courseCode: courseCode,
             question: _question,
             options: [_answerA, _answerB, _answerC, _answerD],
             correctAnswer: _correctAnswer

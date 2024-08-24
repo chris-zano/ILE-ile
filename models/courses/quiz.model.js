@@ -2,29 +2,17 @@ import mongoose from 'mongoose';
 
 const { Schema, model } = mongoose;
 
-const questionSchema = new Schema({
-  title: {
-    type: String,
-    required: true,
-  },
-  questions: {
-    type: [],
-    required: true,
-  },
-});
 
 const quizSchema = new Schema({
   courseCode: {
     type: String,
-    unique: true,
     required: true,
   },
-  courseId: {
-    type: String,
-    unique: true,
-    required: true,
-  },
-  questions: [questionSchema],
+  title: {type:String, required: true},
+  start: {type:String, required: true},
+  end: {type:String, required: true},
+  duration: {type:String, required: true},
+  questions:Array,
 });
 
 export default mongoose.model("Quiz", quizSchema);

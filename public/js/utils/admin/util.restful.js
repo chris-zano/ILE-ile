@@ -74,58 +74,6 @@ const toggleThemeShortcut = () => {
     document.getElementById("toggle").click();
 }
 
-document.addEventListener('keydown', (e) => {
-    const shortcutKey = e.key.toLowerCase();
-    if (e.ctrlKey && e.altKey) {
-        switch (shortcutKey) {
-            case "i":
-                document.getElementById('calm').classList.toggle('hidden');
-                break;
-            case "h":
-                navigateToPage();
-                break;
-            case "t":
-                toggleThemeShortcut();
-                break;
-            default:
-                break;
-        }
-    }
-    else if (e.ctrlKey) {
-        switch (shortcutKey) {
-            case ".":
-                document.getElementById('search-input').focus();
-                break;
-            case ",":
-                localStorage.href = "/settings";
-                break;
-            default:
-                break;
-        }
-    }
-
-    else if (e.altKey) {
-        switch (shortcutKey) {
-            case "1":
-                navigateToPage();
-                break;
-            case "2":
-                navigateToPage(1);
-                break;
-            case "3":
-                navigateToPage(2);
-                break;
-            case "4":
-                navigateToPage(3);
-                break;
-            case "5":
-                navigateToPage(4);
-                break;
-            default:
-                break;
-        }
-    }
-})
 
 const dateComponentsToMilliseconds = ({ year, month, day, hours, minutes, seconds }) => {
     const monthsArray = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];

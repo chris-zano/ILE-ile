@@ -1,5 +1,6 @@
 <div class="create-quiz-wrapper-main">
     <input type="hidden" id="courseCode" value="<%= data.courseCode %>">
+
     <section class="quiz-main-nav">
         <div class="title-of-course">
             <p>New Quiz For Advanced Computer Architecture</p>
@@ -13,6 +14,37 @@
     <section class="create-quiz-main">
         <div class="quiz-view" id="quiz-view">
             <ol id="ol-questions">
+                <div class="q-enter-details" id="q-enter-details">
+                    <div class="input-wrap">
+                        <label for="q-title">Enter a Title for this Quiz</label>
+                        <input type="text" name="title" id="q-title" required>
+                    </div>
+                    <div class="input-wrap">
+                        <label for="q-start">When does it start?</label>
+                        <input type="datetime-local" name="start" id="q-start" required>
+                    </div>
+                    <div class="input-wrap">
+                        <label for="q-end">When does it end?</label>
+                        <input type="datetime-local" name="end" id="q-end" required>
+                    </div>
+                    <div class="input-wrap">
+                        <label for="q-duration">Choose a duration for this Quiz</label>
+                        <select name="duration" id="q-duration" required>
+                            <option value="25">25 minutes</option>
+                            <option value="30">30 minutes</option>
+                            <option value="35">35 minutes</option>
+                            <option value="40">40 minutes</option>
+                            <option value="45">45 minutes</option>
+                            <option value="50">50 minutes</option>
+                            <option value="55">55 minutes</option>
+                            <option value="60">60 minutes ( 1 hour )</option>
+                        </select>
+                    </div>
+            
+                    <div class="input-wrap">
+                        <button type="button" id="q-save-title">Save</button>
+                    </div>
+                </div>
             </ol>
         </div>
         <div class="create-section active" id="container_form">
@@ -45,7 +77,7 @@
                     <option value="D">D</option>
                 </select>
 
-                <button type="submit">Save Question</button>
+                <button type="submit">Save</button>
             </form>
         </div>
     </section>
