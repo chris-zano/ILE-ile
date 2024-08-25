@@ -185,7 +185,7 @@ button[disabled] {
 
 .toast {
     position: fixed;
-    top: 10px;
+    top: calc(100vh - 50% / 2);
     left: 50%;
     transform: translateX(-50%);
     min-width: 250px;
@@ -289,7 +289,7 @@ button[disabled] {
     }
     
     div#container-max_width {
-        display: grid;
+        display: block;
     }
     
     div#container-max_width header#header-top_main {

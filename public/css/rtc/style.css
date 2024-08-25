@@ -50,7 +50,6 @@ video {
 }
 
 #video-grid .participant-media-n {
-    background-color: red;
     grid-area: participant;
     display: grid;
 }

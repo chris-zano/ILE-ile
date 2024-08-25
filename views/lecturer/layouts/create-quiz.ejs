@@ -1,0 +1,84 @@
+<div class="create-quiz-wrapper-main">
+    <input type="hidden" id="courseCode" value="<%= data.courseCode %>">
+
+    <section class="quiz-main-nav">
+        <div class="title-of-course">
+            <p>New Quiz For Advanced Computer Architecture</p>
+        </div>
+        <div class="quiz-nav" >
+            <button id="clear-memory" onclick="clearMemory(this)" aria-hidden="true">Clear Memory</button>
+            <button id="save-all" onclick="saveAll(this)" aria-hidden="true">Save All</button>
+            <button id="quiz-nav" onclick="toggleForm(this)" aria-hidden="true">Add a Question</button>
+        </div>
+    </section>
+    <section class="create-quiz-main">
+        <div class="quiz-view" id="quiz-view">
+            <ol id="ol-questions">
+                <div class="q-enter-details" id="q-enter-details">
+                    <div class="input-wrap">
+                        <label for="q-title">Enter a Title for this Quiz</label>
+                        <input type="text" name="title" id="q-title" required>
+                    </div>
+                    <div class="input-wrap">
+                        <label for="q-start">When does it start?</label>
+                        <input type="datetime-local" name="start" id="q-start" required>
+                    </div>
+                    <div class="input-wrap">
+                        <label for="q-end">When does it end?</label>
+                        <input type="datetime-local" name="end" id="q-end" required>
+                    </div>
+                    <div class="input-wrap">
+                        <label for="q-duration">Choose a duration for this Quiz</label>
+                        <select name="duration" id="q-duration" required>
+                            <option value="25">25 minutes</option>
+                            <option value="30">30 minutes</option>
+                            <option value="35">35 minutes</option>
+                            <option value="40">40 minutes</option>
+                            <option value="45">45 minutes</option>
+                            <option value="50">50 minutes</option>
+                            <option value="55">55 minutes</option>
+                            <option value="60">60 minutes ( 1 hour )</option>
+                        </select>
+                    </div>
+            
+                    <div class="input-wrap">
+                        <button type="button" id="q-save-title">Save</button>
+                    </div>
+                </div>
+            </ol>
+        </div>
+        <div class="create-section active" id="container_form">
+            <h2>Enter a Question <span id="clse-btn-span" aria-hidden="true"><button type="button"
+                        onclick="closeForm()" >&times;</button></span></h2>
+            <form id="questionForm">
+                <label for="question">Question:</label>
+                <textarea id="question" name="question" rows="3" required></textarea>
+
+                <div class="answer-group">
+                    <label for="answerA">Answer A:</label>
+                    <input type="text" id="answerA" name="answerA" required>
+
+                    <label for="answerB">Answer B:</label>
+                    <input type="text" id="answerB" name="answerB" required>
+
+                    <label for="answerC">Answer C:</label>
+                    <input type="text" id="answerC" name="answerC" required>
+
+                    <label for="answerD">Answer D:</label>
+                    <input type="text" id="answerD" name="answerD" required>
+                </div>
+
+                <label for="correctAnswer">Correct Answer:</label>
+                <select id="correctAnswer" name="correctAnswer" required>
+                    <option value="" disabled selected>Select the correct answer</option>
+                    <option value="A">A</option>
+                    <option value="B">B</option>
+                    <option value="C">C</option>
+                    <option value="D">D</option>
+                </select>
+
+                <button type="submit">Save</button>
+            </form>
+        </div>
+    </section>
+</div>

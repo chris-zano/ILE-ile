@@ -1,3 +1,6 @@
+section.lect-submissions-main {
+  margin-top: 0;
+}
 .dashboard-container {
   max-width: 1000px;
   margin: 0 auto;
@@ -52,34 +55,52 @@
   display: flex;
   align-items: center;
   justify-content: end;
+  gap: 2ch;
   overflow: hidden;
   border-radius: 1ch;
-  background: #fff;
-  margin-bottom: 20px;
   padding: 1ch;
   transition: var(--transition-default);
 }
 
 .button-outer button {
-  background-color: var(--primary);
-  padding: 1ch;
   height: 45px;
-  width: max-content;
-  color: var(--white);
-  border: 1px solid transparent;
-  border-radius: 1ch;
+  padding: 1ch;
   cursor: pointer;
+  border-radius: 1ch;
+  width: max-content;
+  transition: var(--transition-default);
 }
 
-.button-outer button:hover,
-.button-outer button:focus {
+.button-outer button#add-sub {
+  color: var(--white);
+  border: 1px solid transparent;
+  background-color: var(--primary);
+
+}
+
+.button-outer button#add-qz {
+  color: var(--text-body);
+  border: 1px solid var(--secondary);
+  background-color: transparent;
+}
+
+.button-outer button#add-sub:hover,
+.button-outer button#add-sub:focus {
+  color: var(--black);
   background-color: transparent;
   border: 1px solid var(--primary);
-  color: var(--black);
+}
+
+.button-outer button#add-qz:hover,
+.button-outer button#add-qz:focus {
+  background-color: var(--secondary);
+  border: 1px solid var(--secondary);
+  color: var(--white);
 }
 
 #course-submissions {
-  margin-top: 20px;
+  margin: 20px auto 0;
+  max-width: 1000px;
 }
 
 .submission {
@@ -158,8 +179,8 @@
 }
 
 .del-submission-btn {
-  color: var(--white);
-  background-color: var(--red);
+  color: var(--red);
+  background-color: transparent;
   border: 1px solid var(--red);
 }
 

@@ -1,0 +1,34 @@
+<section class="quizzes-main" id="quizzes-main">
+    <% if (data.length === 0) { %>
+     <div class="no-data">
+        <p>No quizzes available for you at the moment.</p>
+        <p>Enjoy the silence</p>
+     </div>
+    <% } else { %>
+        <div id="quiz-list">
+            <ul>
+               <% for( let quiz of data ) { %>
+                    <li>
+                        <article class="info">
+                            <div class="title"><%= quiz.info.title %></div>
+                            <div class="lecturer"><%= quiz.info.lecturer.name %></div>
+                        </article>
+                        <ul>
+                            <% for( let i = 0; i < quiz.docs.length; i++ ) { %>
+                                <li>
+                                        <a href="/students/render/quiz-onboard/<%= student.id %>/?id=<%= encodeURIComponent(quiz.docs[i]._id) %>">
+                                            <span>title: <strong><%= quiz.docs[i].title  %></strong></span><br>
+                                            <span>start: <strong><%= new Date(quiz.docs[i].start).toLocaleString()  %></strong></span><br>
+                                            <span>end: <strong><%= new Date(quiz.docs[i].end).toLocaleString()  %></strong></span><br>
+                                            <span>duration: <strong><%= quiz.docs[i].duration  %> minutes</strong></span><br>
+                                            <span>questions: <strong><%= quiz.docs[i].questions.length  %></strong></span><br>
+                                        </a>
+                                    </li>
+                                <% } %>
+                            </ul>
+                    </li>
+               <% } %>
+            </ul>
+        </div>
+    <% } %>
+</section>

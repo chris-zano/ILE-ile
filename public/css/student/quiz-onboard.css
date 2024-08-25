@@ -1,0 +1,112 @@
+section.onboard-main#onboard-main {
+    background-color: var(--white);
+    padding: 2ch;
+    border-radius: 1ch;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 2ch auto;
+}
+
+.onboard-main .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--primary-light);
+    padding: 1ch;
+    border-radius: 1ch;
+    margin-bottom: 2ch;
+}
+
+.onboard-main .header .info {
+    display: flex;
+    flex-direction: column;
+    color: var(--text-title);
+}
+
+.onboard-main .header .info span {
+    margin-bottom: 0.5ch;
+    font-size: 16px;
+}
+
+.onboard-main .header .info strong {
+    color: var(--primary);
+}
+
+.onboard-main .header .start-btn button {
+    padding: 1ch 2ch;
+    font-size: 16px;
+    background-color: var(--primary);
+    color: var(--white);
+    border: none;
+    border-radius: 1ch;
+    cursor: pointer;
+    transition: background-color var(--transition-default);
+}
+
+.onboard-main .header .start-btn button:hover {
+    background-color: var(--primary-dark);
+}
+
+.onboard-main .quiz-start {
+    /* display: none; */
+    margin-top: 2ch;
+}
+
+.onboard-main .quiz-start.active {
+    display: block;
+}
+
+.onboard-main .quiz-start .timer {
+    text-align: right;
+    margin-bottom: 1ch;
+    font-size: 18px;
+    color: var(--danger);
+}
+
+.onboard-main .quiz-start .question-single-span {
+    padding: 2ch;
+    border-radius: 1ch;
+    background-color: var(--light-gray);
+}
+
+.onboard-main .quiz-start .question-single-span p {
+    font-size: 16px;
+    color: var(--text-title);
+    margin-bottom: 1.5ch;
+}
+
+.onboard-main .quiz-start .question-single-span label {
+    display: block;
+    margin-bottom: 1ch;
+    font-size: 15px;
+    color: var(--text);
+}
+
+.onboard-main .quiz-start .question-single-span input[type="radio"] {
+    margin-right: 1ch;
+}
+
+.next-btn {
+    text-align: right;
+    margin-top: 1ch;
+}
+
+.next-btn button {
+    padding: 10px 20px;
+    background-color: transparent;
+    color: var(--primary-dark);
+    border: 1px solid var(--primary-dark);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: var(--transition-default);
+}
+
+.next-btn button:hover {
+    background-color: var(--primary-dark);
+    color: var(--white);
+}
+
+*[aria-hidden='true'] {
+    display: none;
+}

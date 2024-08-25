@@ -3,6 +3,7 @@ let courses = undefined;
 let startDate = undefined;
 let coursesWithStudents = undefined;
 let expectedSubmissions = undefined;
+let currentCourseCode = null;
 
 let userdata = window.sessionStorage.getItem('auth-user') || undefined;
 
@@ -47,11 +48,11 @@ const downloadAll = (button) => {
 
 }
 
-const addNewQuiz = async (button) => {
-    console.log(button  )
+const addNewQuiz = async () => {
+    window.location.href = `/lecturers/render/create-quiz/${userdata.data.id}?code=${encodeURIComponent(currentCourseCode)}`;
 }
 
-const closeOverlay = (button) => {
+const closeOverlay = () => {
     document.getElementById('studSub-overlay').querySelector('#collection-subs').innerHTML = ""
     document.getElementById('studSub-overlay').setAttribute('hidden', 'true')
 }
@@ -109,7 +110,7 @@ const getSubmissionsForCourse = async (courseCode) => {
 }
 
 const showCourseSubmissions = async (courseCode) => {
-    console.log("showing submissions for ", courseCode)
+    currentCourseCode = courseCode;
     // Remove active class from all items
     document.querySelectorAll('.carousel-item').forEach(item => item.classList.remove('active'));
 
@@ -124,8 +125,11 @@ const showCourseSubmissions = async (courseCode) => {
     const submissions = await getSubmissionsForCourse(courseCode);
 
     if (!submissions || Object.keys(submissions).length === 0) {
-        alert(('No submissions for this course. Create One'));
-        return;
+        const submissionDiv = document.createElement('div');
+        submissionDiv.className = 'submission';
+
+        submissionDiv.innerHTML = `No Submissions for this course. Click Add New submission to add one`
+        return submissionsDiv.appendChild(submissionDiv);
     }
     // Insert submissions into the div
     submissions['lecturerSubmission'].forEach(submission => {
@@ -140,7 +144,7 @@ const showCourseSubmissions = async (courseCode) => {
             <div class="submission-header">
                 <button class="view-submission-btn" onclick="viewStudentSubmissions('${courseCode}', '${submission._id}')">View Submissions</button>
                 <button class="del-submission-btn"onclick="deleteStudentSubmissions('${courseCode}', '${submission._id}')"
-                style="display: ${new Date().getTime() >= new Date(submission.endDate.date) ? 'none': ''}"
+                style="display: ${new Date().getTime() >= new Date(submission.endDate.date) ? 'none' : ''}"
                 >Delete</button>
             </div>
             <div class="submission-details">
@@ -148,7 +152,7 @@ const showCourseSubmissions = async (courseCode) => {
                 <p><strong>Instructions:</strong> ${submission.instructions}</p>
                 <p><strong>Release Date:</strong> ${formatTimestamp(submission.startDate.date)}</p>
                 <p><strong>Due Date:</strong> ${formatTimestamp(submission.endDate.date)}</p>
-                <p class="status ${new Date().getTime() >= new Date(submission.endDate.date) ? 'overdue': 'pending'}"><strong>Status:</strong> ${new Date().getTime() >= new Date(submission.endDate.date) ? 'Overdue': 'Pending'}</p>
+                <p class="status ${new Date().getTime() >= new Date(submission.endDate.date) ? 'overdue' : 'pending'}"><strong>Status:</strong> ${new Date().getTime() >= new Date(submission.endDate.date) ? 'Overdue' : 'Pending'}</p>
             </div>
         `;
         submissionsDiv.appendChild(submissionDiv);

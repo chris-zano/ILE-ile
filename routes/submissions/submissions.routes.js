@@ -4,7 +4,7 @@
 
 import express from 'express';
 import { verifyLecturer, verifyStudent } from '../admin/router.utils.js'
-import { createSubmission, createSubmissionWithFile, deleteStudentSubmissions, getLecturerName, getLecturerSubmissionForCourseCode } from '../../controllers/submission/submission.controller.js';
+import { createQuiz, createSubmission, createSubmissionWithFile, deleteStudentSubmissions, getLecturerName, getLecturerSubmissionForCourseCode } from '../../controllers/submission/submission.controller.js';
 import path from 'path';
 import multer from 'multer';
 import { fileURLToPath } from 'url';
@@ -69,4 +69,9 @@ router.post('/submissions/student/add/:id',
         });
     },
     addStudentSubmission);
+
+
+// quiz routes
+router.post('/quiz/create', createQuiz);
+
 export default router;

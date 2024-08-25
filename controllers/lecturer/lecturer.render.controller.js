@@ -1,11 +1,9 @@
 import { isValidObjectId } from 'mongoose';
-import { AnnouncementsDB, ClassesDB, CoursesDB, RegisteredCoursesDB, StudentsDB } from '../../utils/global/db.utils.js';
+import { AnnouncementsDB, ClassesDB, CoursesDB, QuizDB, RegisteredCoursesDB, StudentsDB } from '../../utils/global/db.utils.js';
 import { logError } from '../admin/admin.utils.js';
 
 const Courses = CoursesDB();
-const Classes = ClassesDB();
-const Students = StudentsDB()
-const RegisteredCourses = RegisteredCoursesDB();
+const Quiz = QuizDB();
 const Announcement = AnnouncementsDB();
 
 const getDashboards = async (lecturerData) => {
@@ -77,6 +75,21 @@ const getProfile = async (lecturerData) => {
         return null;
     }
 }
+
+const getCreateQuiz = async (lecturerData, req) => {
+    if (!req.query || Object.keys(req.query).length === 0) {
+        return null;
+    }
+
+    try {
+        const courseCode = req.query.code;
+        return {courseCode: courseCode};
+    }
+    catch(error) {
+        console.log(error)
+    }
+}
+
 const returnUrlsToMethod = (pageurl = "") => {
     if (!pageurl) return undefined;
 
@@ -88,6 +101,7 @@ const returnUrlsToMethod = (pageurl = "") => {
         "notifications": getNotifications,
         "courses": getCourses,
         "profile": getProfile,
+        "create-quiz": getCreateQuiz,
     }
     return urlToMethodsObject[pageurl] || undefined;
 }
@@ -98,10 +112,10 @@ export const renderLecturerViews = async (req, res) => {
 
     if (!pageUrl || !lecturerData) return res.status(400).render('global/error', { status: 400, error: "request is invalid" });
 
-    const urlToMethod = returnUrlsToMethod(pageUrl);
+    const urlToMethod =  returnUrlsToMethod(pageUrl);
     if (!urlToMethod) return res.status(404).render('global/error', { error: "The requested resource is unavailable", status: 404 });
 
-    const dataObject = await urlToMethod(lecturerData);
+    const dataObject = pageUrl === 'create-quiz' ?  await urlToMethod(lecturerData, req) :  await urlToMethod(lecturerData)
     if (!dataObject) return res.status(404).render('global/error', { error: "The requested student page objectData is unavailable", status: 404 });
 
     try {
@@ -120,8 +134,8 @@ export const renderLecturerViews = async (req, res) => {
                 data: dataObject
             }
         )
-    } catch (error) {
-
+    } catch (error) { 
+        logError(error);
     }
 }
 
