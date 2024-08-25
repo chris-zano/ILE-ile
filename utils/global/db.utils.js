@@ -8,6 +8,7 @@ import rtcModel from '../../models/rtc/rtc.model.js';
 import submissionsModel from '../../models/courses/submissions.model.js';
 import announcementModel from '../../models/announcement/announcement.model.js';
 import quizModel from '../../models/courses/quiz.model.js';
+import quizSubmissionsModel from '../../models/courses/quizSubmissions.model.js';
 
 export const AdminsDB = () => adminModels;
 export const LecturersDB = () => lecturerModel;
@@ -19,3 +20,4 @@ export const RTCDB = () => rtcModel;
 export const SubmissionsDB = () => submissionsModel;
 export const AnnouncementsDB = () => announcementModel;
 export const QuizDB = () => quizModel
+export const QuizSubs = () => quizSubmissionsModel;

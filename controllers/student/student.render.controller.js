@@ -1,5 +1,5 @@
 import { isValidObjectId } from 'mongoose';
-import { AnnouncementsDB, ClassesDB, CoursesDB, QuizDB, RegisteredCoursesDB, StudentsDB, SubmissionsDB } from '../../utils/global/db.utils.js';
+import { AnnouncementsDB, ClassesDB, CoursesDB, QuizDB, QuizSubs, RegisteredCoursesDB, StudentsDB, SubmissionsDB } from '../../utils/global/db.utils.js';
 import { logError } from '../admin/admin.utils.js';
 
 const Courses = CoursesDB();
@@ -9,6 +9,7 @@ const RegisteredCourses = RegisteredCoursesDB();
 const Submissions = SubmissionsDB();
 const Announcement = AnnouncementsDB();
 const Quiz = QuizDB()
+const QuizSubmissions = QuizSubs();
 
 const getStudentDashboard = async (studentData) => {
     return {
@@ -112,33 +113,55 @@ const getStudentsAvailableQuizzes = async (studentData) => {
     try {
         const courseCodes = studentData.courses;
         if (!courseCodes || courseCodes.length === 0) {
-            return []
+            return [];
         }
 
         let quizzes = [];
-        const currentDate = new Date();
+        const currentDate = new Date()
+
+        // Fetch all submitted quiz IDs for the student
+        let submittedQuizzes = await QuizSubmissions.find(
+            { student_id: studentData.id },
+            { quiz_id: 1, _id: 0 }
+        );
+        const submittedQuizIds = submittedQuizzes.map(sub => sub.quiz_id);
 
         for (let code of courseCodes) {
-            const docs = await Quiz.find({
+            let docs = await Quiz.find({
                 courseCode: code,
-                // startDate: { $lte: currentDate },
-                // endDate: { $gte: currentDate }
             });
-
+            
             if (!docs || docs.length === 0) {
                 continue;
             }
 
-            const courseInfo = await Courses.findOne({ courseCode: code }, { title: 1, lecturer: 1, courseCode: 1, _id: 0 });
+            // Filter quizzes by converting date strings to Date objects
+            docs = docs.filter(quiz => {
+                const startDate = new Date(quiz.start);
+                const endDate = new Date(quiz.end);
+                return startDate <= currentDate && endDate >= currentDate;
+            });
 
-            quizzes.push({ info: courseInfo, docs: [...docs] });
+            // Further filter out quizzes that have already been submitted
+            docs = docs.filter(quiz => !submittedQuizIds.includes(quiz._id.toString()));
+
+            if (docs.length > 0) {
+                const courseInfo = await Courses.findOne(
+                    { courseCode: code },
+                    { title: 1, lecturer: 1, courseCode: 1, _id: 0 }
+                );
+
+                quizzes.push({ info: courseInfo, docs: [...docs] });
+            }
         }
+
         return quizzes;
     } catch (error) {
         logError(error);
         return null;
     }
 }
+
 
 const getQuizOnboard = async (studentData, id) => {
     try {

@@ -5,6 +5,9 @@
         <p>Enjoy the silence</p>
      </div>
     <% } else { %>
+        <div class="data">
+            <p>You have <%= data.length === 1 ? `(${data.length}) pending quiz` : `${data.length} pending quizzes` %>.</p>
+         </div>
         <div id="quiz-list">
             <ul>
                <% for( let quiz of data ) { %>

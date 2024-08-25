@@ -24,7 +24,7 @@ export const callSetupWebSocket = (server) => setupWebSocketServer(server);
       res.header('Access-Control-Allow-Headers', 'Content-Type'); // Allow specific headers
       next();
     });
-
+    
     app.use(adminRoutes);
     app.use(adminsUserRoutes);
     app.use(adminFileRoutes);
