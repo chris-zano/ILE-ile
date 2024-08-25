@@ -111,7 +111,7 @@ const getStudentAnnouncements = async (studentData) => {
 const getStudentsAvailableQuizzes = async (studentData) => {
     try {
         const courseCodes = studentData.courses;
-        if (!courseCodes || courseCodes.length ===0) {
+        if (!courseCodes || courseCodes.length === 0) {
             return []
         }
 
@@ -129,11 +129,25 @@ const getStudentsAvailableQuizzes = async (studentData) => {
                 continue;
             }
 
-            const courseInfo = await Courses.findOne({courseCode: code}, {title:1, lecturer:1, courseCode: 1, _id: 0});
+            const courseInfo = await Courses.findOne({ courseCode: code }, { title: 1, lecturer: 1, courseCode: 1, _id: 0 });
 
-            quizzes.push({info: courseInfo, docs: [...docs]});
+            quizzes.push({ info: courseInfo, docs: [...docs] });
         }
         return quizzes;
+    } catch (error) {
+        logError(error);
+        return null;
+    }
+}
+
+const getQuizOnboard = async (studentData, id) => {
+    try {
+        if (!id) return [];
+
+        const docs = await Quiz.findOne({ _id: id });
+        if (!docs) return [];
+
+        return docs;
     } catch (error) {
         logError(error);
         return null;
@@ -153,6 +167,7 @@ const returnUrlsToMethod = (pageurl = "") => {
         "notifications": getStudentNotifications,
         "announcements": getStudentAnnouncements,
         "quizzes": getStudentsAvailableQuizzes,
+        "quiz-onboard": getQuizOnboard,
     }
     return urlToMethodsObject[pageurl] || undefined;
 }
@@ -162,11 +177,12 @@ export const renderStudentViews = async (req, res) => {
     const { pageUrl } = req.params;
     const { studentData } = req;
 
+
     const urlToMethod = returnUrlsToMethod(pageUrl);
     if (!urlToMethod)
         return res.status(404).render('global/error', { error: "The requested resource is unavailable", status: 404 });
 
-    const dataObject = await urlToMethod(studentData);
+    const dataObject = pageUrl === 'quiz-onboard' ? await urlToMethod(studentData, req.query.id ? req.query.id : null) : await urlToMethod(studentData);
     if (!dataObject)
         return res.status(404).render('global/error', { error: "The requested student page objectData is unavailable", status: 404 });
 

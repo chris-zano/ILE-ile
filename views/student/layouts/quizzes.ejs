@@ -16,7 +16,7 @@
                         <ul>
                             <% for( let i = 0; i < quiz.docs.length; i++ ) { %>
                                 <li>
-                                        <a href="/quiz/onboard?id=<%= encodeURIComponent(quiz.docs[i]._id) %>">
+                                        <a href="/students/render/quiz-onboard/<%= student.id %>/?id=<%= encodeURIComponent(quiz.docs[i]._id) %>">
                                             <span>title: <strong><%= quiz.docs[i].title  %></strong></span><br>
                                             <span>start: <strong><%= new Date(quiz.docs[i].start).toLocaleString()  %></strong></span><br>
                                             <span>end: <strong><%= new Date(quiz.docs[i].end).toLocaleString()  %></strong></span><br>
