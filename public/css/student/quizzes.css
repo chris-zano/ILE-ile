@@ -4,6 +4,16 @@ section.quizzes-main#quizzes-main {
     border-radius: 1ch;
 }
 
+.quizzes-main .data {
+    text-align: center;
+    margin: 2ch 1ch;
+}
+
+.quizzes-main .data p {
+    color: var(--text-title);
+
+}
+
 .quizzes-main .no-data {
     text-align: center;
     color: var(--text-muted);
@@ -17,7 +27,7 @@ section.quizzes-main#quizzes-main {
     margin: 0;
 }
 
-section.quizzes-main > #quiz-list > ul > li {
+section.quizzes-main>#quiz-list>ul>li {
     display: block;
     margin-bottom: 2ch;
     border: 1px solid var(--inactive);

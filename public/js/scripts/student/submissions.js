@@ -124,7 +124,7 @@ const renderSubmissionsByCourse = async (submissions = []) => {
             wrapper.innerHTML = `
                 <div class="submission-header">
                     <h2>${courseSubmission.courseName}</h2>
-                    <span class="course-code">Course Code: ${courseSubmission.courseCode}</span>
+                    <span class="course-code">[${courseSubmission.courseCode}]</span>
                     <button 
                         class="add-submission-btn disabled" 
                         style = "display: ${isSubmitted ? 'none' : new Date().getTime() >= new Date(lectSub.endDate.timeStamp) ? 'none' : ''};"
@@ -146,12 +146,6 @@ const renderSubmissionsByCourse = async (submissions = []) => {
                         <span style="color: var(--purple);">
                             ${isSubmitted ? formatTimestamp(studentSub.date) : ''}
                         </span>
-                        <span>
-                            ${isSubmitted ? "( " + studentSub.status + " )" : ''}
-                        </span>
-                        <span style = "color: ${ new Date().getTime() >= new Date(lectSub.endDate.timeStamp) ? 'var(--red)' : ''};">
-                            ${ new Date().getTime() >= new Date(lectSub.endDate.timeStamp) ? 'Overdue' : 'Pending'}
-                        </span>
                     </p>
                 </div>
 
@@ -162,7 +156,7 @@ const renderSubmissionsByCourse = async (submissions = []) => {
                     <button 
                         class="view-submission-btn delete-sub" 
                         style = "display: ${ new Date().getTime() >= new Date(lectSub.endDate.timeStamp) ? 'none' : ''};
-                        "><a href="/submissions/student/delete/${studentData.data.id}?subId=${courseSubmission._id}&lectSubId=${lectSub._id}">Delete</a></button>
+                        "><a href="/submissions/student/delete/${studentData.data.id}/?subId=${courseSubmission._id}">Delete</a></button>
                 </div>
             `;
 
