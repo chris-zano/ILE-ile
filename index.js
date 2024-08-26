@@ -18,7 +18,7 @@ import os from 'os';
 const cpuCount = os.cpus().length;
 
 if (cluster.isPrimary) {
-  console.log(`The primary process of pid ${process.pid} ha started.`);
+  console.log(`The primary process of pid ${process.pid} has started.`);
   console.log(`The total amount of cpus is ${cpuCount}`);
 
   for (let i = 0; i < 1/*cpuCount*/; i++) {
@@ -61,13 +61,12 @@ else {
   const databasename = encodeURIComponent(process.env.DATABASE_NAME); 
 
   const uri = `mongodb+srv://${username}:${password}@${clusterName}.jwscxvu.mongodb.net/${databasename}?retryWrites=true&w=majority&appName=${appName}`;
-
+  const local_uri = "mongodb://localhost:27017/ileSchool";
   //Connect to Database and start server
   (async () => {
     try {
-      await mongoose.connect("mongodb://localhost:27017/ileSchool")
-      // await mongoose.connect(uri);
-      console.log("Connected to local");  
+      await mongoose.connect(uri)
+      console.log("Connected to database");  
 
       callAndExecuteRequireStack(app);
       callSetupWebSocket(server);

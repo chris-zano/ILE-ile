@@ -103,13 +103,12 @@ export const addQuizSubmission = async (req, res) => {
 
         const { responses, score } = req.body;
 
-        if ((!responses || responses.length === 0) || !score) {
-            console.log({ responses, score });
+        if ((!responses || responses.length === 0)) {
             return res.status(400).json({ message: "missing query params" })
         }
 
         const docs = await QuizSub.find({ quiz_id: qid, student_id: sid }, { _id: 1 });
-
+        console.log(docs)
         if (!docs || docs.length === 0) {
             const newStudentSubmission = new QuizSub({
                 courseCode: code,
@@ -126,5 +125,65 @@ export const addQuizSubmission = async (req, res) => {
     } catch (error) {
         logError(error);
         res.status(500).json({ message: "internal server error" });
+    }
+}
+
+export const getQuizSubmissions = async (req, res) => {
+    if (!req.query || Object.keys(req.query).length === 0) {
+        console.log('request has some missing params', req.query);
+        return res.status(400).json({ message: "missing query params" });
+    }
+
+    try {
+        const {id} = req.query;
+        if (!id) {
+            console.log("Missing query Params: ", {id})
+            return res.status(400).json({ message: "missing query params" })
+        }
+
+        const docs = await QuizSub.find({student_id: id});
+        if (!docs) {
+            console.log('No submissions for this student');
+            return res.status(202).json({message: "No submissions"});
+        }
+
+        return res.status(200).json(docs);
+
+    } catch (error) {
+        logError(error);
+        return res.status(500).json({message: 'internal server error'});
+    }
+}
+
+export const getAllQuizSubmissionsForCourse = async (req, res) => {
+    if (!req.query || Object.keys(req.query).length === 0) {
+        console.log('request has some missing params', req.query);
+        return res.status(400).json({ message: "missing query params" });
+    }
+
+    try {
+        const {id} = req.query;
+        if (!id) {
+            console.log("Missing query Params: ", {id})
+            return res.status(400).json({ message: "missing query params" })
+        }
+
+        let lecturersCourses = await Lecturer.findOne({_id: id}, {_id: 0, assignedCourses: 1});
+        if (!lecturersCourses) {
+            // console.log('No submissions for this student');
+            return res.status(202).json({message: "No submissions"});
+        }
+
+        lecturersCourses = lecturersCourses.assignedCourses;
+
+        const quiz = await QuizSub.find({courseCode: {$in: lecturersCourses}})
+        if (!quiz) {
+            return res.status(202).json([]);
+        }
+
+        return res.status(200).json(quiz)
+    } catch (error) {
+        logError(error);
+        return res.status(500).json({message: "internal server error"})
     }
 }

@@ -4,19 +4,19 @@
     justify-content: space-around;
     align-items: center;
   }
-  
-  .dropdown {
+
+  .submissions-header .dropdown {
     margin: 1ch;
     display: flex;
     align-items: center;
   }
-  
-  .dropdown label {
+
+  .submissions-header .dropdown label {
     margin-right: 10px;
     font-weight: bold;
   }
-  
-  .dropdown select {
+
+  .submissions-header .dropdown select {
     padding: 10px;
     border-radius: 50px;
     border: 1px solid #ddd;
@@ -27,20 +27,63 @@
     transition: border-color 0.3s ease;
     max-width: 250px;
   }
-  
-  .dropdown select:focus {
+
+  .submissions-header .dropdown select:focus {
     border-color: var(--accent);
   }
-  
+
+  .quiz-sub {
+    border: 1px solid var(--inactive);
+    border-radius: 1ch;
+    padding: 2ch 1ch;
+    max-width: 700px;
+    margin: 1ch auto;
+  }
+
+  .quiz-sub summary {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .quiz-sub summary span strong {
+    color: var(--text-title);
+  }
+
+  .quiz-sub .question-single-span {
+    padding: 1ch;
+    border-radius: 1ch;
+    background-color: var(--white);
+    margin: 1ch 0;
+  }
+
+  .quiz-sub .question-single-span p {
+    font-size: 14px;
+    color: var(--text-title);
+    margin-bottom: 1ch;
+  }
+
+  .quiz-sub .question-single-span label {
+    display: block;
+    margin-bottom: .5ch;
+    font-size: 12px;
+    color: var(--text);
+  }
+  .quiz-sub .question-single-span input[type="radio"] {
+    margin-right: 1ch;
+  }
+
   .submission {
     background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 2ch;
-    margin-bottom: 20px;
-    padding: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--inactive);
+    border-radius: 1ch;
+    margin-bottom: 1ch;
+    padding: 1ch;
+    max-width: 770px;
+    margin-inline: auto;
   }
-  
+
   .submission-header {
     display: flex;
     justify-content: space-between;
@@ -49,48 +92,48 @@
     padding-bottom: 10px;
     margin-bottom: 10px;
   }
-  
+
   .submission-header h2 {
     margin: 0;
     font-size: 1.5em;
   }
-  
+
   .course-code {
     font-size: 0.9em;
     color: #777;
   }
-  
+
   .submission-details p {
     margin: 5px 0;
     font-size: 1em;
   }
-  
+
   .status {
     padding: 5px 10px;
     border-radius: 3px;
     display: inline-block;
   }
-  
+
   .status.pending {
     /* background-color: #f0ad4e; */
     color: #f0ad4e;
   }
-  
+
   .status.submitted {
     /* background-color: #5cb85c; */
     color: #5cb85c;
   }
-  
+
   .status.overdue {
     /* background-color: #d9534f; */
     color: #d9534f;
   }
-  
+
   .status.rejected {
     /* background-color: #777; */
     color: #777;
   }
-  
+
   .add-submission-btn {
     width: 120px;
     height: 45px;
@@ -103,28 +146,28 @@
     border: 1px solid var(--primary);
     transition: var(--transition-default);
   }
-  
+
   .add-submission-btn:hover {
     background-color: var(--primary);
     color: var(--white);
   }
-  
+
   .submission-file {
     display: flex;
     align-items: center;
     margin-top: 10px;
   }
-  
+
   .file-icon {
     font-size: 1.5em;
     margin-right: 10px;
   }
-  
+
   .file-name {
     font-size: 1em;
     margin-right: 20px;
   }
-  
+
   .view-submission-btn {
     padding: 5px 10px;
     width: 120px;
@@ -135,40 +178,40 @@
     transition: var(--transition-default);
     cursor: pointer;
   }
-  
+
   .view-submission-btn.download-sub {
     background-color: transparent;
     border: 1px solid var(--secondary);
   }
-  
+
   .view-submission-btn.download-sub a {
     color: var(--text-body);
   }
-  
+
   .view-submission-btn.delete-sub {
     background-color: var(--red);
     border: 1px solid var(--red);
     color: var(--white);
   }
-  
+
   .view-submission-btn.delete-sub a {
     color: var(--white);
   }
-  
+
   .view-submission-btn.download-sub:hover {
     background-color: var(--secondary);
     color: var(--white);
   }
-  
+
   .view-submission-btn.download-sub:hover a {
     color: var(--white);
   }
-  
+
   .view-submission-btn.delete-sub:hover {
     background-color: var(--dark-red);
     color: var(--white);
   }
-  
+
   .form-wrapper {
     width: 100%;
     max-width: 500px;
@@ -182,22 +225,22 @@
     left: 50%;
     transform: translate(-50%, -50%);
   }
-  
+
   .form-inner {
     padding: 20px;
   }
-  
+
   .input-wrap {
     margin-bottom: 15px;
   }
-  
+
   .input-wrap label {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
     color: #333;
   }
-  
+
   .input-wrap input[type="text"],
   select {
     width: 100%;
@@ -206,22 +249,22 @@
     border-radius: 5px;
     box-sizing: border-box;
   }
-  
+
   #course_code {
     width: 200px; /* Adjust the width as needed */
   }
-  
+
   #course_code option {
     display: block;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
   }
-  
+
   .add-file-wrap {
     margin-bottom: 20px;
   }
-  
+
   .add-file-wrap button {
     padding: 10px 20px;
     border: none;
@@ -230,16 +273,16 @@
     border-radius: 5px;
     cursor: pointer;
   }
-  
+
   .add-file-wrap button:hover {
     background: #0056b3;
   }
-  
+
   .buttons-action-wrap {
     display: flex;
     justify-content: space-between;
   }
-  
+
   .buttons-action-wrap input[type="submit"],
   .buttons-action-wrap input[type="reset"] {
     padding: 10px 20px;
@@ -247,45 +290,44 @@
     border-radius: 5px;
     cursor: pointer;
   }
-  
+
   #submit-btn {
     background: #28a745;
     color: #fff;
   }
-  
+
   #submit-btn:hover {
     background: #218838;
   }
-  
+
   #cancel-btn {
     background: #dc3545;
     color: #fff;
   }
-  
+
   #cancel-btn:hover {
     background: #c82333;
   }
-  
 }
 
-@media screen and (max-width:768px) {
+@media screen and (max-width: 768px) {
   .submissions-header .btn-wrapper {
     display: flex;
     justify-content: space-around;
     align-items: center;
   }
-  
+
   .dropdown {
     margin: 1ch;
     display: flex;
     align-items: center;
   }
-  
+
   .dropdown label {
     margin-right: 10px;
     font-weight: bold;
   }
-  
+
   .dropdown select {
     padding: 10px;
     border-radius: 50px;
@@ -297,11 +339,11 @@
     transition: border-color 0.3s ease;
     max-width: 250px;
   }
-  
+
   .dropdown select:focus {
     border-color: var(--accent);
   }
-  
+
   .submission {
     border: 1px solid #ddd;
     border-radius: 2ch;
@@ -310,7 +352,7 @@
     width: 90vw;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
-  
+
   .submission-header {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -321,26 +363,26 @@
     padding-bottom: 1ch;
     margin-bottom: 1ch;
   }
-  
+
   .submission-header h2 {
     margin: 0;
     font-size: 14px;
     font-weight: 600;
     color: var(--text-title);
   }
-  
+
   .course-code {
-    font-size:1.3ch;
+    font-size: 1.3ch;
     color: #1e5600;
   }
-  
+
   .submission-details {
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: auto;
     align-items: center;
   }
-  
+
   .submission-details p {
     display: grid;
     grid-template-columns: 1fr;
@@ -348,38 +390,37 @@
     margin: 5px 0;
     font-size: 1em;
   }
-  
+
   .submission-details p strong {
     color: var(--text-title);
   }
 
-  
   .status {
     padding: 5px 10px;
     border-radius: 3px;
     display: inline-block;
   }
-  
+
   .status.pending {
     /* background-color: #f0ad4e; */
     color: #f0ad4e;
   }
-  
+
   .status.submitted {
     /* background-color: #5cb85c; */
     color: #5cb85c;
   }
-  
+
   .status.overdue {
     /* background-color: #d9534f; */
     color: #d9534f;
   }
-  
+
   .status.rejected {
     /* background-color: #777; */
     color: #777;
   }
-  
+
   .add-submission-btn {
     width: 120px;
     height: 45px;
@@ -392,28 +433,28 @@
     border: 1px solid var(--primary);
     transition: var(--transition-default);
   }
-  
+
   .add-submission-btn:hover {
     background-color: var(--primary);
     color: var(--white);
   }
-  
+
   .submission-file {
     display: flex;
     align-items: center;
     margin-top: 10px;
   }
-  
+
   .file-icon {
     font-size: 1.5em;
     margin-right: 10px;
   }
-  
+
   .file-name {
     font-size: 1em;
     margin-right: 20px;
   }
-  
+
   .view-submission-btn {
     padding: 5px 10px;
     width: 120px;
@@ -424,40 +465,40 @@
     transition: var(--transition-default);
     cursor: pointer;
   }
-  
+
   .view-submission-btn.download-sub {
     background-color: transparent;
     border: 1px solid var(--secondary);
   }
-  
+
   .view-submission-btn.download-sub a {
     color: var(--text-body);
   }
-  
+
   .view-submission-btn.delete-sub {
     background-color: var(--red);
     border: 1px solid var(--red);
     color: var(--white);
   }
-  
+
   .view-submission-btn.delete-sub a {
     color: var(--white);
   }
-  
+
   .view-submission-btn.download-sub:hover {
     background-color: var(--secondary);
     color: var(--white);
   }
-  
+
   .view-submission-btn.download-sub:hover a {
     color: var(--white);
   }
-  
+
   .view-submission-btn.delete-sub:hover {
     background-color: var(--dark-red);
     color: var(--white);
   }
-  
+
   .form-wrapper {
     width: 100%;
     max-width: 500px;
@@ -471,22 +512,22 @@
     left: 50%;
     transform: translate(-50%, -50%);
   }
-  
+
   .form-inner {
     padding: 20px;
   }
-  
+
   .input-wrap {
     margin-bottom: 15px;
   }
-  
+
   .input-wrap label {
     display: block;
     margin-bottom: 5px;
     font-weight: bold;
     color: #333;
   }
-  
+
   .input-wrap input[type="text"],
   select {
     width: 100%;
@@ -495,22 +536,22 @@
     border-radius: 5px;
     box-sizing: border-box;
   }
-  
+
   #course_code {
     width: 200px; /* Adjust the width as needed */
   }
-  
+
   #course_code option {
     display: block;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
   }
-  
+
   .add-file-wrap {
     margin-bottom: 20px;
   }
-  
+
   .add-file-wrap button {
     padding: 10px 20px;
     border: none;
@@ -519,16 +560,16 @@
     border-radius: 5px;
     cursor: pointer;
   }
-  
+
   .add-file-wrap button:hover {
     background: #0056b3;
   }
-  
+
   .buttons-action-wrap {
     display: flex;
     justify-content: space-between;
   }
-  
+
   .buttons-action-wrap input[type="submit"],
   .buttons-action-wrap input[type="reset"] {
     padding: 10px 20px;
@@ -536,23 +577,22 @@
     border-radius: 5px;
     cursor: pointer;
   }
-  
+
   #submit-btn {
     background: #28a745;
     color: #fff;
   }
-  
+
   #submit-btn:hover {
     background: #218838;
   }
-  
+
   #cancel-btn {
     background: #dc3545;
     color: #fff;
   }
-  
+
   #cancel-btn:hover {
     background: #c82333;
   }
-  
 }

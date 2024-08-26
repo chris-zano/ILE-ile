@@ -86,12 +86,20 @@ const previousQuestion = () => {
 }
 
 const nextQuestion = async (start= false) => {
-    const _question = quizQuestions[counter];
+    if (counter === 0 && counter < q_count) {
+        counter++;
+        console.log("Starting the quizz...");
+        const _question = quizQuestions[counter - 1];
+        return renderQuestion(_question)
+    }
+
+
+    const _question = quizQuestions[counter - 1];
     console.log({ studentsResponses })
+    let answer;
 
     if (!start) {
         const selectedRadio = document.querySelector(`input[name="q${counter}"]:checked`);
-        let answer;
 
         if (selectedRadio) {
             answer = selectedRadio.value;
@@ -111,6 +119,7 @@ const nextQuestion = async (start= false) => {
 
         // Clone the previous responses up to the current counter
         let clonedResponses = studentsResponses.slice(0, counter);
+        console.log(counter, { question: _question, answer: answer })
         clonedResponses.push({ question: _question, answer: answer });
 
         // Update the studentsResponses array
@@ -118,6 +127,7 @@ const nextQuestion = async (start= false) => {
     }
 
     if (counter < q_count) {
+       
         counter++;
         console.log("Moving to the next question...");
         renderQuestion(_question)

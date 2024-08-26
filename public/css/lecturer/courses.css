@@ -42,6 +42,7 @@
     
     article.cards a.card {
         background-color: var(--background);
+        border: 1px solid var(--inactive);
         width: 310px;
         height: fit-content;
         color: unset;
