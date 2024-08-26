@@ -109,7 +109,71 @@ const getSubmissionsForCourse = async (courseCode) => {
     }
 }
 
+const renderQuizSubmissions = (data) => {
+    const _docs = [...data];
+    console.log(_docs)
+    
+    const submissionsDiv = document.getElementById('course-submissions');
+    submissionsDiv.innerHTML = ''; // Clear previous submissions
+
+    if(_docs.length === 0) {
+        const submissionDiv = document.createElement('div');
+        submissionDiv.className = 'submission';
+
+        submissionDiv.innerHTML = `No Submissions for this course. Click Add New submission to add one`
+        return submissionsDiv.appendChild(submissionDiv);
+    }
+
+
+    for (let doc of _docs) {
+        const wrapper = document.createElement("details");
+        wrapper.classList.add("quiz-sub");
+        wrapper.id = `${doc._id}`;
+
+        wrapper.innerHTML = `
+            <summary>${doc.courseCode} <span><strong>Score: </strong>${doc.score}</span></summary>
+            <div id="${doc.quiz_id}"></div>
+        `;
+
+        submissionsDiv.append(wrapper);
+        let counter = 0
+        for (let q of doc.responses) {
+            const questions = document.createElement('div')
+            questions.classList.add('question-single-span')
+            counter++
+            questions.innerHTML = `
+                <p>${counter}. ${q.question.question}</p>
+                <label><input type="radio" name="q${counter}" value="a" selected> a. ${q.question.options[0]}.</label><br>
+                <label><input type="radio" name="q${counter}" value="b" selected> b. ${q.question.options[1]}</label><br>
+                <label><input type="radio" name="q${counter}" value="c" selected> c. ${q.question.options[2]}</label><br>
+                <label><input type="radio" name="q${counter}" value="d" selected> d. ${q.question.options[3]}</label><br>
+                <div>Answer: ${q.answer} </div>
+                <div>Expected: ${q.question.correctAnswer.toLowerCase()}</div>
+
+            `;
+           document.getElementById(`${doc.quiz_id}`).append(questions);
+        }
+
+    }
+}
+
 const showCourseSubmissions = async (courseCode) => {
+
+    if (courseCode === "quiz") {
+        //show quiz submissions
+        const url = `/submissions/lecturers/get-quiz-all/?id=${userdata.data.id}`;
+        try {
+            const response = await fetch(encodeURI(url));
+            const data = await response.json();
+
+            renderQuizSubmissions(data);
+        }catch(error){
+            console.log(error)
+        }
+
+        return
+    }
+
     currentCourseCode = courseCode;
     // Remove active class from all items
     document.querySelectorAll('.carousel-item').forEach(item => item.classList.remove('active'));

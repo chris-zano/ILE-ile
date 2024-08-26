@@ -9,7 +9,7 @@ import path from 'path';
 import multer from 'multer';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-import { addQuizSubmission, addStudentSubmission, deleteStudentSub } from '../../controllers/submission/submissions.students.js';
+import { addQuizSubmission, addStudentSubmission, deleteStudentSub, getAllQuizSubmissionsForCourse, getQuizSubmissions } from '../../controllers/submission/submissions.students.js';
 
 
 const __filename = fileURLToPath(import.meta.url);
@@ -74,5 +74,6 @@ router.get('/submissions/student/delete/:id' , verifyStudent, deleteStudentSub)
 // quiz routes
 router.post('/quiz/create', createQuiz);
 router.post('/submissions/students/quiz', addQuizSubmission);
-
+router.get('/submissions/lecturers/get-quiz-all', getAllQuizSubmissionsForCourse)
+router.get('/submissions/student/get-quiz', getQuizSubmissions)
 export default router;

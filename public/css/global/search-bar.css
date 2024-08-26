@@ -64,7 +64,7 @@ button#searchBtn i img {
 div.results-container {
     transition: all ease-in-out 250ms;
     background-color: var(--background);
-    box-shadow: 0px 3px 3px #111;
+    border: 1px solid var(--inactive);
     position: absolute;
     top: 100%;
     width: 600px;
@@ -73,7 +73,11 @@ div.results-container {
     padding: 0 10px;
     border-radius: 1ch;
     overflow-y: scroll;
-    z-index: 99999;
+    z-index: 999;
+}
+
+div.results-container ul::-webkit-scrollbar {
+    display: none;
 }
 
 #search-matches {
@@ -95,11 +99,6 @@ div.results-container ul li.results-item {
     border-radius: 1ch;
     padding: 5px;
 }
-
-/* div.results-container ul li.results-item:hover,
-div.results-container ul li.results-item:focus {
-    background-color: var(--accent);
-} */
 
 li.results-item a h2 {
     font-size: 14px;

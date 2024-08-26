@@ -14,11 +14,12 @@
                         <label for="course-select">Sort By Courses:</label>
                         <select id="course-select" onchange="showSubmissions(this.value)">
                             <option value="all" selected>All</option>
-                                <% for(let course of data) { %>
-                                    <option value="<%= course._id %>">
-                                        <%= course['courseName'] %>
-                                    </option>
-                                <% } %>
+                            <% for(let course of data) { %>
+                                <option value="<%= course._id %>">
+                                    <%= course['courseName'] %>
+                                </option>
+                            <% } %>
+                            <option value="quiz">Quizzes</option>
                         </select>
                     </div>
 

@@ -3,7 +3,7 @@ let activeTab;
 
 try {
     studentData = window.sessionStorage.getItem("auth-user") || undefined;
-    if (!studentData) submissionsMain(false)
+    if (!studentData) submissionsMain(false);
 
     studentData = JSON.parse(studentData);
 } catch (error) {
@@ -166,13 +166,76 @@ const renderSubmissionsByCourse = async (submissions = []) => {
 
 }
 
+const quizSubsRender = (data) => {
+    const _docs = [...data];
+    console.log(_docs)
+
+    if(_docs.length === 0) {
+        //no subs for this student
+        return
+    }
+
+    container.innerHTML = ""
+
+    for (let doc of _docs) {
+        const wrapper = document.createElement("details");
+        wrapper.classList.add("quiz-sub");
+        wrapper.id = `${doc._id}`;
+
+        wrapper.innerHTML = `
+            <summary>${doc.courseCode} <span><strong>Score: </strong>${doc.score}</span></summary>
+            <div id="${doc.quiz_id}"></div>
+        `;
+
+        container.append(wrapper);
+        let counter = 0
+        for (let q of doc.responses) {
+            const questions = document.createElement('div')
+            questions.classList.add('question-single-span')
+            counter++
+            questions.innerHTML = `
+                <p>${counter}. ${q.question.question}</p>
+                <label><input type="radio" name="q${counter}" value="a" selected> a. ${q.question.options[0]}.</label><br>
+                <label><input type="radio" name="q${counter}" value="b" selected> b. ${q.question.options[1]}</label><br>
+                <label><input type="radio" name="q${counter}" value="c" selected> c. ${q.question.options[2]}</label><br>
+                <label><input type="radio" name="q${counter}" value="d" selected> d. ${q.question.options[3]}</label><br>
+                <div>Answer: ${q.answer} </div>
+                <div>Expected: ${q.question.correctAnswer.toLowerCase()}</div>
+
+            `;
+           document.getElementById(`${doc.quiz_id}`).append(questions);
+        }
+
+    }
+}
+
+const renderQuizSubmissions = async () => {
+    const student_id = studentData.data.id;
+
+    try {
+        const url = `/submissions/student/get-quiz/?id=${student_id}`;
+        const response = await fetch(url);
+        const data = await response.json();
+        console.log(data);
+
+        quizSubsRender(data);
+    }catch(error) {
+        console.log(error);
+    }
+}
+
 const showSubmissions = async (courseId) => {
     container.innerHTML = ""
-    const courseCollection = courseId === "all"
-        ? [...submissionsCollection]
-        : [...submissionsCollection].filter((course) => course._id === courseId);
-
-    return await renderSubmissionsByCourse(courseCollection);
+    if (courseId === "quiz") {
+        return await renderQuizSubmissions();
+    }
+    else {
+        const courseCollection = courseId === "all"
+            ? [...submissionsCollection]
+            : [...submissionsCollection].filter((course) => course._id === courseId);
+    
+        return await renderSubmissionsByCourse(courseCollection);
+    }
 }
 
 const filterSubmissions = async (filterId) => {
@@ -182,7 +245,7 @@ const filterSubmissions = async (filterId) => {
 const submissionsMain = async (studentAuth = true) => {
     if (!studentAuth) return window.location.replace('/login');
 
-    await showSubmissions("all");
+    await showSubmissions("quiz");
 }
 
 document.addEventListener("DOMContentLoaded", submissionsMain);
