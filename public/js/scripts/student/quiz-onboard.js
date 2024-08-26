@@ -41,7 +41,7 @@ const submitStudentScore = async (responses, score, courseCode) => {
 
         const data = await response.json();
         console.log(data);
-        return window.location.reload()
+        return window.location.href = `/students/render/quizzes/${studentId}`
     } catch (error) {
         console.log(error)
     }

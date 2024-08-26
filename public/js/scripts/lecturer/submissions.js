@@ -152,7 +152,7 @@ const showCourseSubmissions = async (courseCode) => {
                 <p><strong>Instructions:</strong> ${submission.instructions}</p>
                 <p><strong>Release Date:</strong> ${formatTimestamp(submission.startDate.date)}</p>
                 <p><strong>Due Date:</strong> ${formatTimestamp(submission.endDate.date)}</p>
-                <p class="status ${new Date().getTime() >= new Date(submission.endDate.date) ? 'overdue' : 'pending'}"><strong>Status:</strong> ${new Date().getTime() >= new Date(submission.endDate.date) ? 'Overdue' : 'Pending'}</p>
+                <p class="status ${new Date().getTime() >= new Date(submission.endDate.date) ? 'overdue' : 'pending'}">${new Date().getTime() >= new Date(submission.endDate.date) ? 'Ended' : 'Ongoing'}</p>
             </div>
         `;
         submissionsDiv.appendChild(submissionDiv);
