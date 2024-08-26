@@ -2,6 +2,8 @@ section.quizzes-main#quizzes-main {
     background-color: var(--white);
     padding: 1ch;
     border-radius: 1ch;
+    max-width: 1000px;
+    margin: 0 auto;
 }
 
 .quizzes-main .data {
