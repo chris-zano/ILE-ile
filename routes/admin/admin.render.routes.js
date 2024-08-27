@@ -39,6 +39,7 @@ router.get('/admins/render/tutors/:id', verifyAdmin, adminRender.renderTutors);
 router.get('/admins/render/courses/:id', verifyAdmin, adminRender.renderCourses);
 router.get('/admins/render/classrooms/:id', verifyAdmin, adminRender.renderClassrooms);
 router.get('/admins/render/announcements/:id', verifyAdmin, adminRender.renderAnnouncements);
+router.get('/admins/render/elibrary/:id', verifyAdmin, adminRender.renderElibrary);
 router.get('/admins/render/profile/student/:studentId/:id', verifyAdmin, adminRender.renderViewStudent);
 router.get('/admins/render/profile/tutor/:tutorId/:id', verifyAdmin, adminRender.renderViewTutor);
 router.get('/admins/render/profile/course/:courseCode/id', verifyAdmin, adminRender.renderViewCourse);
