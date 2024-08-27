@@ -176,6 +176,7 @@
     }
     
     a.card section.card-body {
+        margin-left: 2ch;
         height: 100%;
         display: flex;
         flex-direction: column;
@@ -183,9 +184,12 @@
     }
     
     a.card section.card-body div.title {
-        height: 55%;
+        margin-top: 1ch;
+        height: fit-content;
         display: grid;
-        grid-template-rows: 70% 30%;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 1fr;
+        gap: 1ch;
         align-items: center;
     }
     
@@ -203,10 +207,10 @@
     a.card section.card-body div.professor {
         display: flex;
         align-items: center;
-        gap: 7px;
     }
     
     a.card section.card-body div.professor img {
+        display: none;
         width: 22px;
         height: 22px;
     }

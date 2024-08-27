@@ -134,6 +134,29 @@ export const renderAnnouncements = async (req, res) => {
     }
 }
 
+export const renderElibrary = async (req, res) => {
+    const { userType, id } = req.params;
+    const { adminData } = req;
+
+    
+    try {
+        const data = await Announcement.find();
+        res.set('Cache-Control', 'public, max-age=30');
+        return res.render('admin/admin-main', {
+            admin: adminData,
+            pageTitle: "E-Library",
+            stylesheets: ["/css/admin/elibrary"],
+            pageUrl: 'layouts/elibrary',
+            currentPage: 'elibrary',
+            userType: userType,
+            scripts: ["/script/scripts/admin/elibrary"],
+            data: data
+        });
+    } catch (error) {
+        utils.logError(error);
+        return res.render('global/error', { error: "An Error occured", status: 500 });
+    }
+}
 
 
 export const renderUpdateCourse = async (req, res) => {

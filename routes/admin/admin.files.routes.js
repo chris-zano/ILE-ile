@@ -15,6 +15,7 @@ router.get('/fonts/:filename', adminFileHandler.getFonts);
 router.get('/users/:userType/get-profile-picture/:id/:filename', adminFileHandler.getDefaultProfilePicture);
 router.get('/submissions/get-file/:filename', adminFileHandler.getSubmissionFile)
 router.get('/announcements/files/get', adminFileHandler.getAnnouncementFile)
+router.get('/library/files/', adminFileHandler.getLibraryFile)
 
 //export the router instance
 export default router;

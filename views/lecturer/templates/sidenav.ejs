@@ -13,15 +13,6 @@
                 <div class="abstract-tooltip">Courses</div>
             </li>
             <li>
-                <a href="/lecturers/render/schedules/<%= lecturer.id %>" <%= currentPage === 'schedules' ? 'aria-current=page' : '' %> >
-                    <i class="side-nav_icon">
-                        <img src="/images/system/schedule" alt="application logo">
-                    </i>
-                    <p class="nav_name">Schedule</p>
-                </a>
-                <div class="abstract-tooltip">Schedule</div>
-            </li>
-            <li>
                 <a href="/lecturers/render/submissions/<%= lecturer.id %>" <%= currentPage === 'submissions' ? 'aria-current=page' : '' %> >
                     <i class="side-nav_icon">
                         <img src="/images/system/assignments" alt="application logo">
@@ -31,6 +22,15 @@
                 <div class="abstract-tooltip">Submissions</div>
             </li>
             <li>
+                <a href="/lecturers/render/elibrary/<%= lecturer.id %>">
+                    <i class="side-nav_icon">
+                        <img src="/images/system/assignments" alt="application logo">
+                    </i>
+                    <p class="nav_name">E-Library</p>
+                </a>
+                <div class="abstract-tooltip">E-Library</div>
+            </li>
+            <li>
                 <a href="/lecturers/render/announcements/<%= lecturer.id %>">
                     <i class="side-nav_icon">
                         <img src="/images/system/announcements" alt="application logo">
@@ -38,37 +38,6 @@
                     <p class="nav_name">Announcements</p>
                 </a>
                 <div class="abstract-tooltip">Announcements</div>
-            </li>
-            <li>
-                <a href="/global/submit-ticket/lecturer/<%= lecturer.id %>">
-                    <i class="side-nav_icon">
-                        <img src="/images/system/tickets" alt="application logo">
-                    </i>
-                    <p class="nav_name">Tickets</p>
-                </a>
-                <div class="abstract-tooltip">Tickets</div>
-            </li>
-        </ul>
-    </section>
-    <section class="side-nav_actions">
-        <ul>
-            <li>
-                <a href="#">
-                    <i class="side-nav_icon">
-                        <img src="/images/system/faq" alt="application logo">
-                    </i>
-                    <p class="nav_name">FAQs</p>
-                </a>
-                <div class="abstract-tooltip">FAQs</div>
-            </li>
-            <li>
-                <a href="#">
-                    <i class="side-nav_icon">
-                        <img src="/images/system/settings" alt="application logo">
-                    </i>
-                    <p class="nav_name">Settings</p>
-                </a>
-                <div class="abstract-tooltip">Settings</div>
             </li>
             <li>
                 <a href="/login" id="logout">

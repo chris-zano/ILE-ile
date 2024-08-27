@@ -129,7 +129,7 @@ const getStudentsAvailableQuizzes = async (studentData) => {
             let docs = await Quiz.find({
                 courseCode: code,
             });
-            
+
             if (!docs || docs.length === 0) {
                 continue;
             }
@@ -176,6 +176,10 @@ const getQuizOnboard = async (studentData, id) => {
     }
 }
 
+const getElibrary = async (studentData) => {
+    return []
+}
+
 const returnUrlsToMethod = (pageurl = "") => {
     if (!pageurl) return undefined;
 
@@ -190,6 +194,7 @@ const returnUrlsToMethod = (pageurl = "") => {
         "announcements": getStudentAnnouncements,
         "quizzes": getStudentsAvailableQuizzes,
         "quiz-onboard": getQuizOnboard,
+        "elibrary": getElibrary,
     }
     return urlToMethodsObject[pageurl] || undefined;
 }

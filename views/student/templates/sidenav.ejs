@@ -12,15 +12,6 @@
                 <div class="abstract-tooltip">Courses</div>
             </li>
             <li>
-                <a href="/students/render/schedules/<%= student.id %>">
-                    <i class="side-nav_icon">
-                        <img src="/images/system/schedule" alt="application logo">
-                    </i>
-                    <p class="nav_name">Schedule</p>
-                </a>
-                <div class="abstract-tooltip">Schedule</div>
-            </li>
-            <li>
                 <a href="/students/render/submissions/<%= student.id %>">
                     <i class="side-nav_icon">
                         <img src="/images/system/assignments" alt="application logo">
@@ -39,6 +30,15 @@
                 <div class="abstract-tooltip">Quizzes</div>
             </li>
             <li>
+                <a href="/students/render/elibrary/<%= student.id %>">
+                    <i class="side-nav_icon">
+                        <img src="/images/system/assignments" alt="application logo">
+                    </i>
+                    <p class="nav_name">E-Library</p>
+                </a>
+                <div class="abstract-tooltip">E-Library</div>
+            </li>
+            <li>
                 <a href="/students/render/register-courses/<%= student.id %>">
                     <i class="side-nav_icon">
                         <img src="/images/system/projects" alt="application logo">
@@ -55,38 +55,6 @@
                     <p class="nav_name">Announcements</p>
                 </a>
                 <div class="abstract-tooltip">Announcements</div>
-            </li>
-            <li>
-                <a href="/global/submit-ticket/student/<%= student.id %>">
-                    <i class="side-nav_icon">
-                        <img src="/images/system/tickets" alt="application logo">
-                    </i>
-                    <p class="nav_name">Submit Ticket</p>
-                </a>
-                <div class="abstract-tooltip">Submit Ticket</div>
-            </li>
-        </ul>
-    </section>
-
-    <section class="side-nav_actions">
-        <ul>
-            <li>
-                <a href="/students/render/faqs/<%= student.id %>">
-                    <i class="side-nav_icon">
-                        <img src="/images/system/faq" alt="application logo">
-                    </i>
-                    <p class="nav_name">FAQs</p>
-                </a>
-                <div class="abstract-tooltip">FAQs</div>
-            </li>
-            <li>
-                <a href="/students/render/settings/<%= student.id %>">
-                    <i class="side-nav_icon">
-                        <img src="/images/system/settings" alt="application logo">
-                    </i>
-                    <p class="nav_name">Settings</p>
-                </a>
-                <div class="abstract-tooltip">Settings</div>
             </li>
             <li>
                 <a href="/login" id="logout">

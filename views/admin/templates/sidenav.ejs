@@ -44,6 +44,16 @@
                 <div class="abstract-tooltip">Classes</div>
             </li>
             <li>
+                <a href="/admins/render/elibrary/<%= admin.id %>" <%=currentPage==='classrooms' ? 'aria-current=page'
+                    : '' %> >
+                    <i class="side-nav_icon">
+                        <img src="/images/system/classrooms" alt="application logo">
+                    </i>
+                    <p class="nav_name">E-Library</p>
+                </a>
+                <div class="abstract-tooltip">E-Library</div>
+            </li>
+            <li>
                 <a href="/admins/render/announcements/<%= admin.id %>" <%=currentPage==='announcements' ? 'aria-current=page'
                     : '' %>">
                     <i class="side-nav_icon">
@@ -52,30 +62,6 @@
                     <p class="nav_name">Announcements</p>
                 </a>
                 <div class="abstract-tooltip">Announcements</div>
-            </li>
-            </li>
-        </ul>
-    </section>
-
-    <section class="side-nav_actions">
-        <ul>
-            <li>
-                <a href="#">
-                    <i class="side-nav_icon">
-                        <img src="/images/system/faq" alt="application logo">
-                    </i>
-                    <p class="nav_name">FAQs</p>
-                </a>
-                <div class="abstract-tooltip">FAQs</div>
-            </li>
-            <li>
-                <a href="#">
-                    <i class="side-nav_icon">
-                        <img src="/images/system/settings" alt="application logo">
-                    </i>
-                    <p class="nav_name">Settings</p>
-                </a>
-                <div class="abstract-tooltip">Settings</div>
             </li>
             <li>
                 <a href="/login" id="logout">
