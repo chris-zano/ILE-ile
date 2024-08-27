@@ -66,7 +66,7 @@
     }
     
     a.card section.card-body {
-        height: calc(100% - 45%);
+        height: fit-content;
         border-radius: 9px;
         display: grid;
         grid-template-rows: repeat(3, 50px);
@@ -112,11 +112,10 @@
     }
     
     a.card section.card-body div.footer {
-        margin-top: 3ch;
         display: flex;
-        flex-flow: column;
-        float: right;
+        flex-flow: row;
         gap: 15px;
+        padding: 1ch 0;
     }
     
     a.card section.card-body div.footer div {
@@ -153,7 +152,7 @@
         background-color: var(--background);
         border: 1px solid var(--inactive);
         width: 100%;
-        height: 100px;
+        height: 120px;
         color: unset;
         text-decoration: unset;
         cursor: pointer;
@@ -164,7 +163,7 @@
     
     section.card-header {
         width: 100px;
-        height: 100px;
+        height: 100%;
         margin-bottom: 4px;
     }
     
@@ -177,17 +176,20 @@
     }
     
     a.card section.card-body {
+        margin-left: 2ch;
         height: 100%;
         display: flex;
         flex-direction: column;
-        gap: 1ch;
+        gap: .5ch;
     }
     
     a.card section.card-body div.title {
-        background-color: green;
-        height: 60%;
+        margin-top: 1ch;
+        height: fit-content;
         display: grid;
-        grid-template-rows: 70% 30%;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 1fr;
+        gap: 1ch;
         align-items: center;
     }
     
@@ -205,10 +207,10 @@
     a.card section.card-body div.professor {
         display: flex;
         align-items: center;
-        gap: 7px;
     }
     
     a.card section.card-body div.professor img {
+        display: none;
         width: 22px;
         height: 22px;
     }
