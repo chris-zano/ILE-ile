@@ -90,6 +90,7 @@ const getCreateQuiz = async (lecturerData, req) => {
     }
 }
 
+const getLibrary = () => [];
 const returnUrlsToMethod = (pageurl = "") => {
     if (!pageurl) return undefined;
 
@@ -102,6 +103,7 @@ const returnUrlsToMethod = (pageurl = "") => {
         "courses": getCourses,
         "profile": getProfile,
         "create-quiz": getCreateQuiz,
+        "elibrary": getLibrary
     }
     return urlToMethodsObject[pageurl] || undefined;
 }

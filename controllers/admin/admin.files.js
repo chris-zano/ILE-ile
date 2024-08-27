@@ -240,3 +240,32 @@ export const getAnnouncementFile = (req, res) => {
         return res.status(500).json({ message: 'internal server error' });
     }
 }
+
+export const getLibraryFile = (req, res) => {
+    const { filename } = req.query;
+
+    if (!filename) {
+        console.log("(get-library-file) => filename not valid: ", filename);
+        return res.status(400).json({ message: "request does not have a valid filename" });
+    }
+
+    try {
+        const filePath = path.join(__dirname, '..', '..', 'public', 'assets', 'library', filename);
+        if (!fs.existsSync(filePath)) {
+            console.log(`(get-library-file) => filepath does not exist: ${filePath}`);
+            return res.status(404).json({ message: 'resource not found' });
+        }
+        
+        
+        console.log(filePath)
+        console.log(`(get-library-file) => filepath exists: ${filePath}`);
+        res.status(200);
+        fs.createReadStream(filePath).pipe(res);
+        console.log('here')
+        return;
+
+    } catch (error) {
+        console.log(`(get-library-file) => Error:: an unexpected error occured\n`, error);
+        return res.status(500).json({ message: 'internal server error' });
+    }
+}

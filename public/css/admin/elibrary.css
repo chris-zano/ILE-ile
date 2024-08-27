@@ -1,57 +1,411 @@
-.admin-upload {
-    background-color: var(--white);
-    padding: 2ch;
-    border-radius: 1ch;
-    max-width: 600px;
-    margin: 0 auto;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+*[aria-hidden="true"] {
+    display: none;
 }
 
-.admin-upload h2 {
-    text-align: center;
-    color: var(--primary);
-    margin-bottom: 2ch;
-}
+@media screen and (min-width: 768px) {
+    .e-library-main .section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--inactive);
+        margin-bottom: 1rem;
+      }
+      
+      .e-library-main #search-bar {
+        width: 60%;
+        padding: 0.5rem;
+        border: 1px solid var(--inactive);
+        border-radius: 0.5rem;
+      }
+      
+      .e-library-main #resource-type {
+        padding: 0.5rem;
+        border: 1px solid var(--inactive);
+        border-radius: 0.5rem;
+        background-color: var(--white);
+      }
 
-.form-group {
-    margin-bottom: 1.5ch;
-}
+      .e-library-main #add-resource-btn {
+        padding: 0.5rem;
+        border: 1px solid var(--inactive);
+        border-radius: 0.5rem;
+        background-color: var(--white);
+        cursor: pointer;
+        transition: var(--transition-default);
+      }
 
-.form-group label {
-    display: block;
-    font-weight: bold;
-    color: var(--text);
-    margin-bottom: 0.5ch;
-}
+      .e-library-main #add-resource-btn:hover,
+      .e-library-main #add-resource-btn:focus {
+        background-color: var(--primary);
+        border: 1px solid var(--primary);
+        color: var(--white);
+      }
 
-.form-group input,
-.form-group select {
-    width: 100%;
-    padding: 1ch;
-    border: 1px solid var(--inactive);
-    border-radius: 0.5ch;
-    box-sizing: border-box;
-}
-
-.form-group button {
-    width: 100%;
-    padding: 1ch;
-    background-color: var(--primary);
-    color: var(--white);
-    border: none;
-    border-radius: 0.5ch;
-    cursor: pointer;
-    font-size: 1em;
-}
-
-.form-group button:hover {
-    background-color: var(--primary-dark);
-}
-
-/* Responsive Styles */
-@media (max-width: 768px) {
-    .admin-upload {
-        padding: 1ch;
-        max-width: 100%;
+    .e-library-main {
+        padding: 1rem;
+        background-color: var(--white);
+        border-radius: 0.5rem;
     }
+
+    .e-library-main .resources-list {
+        margin-top: 2ch;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 300px));
+        grid-template-rows: auto;
+        gap: 1rem;
+        list-style: none;
+        padding: 0;
+    }
+
+    .e-library-main .resource-card {
+        background-color: var(--white);
+        border: 1px solid var(--inactive);
+        width: 90vw;
+        max-width: 300px;
+        border-radius: 1ch;
+        padding: 0;
+        margin: 0 auto;
+    }
+
+    .e-library-main .resource-card article {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+    }
+
+    .e-library-main .resource-info img {
+        width: 100%;
+        height: 100%;
+        max-height: 200px;
+        border-top-left-radius: 1ch;
+        border-top-right-radius: 1ch;
+        margin-top: 0;
+        object-fit: cover;
+        aspect-ratio: 4 / 3;
+    }
+
+    .e-library-main .resource-details {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        padding: 1ch ;
+    }
+
+    .e-library-main .resource-details > * {
+        color: var(--text-title);
+    }
+    
+    .e-library-main .resource-title {
+        font-size: 1.8ch;
+        font-weight: bold;
+        color: var(--text-title);
+    }
+    .e-library-main .resource-author {
+        font-size: 1.4ch;
+        color: var(--text-title);
+    }
+    
+    .e-library-main .resource-year {
+        font-size: 1.4ch;
+        font-weight: bold;
+        color: var(--text-title);
+    }
+    .e-library-main .download-btn {
+        display: flex;
+        gap: 1ch;
+        align-items: center;
+        justify-content: end;
+    }
+
+    .e-library-main .download-btn button {
+        height: 30px;
+        width: 70px;
+        border: 1px solid var(--inactive);
+        border-radius: .6ch;
+        background-color: var(--white);
+        cursor: pointer;
+        transition: var(--transition-default);
+    }
+
+    .e-library-main .download-btn button:hover,
+    .e-library-main .download-btn button:focus {
+        background-color: var(--primary);
+        border: 1px solid var(--primary);
+    }
+    
+    .e-library-main .download-btn button:hover a,
+    .e-library-main .download-btn button:focus a {
+        color: var(--white);
+    }
+
+    .admin-upload {
+        background-color: var(--white);
+        padding: 2ch;
+        border-radius: 1ch;
+        max-width: 600px;
+        width: 90%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        z-index: 1000; /* Ensure the form appears above other elements */
+    }
+    
+    .admin-upload h2 {
+        text-align: center;
+        color: var(--primary);
+        margin-bottom: 2ch;
+    }
+    
+    .form-group {
+        margin-bottom: 1.5ch;
+    }
+    
+    .form-group label {
+        display: block;
+        font-weight: bold;
+        color: var(--text);
+        margin-bottom: 0.5ch;
+    }
+    
+    .form-group input,
+    .form-group select {
+        width: 100%;
+        padding: 1ch;
+        border: 1px solid var(--inactive);
+        border-radius: 0.5ch;
+        box-sizing: border-box;
+    }
+    
+    .form-group button {
+        width: 100%;
+        padding: 1ch;
+        background-color: var(--primary);
+        color: var(--white);
+        border: none;
+        border-radius: 0.5ch;
+        cursor: pointer;
+        font-size: 1em;
+    }
+    
+    .form-group button:hover {
+        background-color: var(--primary-dark);
+    }
+    
+    /* Optionally, you can add a background overlay */
+    .admin-upload-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 999; /* Ensure the overlay appears just below the form */
+        display: none; /* Initially hidden */
+    }
+    
+    /* Show the form and overlay when a specific class is added */
+    .show-upload-form .admin-upload,
+    .show-upload-form .admin-upload-overlay {
+        display: block;
+    }
+    
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+    .e-library-main .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .e-library-main #search-bar {
+        width: 100%;
+        padding: 0.5rem;
+        margin-bottom: 0.5rem;
+        border: 1px solid var(--inactive);
+        border-radius: 0.5rem;
+    }
+
+    .e-library-main #resource-type {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid var(--inactive);
+        border-radius: 0.5rem;
+        background-color: var(--white);
+    }
+
+    .e-library-main {
+        padding: 1rem;
+        background-color: var(--white);
+        border-radius: 0.5rem;
+    }
+
+    .e-library-main .resources-list {
+        margin-top: 2ch;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        gap: 1rem;
+        list-style: none;
+        padding: 0;
+    }
+
+    .e-library-main .resource-card {
+        background-color: var(--white);
+        border: 1px solid var(--inactive);
+        width: 90vw;
+        max-width: 400px;
+        border-radius: 1ch;
+        padding: 0;
+        margin: 0 auto;
+    }
+
+    .e-library-main .resource-card article {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+    }
+
+    .e-library-main .resource-info img {
+        width: 100%;
+        height: 100%;
+        max-height: 200px;
+        border-top-left-radius: 1ch;
+        border-top-right-radius: 1ch;
+        margin-top: 0;
+        object-fit: cover;
+        aspect-ratio: 4 / 3;
+    }
+
+    .e-library-main .resource-details {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+        padding: 1ch ;
+    }
+
+    .e-library-main .resource-details > * {
+        color: var(--text-title);
+    }
+    
+    .e-library-main .resource-title {
+        font-size: 1.8ch;
+        font-weight: bold;
+        color: var(--text-title);
+    }
+    .e-library-main .resource-author {
+        font-size: 1.4ch;
+        color: var(--text-title);
+    }
+    
+    .e-library-main .resource-year {
+        font-size: 1.4ch;
+        font-weight: bold;
+        color: var(--text-title);
+    }
+    .e-library-main .download-btn {
+        display: flex;
+        gap: 1ch;
+        align-items: center;
+        justify-content: end;
+    }
+
+    .e-library-main .download-btn button {
+        height: 30px;
+        width: 70px;
+        border: 1px solid var(--inactive);
+        border-radius: .6ch;
+        background-color: var(--white);
+        cursor: pointer;
+        transition: var(--transition-default);
+    }
+
+    .e-library-main .download-btn button:hover,
+    .e-library-main .download-btn button:focus {
+        background-color: var(--primary);
+        border: 1px solid var(--primary);
+    }
+    
+    .e-library-main .download-btn button:hover a,
+    .e-library-main .download-btn button:focus a {
+        color: var(--white);
+    }
+    .admin-upload {
+        background-color: var(--white);
+        padding: 2ch;
+        border-radius: 1ch;
+        max-width: 600px;
+        width: 90%;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        z-index: 1000; /* Ensure the form appears above other elements */
+    }
+    
+    .admin-upload h2 {
+        text-align: center;
+        color: var(--primary);
+        margin-bottom: 2ch;
+    }
+    
+    .form-group {
+        margin-bottom: 1.5ch;
+    }
+    
+    .form-group label {
+        display: block;
+        font-weight: bold;
+        color: var(--text);
+        margin-bottom: 0.5ch;
+    }
+    
+    .form-group input,
+    .form-group select {
+        width: 100%;
+        padding: 1ch;
+        border: 1px solid var(--inactive);
+        border-radius: 0.5ch;
+        box-sizing: border-box;
+    }
+    
+    .form-group button {
+        width: 100%;
+        padding: 1ch;
+        background-color: var(--primary);
+        color: var(--white);
+        border: none;
+        border-radius: 0.5ch;
+        cursor: pointer;
+        font-size: 1em;
+    }
+    
+    .form-group button:hover {
+        background-color: var(--primary-dark);
+    }
+    
+    /* Optionally, you can add a background overlay */
+    .admin-upload-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 999; /* Ensure the overlay appears just below the form */
+        display: none; /* Initially hidden */
+    }
+    
+    /* Show the form and overlay when a specific class is added */
+    .show-upload-form .admin-upload,
+    .show-upload-form .admin-upload-overlay {
+        display: block;
+    }
+    
 }
