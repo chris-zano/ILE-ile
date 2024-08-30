@@ -1,56 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/rtc/rtc-root">
     <link rel="stylesheet" type="text/css" href="/css/rtc/style">
+    <link rel="stylesheet" type="text/css" href="/css/rtc/rtc-popups">
     <title>Meet</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/6f0f83005a.js" crossorigin="anonymous"></script>
     <script>
         const ROOM_ID = "<%= roomId %>";
         const CHAPTER = "<%= chapter %>";
     </script>
-    <script defer src="https://unpkg.com/peerjs@1.2.0/dist/peerjs.min.js"></script>
+    <script src="/script/scripts/rtc/rtc-peer-js"></script>
+    <!-- <script defer src="https://unpkg.com/peerjs@1.2.0/dist/peerjs.min.js"></script> -->
     <script src="/socket.io/socket.io.js" defer></script>
     <script src="/script/scripts/rtc/rtc-helper" defer></script>
     <script src="/script/scripts/rtc/rtc-main" defer></script>
+    <script src="/script/scripts/rtc/rtc-utils" defer></script>
 </head>
-<body>
-    <div id="main-div">
-        <div id="video-grid"></div>
-        <div id="chat-box">
-            <div id="chat-header">
-                <div>In-call messages</div>
-                <div id="close-chat-div"><i class="fa fa-times" aria-hidden="true"></i></div>
-            </div>
-            <div id="chats">
-                <div id="messages-info">Messages can only be seen by people in the call and are deleted when the call ends</div>
-                <ul id="messages">
 
-                </ul>
+<body>
+    <section id="rtc-room-main">
+        <div id="main-div">
+            <div id="video-grid"></div>
+            <div id="my-grid"></div>
+        </div>
+        <div id="controls-tab">
+            <div id="time"></div>
+            <div class="icons call-controls">
+                <div class="btn" id="mute"><i class="fa fa-microphone"></i></div>
+                <div class="btn" id="video-off"><i class="fa fa-video-camera"></i></div>
+                <div class="btn" id="screen-share-btn"><i class="fa fa-upload"></i></div>
+                <a href="/call/end/<%= roomId %>/<%= chapter %>" id="end-btn">
+                    <div class="end-btn"><i class="fa fa-phone" aria-hidden="true"></i></div>
+                </a>
             </div>
-            <div id="form">
-                <form>
-                    <input type="text" id="message-form" placeholder="Send a message to everyone" autocomplete="off">
-                    <button type="submit"><i class="fa fa-paper-plane"></i></button>
+            <div class="icons call-actions">
+                <div class="btn" id="chat-box-btn"><i class="fas fa-comment-alt"></i></div>
+                <div class="btn"><i class="fas fa-info-circle"></i></div>
+                <div class="btn"><i class="fas fa-user-friends" id="get-participants"></i></div>
+            </div>
+        </div>
+    </section>
+    <section class="popups" id="popups" aria-hidden="true">
+        <article class="attendance" id="article-attendance" aria-hidden="true">
+            <div class="attendance-title">
+                <p>Participants (<span id="participants-count">10</span>)</p>
+            </div>
+            <ul id="participants-list"></ul>
+        </article>
+
+        <article class="chats" id="chats" aria-hidden="true">
+            <div class="chats-title">
+                <p>Messages</p>
+                <small>&#9432; Messages are not available after the call</small>
+            </div>
+            <ul class="chat-list" id="chat-list">
+                <li>
+                    <span class="sender">Dr. Phillip Kissembe <span class="date-time" style="margin-left: 10px;"> &nbsp;20:37pm</span></span>
+                    <p class="message">This is the contents of the message. I hope it finds whomever reads it well. blessings</p>
+                    
+                </li>
+                
+            </ul>
+            <div class="msg-form">
+                <div id="msg-preview" aria-hidden="true">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus nostrum eum reprehenderit esse perspiciatis, vero nulla possimus animi accusantium autem aperiam ipsam similique inventore doloribus est ex aspernatur aliquid soluta.
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Natus nostrum eum reprehenderit esse perspiciatis, vero nulla possimus animi accusantium autem aperiam ipsam similique inventore doloribus est ex aspernatur aliquid soluta.
+                </div>
+                <form action="#" method="post">
+                    <input type="text" id="msg-input" placeholder="enter message here...." required>
                 </form>
             </div>
-        </div>
-    </div>
-    <div id="controls-tab">
-        <div id="time"></div>
-        <div class="icons">
-            <div class="btn" id="mute"><i class="fa fa-microphone"></i></div>
-            <div class="btn" id="video-off"><i class="fa fa-video-camera"></i></div>
-            <div class="btn" id="screen-share-btn"><i class="fa fa-upload"></i></div>
-            <a href="/call/end/<%= roomId %>/<%= chapter %>" id="end-btn"><div class="end-btn"><i  class="fa fa-phone" aria-hidden="true"></i></div></a>
-        </div>
-        <div class="icons">
-            <div class="btn" id="chat-box-btn"><i class="fas fa-comment-alt"></i></div>
-            <div class="btn"><i class="fas fa-info-circle"></i></div>
-            <div class="btn"><i class="fas fa-user-friends"id="get-participants"></i>
-    </div>
+            <script>
+                const previewDiv = document.getElementById("msg-preview");
+                const msgInput = document.getElementById("msg-input");
+
+                msgInput.addEventListener('input', () => {
+                    previewDiv.setAttribute("aria-hidden", "false")
+                    previewDiv.textContent = msgInput.value
+                })
+            </script>
+        </article>
+    </section>
 </body>
+
 </html>

@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node index.js",
+    "start": "node index.js && peerjs --port 3001",
     "dev": "nodemon index.js",
     "rtc": "nodemon index.js && peerjs --port 3001",
     "test": "echo \"Error: no test specified\" && exit 1"
