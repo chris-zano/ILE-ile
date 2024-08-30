@@ -72,7 +72,7 @@ const updateCourseMeetingInformation = async () => {
     const request = await fetch(url, {
         method: "POST",
         headers: headers,
-        body: JSON.stringify({ attendees: participants})
+        body: JSON.stringify({ attendees: participants })
     });
 
     const response = await request.json();
@@ -106,9 +106,57 @@ const rtcHelperMain = async () => {
     // get-participants button
     const participantsBtn = document.getElementById("get-participants");
     participantsBtn.addEventListener("click", async () => {
-        const participants = await getParticipants(ROOM_ID);
-        console.log("On button click, participants are:", participants);
+        const articleAtt = document.getElementById("article-attendance");
+        if (articleAtt.getAttribute("aria-hidden") === "true") {
+            document.getElementById("popups").setAttribute("aria-hidden", "false");
+            articleAtt.setAttribute("aria-hidden", "false");
+
+            const participants = await getParticipants(ROOM_ID);
+            document.getElementById('participants-list').innerHTML = "";
+
+            participants.forEach((participant) => {
+                const li = document.createElement("li");
+                if (participant.permissionClass === 'lecturer') {
+                    li.innerHTML = `
+                        <img src="${participant.profilePicUrl}" alt="pp" width="30px" height="30px" style="object-fit: cover; border-radius: 50%;">
+                        <p>${participant.userName}(Host)</p>
+                  `;
+                }
+
+                else if (participant.permissionClass === 'student') {
+                    li.innerHTML = `
+                        <img src="${participant.profilePicUrl}" alt="pp" width="30px" height="30px" style="object-fit: cover; border-radius: 50%;">
+                        <p>${participant.userName}<br>${participant.studentId}</p>
+                    `;
+                }
+                else {
+                    return;
+                }
+                document.getElementById('participants-list').append(li);
+            });
+
+        }
+        else {
+            document.getElementById("popups").setAttribute("aria-hidden", "true")
+            articleAtt.setAttribute("aria-hidden", "true")
+        }
+
     });
+
+
+    //toggle chats open close
+    const chatsDiv = document.getElementById("chats");
+    const chatsBtn = document.getElementById("chat-box-btn");
+    chatsBtn.addEventListener('click', () => {
+        if (chatsDiv.getAttribute("aria-hidden") === "true") {
+            document.getElementById("popups").setAttribute("aria-hidden", "false")
+            chatsDiv.setAttribute('aria-hidden', "false");
+        }
+        else {
+            chatsDiv.setAttribute('aria-hidden', 'true');
+            document.getElementById("popups").setAttribute("aria-hidden", "true");
+        }
+    })
 
     // end call by lecturer;
     const endCallBtn = document.getElementById('end-btn');
@@ -134,7 +182,7 @@ const rtcHelperMain = async () => {
         }
     });
 
-    
+
 }
 
 document.addEventListener("DOMContentLoaded", rtcHelperMain);

@@ -1,5 +1,6 @@
 const socket = io();
 const videoGrid = document.getElementById('video-grid');
+const myGrid = document.getElementById('my-grid');
 const participantGrid = document.getElementById('participants-grid');
 var myPeer = new Peer();
 let count = 0;
@@ -16,6 +17,7 @@ let userName = undefined;
 let uid = undefined;
 let permissionClass = undefined;
 let studentId = undefined;
+let profilePicUrl = '';
 
 let userData = sessionStorage.getItem('auth-user');
 
@@ -45,6 +47,8 @@ else {
         window.location.replace('/login');
     }
 
+    profilePicUrl = data.profilePicUrl;
+
     // participants.push[{ userName, uid, permissionClass, studentId }];
 }
 
@@ -68,17 +72,7 @@ function setTime() {
     document.getElementById('time').innerText = formatAMPM(new Date) + " | Meeting";
 }
 
-document.getElementById('chat-box-btn').addEventListener('click', function () {
-    if (document.getElementById('chat-box').style.display == "none") {
-        document.getElementById('chat-box').style.display = "block"
-    } else {
-        document.getElementById('chat-box').style.display = "none"
-    }
-})
 
-document.getElementById('close-chat-div').addEventListener('click', function () {
-    document.getElementById('chat-box').style.display = "none";
-})
 
 navigator.mediaDevices.getUserMedia({
     video: true, //we want video
@@ -89,25 +83,25 @@ navigator.mediaDevices.getUserMedia({
     myVideoStream = stream; //storing the video stream returned to the myVideoStream variable
 
     console.log('adding my video stream', userName, permissionClass)
-    addVideoStream(myVideo, stream, userName, tempuid); //appended my stream to 'video-grid' div
+    addVideoStream(myVideo, stream, userName, tempuid, true, 'me-loaded'); //appended my stream to 'video-grid' div
     //add participant to list of participants
-    const tempParticipants = await addParticipant(ROOM_ID,  { userName, uid, permissionClass, studentId });
+    await addParticipant(ROOM_ID, { userName, uid, permissionClass, studentId, profilePicUrl });
 
     myPeer.on('call', call => {
         call.answer(stream);
         const { name, userId, cuiid } = call.metadata
-        console.log("caller: ", { name, userId, cuiid})
+        console.log("caller: ", { name, userId, cuiid })
 
         const video = document.createElement('video');
         let html = '<i class="fas fa-microphone"></i>'
         video.innerHTML = html;
         call.on('stream', userVideoStream => {
-            console.log('on stream video displayed', {name, cuiid});
-            addVideoStream(video, userVideoStream, name, cuiid)
+            console.log('on stream video displayed', { name, cuiid });
+            addVideoStream(video, userVideoStream, name, cuiid, false, 'call-answer')
         })
         currentPeer = call;
     })
-    socket.on('user-connected', ({ userId, name, cuid}) => {
+    socket.on('user-connected', ({ userId, name, cuid }) => {
         console.log(`new user connected: `, { userId, name, cuid })
         setTimeout(connectToNewUser, 1000, userId, name, cuid, stream);
     });
@@ -142,13 +136,13 @@ myPeer.on('open', id => {
 
 
 function connectToNewUser(userId, name, cuid, stream) {
-    const call = myPeer.call(userId, stream, { metadata: { name: userName, userId: myPeer.id, cuiid: cuid} });
+    const call = myPeer.call(userId, stream, { metadata: { name: userName, userId: myPeer.id, cuiid: cuid } });
     const video = document.createElement('video');
 
     video.id = `video-${userId}-${cuid}`; // Set the ID for the video element
 
     call.on('stream', userVideoStream => {
-        addVideoStream(video, userVideoStream, name, cuid);
+        addVideoStream(video, userVideoStream, name, cuid, false, 'connect-user');
     });
 
     call.on('close', () => {
@@ -166,47 +160,60 @@ function connectToNewUser(userId, name, cuid, stream) {
     currentPeer = call;
 }
 
-function addVideoStream(video, stream, name, cuid) {
+function addVideoStream(video, stream, name, cuid, state, caller) {
     console.log("Adding a new video for: ",
         { video, name, cuid }
     )
+
+    if (state) {
+        console.log("stream is mine")
+    }
+    else {
+        console.log("stream is theirs")
+    }
     if (stream) {
         video.srcObject = stream;
         video.addEventListener('loadedmetadata', () => {
             video.play();
         });
+        let roomCount = 0;
 
-        let outerDiv = document.createElement('div');
-        outerDiv.classList.add('user-video');
-        if (permissionClass === 'lecturer' && lecturerStreamSet === false) {
-            outerDiv.classList.add('media-main-w')
-            lecturerStreamSet = true
-        }
-        else {
-            outerDiv.classList.add('participant-media-n')
-        }
-        outerDiv.id = `video-wrapper-${cuid}`;
+        getParticipants(ROOM_ID).then((participants) => {
+            if (participants.length === 1) {
+                console.log("you are the only one on this call")
+            }
+            if (participants.length === 2) {
+                roomCount = 2
+                console.log("there are only 2 people on this call")
+            }
+        }).catch(error => {
+            console.log(error);
+        }).finally(() => {
+            let outerDiv = document.createElement('div');
+            outerDiv.classList.add('user-video');
+            outerDiv.classList.add(caller);
+            outerDiv.classList.add(`${state ? 'mine' : 'joining'}`);
+            outerDiv.appendChild(video);
+            
+            videoGrid.classList.add(`${roomCount === 2 ? 'two-callers' : 'one-caller'}`);
+            state ? myGrid.appendChild(outerDiv) : videoGrid.appendChild(outerDiv);
+        })
 
-        outerDiv.appendChild(video);
-
-        let nameDiv = document.createElement('div');
-        let pinDiv = document.createElement('div');
-
-        nameDiv.classList.add('user-name');
-        nameDiv.innerHTML = name;
-        nameDiv.id = `${name}_${cuid}`;
-        outerDiv.appendChild(nameDiv);
-
-        videoGrid.appendChild(outerDiv);
     } else {
         console.log(`Stream for ${name} is undefined or null.`);
     }
+
+    cleanUpUI();
 }
 
 function cleanUpUI() {
     const intervalId = setInterval(() => {
-        const videoObjects = document.querySelectorAll('div[id^="video-wrapper-"]');
+        const videoObjects = document.querySelectorAll('.joining');
         for (let container of videoObjects) {
+            if (container.childElementCount === 0) {
+                    console.log("Removing container due to no active video feed.");
+                    videoGrid.removeChild(container);
+            }
             const videoElement = container.querySelector("video");
             if (!videoElement || !hasActiveVideoFeed(videoElement)) {
                 console.log("Removing container due to no active video feed.");
@@ -301,12 +308,12 @@ $('form').submit(function (e) {
     if (inputMsg != '')
         socket.emit('send-message', inputMsg, userName);
     $('input').val('');
+    document.getElementById('msg-preview').setAttribute('aria-hidden', 'true')
 })
 
 socket.on('recieve-message', (inputMsg, userName) => {
     inputMsg = urlify(inputMsg);
-    $('#messages').append(`<li><b style="font-size:.9rem">${userName}</b>&nbsp;${formatAMPM(new Date)}<br/><br/>${inputMsg}</li>`);
-    console.log('From server :: ', inputMsg);
+    $('#chat-list').append(`<li><span class="sender">${userName}</span><p class="message">${inputMsg}</p><span class="date-time">&nbsp;${formatAMPM(new Date)}</span>`);
 })
 
 const scrollToBottom = () => {
