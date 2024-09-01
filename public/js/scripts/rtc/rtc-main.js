@@ -194,7 +194,7 @@ function addVideoStream(video, stream, name, cuid, state, caller) {
             outerDiv.classList.add(caller);
             outerDiv.classList.add(`${state ? 'mine' : 'joining'}`);
             outerDiv.appendChild(video);
-            
+
             videoGrid.classList.add(`${roomCount === 2 ? 'two-callers' : 'one-caller'}`);
             state ? myGrid.appendChild(outerDiv) : videoGrid.appendChild(outerDiv);
         })
@@ -203,7 +203,9 @@ function addVideoStream(video, stream, name, cuid, state, caller) {
         console.log(`Stream for ${name} is undefined or null.`);
     }
 
-    cleanUpUI();
+    setTimeout(() => {
+        cleanUpUI();
+    }, 20000);
 }
 
 function cleanUpUI() {
@@ -211,8 +213,8 @@ function cleanUpUI() {
         const videoObjects = document.querySelectorAll('.joining');
         for (let container of videoObjects) {
             if (container.childElementCount === 0) {
-                    console.log("Removing container due to no active video feed.");
-                    videoGrid.removeChild(container);
+                console.log("Removing container due to no active video feed.");
+                videoGrid.removeChild(container);
             }
             const videoElement = container.querySelector("video");
             if (!videoElement || !hasActiveVideoFeed(videoElement)) {
