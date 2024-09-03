@@ -14,12 +14,12 @@ let uid = undefined;
 let permissionClass = undefined;
 let studentId = undefined;
 let profilePicUrl = '';
+let userData = sessionStorage.getItem('auth-user');
 
 
 
 const authenticateUserSession = () => {
     try {
-        let userData = sessionStorage.getItem('auth-user');
 
         if (!userData) {
             console.log("No data fetched")
@@ -82,24 +82,23 @@ const configureNewPeer = () => {
     }
 }
 
+const formatAMPM = (date) => {
+    let hours = date.getHours();
+    let minutes = date.getMinutes();
+    let ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    let strTime = hours + ':' + minutes + ' ' + ampm;
+    return strTime;
+}
+
+const setTime = () => {
+    document.getElementById('time').innerText = formatAMPM(new Date) + " | Meeting";
+}
+
 const setLocalDateTime = () => {
-    function formatAMPM(date) {
-        let hours = date.getHours();
-        let minutes = date.getMinutes();
-        let ampm = hours >= 12 ? 'PM' : 'AM';
-        hours = hours % 12;
-        hours = hours ? hours : 12; // the hour '0' should be '12'
-        minutes = minutes < 10 ? '0' + minutes : minutes;
-        let strTime = hours + ':' + minutes + ' ' + ampm;
-        return strTime;
-    }
-
-    function setTime() {
-        document.getElementById('time').innerText = formatAMPM(new Date) + " | Meeting";
-    }
-
-    setTime();
-
+    // setTime();
     setInterval(setTime, 1000);
 }
 
@@ -221,7 +220,7 @@ const rtcMainLib = async () => {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
         myVideoStream = stream;
 
-        addVideoStream(myVideo, stream, userName, tempuid, true, 'me-loaded');
+        addVideoStream(myVideo, stream, userName, uid, true, 'me-loaded');
         await addParticipant(ROOM_ID, { userName, uid, permissionClass, studentId, profilePicUrl });
 
 
@@ -256,54 +255,29 @@ const rtcMainLib = async () => {
     }
 }
 
-
-
 document.addEventListener("DOMContentLoaded", rtcMainLib);
-
-
-
-
-
-
-
 
 function cleanUpUI() {
     const intervalId = setInterval(() => {
-        const videoObjects = document.querySelectorAll('.joining');
-        for (let container of videoObjects) {
-            if (container.childElementCount === 0) {
-                console.log("Removing container due to no active video feed.");
-                videoGrid.removeChild(container);
+        const joiningVideos = document.querySelectorAll('.joining');
+        Array.from(joiningVideos).forEach(joiningVideo => {
+            if (joiningVideo.childElementCount === 0) {
+                try {
+                    joiningVideo.remove();
+                    console.log('this one was empty and removed', joiningVideo);
+                }
+                catch (error) {
+                    console.log('An error occured while deleting object');
+                }
             }
-            const videoElement = container.querySelector("video");
-            if (!videoElement || !hasActiveVideoFeed(videoElement)) {
-                console.log("Removing container due to no active video feed.");
-                videoGrid.removeChild(container);
-            }
-        }
-    }, 2000); // Cleanup every 2 seconds
+        });
+    }, 2000);
 
     // Clear the interval after 20 seconds
     setTimeout(() => {
         clearInterval(intervalId);
         console.log('Cleanup interval cleared');
     }, 20000);
-}
-
-function hasActiveVideoFeed(videoElement) {
-    if (videoElement && videoElement.srcObject instanceof MediaStream) {
-        const stream = videoElement.srcObject;
-        if (!stream.active) return false;
-
-        const videoTracks = stream.getVideoTracks();
-        const audioTracks = stream.getAudioTracks();
-
-        const hasActiveVideo = videoTracks.some(track => track.readyState === 'live' && track.enabled);
-        const hasActiveAudio = audioTracks.some(track => track.readyState === 'live' && track.enabled);
-
-        return hasActiveVideo || hasActiveAudio;
-    }
-    return false;
 }
 
 function muteUnmuteUser() {
