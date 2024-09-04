@@ -14,6 +14,25 @@ import rtcRouter from './routes/rtc/rtc.index.routes.js';
 import submissionsRouter from './routes/submissions/submissions.routes.js';
 import adminBroadcastRouter from './routes/admin/admin.broadcasts.routes.js';
 
+import dotenv from 'dotenv';
+
+export const getTurnCredentials = () => {
+  dotenv.config();
+
+  try{
+    const rtcUsername = process.env.RTC_USERNAME;
+    const rtcPassword = process.env.RTC_PASSWORD;
+  
+    return {
+      username: rtcUsername,
+      password: rtcPassword,
+    }
+
+  }catch(error) {
+    console.error("An error occured while fetching rtc turn credentials\n",error)
+    return null;
+  }
+}
 
 export const callSetupWebSocket = (server) => setupWebSocketServer(server);
 

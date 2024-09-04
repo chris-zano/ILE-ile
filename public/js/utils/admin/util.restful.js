@@ -41,7 +41,6 @@ function getId(id) {
     return document.getElementById(id);
 }
 
-
 const checkAndRenderImageBackground = () => {
     const image = document.getElementById("profile-main");
     const images = document.querySelectorAll("img");

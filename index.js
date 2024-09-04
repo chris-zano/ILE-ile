@@ -8,10 +8,7 @@ import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 import rateLimit from 'express-rate-limit';
 import callAndExecuteRequireStack, { callSetupWebSocket } from './requireStack.js';
-
 import { createServer } from 'http';
-import { ExpressPeerServer } from 'peer';
-
 import cluster from 'cluster';
 import os from 'os';
 
@@ -39,10 +36,6 @@ else {
   const app = express();
   const server = createServer(app);
 
-  const peerServer = ExpressPeerServer(server, {
-    debug: true
-  });
-
   const STATIC_FILES_PATH = path.join(__dirname, 'public');
   const VIEW_ENGINE_PATH = path.join(__dirname, 'views');
 
@@ -58,15 +51,16 @@ else {
   const password = encodeURIComponent(process.env.MONGO_DB_PASSWORD);
   const clusterName = encodeURIComponent(process.env.CLUSTER_NAME);
   const appName = encodeURIComponent(process.env.APP_NAME);
-  const databasename = encodeURIComponent(process.env.DATABASE_NAME); 
+  const databasename = encodeURIComponent(process.env.DATABASE_NAME);
 
   const uri = `mongodb+srv://${username}:${password}@${clusterName}.jwscxvu.mongodb.net/${databasename}?retryWrites=true&w=majority&appName=${appName}`;
+  
   const local_uri = "mongodb://localhost:27017/ileSchool";
-  //Connect to Database and start server
+
   (async () => {
     try {
-      await mongoose.connect(uri);
-      console.log("Connected to database");  
+      await mongoose.connect(local_uri);
+      console.log("Connected to database");
 
       callAndExecuteRequireStack(app);
       callSetupWebSocket(server);
@@ -86,17 +80,14 @@ else {
         });
       });
 
-      //rate limit
       const limiter = rateLimit({
-        windowMs:15 * 60 * 1000, // 15 minutes
-        max: 120, //maximum 120 requests in the 15 minute window
+        windowMs: 15 * 60 * 1000,
+        max: 120, 
         keyGenerator: (req) => {
-          // Custom key generator for identifying users, e.g., using user ID
           return req.params.id ? req.params.id : req.ip;
         },
         message: 'Too many requests, please try again later',
         handler: (req, res, next, options) => {
-          // Custom handler function for rate limit exceeded
           res.status(options.statusCode).json({
             message: options.message,
             retryAfter: options.retryAfter
@@ -111,4 +102,6 @@ else {
       console.error('Error connecting to Database: ', error);
     }
   })();
+
+
 }
