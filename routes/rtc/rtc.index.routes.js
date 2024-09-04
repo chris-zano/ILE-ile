@@ -3,6 +3,7 @@ import { createNewRoom, leaveRoom, renderHome } from '../../controllers/rtc/rtc.
 import { CoursesDB, LecturersDB, StudentsDB } from '../../utils/global/db.utils.js';
 import { logError } from '../../controllers/admin/admin.utils.js';
 import { isValidObjectId } from 'mongoose';
+import { getTurnCredentials } from '../../requireStack.js';
 const router = express.Router();
 const Courses = CoursesDB();
 const Lecturers = LecturersDB()
@@ -11,6 +12,7 @@ const Students = StudentsDB()
 router.get('/start-live/:courseId/:chapter', renderHome);
 router.get('/room/:courseId/:chapter', createNewRoom);
 router.get('/call/end/:room/:chapter', leaveRoom);
+
 router.get('/get/class-in-session/:courseId', async (req, res) => {
     const { courseId } = req.params;
 
@@ -212,5 +214,20 @@ router.get('/courses/rtc/attendance', async (req, res) => {
         return res.status(500);
     }
 });
+
+router.get('/rtc/turn/get-credentials', (req, res) => {
+    try {
+        const turnCredentials = getTurnCredentials();
+
+        if (!turnCredentials) {
+            return res.status(404).json({data: null});
+        }
+
+        return res.status(200).json({data: turnCredentials});
+    } catch (error) {
+        logError(error);
+        return res.status(500).json({data: null});
+    }
+})
 
 export default router;

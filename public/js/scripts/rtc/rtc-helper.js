@@ -27,7 +27,6 @@ const getSystemTime = () => {
 }
 
 const addParticipant = async (courseId, participant) => {
-    console.log({ courseId, participant })
     const request = await fetch(`/rtc/add-participant/${courseId}`, {
         method: "POST",
         headers: {
@@ -40,7 +39,6 @@ const addParticipant = async (courseId, participant) => {
     const response = await request.json();
 
     if (status === 200) {
-        console.log('Participants data added successfully', response.doc);
         return response.doc;
     }
 
@@ -54,7 +52,6 @@ const getParticipants = async (courseId) => {
     const response = await request.json();
 
     if (status === 200) {
-        console.log('Participants data fetched successfully', response.doc);
         return response.doc;
     }
 
@@ -177,7 +174,6 @@ const rtcHelperMain = async () => {
 
             // update the course with the meeting information
             await updateCourseMeetingInformation();
-
             // clear the attendees array of the course.
         }
     });

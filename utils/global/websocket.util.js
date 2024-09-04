@@ -2,10 +2,18 @@ import { Server as SocketIoServer } from 'socket.io'
 import handleSearch from './socket/socket.search.js';
 import { CoursesDB } from './db.utils.js';
 import { logError } from '../../controllers/admin/admin.utils.js';
+import {createServer} from "http";
 
 const Courses = CoursesDB();
+
 const setupWebSocketServer = (server) => {
-    const io = new SocketIoServer(server);
+    const io = new SocketIoServer(server, {
+        cors: {
+            origin: "*",
+            methods: ["GET", "POST"]
+        },
+        path: '/socket.io'
+    });
 
     io.on('connection', socket => {
         try {
@@ -16,7 +24,7 @@ const setupWebSocketServer = (server) => {
 
             //waiting room
             socket.on('join meeting', async (courseId) => {
-                
+
                 socket.join(courseId);
 
                 const meetingStatus = await Courses.findOne({ _id: courseId }, { meeting_status: 1 });
@@ -38,7 +46,6 @@ const setupWebSocketServer = (server) => {
 
             //request for joining room
             socket.on('join-room', (roomId, userId, userName, uid) => {
-
                 socket.join(roomId);
 
                 socket.broadcast.to(roomId).emit('user-connected', { userId, name: userName, cuid: uid });

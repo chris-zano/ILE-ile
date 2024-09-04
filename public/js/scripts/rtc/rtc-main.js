@@ -56,25 +56,65 @@ const authenticateUserSession = () => {
     }
 }
 
-const configureNewPeer = () => {
+const getTurnCredentials = async () => {
     try {
-        myPeer = new Peer({
+        const response = await fetch('/rtc/turn/get-credentials');
+        const {data} = await response.json();
+
+        if (!response.ok) {
+            throw new Error(`Failed to get TURN credentials {status: ${response.status}}`);
+        }
+
+        return data
+    } catch (error) {
+        console.error("An error occured while fetching turn credentials", error);
+        return null;
+    }
+}
+
+const configureNewPeer = async() => {
+    try {
+        const turnCredentials = await getTurnCredentials();
+        if (!turnCredentials) {
+            console.log('Failed to get TURN credentials');
+            const coursePageUrl = constructCourseViewUrl(userData, ROOM_ID);
+            alert("Admin cannot start call");
+            return window.location.replace(coursePageUrl);
+        }
+
+        const {username, password} = turnCredentials;
+        console.log(turnCredentials);
+        myPeer = new Peer(undefined,{
             config: {
                 'iceServers': [
                     {
-                        urls: ["stun:eu-turn4.xirsys.com"]
-                    },
-                    {
-                        username: "ml0jh0qMKZKd9P_9C0UIBY2G0nSQMCFBUXGlk6IXDJf8G2uiCymg9WwbEJTMwVeiAAAAAF2__hNSaW5vbGVl",
-                        credential: "4dd454a6-feee-11e9-b185-6adcafebbb45",
-                        urls: [
-                            "turn:eu-turn4.xirsys.com:80?transport=udp",
-                            "turn:eu-turn4.xirsys.com:3478?transport=tcp"
-                        ]
-                    }
+                        urls: "stun:stun.relay.metered.ca:80",
+                      },
+                      {
+                        urls: "turn:global.relay.metered.ca:80",
+                        username: username,
+                        credential: password,
+                      },
+                      {
+                        urls: "turn:global.relay.metered.ca:80?transport=tcp",
+                        username: username,
+                        credential: password,
+                      },
+                      {
+                        urls: "turn:global.relay.metered.ca:443",
+                        username: username,
+                        credential: password,
+                      },
+                      {
+                        urls: "turns:global.relay.metered.ca:443?transport=tcp",
+                        username: username,
+                        credential: password,
+                      },
                 ]
             }
         });
+
+        console.log("success", myPeer)
     }
     catch (error) {
         console.log('failed to configure new peer');
@@ -177,6 +217,7 @@ const addVideoStream = (video, stream, name, cuid, state, caller) => {
 
 const handlePeerCalls = (stream) => {
     try {
+        console.log("my peer", myPeer)
         myPeer.on('call', call => {
             call.answer(stream);
             const { name, userId, cuiid } = call.metadata
