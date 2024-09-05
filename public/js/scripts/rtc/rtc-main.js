@@ -5,6 +5,7 @@ const peers = {};
 const names = {};
 const participants = [];
 
+let peerConnectionEstablished = false;
 let myPeer = null;
 let count = 0;
 let myVideoStream;
@@ -59,7 +60,7 @@ const authenticateUserSession = () => {
 const getTurnCredentials = async () => {
     try {
         const response = await fetch('/rtc/turn/get-credentials');
-        const {data} = await response.json();
+        const { data } = await response.json();
 
         if (!response.ok) {
             throw new Error(`Failed to get TURN credentials {status: ${response.status}}`);
@@ -72,7 +73,7 @@ const getTurnCredentials = async () => {
     }
 }
 
-const configureNewPeer = async() => {
+const configureNewPeer = async () => {
     try {
         const turnCredentials = await getTurnCredentials();
         if (!turnCredentials) {
@@ -82,37 +83,37 @@ const configureNewPeer = async() => {
             return window.location.replace(coursePageUrl);
         }
 
-        const {username, password} = turnCredentials;
-        console.log(turnCredentials);
-        myPeer = new Peer(undefined,{
-            config: {
-                'iceServers': [
-                    {
-                        urls: "stun:stun.relay.metered.ca:80",
-                      },
-                      {
-                        urls: "turn:global.relay.metered.ca:80",
-                        username: username,
-                        credential: password,
-                      },
-                      {
-                        urls: "turn:global.relay.metered.ca:80?transport=tcp",
-                        username: username,
-                        credential: password,
-                      },
-                      {
-                        urls: "turn:global.relay.metered.ca:443",
-                        username: username,
-                        credential: password,
-                      },
-                      {
-                        urls: "turns:global.relay.metered.ca:443?transport=tcp",
-                        username: username,
-                        credential: password,
-                      },
-                ]
-            }
-        });
+        const { username, password } = turnCredentials;
+        myPeer = new Peer();
+        // myPeer = new Peer(undefined, {
+        //     config: {
+        //         'iceServers': [
+        //             {
+        //                 urls: "stun:stun.relay.metered.ca:80",
+        //             },
+        //             {
+        //                 urls: "turn:global.relay.metered.ca:80",
+        //                 username: username,
+        //                 credential: password,
+        //             },
+        //             {
+        //                 urls: "turn:global.relay.metered.ca:80?transport=tcp",
+        //                 username: username,
+        //                 credential: password,
+        //             },
+        //             {
+        //                 urls: "turn:global.relay.metered.ca:443",
+        //                 username: username,
+        //                 credential: password,
+        //             },
+        //             {
+        //                 urls: "turns:global.relay.metered.ca:443?transport=tcp",
+        //                 username: username,
+        //                 credential: password,
+        //             },
+        //         ]
+        //     }
+        // });
 
         console.log("success", myPeer)
     }
@@ -138,39 +139,49 @@ const setTime = () => {
 }
 
 const setLocalDateTime = () => {
-    // setTime();
     setInterval(setTime, 1000);
 }
 
-const connectToNewUser = (userId, name, cuid, stream) => {
-    const call = myPeer.call(userId, stream, { metadata: { name: userName, userId: myPeer.id, cuiid: cuid } });
-    const video = document.createElement('video');
+const connectToNewUser = async (userId, name, cuid, stream, retryCount = 0) => {
+    console.log('connecting to new user')
+    const maxRetries = 3;
+    const delay = 1000 * (retryCount + 1); // Exponential backoff
 
-    video.id = `video-${userId}-${cuid}`; // Set the ID for the video element
+    try {
+        console.log('calling')
+        const call = await myPeer.call(userId, stream);
+console.log('called')
+        const video = document.createElement('video');
+        video.id = `video-${userId}-${cuid}`; // Set the ID for the video element
 
-    call.on('stream', userVideoStream => {
-        addVideoStream(video, userVideoStream, name, cuid, false, 'connect-user');
-    });
+        call.on('stream', userVideoStream => {
+            console.log('called, stream incoming')
+            addVideoStream(video, userVideoStream, false, 'connect-user');
+        });
 
-    call.on('close', () => {
-        // console.log(`Call with ${name} (${userId}) closed`);
-        if (video && video.srcObject) {
-            const tracks = video.srcObject.getTracks();
-            tracks.forEach(track => track.stop());
+        call.on('close', () => {
+            if (video && video.srcObject) {
+                const tracks = video.srcObject.getTracks();
+                tracks.forEach(track => track.stop());
+            }
+            video.srcObject = null;
+            video.remove();
+            socket.emit("user_call_closed", (uid));
+        });
+
+        peers[userId] = call;
+        currentPeer = call;
+    } catch (error) {
+        console.error(`Error connecting to ${name}, retrying...`, error);
+        if (retryCount < maxRetries) {
+            setTimeout(() => connectToNewUser(userId, name, cuid, stream, retryCount + 1), delay);
+        } else {
+            console.error(`Failed to connect to ${name} after ${maxRetries} retries`);
         }
-        video.srcObject = null;
-        video.remove();
-        socket.emit("user_call_closed", (uid));
-    });
+    }
+};
 
-    peers[userId] = call;
-    currentPeer = call;
-}
-
-const addVideoStream = (video, stream, name, cuid, state, caller) => {
-    console.log("Adding a new video for: ",
-        { video, name, cuid }
-    )
+const addVideoStream = (video, stream, state, caller) => {
 
     if (state) {
         console.log("stream is mine")
@@ -217,22 +228,34 @@ const addVideoStream = (video, stream, name, cuid, state, caller) => {
 
 const handlePeerCalls = (stream) => {
     try {
-        console.log("my peer", myPeer)
         myPeer.on('call', call => {
+            console.log('answering call from ', call);
             call.answer(stream);
-            const { name, userId, cuiid } = call.metadata
 
             const video = document.createElement('video');
             call.on('stream', userVideoStream => {
-                addVideoStream(video, userVideoStream, name, cuiid, false, 'call-answer')
+                console.log('streaming user media')
+                addVideoStream(video, userVideoStream, false, 'call-answer')
             })
             currentPeer = call;
         });
 
         myPeer.on('open', id => {
+            console.log('peer open')
+            peerConnectionEstablished = true;
             socket.emit('join-room', ROOM_ID, id, userName, uid, permissionClass);
         });
 
+        socket.on('user-connected', ({ userId, name, cuid }) => {
+            console.log(`new user connected: `, { userId, name, cuid });
+            connectToNewUser(userId, name, cuid, stream);
+        });
+
+        socket.on("call-terminated", () => {
+            const coursePageUrl = constructCourseViewUrl(userData, ROOM_ID);
+            alert("Host has ended this call");
+            return window.location.replace(coursePageUrl);
+        });
     }
     catch (error) {
         console.log('Error occured while processing call');
@@ -245,38 +268,37 @@ const rtcMainLib = async () => {
     //authenticate user.
     authenticateUserSession();
 
-    //configure  peerConnection
-    configureNewPeer();
-
     //set the local date and time
     setLocalDateTime();
+
+    //configure  peerConnection
+    try {
+        console.log('configuring peers');
+        await configureNewPeer();  // Make sure this is awaited
+    } catch (error) {
+        console.log(`Failure to configure peer connection`);
+        return;
+    }
 
     //create user video element and set to mute
     const myVideo = document.createElement('video'); //div which contains the video
     myVideo.id = `user-video_${uid}`
     myVideo.muted = true;
 
-
     try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
         myVideoStream = stream;
-
-        addVideoStream(myVideo, stream, userName, uid, true, 'me-loaded');
-        await addParticipant(ROOM_ID, { userName, uid, permissionClass, studentId, profilePicUrl });
-
+        addVideoStream(myVideo, stream, true, 'me-loaded');
 
         handlePeerCalls(stream);
+    } catch (error) {
+        console.error('Error accessing media devices:', error);
+        return alert('Error accessing media devices. Please check permissions.');
+    }
 
-        socket.on('user-connected', ({ userId, name, cuid }) => {
-            console.log(`new user connected: `, { userId, name, cuid })
-            setTimeout(connectToNewUser, 1000, userId, name, cuid, stream);
-        });
+    try {
 
-        socket.on("call-terminated", () => {
-            const coursePageUrl = constructCourseViewUrl(userData, ROOM_ID);
-            alert("Host has ended this call");
-            return window.location.replace(coursePageUrl);
-        });
+        await addParticipant(ROOM_ID, { userName, uid, permissionClass, studentId, profilePicUrl });
 
         socket.on('user-disconnected', userId => {
             if (peers[userId]) {
