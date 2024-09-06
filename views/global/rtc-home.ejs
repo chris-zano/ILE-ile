@@ -36,6 +36,8 @@
 </html>
 <script src="/socket.io/socket.io.js"></script>
 <script>
+    const deployment_url = "http://localhost:8080"
+    const deployed_url = "https://ile-rtc.onrender.com"
 
     const classInSession = async (courseId) => {
         const response = await fetch(`/get/class-in-session/${courseId}`);
@@ -114,9 +116,8 @@
                 console.log('meeting-started')
                 enableJoinButton("Join Meeting");
                 joinBtn.addEventListener("click", () => {
-                window.location.href = `/room/${courseId}/${chapter}`;
-
-                    // window.location.href = `http://localhost:8080/meeting?courseId=${courseId}&chapter=${chapter}&userId=${userData.data.id}&userType=${userType}`;
+                // window.location.href = `/room/${courseId}/${chapter}`;
+                    window.location.href = `${deployment_url}/meeting?courseId=${courseId}&chapter=${chapter}&userId=${userData.data.id}&userType=${userType}`;
                 }, { once: true });
             }
             else {
@@ -129,9 +130,8 @@
                 console.log('meeting-started')
                 enableJoinButton("Join Meeting");
                 joinBtn.addEventListener("click", () => {
-                window.location.href = `/room/${courseId}/${chapter}`;
 
-                    // window.location.href = `http://localhost:8080/meeting?courseId=${courseId}&chapter=${chapter}&userId=${userData.data.id}&userType=${userType}`;
+                    window.location.href = `${deployment_url}/meeting?courseId=${courseId}&chapter=${chapter}&userId=${userData.data.id}&userType=${userType}`;
                 }, { once: true });
             });
             }
@@ -143,8 +143,7 @@
 
             joinBtn.addEventListener("click", () => {
                 socket.emit("starting meeting", courseId);
-                window.location.href = `/room/${courseId}/${chapter}`;
-                // window.location.href = `http://localhost:8080/meeting?courseId=${courseId}&chapter=${chapter}&userId=${userData.data.id}&userType=${userType}`;
+                window.location.href = `${deployment_url}/meeting?courseId=${courseId}&chapter=${chapter}&userId=${userData.data.id}&userType=${userType}`;
             }, { once: true });
         } else {
             return window.location.replace('/login');

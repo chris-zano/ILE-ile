@@ -85,36 +85,7 @@ const configureNewPeer = async () => {
 
         const { username, password } = turnCredentials;
         myPeer = new Peer();
-        // myPeer = new Peer(undefined, {
-        //     config: {
-        //         'iceServers': [
-        //             {
-        //                 urls: "stun:stun.relay.metered.ca:80",
-        //             },
-        //             {
-        //                 urls: "turn:global.relay.metered.ca:80",
-        //                 username: username,
-        //                 credential: password,
-        //             },
-        //             {
-        //                 urls: "turn:global.relay.metered.ca:80?transport=tcp",
-        //                 username: username,
-        //                 credential: password,
-        //             },
-        //             {
-        //                 urls: "turn:global.relay.metered.ca:443",
-        //                 username: username,
-        //                 credential: password,
-        //             },
-        //             {
-        //                 urls: "turns:global.relay.metered.ca:443?transport=tcp",
-        //                 username: username,
-        //                 credential: password,
-        //             },
-        //         ]
-        //     }
-        // });
-
+       
         console.log("success", myPeer)
     }
     catch (error) {
@@ -150,27 +121,37 @@ const connectToNewUser = async (userId, name, cuid, stream, retryCount = 0) => {
     try {
         console.log('calling')
         const call = await myPeer.call(userId, stream);
-console.log('called')
-        const video = document.createElement('video');
-        video.id = `video-${userId}-${cuid}`; // Set the ID for the video element
 
-        call.on('stream', userVideoStream => {
-            console.log('called, stream incoming')
-            addVideoStream(video, userVideoStream, false, 'connect-user');
-        });
-
-        call.on('close', () => {
-            if (video && video.srcObject) {
-                const tracks = video.srcObject.getTracks();
-                tracks.forEach(track => track.stop());
+        if (call) {
+            if (peers[userId]) {
+                peers[userId].close();
+                delete peers[userId];
             }
-            video.srcObject = null;
-            video.remove();
-            socket.emit("user_call_closed", (uid));
-        });
 
-        peers[userId] = call;
-        currentPeer = call;
+            peers[userId] = call;
+            currentPeer = call;
+
+            console.log('Current peers:', peers);
+
+            const video = document.createElement('video');
+
+            call.on('stream', userVideoStream => {
+                console.log('called, stream incoming')
+                addVideoStream(video, userVideoStream, cuid, false, 'connect-user');
+            });
+
+            call.on('close', () => {
+                if (video && video.srcObject) {
+                    const tracks = video.srcObject.getTracks();
+                    tracks.forEach(track => track.stop());
+                }
+                video.srcObject = null;
+                video.remove();
+                socket.emit("user_call_closed", (uid));
+            });
+        } else {
+            console.error(`Failed to call peer for user: ${userId}`);
+        }
     } catch (error) {
         console.error(`Error connecting to ${name}, retrying...`, error);
         if (retryCount < maxRetries) {
@@ -181,7 +162,7 @@ console.log('called')
     }
 };
 
-const addVideoStream = (video, stream, state, caller) => {
+const addVideoStream = (video, stream, streamId, state, caller) => {
 
     if (state) {
         console.log("stream is mine")
@@ -211,6 +192,7 @@ const addVideoStream = (video, stream, state, caller) => {
             outerDiv.classList.add('user-video');
             outerDiv.classList.add(caller);
             outerDiv.classList.add(`${state ? 'mine' : 'joining'}`);
+            outerDiv.setAttribute("id", streamId);
             outerDiv.appendChild(video);
 
             videoGrid.classList.add(`${roomCount === 2 ? 'two-callers' : 'one-caller'}`);
@@ -221,9 +203,15 @@ const addVideoStream = (video, stream, state, caller) => {
         console.log(`Stream for ${name} is undefined or null.`);
     }
 
+    console.log('added stream', peers)
+
     setTimeout(() => {
         cleanUpUI();
     }, 20000);
+}
+function randomDelay() {
+    const delay = Math.floor(Math.random() * 100) + 1; // Generates a delay between 1 and 100 ms
+    return new Promise(resolve => setTimeout(resolve, delay));
 }
 
 const handlePeerCalls = (stream) => {
@@ -235,15 +223,19 @@ const handlePeerCalls = (stream) => {
             const video = document.createElement('video');
             call.on('stream', userVideoStream => {
                 console.log('streaming user media')
-                addVideoStream(video, userVideoStream, false, 'call-answer')
+                addVideoStream(video, userVideoStream, uid, false, 'call-answer')
             })
             currentPeer = call;
         });
 
         myPeer.on('open', id => {
-            console.log('peer open')
+            peers[id] = myPeer
+            console.log('Current peers:', peers);
+
             peerConnectionEstablished = true;
-            socket.emit('join-room', ROOM_ID, id, userName, uid, permissionClass);
+            randomDelay().then(() => {
+                socket.emit('join-room', {roomId: ROOM_ID, peerId: id, name: userName, userId: uid});
+            });
         });
 
         socket.on('user-connected', ({ userId, name, cuid }) => {
@@ -288,7 +280,7 @@ const rtcMainLib = async () => {
     try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true, video: true });
         myVideoStream = stream;
-        addVideoStream(myVideo, stream, true, 'me-loaded');
+        addVideoStream(myVideo, stream, uid, true, 'me-loaded');
 
         handlePeerCalls(stream);
     } catch (error) {
@@ -303,14 +295,15 @@ const rtcMainLib = async () => {
         socket.on('user-disconnected', userId => {
             if (peers[userId]) {
                 peers[userId].close();
-                const videoElement = document.getElementById(`video-${userId}`);
-                if (videoElement) {
-                    videoElement.remove();
-                }
                 delete peers[userId];
+            }
+            const videoElement = document.getElementById(`video-${userId}`);
+            if (videoElement) {
+                videoElement.remove();
             }
             cleanUpUI();
         });
+
 
     } catch (error) {
         console.error('Error accessing media devices:', error);
@@ -425,10 +418,12 @@ var screenSharing = false;
 var screenStream = null;
 
 function startScreenShare() {
+    console.log('starting screen shaaring for ', peers)
     if (screenSharing) {
         stopScreenSharing();
         return;
     }
+
     navigator.mediaDevices.getDisplayMedia({ video: true }).then((stream) => {
         screenStream = stream;
         let videoTrack = screenStream.getVideoTracks()[0];
@@ -436,32 +431,47 @@ function startScreenShare() {
             console.log('Screen sharing stopped!');
             stopScreenSharing();
         };
-        if (myPeer && currentPeer) {
-            let sender = currentPeer.peerConnection.getSenders().find(function (s) {
+
+        // Iterate through all peers and update their video track
+        Object.values(peers).forEach((peer) => {
+            console.log(peer)
+            let sender = peer.peerConnection.getSenders().find(function (s) {
                 return s.track.kind == videoTrack.kind;
             });
-            sender.replaceTrack(videoTrack);
-            screenSharing = true;
-        }
+            if (sender) {
+                sender.replaceTrack(videoTrack);
+            }
+        });
+
+        screenSharing = true;
+
     }).catch((err) => {
         console.error('Error starting screen share:', err);
-        alert('Error starting screen share:', err)
+        alert('Error starting screen share:', err);
     });
 }
 
 function stopScreenSharing() {
     if (!screenSharing) return;
+
     let videoTrack = myVideoStream.getVideoTracks()[0];
-    if (myPeer && currentPeer) {
-        let sender = currentPeer.peerConnection.getSenders().find(function (s) {
+
+    // Replace the screen share track with the original video track for all peers
+    Object.values(peers).forEach((peer) => {
+        let sender = peer.peerConnection.getSenders().find(function (s) {
             return s.track.kind == videoTrack.kind;
         });
-        sender.replaceTrack(videoTrack);
-    }
+        if (sender) {
+            sender.replaceTrack(videoTrack);
+        }
+    });
+
+    // Stop the screen sharing tracks
     screenStream.getTracks().forEach(function (track) {
         track.stop();
     });
+
     screenStream = null;
     screenSharing = false;
 }
-document.getElementById('screen-share-btn').addEventListener('click', startScreenShare);
+document.getElementById('screen-share-btn').addEventListener('click', startScreenShare); 

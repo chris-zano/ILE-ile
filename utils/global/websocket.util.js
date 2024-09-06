@@ -2,7 +2,7 @@ import { Server as SocketIoServer } from 'socket.io'
 import handleSearch from './socket/socket.search.js';
 import { CoursesDB } from './db.utils.js';
 import { logError } from '../../controllers/admin/admin.utils.js';
-import {createServer} from "http";
+import { createServer } from "http";
 
 const Courses = CoursesDB();
 
@@ -17,10 +17,9 @@ const setupWebSocketServer = (server) => {
 
     io.on('connection', socket => {
         try {
-            console.log('Socket.IO client connected');
-
             //search
             socket.on('search', ({ category, searchInput }) => handleSearch(socket, category, searchInput));
+
 
             //waiting room
             socket.on('join meeting', async (courseId) => {
@@ -45,7 +44,7 @@ const setupWebSocketServer = (server) => {
             })
 
             //request for joining room
-            socket.on('join-room', (roomId, userId, userName, uid) => {
+            socket.on('join-room', ({roomId, peerId, name, userId}) => {
                 socket.join(roomId);
 
                 socket.broadcast.to(roomId).emit('user-connected', { userId, name: userName, cuid: uid });
