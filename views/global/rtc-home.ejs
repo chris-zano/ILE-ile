@@ -17,7 +17,8 @@
             </div>
 
             <div id="small-message">
-                This secure and accessible video conferencing platform has been optimized to support effective learning and teaching experiences. Please wait while we finalize the connection.
+                This secure and accessible video conferencing platform has been optimized to support effective learning
+                and teaching experiences. Please wait while we finalize the connection.
             </div>
 
             <div class="new-meeting-root">
@@ -36,8 +37,21 @@
 </html>
 <script src="/socket.io/socket.io.js"></script>
 <script>
-    const deployment_url = "http://localhost:8080"
-    const deployed_url = "https://ile-rtc.onrender.com"
+
+    const getUrl = async () => {
+        try {
+            const res = await fetch(`/url/base`);
+            const url = await res.json();
+            if (!url) {
+                return null;
+            }
+
+            return url.baseUrl;
+        } catch (error) {
+            console.log('failed to get baseUrl for rtc')
+            return null;
+        }
+    }
 
     const classInSession = async (courseId) => {
         const response = await fetch(`/get/class-in-session/${courseId}`);
@@ -76,6 +90,19 @@
         return `/${userType}s/render/course/${courseId}/${userId}`;
 
     }
+
+    let deployment_url = null;
+
+    getUrl().then((url) => {
+        if (!url) {
+            alert('failed to reolve url')
+            const url = constructCourseViewUrl(userData, courseId);
+            window.location.href = url;
+        }
+
+        deployment_url = url
+    })
+
     const waitingMain = async () => {
         const socket = io();
         let userData = window.sessionStorage.getItem("auth-user");
@@ -105,37 +132,37 @@
         };
 
         if (userType === "student") {
-            
+
             socket.emit("join meeting", courseId);
             joinBtn.textContent = "Join Meeting";
             msgD.innerHTML = `<p>&#9432; Waiting for host to start meeting</p>`;
-    
+
             const res = await classInSession(courseId);
             if (res) {
                 msgD.innerHTML = "<p>&#9432;Meeting Started. Join meeting<p>";
                 console.log('meeting-started')
                 enableJoinButton("Join Meeting");
                 joinBtn.addEventListener("click", () => {
-                // window.location.href = `/room/${courseId}/${chapter}`;
+                    // window.location.href = `/room/${courseId}/${chapter}`;
                     window.location.href = `${deployment_url}/meeting?courseId=${courseId}&chapter=${chapter}&userId=${userData.data.id}&userType=${userType}`;
                 }, { once: true });
             }
             else {
                 socket.on("waiting for host", (courseId) => {
-                console.log('waiting for host')
-            });
+                    console.log('waiting for host')
+                });
 
-            socket.on("meeting-started", (roomId) => {
-                msgD.innerHTML = "<p>&#9432;Meeting Started. Join meeting<p>";
-                console.log('meeting-started')
-                enableJoinButton("Join Meeting");
-                joinBtn.addEventListener("click", () => {
+                socket.on("meeting-started", (roomId) => {
+                    msgD.innerHTML = "<p>&#9432;Meeting Started. Join meeting<p>";
+                    console.log('meeting-started')
+                    enableJoinButton("Join Meeting");
+                    joinBtn.addEventListener("click", () => {
 
-                    window.location.href = `${deployment_url}/meeting?courseId=${courseId}&chapter=${chapter}&userId=${userData.data.id}&userType=${userType}`;
-                }, { once: true });
-            });
+                        window.location.href = `${deployment_url}/meeting?courseId=${courseId}&chapter=${chapter}&userId=${userData.data.id}&userType=${userType}`;
+                    }, { once: true });
+                });
             }
-            
+
 
 
         } else if (userType === "lecturer") {
