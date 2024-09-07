@@ -146,8 +146,8 @@ export const verifyStudent = async (req, res, next) => {
         req.studentData = {
             id: matchedDocument._id,
             studentId: matchedDocument.studentId,
-            firstName: matchedDocument.firstName,
-            lastName: matchedDocument.lastName,
+            firstname: matchedDocument.firstName,
+            lastname: matchedDocument.lastName,
             program: matchedDocument.program,
             level: matchedDocument.level,
             session: matchedDocument.session,

@@ -34,6 +34,20 @@ export const getTurnCredentials = () => {
   }
 }
 
+export const getBaseUrl = () => {
+  dotenv.config()
+
+
+  try{
+    const baseUrl = process.env.BASE_URL;
+  
+    return {baseUrl: baseUrl};
+  }catch(error) {
+    console.error("An error occured while fetching rtc turn credentials\n",error)
+    return null;
+  }
+}
+
 export const callSetupWebSocket = (server) => setupWebSocketServer(server);
 
   const callAndExecuteRequireStack = (app) => {

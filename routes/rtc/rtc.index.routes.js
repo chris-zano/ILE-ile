@@ -3,7 +3,7 @@ import { createNewRoom, leaveRoom, renderHome } from '../../controllers/rtc/rtc.
 import { CoursesDB, LecturersDB, StudentsDB } from '../../utils/global/db.utils.js';
 import { logError } from '../../controllers/admin/admin.utils.js';
 import { isValidObjectId } from 'mongoose';
-import { getTurnCredentials } from '../../requireStack.js';
+import { getBaseUrl, getTurnCredentials } from '../../requireStack.js';
 const router = express.Router();
 const Courses = CoursesDB();
 const Lecturers = LecturersDB()
@@ -110,10 +110,10 @@ router.post('/rtc/update-call-info/:callId/:chapter', async (req, res) => {
 
     try {
 
-        
+
         let startTime = await Courses.findOne({ _id: callId }, { call_start: 1 });
         if (!startTime) startTime = null;
-        
+
         // clear attendees section for the course.
         const attendaceIsReset = await resetCourseCallAttendance(callId);
         if (!attendaceIsReset) return res.status(404).json({ message: "Resource not found" });
@@ -220,13 +220,28 @@ router.get('/rtc/turn/get-credentials', (req, res) => {
         const turnCredentials = getTurnCredentials();
 
         if (!turnCredentials) {
-            return res.status(404).json({data: null});
+            return res.status(404).json({ data: null });
         }
 
-        return res.status(200).json({data: turnCredentials});
+        return res.status(200).json({ data: turnCredentials });
     } catch (error) {
         logError(error);
-        return res.status(500).json({data: null});
+        return res.status(500).json({ data: null });
+    }
+});
+
+router.get('/url/base', (req, res) => {
+    try {
+        const baseUrl = getBaseUrl();
+
+        if (!baseUrl || !baseUrl.baseUrl) {
+            return res.status(404).json(null);
+        }
+
+        return res.status(200).json(baseUrl);
+    } catch (error) {
+        logError(error);
+        return res.status(500).json(null);
     }
 })
 
