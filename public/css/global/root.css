@@ -2,7 +2,6 @@
     font-family: robotoReg;
     src: url('/fonts/roboReg');
 }
-
 @font-face {
     font-family: RobotoSlab;
     src: url('/fonts/RobotoSlab-Regular');
@@ -15,7 +14,7 @@
     --text: #7e8a9e;
     --white: #ffffff;
     --background: #ffffff;
-    --background-main: #e8e8e8;
+    --background-main: #f9f6f6;
     --primary: #3074d9;
     --primary-dark: #043783;
     --secondary: #54b1b3;
@@ -126,6 +125,7 @@ div.container-max_width::-webkit-scrollbar {
 
 div.container-max_width header {
     background-color: var(--background);
+    border-bottom: 1px solid var(--inactive);
     position: sticky;
     top: 0;
     left: 0;
@@ -273,7 +273,7 @@ button[disabled] {
         grid-area: main;
         overflow-y: auto;
         background-color: var(--background-main);
-        border-radius: 1.8ch;
+        /* border-radius: 1.8ch; */
     }
 }
 

@@ -4,46 +4,43 @@
         
         <ul class="admin-nav_main">
             <li>
+                <a href="/lecturers/render/dashboards/<%= lecturer.id %>" <%= currentPage === 'dashboards' ? 'aria-current=page' : '' %> >
+                    <i class="side-nav_icon fas fa-tachometer-alt"></i>
+                    <p class="nav_name">Dashboard</p>
+                </a>
+                <div class="abstract-tooltip">Dashboard</div>
+            </li>
+            <li>
                 <a href="/lecturers/render/courses/<%= lecturer.id %>" <%= currentPage === 'courses' ? 'aria-current=page' : '' %> >
-                    <i class="side-nav_icon">
-                        <img src="/images/system/courses" alt="application logo">
-                    </i>
+                    <i class="side-nav_icon fas fa-book-open"></i>
                     <p class="nav_name">Courses</p>
                 </a>
                 <div class="abstract-tooltip">Courses</div>
             </li>
             <li>
                 <a href="/lecturers/render/submissions/<%= lecturer.id %>" <%= currentPage === 'submissions' ? 'aria-current=page' : '' %> >
-                    <i class="side-nav_icon">
-                        <img src="/images/system/submission" alt="application logo">
-                    </i>
+                    <i class="side-nav_icon fas fa-file-alt"></i>
                     <p class="nav_name">Submissions</p>
                 </a>
                 <div class="abstract-tooltip">Submissions</div>
             </li>
             <li>
-                <a href="/lecturers/render/elibrary/<%= lecturer.id %>">
-                    <i class="side-nav_icon">
-                        <img src="/images/system/elibrary" alt="application logo">
-                    </i>
+                <a href="/lecturers/render/elibrary/<%= lecturer.id %>" <%= currentPage === 'elibrary' ? 'aria-current=page' : '' %> >
+                    <i class="side-nav_icon fas fa-book-reader"></i>
                     <p class="nav_name">E-Library</p>
                 </a>
                 <div class="abstract-tooltip">E-Library</div>
             </li>
             <li>
-                <a href="/lecturers/render/announcements/<%= lecturer.id %>">
-                    <i class="side-nav_icon">
-                        <img src="/images/system/announcements" alt="application logo">
-                    </i>
+                <a href="/lecturers/render/announcements/<%= lecturer.id %>" <%= currentPage === 'announcements' ? 'aria-current=page' : '' %>>
+                    <i class="side-nav_icon fas fa-bullhorn"></i>
                     <p class="nav_name">Announcements</p>
                 </a>
                 <div class="abstract-tooltip">Announcements</div>
             </li>
             <li>
                 <a href="/login" id="logout">
-                    <i class="side-nav_icon">
-                        <img src="/images/system/logout" alt="application logo">
-                    </i>
+                    <i class="side-nav_icon fas fa-sign-out-alt"></i>
                     <p class="nav_name">Logout</p>
                 </a>
                 <div class="abstract-tooltip">Logout</div>

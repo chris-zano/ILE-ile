@@ -2,7 +2,7 @@
     div.container-max_width header {
         width: 100%;
         height: 70px;
-        border-radius: 1ch;
+        /* border-radius: 1ch; */
         box-shadow: -15px -15px 15px rgba(255, 255, 255, 0.2),
         15px 15px 115px rgba(0, 0, 0, 0.1);
         display: grid;

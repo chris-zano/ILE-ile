@@ -119,46 +119,53 @@ const renderSubmissionsByCourse = async (submissions = []) => {
             //create wrapper
             const wrapper = document.createElement("div");
             wrapper.classList.add("submission");
-            wrapper.id = `${courseSubmission._id}`;
+            wrapper.id = courseSubmission._id;
+
+            const isAddBtnVisible = !isSubmitted && new Date().getTime() < new Date(lectSub.endDate.timeStamp);
 
             wrapper.innerHTML = `
-                <div class="submission-header">
-                    <h2>${courseSubmission.courseName}</h2>
-                    <span class="course-code">[${courseSubmission.courseCode}]</span>
-                    <button 
-                        class="add-submission-btn disabled" 
-                        style = "display: ${isSubmitted ? 'none' : new Date().getTime() >= new Date(lectSub.endDate.timeStamp) ? 'none' : ''};"
-                        onclick="renderAddSubmissionModal(
-                            '${courseSubmission._id}',
-                            '${lectSub._id}')
-                        ">Add Submission</button>
-                </div>
-    
-                <div class="submission-details">
-                    <p><strong>Lecturer:</strong> ${lectName ? lectName : '<Lecturer Not Found>'}</p>
-                    <p><strong>Title:</strong> ${lectSub.title}</p>
-                    <p><strong>Instruction:</strong> ${lectSub.instructions}</p>
-                    <p><strong>Release Date:</strong> ${formatTimestamp(lectSub.startDate.date)}</p>
-                    <p><strong>Due Date:</strong> ${formatTimestamp(lectSub.endDate.date)}</p>
-                    <p class="status submitted">
-                        <strong>Status:</strong> 
-                        ${isSubmitted ? 'Submitted' : 'No submission added'} 
-                        <span style="color: var(--purple);">
-                            ${isSubmitted ? formatTimestamp(studentSub.date) : ''}
-                        </span>
-                    </p>
-                </div>
+  <div class="submission-header">
+    <h2>${courseSubmission.courseName}</h2>
+    <span class="course-code">[${courseSubmission.courseCode}]</span>
+    <button 
+      class="add-submission-btn disabled" 
+      style="display: ${isAddBtnVisible ? '' : 'none'}"
+      onclick="renderAddSubmissionModal('${courseSubmission._id}', '${lectSub._id}')">
+      Add Submission
+    </button>
+  </div>
 
-                <div class="submission-file" style="display: ${isSubmitted ? 'block' : 'none'};">
-                    <i class="file-icon">📄</i>
-                    <span class="file-name">${isSubmitted ? studentSub.filename : ''}</span>
-                    <button class="view-submission-btn download-sub"><a href="${isSubmitted ? studentSub.fileUrl : ''}" download="${isSubmitted ? studentSub.filename : ''}">Download</a></button>
-                    <button 
-                        class="view-submission-btn delete-sub" 
-                        style = "display: ${ new Date().getTime() >= new Date(lectSub.endDate.timeStamp) ? 'none' : ''};
-                        "><a href="/submissions/student/delete/${studentData.data.id}/?subId=${courseSubmission._id}">Delete</a></button>
-                </div>
-            `;
+  <div class="submission-details">
+    <p><strong>Lecturer:</strong> ${lectName || '<Lecturer Not Found>'}</p>
+    <p><strong>Title:</strong> ${lectSub.title}</p>
+    <p><strong>Instructions:</strong> ${lectSub.instructions}</p>
+    <p><strong>Release Date:</strong> ${formatTimestamp(lectSub.startDate.date)}</p>
+    <p><strong>Due Date:</strong> ${formatTimestamp(lectSub.endDate.date)}</p>
+    <p class="status submitted">
+      <strong>Status:</strong> ${isSubmitted ? 'Submitted' : 'No submission added'}
+      <span style="color: var(--purple);">
+        ${isSubmitted ? formatTimestamp(studentSub.date) : ''}
+      </span>
+    </p>
+  </div>
+
+  <div class="submission-file" style="display: ${isSubmitted ? 'block' : 'none'};">
+    <i class="file-icon">📄</i>
+    <span class="file-name">${isSubmitted ? studentSub.filename : ''}</span>
+    <button class="view-submission-btn download-sub">
+      <a href="${isSubmitted ? studentSub.fileUrl : ''}" download="${isSubmitted ? studentSub.filename : ''}">
+        Download
+      </a>
+    </button>
+    <button class="view-submission-btn delete-sub" 
+      style="display: ${new Date().getTime() >= new Date(lectSub.endDate.timeStamp) ? 'none' : ''}">
+      <a href="/submissions/student/delete/${studentData.data.id}/?subId=${courseSubmission._id}">
+        Delete
+      </a>
+    </button>
+  </div>
+`;
+
 
             container.appendChild(wrapper);
         }
@@ -170,7 +177,7 @@ const quizSubsRender = (data) => {
     const _docs = [...data];
     console.log(_docs)
 
-    if(_docs.length === 0) {
+    if (_docs.length === 0) {
         //no subs for this student
         return
     }
@@ -180,31 +187,29 @@ const quizSubsRender = (data) => {
     for (let doc of _docs) {
         const wrapper = document.createElement("details");
         wrapper.classList.add("quiz-sub");
-        wrapper.id = `${doc._id}`;
+        wrapper.id = doc._id;
 
         wrapper.innerHTML = `
-            <summary>${doc.courseCode} <span><strong>Score: </strong>${doc.score}</span></summary>
-            <div id="${doc.quiz_id}"></div>
-        `;
+  <summary>${doc.courseCode} <span><strong>Score: </strong>${doc.score}</span></summary>
+  <div id="${doc.quiz_id}"></div>
+`;
 
         container.append(wrapper);
-        let counter = 0
-        for (let q of doc.responses) {
-            const questions = document.createElement('div')
-            questions.classList.add('question-single-span')
-            counter++
-            questions.innerHTML = `
-                <p>${counter}. ${q.question.question}</p>
-                <label><input type="radio" name="q${counter}" value="a" selected> a. ${q.question.options[0]}.</label><br>
-                <label><input type="radio" name="q${counter}" value="b" selected> b. ${q.question.options[1]}</label><br>
-                <label><input type="radio" name="q${counter}" value="c" selected> c. ${q.question.options[2]}</label><br>
-                <label><input type="radio" name="q${counter}" value="d" selected> d. ${q.question.options[3]}</label><br>
-                <div>Answer: ${q.answer} </div>
-                <div>Expected: ${q.question.correctAnswer.toLowerCase()}</div>
 
-            `;
-           document.getElementById(`${doc.quiz_id}`).append(questions);
-        }
+        doc.responses.forEach((q, index) => {
+            const questions = document.createElement('div');
+            questions.classList.add('question-single-span');
+            questions.innerHTML = `
+    <p>${index + 1}. ${q.question.question}</p>
+    ${q.question.options.map((option, i) => `
+      <label><input type="radio" name="q${index + 1}" value="${String.fromCharCode(97 + i)}" ${q.answer === String.fromCharCode(97 + i) ? 'checked' : ''}> ${String.fromCharCode(97 + i)}. ${option}</label><br>
+    `).join('')}
+    <div>Answer: ${q.answer}</div>
+    <div>Expected: ${q.question.correctAnswer.toLowerCase()}</div>
+  `;
+            document.getElementById(doc.quiz_id).append(questions);
+        });
+
 
     }
 }
@@ -219,7 +224,7 @@ const renderQuizSubmissions = async () => {
         console.log(data);
 
         quizSubsRender(data);
-    }catch(error) {
+    } catch (error) {
         console.log(error);
     }
 }
@@ -233,7 +238,7 @@ const showSubmissions = async (courseId) => {
         const courseCollection = courseId === "all"
             ? [...submissionsCollection]
             : [...submissionsCollection].filter((course) => course._id === courseId);
-    
+
         return await renderSubmissionsByCourse(courseCollection);
     }
 }

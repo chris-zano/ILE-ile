@@ -59,7 +59,7 @@ else {
 
   (async () => {
     try {
-      await mongoose.connect(uri);
+      await mongoose.connect(local_uri);
       console.log("Connected to database");
 
       callAndExecuteRequireStack(app);

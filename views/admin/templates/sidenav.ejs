@@ -6,9 +6,7 @@
             <li>
                 <a href="/admins/render/courses/<%= admin.id %>" <%=currentPage==='courses' ? 'aria-current=page' : ''
                     %> >
-                    <i class="side-nav_icon">
-                        <img src="/images/system/courses" alt="application logo">
-                    </i>
+                    <i class="side-nav_icon fas fa-tachometer-alt"></i>
                     <p class="nav_name">Courses</p>
                 </a>
                 <div class="abstract-tooltip">Courses</div>
@@ -16,9 +14,7 @@
             <li>
                 <a href="/admins/render/tutors/<%= admin.id %>" <%=currentPage==='tutors' ? 'aria-current=page' : '' %>
                     >
-                    <i class="side-nav_icon">
-                        <img src="/images/system/lecturer" alt="application logo">
-                    </i>
+                    <i class="side-nav_icon fas fa-chalkboard-teacher"></i>
                     <p class="nav_name">Lecturers</p>
                 </a>
                 <div class="abstract-tooltip">Lecturers</div>
@@ -26,9 +22,7 @@
             <li>
                 <a href="/admins/render/students/<%= admin.id %>" <%=currentPage==='students' ? 'aria-current=page' : ''
                     %> >
-                    <i class="side-nav_icon">
-                        <img src="/images/system/students" alt="application logo">
-                    </i>
+                    <i class="side-nav_icon fas fa-user-graduate"></i>
                     <p class="nav_name">Students</p>
                 </a>
                 <div class="abstract-tooltip">Students</div>
@@ -36,38 +30,29 @@
             <li>
                 <a href="/admins/render/classrooms/<%= admin.id %>" <%=currentPage==='classrooms' ? 'aria-current=page'
                     : '' %> >
-                    <i class="side-nav_icon">
-                        <img src="/images/system/classrooms" alt="application logo">
-                    </i>
+                    <i class="side-nav_icon fas fa-school"></i>
                     <p class="nav_name">Classes</p>
                 </a>
                 <div class="abstract-tooltip">Classes</div>
             </li>
             <li>
-                <a href="/admins/render/elibrary/<%= admin.id %>" <%=currentPage==='classrooms' ? 'aria-current=page'
+                <a href="/admins/render/elibrary/<%= admin.id %>" <%=currentPage==='elibrary' ? 'aria-current=page'
                     : '' %> >
-                    <i class="side-nav_icon">
-                        <img src="/images/system/elibrary" alt="application logo">
-                    </i>
+                    <i class="side-nav_icon fas fa-book-reader"></i>
                     <p class="nav_name">E-Library</p>
                 </a>
                 <div class="abstract-tooltip">E-Library</div>
             </li>
             <li>
-                <a href="/admins/render/announcements/<%= admin.id %>" <%=currentPage==='announcements' ? 'aria-current=page'
-                    : '' %>">
-                    <i class="side-nav_icon">
-                        <img src="/images/system/announcements" alt="application logo">
-                    </i>
+                <a href="/admins/render/announcements/<%= admin.id %>" <%=currentPage==='announcements' ? 'aria-current=page': '' %>>
+                    <i class="side-nav_icon fas fa-bullhorn"></i>
                     <p class="nav_name">Announcements</p>
                 </a>
                 <div class="abstract-tooltip">Announcements</div>
             </li>
             <li>
                 <a href="/login" id="logout">
-                    <i class="side-nav_icon">
-                        <img src="/images/system/logout" alt="application logo">
-                    </i>
+                    <i class="side-nav_icon fas fa-sign-out-alt"></i>
                     <p class="nav_name">Logout</p>
                 </a>
                 <div class="abstract-tooltip">Logout</div>
