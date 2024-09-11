@@ -1,7 +1,6 @@
 import { findCourse, findStudent, findTutor } from "../../../controllers/admin/admin.search.js";
 
 const handleSearch = (socket, category, searchInput) => {
-    console.log('Handle search for: ', category, searchInput);
     const searchFunctions = {
         'courses': findCourse,
         'students': findStudent,

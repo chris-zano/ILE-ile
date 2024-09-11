@@ -74,6 +74,8 @@ div.results-container {
     border-radius: 1ch;
     overflow-y: scroll;
     z-index: 999;
+    box-shadow: 0px 0px 0px black;
+    backdrop-filter: blur(5px);
 }
 
 div.results-container ul::-webkit-scrollbar {

@@ -13,15 +13,6 @@
                 <p class="profile-role"><span>Registered:</span> <%= data.courses.length === 0 ? "Courses not registered" : `Yes(${data.registeredCourses})` %></p>
             </div>
         </div>
-        <div class="recent-activity">
-            <h2>Recent Activity</h2>
-            <ul class="activity-list">
-                <li>Joined a class</li>
-                <li>Submitted an assignment</li>
-                <li>Completed a project</li>
-                <li>Updated profile information</li>
-            </ul>
-        </div>
     </div>
     <script>
         const userId = JSON.parse(window.sessionStorage.getItem("auth-user")).data.id;
