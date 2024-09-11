@@ -220,7 +220,7 @@ export const renderStudentViews = async (req, res) => {
             pageTitle: pageUrl,
             stylesheets: [`/css/student/${pageUrl}`],
             pageUrl: `layouts/${pageUrl}`,
-            currentPage: 'dashboard',
+            currentPage: pageUrl,
             userType: 'Student',
             scripts: [`/script/scripts/student/${pageUrl}`]
         });

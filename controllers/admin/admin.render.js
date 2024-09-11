@@ -140,7 +140,6 @@ export const renderElibrary = async (req, res) => {
 
     
     try {
-        const data = await Announcement.find();
         res.set('Cache-Control', 'public, max-age=30');
         return res.render('admin/admin-main', {
             admin: adminData,
@@ -150,7 +149,7 @@ export const renderElibrary = async (req, res) => {
             currentPage: 'elibrary',
             userType: userType,
             scripts: ["/script/scripts/admin/elibrary"],
-            data: data
+            data: []
         });
     } catch (error) {
         utils.logError(error);

@@ -34,45 +34,55 @@
 
   .quiz-sub {
     border: 1px solid var(--inactive);
-    border-radius: 1ch;
-    padding: 2ch 1ch;
-    max-width: 700px;
-    margin: 1ch auto;
-  }
+    border-radius: 8px;
+    padding: 2rem 1.5rem;
+    max-width: 100%;
+    width: 700px;
+    margin: 2rem auto;
+    background-color: var(--background);
+}
 
-  .quiz-sub summary {
+.quiz-sub summary {
     margin: 0;
-    padding: 0;
+    padding: 0.5rem 0;
     display: flex;
     justify-content: space-between;
-  }
+    align-items: center;
+    border-bottom: 1px solid var(--inactive);
+}
 
-  .quiz-sub summary span strong {
+.quiz-sub summary span strong {
     color: var(--text-title);
-  }
+    font-weight: bold;
+}
 
-  .quiz-sub .question-single-span {
-    padding: 1ch;
-    border-radius: 1ch;
+.quiz-sub .question-single-span {
+    padding: 1.5rem;
+    border: 1px solid var(--inactive);
+    border-radius: 8px;
     background-color: var(--white);
-    margin: 1ch 0;
-  }
+    margin: 1rem 0;
+}
 
-  .quiz-sub .question-single-span p {
-    font-size: 14px;
+.quiz-sub .question-single-span p {
+    font-size: 1rem;
     color: var(--text-title);
-    margin-bottom: 1ch;
-  }
+    margin-bottom: 1rem;
+}
 
-  .quiz-sub .question-single-span label {
+.quiz-sub .question-single-span label {
     display: block;
-    margin-bottom: .5ch;
-    font-size: 12px;
+    margin-bottom: 0.75rem;
+    font-size: 0.875rem;
     color: var(--text);
-  }
-  .quiz-sub .question-single-span input[type="radio"] {
-    margin-right: 1ch;
-  }
+}
+
+.quiz-sub .question-single-span input[type="radio"] {
+    margin-right: 0.75rem;
+    transform: scale(1.1);
+    accent-color: var(--primary);
+}
+
 
   .submission {
     background: #fff;
@@ -115,22 +125,22 @@
   }
 
   .status.pending {
-    /* background-color: #f0ad4e; */
+  
     color: #f0ad4e;
   }
 
   .status.submitted {
-    /* background-color: #5cb85c; */
+  
     color: #5cb85c;
   }
 
   .status.overdue {
-    /* background-color: #d9534f; */
+  
     color: #d9534f;
   }
 
   .status.rejected {
-    /* background-color: #777; */
+  
     color: #777;
   }
 
@@ -251,7 +261,7 @@
   }
 
   #course_code {
-    width: 200px; /* Adjust the width as needed */
+    width: 200px;
   }
 
   #course_code option {
@@ -402,22 +412,22 @@
   }
 
   .status.pending {
-    /* background-color: #f0ad4e; */
+  
     color: #f0ad4e;
   }
 
   .status.submitted {
-    /* background-color: #5cb85c; */
+  
     color: #5cb85c;
   }
 
   .status.overdue {
-    /* background-color: #d9534f; */
+  
     color: #d9534f;
   }
 
   .status.rejected {
-    /* background-color: #777; */
+  
     color: #777;
   }
 
@@ -538,7 +548,7 @@
   }
 
   #course_code {
-    width: 200px; /* Adjust the width as needed */
+    width: 200px;
   }
 
   #course_code option {

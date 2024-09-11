@@ -47,7 +47,7 @@ function main() {
 
                     window.sessionStorage.setItem("auth-user", JSON.stringify(userData));
                     createValidAuth();
-                    window.location.replace(`/${response.data.userType}s/render/courses/${response.data.user.id}`);
+                    window.location.replace(`/${response.data.userType}s/render/dashboards/${response.data.user.id}`);
 
                 }
                 else {
