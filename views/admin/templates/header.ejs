@@ -2,19 +2,19 @@
     <section id="header-logo">
         <div class="logo-img">
             <a href="/admins/render/dashboards/<%= admin.id %>">
-                <img width="20px" src="/images/system/school-logo" alt="logo">
+                <img width="20px" src="/images/system/logo" alt="logo">
             </a>
         </div>
         <div class="logo-name">
             <a href="/admins/render/dashboards/<%= admin.id %>">
-                <h1>GCTU</h1>
+                <h1>ITLE</h1>
             </a>
         </div>
     </section>
     <section id="header-seach-bar">
         <form action="#" id="search-form" class="search-bar">
             <div>
-                <select class="dropdown" name="search-content" id="search-category">
+                <select class="dropdown" name="search-content" id="search-category" title="Search Filters">
                     <option class="dropdown-list-item dropdown-text" value="none">categories</option>
                     <option class="dropdown-list-item" value="courses">Courses</option>
                     <option class="dropdown-list-item" value="students">Students</option>
@@ -22,7 +22,7 @@
                 </select>
             </div>
             <div class="search-box">
-                <input type="text" id="search-input" placeholder="Search anything... [ / ]" required />
+                <input type="text" id="search-input" class="search-bar" placeholder="Search anything... [ / ]" required />
                 <button type="submit" id="searchBtn" style="box-shadow: none;">
                     <i>
                         <img src="/images/system/search" alt="">

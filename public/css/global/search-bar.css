@@ -13,11 +13,13 @@ section#header-seach-bar form.search-bar {
 select.dropdown {
     width: max-content;
     height: 100%;
-    border: none;
+    border: 1px solid transparent;
+    border-right: 1px solid var(--inactive);
+    border-top-right-radius: calc(1.2 * var(--border-radius));
+    border-bottom-right-radius: calc(1.2 * var(--border-radius));
     outline: none;
     background-color: unset;
     padding: 0 0 0 0.5ch;
-    border-right: 1px solid var(--inactive);
 }
 
 .search-box {

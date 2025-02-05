@@ -10,11 +10,11 @@
 :root {
     /* colors */
     --text-title: #000000;
-    --text-body: #1f232a;
-    --text: #7e8a9e;
+    --text-body: #121213;
+    --text: #141414;
     --white: #ffffff;
     --background: #ffffff;
-    --background-main: #f9f6f6;
+    --background-main: #ffffff;
     --primary: #3074d9;
     --primary-dark: #043783;
     --secondary: #54b1b3;
@@ -30,7 +30,7 @@
 
 
     /* fonts */
-    --default-font-face: 'RobotoSlab';
+    --default-font-face: 'Poppins';
     --secondary-font-face: 'robotoReg'
     --font-small: 11px;
     --font-standard: 14px;

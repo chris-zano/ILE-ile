@@ -2,12 +2,10 @@
     div.container-max_width header {
         width: 100%;
         height: 70px;
-        /* border-radius: 1ch; */
         box-shadow: -15px -15px 15px rgba(255, 255, 255, 0.2),
         15px 15px 115px rgba(0, 0, 0, 0.1);
         display: grid;
         align-items: center;
-        /* margin: 1ch; */
         grid-template-areas:
             "header search profile"
         ;
@@ -17,9 +15,7 @@
         padding-right: 1ch;
     }
 
-    /* ---------------------------------------------------------- */
 
-    /* logo styling */
     section#header-logo {
         width: max-content;
         grid-area: header;
@@ -49,8 +45,11 @@
     }
 
     .logo-img img {
-        width: 120px;
-        height: 70px;
+        /* width: 70px;
+        height: 70px; */
+        border-radius: 50px;
+        object-fit: cover;
+        object-position: center;
     }
 
     section#header-profile .profile-main>img {
@@ -130,10 +129,6 @@
         display: none;
     }
 }
-
-
-/* -------------------------------- */
-/* mobile styling */
 
 @media screen and (max-width: 768px) {
 

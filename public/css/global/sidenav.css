@@ -14,7 +14,7 @@
         height: 100%;
         width: 100%;
         background-color: var(--background);
-        border-right: 1px solid var(--inactive);
+        /* border-right: 1px solid var(--inactive); */
     }
 
     nav#nav-main>section {

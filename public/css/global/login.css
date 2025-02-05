@@ -1,5 +1,5 @@
 @font-face {
-    font-family: 'noto regular';
+    /* font-family: 'noto regular'; */
     src: url('/fonts/NotoRegular');
 }
 
@@ -12,7 +12,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'noto regular';
+    font-family: 'Poppins';
 }
 
 body {
@@ -38,6 +38,8 @@ body {
     height: 100%;
     width: 100%;
     aspect-ratio: 4 / 3;
+    object-fit: cover;
+    object-position: center;
 }
 
 .wrapper-main .login-form-container {
@@ -107,7 +109,7 @@ div.title h1 {
 }
 
 label {
-    font-family: 'noto regular';
+    /* font-family: 'noto regular'; */
    color: #111;
     display: block;
     font-size: 14px;
@@ -122,7 +124,7 @@ input[type="password"] {
     border: 1px solid #ccc;
     border-radius: 5px;
     box-sizing: border-box;
-    font-family: 'noto regular';
+    /* font-family: 'noto regular'; */
     font-size: 14px;
     background-color: unset;
 }
